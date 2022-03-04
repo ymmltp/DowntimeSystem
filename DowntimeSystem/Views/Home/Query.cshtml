@@ -1,0 +1,677 @@
+﻿@{
+    ViewData["Title"] = "Downtime";
+}
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><b>@ViewData["Title"]</b></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                    <label class="form-label"> *Department:</label>
+                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true">
+                        <option value="TE">TE</option>
+                        <option value="ME">ME</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                    <label class="form-label"> *Line:</label>
+                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="getProject($('#project-select'), $('#line-select').val()); getStation($('#station-select'), $('#line-select').val(), $('#project-select').val());"></select>
+                </div>
+                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                    <label class="form-label"> *Project:</label>
+                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="getStation($('#station-select'), $('#line-select').val(), $('#project-select').val())"> </select>
+                </div>
+                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                    <label class="form-label"> *Station:</label>
+                    <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                </div>
+                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                    <label class="form-label"> *Incident Status:</label>
+                    <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1">
+                        <option value="0">Open</option>
+                        <option value="1">Repairing</option>
+                        <option value="2">Close</option>
+                    </select>
+                </div>
+                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
+                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new">New</button></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<table id="dtList" class="table-condensed"></table>
+
+<div class="modal fade" id="CreateIncidenceModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 30%;min-width:150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title" style="text-wrap:normal">创建 Downtime 信息</h5>
+            </div>
+            <div class="modal-body row">
+                <div class="col-lg-6">
+                    <label for="cr-department" class="form-label text-right warning-text">Department:</label>
+                    <input type='text' class="form-control need" data-remark="部门" id='cr-department' placeholder="---例 : ME---" />
+                </div>
+                <div class="col-lg-6">
+                    <label for="cr-line" class="form-label text-right warning-text">Line:</label>
+                    <input type='text' class="form-control need" data-remark="线体" id='cr-line' placeholder="---例 : Bay13---" />
+                </div>
+                <div class="col-lg-6">
+                    <label for="cr-project" class="form-label text-right warning-text">Project:</label>
+                    <input type='text' class="form-control need" data-remark="项目" id='cr-project' placeholder="---例 : AOP---" />
+                </div>
+                <div class="col-lg-6">
+                    <label for="cr-station" class="form-label text-right warning-text">Station:</label>
+                    <input type='text' class="form-control need" data-remark="站位" id='cr-station' placeholder="---例 : UV---" />
+                </div>
+                <div class="col-lg-6">
+                    <label for="cr-occtime" class="form-label text-right warning-text">Occurt Time:</label>
+                    <div class='input-group date form_datetime'>
+                        <input type='text' class="form-control need"  data-remark=" Downtime 发生时间" id='cr-occtime' />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <label for="cr-issue" class="form-label text-right warning-text">Issue:</label>
+                    <input type='text' class="form-control need" data-remark="问题" id='cr-issue' placeholder="---请输入问题---" />
+                </div>
+                <div class="col-lg-12">
+                    <label for="cr-issueremark" class="form-label text-right">Issue Remark:</label>
+                    <textarea type='text' class="form-control" id='cr-issueremark' placeholder="---请输入问题描述---"></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <label for="cr-creator" class="form-label text-right warning-text">Creator:</label>
+                    <input type='text' class="form-control need" data-remark="创建人" id='cr-creator' placeholder="---例 : W1234---" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="CreateIncidence()">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="StartRepaireModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 30%;min-width:150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title" style="text-wrap:normal">检查 Downtime 信息</h5>
+            </div>
+            <div class="modal-body row">
+                <div class="col-lg-6">
+                    <label for="sr-department" class="form-label text-right">Department:</label>
+                    <input type='text' class="form-control" readonly id='sr-department' />
+                </div>
+                <div class="col-lg-6">
+                    <label for="sr-line" class="form-label text-right">Line:</label>
+                    <input type='text' class="form-control" readonly id='sr-line' />
+                </div>
+                <div class="col-lg-6">
+                    <label for="sr-project" class="form-label text-right">Project:</label>
+                    <input type='text' class="form-control" readonly id='sr-project' />
+                </div>
+                <div class="col-lg-6">
+                    <label for="sr-station" class="form-label text-right">Station:</label>
+                    <input type='text' class="form-control" readonly id='sr-station' />
+                </div>
+                <div class="col-lg-12">
+                    <label for="sr-issue" class="form-label text-right">Issue:</label>
+                    <input type='text' class="form-control" readonly id='sr-issue' />
+                </div>
+                <div class="col-lg-12">
+                    <label for="sr-issueremark" class="form-label text-right">Issue Remark:</label>
+                    <textarea type='text' class="form-control" readonly id='sr-issueremark'></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <label for="sr-employee" class="form-label text-right warning-text">Employee:</label>
+                    <input type='text' class="form-control" id='sr-employee' placeholder="---例 : W1234---" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="startRepaire">Start Repaire</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CAModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 50%;min-width:150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CA-title" style="text-wrap:normal">填写 RootCause 和 CA </h5>
+            </div>
+            <div class="modal-body row">
+                <div class="col-lg-3">
+                    <label for="ca-department" class="form-label text-right">Department:</label>
+                    <input type='text' class="form-control" readonly id='ca-department' />
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-line" class="form-label text-right">Line:</label>
+                    <input type='text' class="form-control" readonly id='ca-line' />
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-project" class="form-label text-right">Project:</label>
+                    <input type='text' class="form-control" readonly id='ca-project' />
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-station" class="form-label text-right">Station:</label>
+                    <input type='text' class="form-control" readonly id='ca-station' />
+                </div>
+                <div class="col-lg-12">
+                    <label for="ca-issue" class="form-label text-right">Issue:</label>
+                    <input type='text' class="form-control" readonly id='ca-issue' />
+                </div>
+                <div class="col-lg-12">
+                    <label for="ca-issueremark" class="form-label text-right">Issue Remark:</label>
+                    <textarea type='text' class="form-control" readonly id='ca-issueremark'></textarea>
+                </div>
+                <div class="col-lg-4">
+                    <label for="ca-employee" class="form-label text-right">Employee:</label>
+                    <input type='text' class="form-control" id='ca-employee' readonly />
+                </div>
+                <div class="col-lg-4">
+                    <label for="ca-labor" class="form-label text-right">Labor:</label>
+                    <input type='number' step="1" class="form-control raca" id='ca-labor' value="1" title="1" />
+                </div>
+                <div class="col-lg-4">
+                    <label for="caldowntime" class="form-label text-right warning-text">Calculate Downtime:</label>
+                    <div class="radio-group">
+                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="true"  /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
+                    </div>
+                </div>
+                @*downtime相关*@
+                <div class="col-lg-6  downtime-item">
+                    <label for="ca-starttime" class="form-label text-right warning-text">Start Time:</label>
+                    <input type='text' class="form-control" id='ca-starttime' readonly />
+                </div>
+                <div class="col-lg-6  downtime-item">
+                    <label for="ca-finishtime" class="form-label text-right warning-text">Finish Time:</label>
+                    <input type='text' class="form-control" id='ca-finishtime' readonly />
+                </div>
+                <div class="col-lg-12  downtime-item">
+                    <label for="ca-downtime" class="form-label text-right warning-text">Downtime(s):</label>
+                    <input type='text' class="form-control" id='ca-downtime' readonly />
+                </div>
+                @*downtime相关*@
+                <div class="col-lg-6">
+                    <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                    <input type='text' class="form-control raca" id='ca-rootcause' />
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-action" class="form-label text-right warning-text">Action:</label>
+                    <input type='text' class="form-control raca" id='ca-action' />
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-rootcauseremark" class="form-label text-right">Root Cause Remark:</label>
+                    <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-actionremark" class="form-label text-right">Action Remark:</label>
+                    <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="addCA" >Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/js/customer.js"></script>
+<script src="~/js/cookie.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/js/bootstrap-table-export.js"></script>
+<script src="~/js/tableExport.js"></script>
+<script src="~/js/FileSaver.min.js"></script>
+<script src="~/js/xlsx.core.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        getLine($('#line-select'));
+        getProject($('#project-select'));
+        getStation($('#station-select'));
+        //var name = getCookie('dt-displayname');
+    });
+
+    function GetDowntimeList() {
+        $("#dtList").bootstrapTable('destroy').bootstrapTable({
+            cache: false,
+            type: 'GET',
+            url: '/EC/GetDowntimeList',
+            queryParams: {
+                Department: $("#department-select").val()[0],
+                Project: $("#project-select").val()[0],
+                Line: $("#line-select").val()[0],
+                Station: $("#station-select").val()[0],
+                Incidentstatus: $("#status-select").val()[0],
+            },
+            showColumns: true,
+            dataType: 'json',
+            pagination: true,
+            paginationLoop: false,
+            pageSize: 25,
+            pageList: [25, 50],
+            showExport: function (row, index) {
+                var sUserAgent = navigator.userAgent.toLowerCase();
+                var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+                var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+                var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+                var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+                var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+                var bIsAndroid = sUserAgent.match(/android/i) == "android";
+                var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+                var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+                if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            exportDataType: "all", //basic', 'all', 'selected'.
+            exportTypes: ['csv', 'excel', 'xlsx'], //导出类型
+            exportOptions: {
+                fileName: 'Downtime List - ' + formatDate(new Date()), //文件名称设置
+                worksheetName: 'Sheet1', //表格工作区名称
+                tableName: 'Downtime List',
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+            },
+            columns: [{
+                field: 'comefrom',
+                title: 'System',
+                align: 'center',
+                valign: 'middle',
+                visible: false,
+            }, {
+                    field: 'creator',
+                    title: 'Creator',
+                    align: 'center',
+                    valign: 'middle',
+                    visible: false,
+                }, {
+                    field: 'department',
+                    title: 'Department',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'project',
+                    title: 'Project',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'line',
+                    title: 'Line',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'station',
+                    title: 'Station',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'urgentlevel',
+                    title: 'Ugentlevel',
+                    align: 'center',
+                    valign: 'middle',
+                    visible: false,
+                }, {
+                    field: 'occurtime',
+                    title: 'Occurt Time',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        return value.replace('T', ' ');
+                    },
+                }, {
+                    field: 'repairtime',
+                    title: 'Repaire Time',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        if (value)
+                            return value.replace('T', ' ');
+                        else
+                            return value;
+                    },
+                }, {
+                    field: 'respperson',
+                    title: 'Response Person',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'finishtime',
+                    title: 'Finish Time',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        if (value)
+                            return value.replace('T', ' ');
+                        else
+                            return value;
+                    },
+                }, {
+                    field: 'calcdowntime',
+                    title: 'Calculate Downtime',
+                    align: 'center',
+                    valign: 'middle',
+                    visible: false,
+                }, {
+                    field: 'downtime',
+                    title: 'DownTime(s)',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        if (row['calcdowntime']) {
+                            return value;
+                        }
+                        else {
+                            return 'NULL';
+                        }
+                    },
+                }, {
+                    field: 'labor',
+                    title: 'Labor',
+                    align: 'center',
+                    valign: 'middle',
+                    visible: false,
+                }, {
+                    field: 'incidentstatus',
+                    title: 'Incident Status',
+                    align: 'center',
+                    valign: 'middle',
+                    visible: false,
+                }, {
+                    field: 'actionstatus',
+                    title: 'Action Status',
+                    align: 'center',
+                    valign: 'middle',
+                    visible: false,
+                }, {
+                    field: 'issue',
+                    title: 'Issue',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'issueremark',
+                    title: 'Issue Description',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'rootcause',
+                    title: 'RC',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'rootcauseremark',
+                    title: 'RC Description',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'action',
+                    title: 'CA',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'actionremark',
+                    title: 'CA Description',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'option',
+                    title: 'Option',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        if (row['incidentstatus'] == 0) {
+                            return ['<button type="button" class="btn bad text-light" id="start">Start</button>']
+                        } else if (row['incidentstatus'] == 1) {
+                            return ['<button type="button" class="btn warning text-light" id="close">Close</button>']
+                        } else if (row['incidentstatus'] == 2 && row['actionstatus'] == 2) {
+                            return ['<button type="button" class="btn primary text-light" id="edit">RC/CA</button>']
+                        } else if (row['incidentstatus'] == 2 && row['actionstatus'] == 3) {
+                            return ['<button type="button" class="btn good text-light" id="view">View</button>']
+                        } else {
+                            return ['<button type="button" class="btn .default text-light" id="error">Default</button>']
+                        }
+                },
+                events: {
+                    "click #start": function (e, value, row, index) {
+                        $("#sr-department").val(row['department']);
+                        $("#sr-project").val(row['project']);
+                        $("#sr-line").val(row['line']);
+                        $("#sr-station").val(row['station']);
+                        $("#sr-issue").val(row['issue']);
+                        $("#sr-issueremark").val(row['issueremark']);
+                        $("#StartRepaireModal").data("id", row['id']);
+                        $("#StartRepaireModal").modal('show');
+                    },
+                    "click #close": function (e, value, row, index) {
+                        if (confirm("确定结束维修: " + row['line'] + ' ' + row['station'] + ' : ' + row['issue'])) {
+                            $.ajax({
+                                url: '/EC/CloseRepaire',
+                                method: 'POST',
+                                data: {
+                                    id: row['id'],
+                                },
+                                success: function (data) {
+                                    alert("维修结束，辛苦了! ");
+                                    //if (confirm("开始填写 RC & CA ?")) {
+                                    //    ShowCARA(row);
+                                    //}
+                                },
+                                fail: function (err, status, xhr) {
+                                    alert(err.responseTextr);
+                                },
+                                error: function (err) {
+                                    alert(err.responseText);
+                                },
+                                complete: function (res) {
+                                    $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
+                                }
+                            })
+                        }
+                    },
+                    "click #edit": function (e, value, row, index) {
+                        ShowCARA(row);
+                    },
+                    "click #view": function (e, value, row, index) {
+                        ViewDowntimeInfo(row);
+                    }
+                }
+            }]
+        })
+    }
+
+    //开始维修
+    $('#startRepaire').on('click', function () {
+        if ($("#sr-employee").val()) {
+            $.ajax({
+                url: '/EC/StartRepaire',
+                method: 'POST',
+                data: {
+                    id: $("#StartRepaireModal").data('id'),
+                    name: $("#sr-employee").val(),
+                },
+                success: function (data) {
+                    $("#StartRepaireModal").modal('hide');
+                    alert("开始维修，祝你工作愉快！");
+                },
+                fail: function (err, status, xhr) {
+                    alert(err.responseTextr);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                },
+                complete: function (res) {
+                    $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
+                }
+            })
+        }
+        else {
+            alert("请输入维修人员工号 !")
+        }
+    });
+
+    //填写CA
+    function ShowCARA(row) {
+        $("#CA-title").html("填写 RootCause 和 CA");
+        $("#ca-department").val(row['department']);
+        $("#ca-project").val(row['project']);
+        $("#ca-line").val(row['line']);
+        $("#ca-station").val(row['station']);
+        $("#ca-issue").val(row['issue']);
+        $("#ca-issueremark").val(row['issueremark']);
+        $("#ca-employee").val(row['respperson']);
+        $("#ca-labor").val(row['labor']);
+        $(':radio[name=caldowntime][value=' + row['calcdowntime'] + ']').prop('checked', 'true');
+        $(':radio[name=caldowntime]').removeAttr('disabled', 'disabled');
+        showDowntimeControls(row['calcdowntime'].toString());
+        $("#ca-starttime").val(row['occurtime'].replace('T', ' '));
+        $("#ca-finishtime").val(row['finishtime'].replace('T', ' '));
+        $("#ca-downtime").val(row['downtime']);
+        $("#ca-rootcause").val(row['rootcause']);
+        $("#ca-rootcauseremark").val(row['rootcauseremark']);
+        $("#ca-action").val(row['action']);
+        $("#ca-actionremark").val(row['actionremark']);
+        $(".raca").removeAttr('readonly');
+        $("#addCA").removeClass("elehide");
+        $("#CAModal").data("id", row['id']);
+        $("#CAModal").modal('show');
+    }
+    $("#addCA").on('click', function () {
+        if ($("#ca-rootcause").val() && $("#ca-action").val()) {
+            $.ajax({
+                url: '/EC/RCCA',
+                method: 'POST',
+                data: {
+                    id: $("#CAModal").data('id'),
+                    calcdowntime: $(':radio[name=caldowntime]:checked').val(),
+                    labor: $("#ca-labor").val(),
+                    rootcause: $("#ca-rootcause").val(),
+                    rootcauseremark: $("#ca-rootcauseremark").val(),
+                    action: $("#ca-action").val(),
+                    actionremark: $("#ca-actionremark").val(),
+                },
+                success: function (data) {
+                    $("#CAModal").modal('hide');
+                    alert("完成！");
+                },
+                fail: function (err, status, xhr) {
+                    alert(err.responseTextr);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                },
+                complete: function (res) {
+                    $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
+                }
+            })
+        }
+        else {
+            alert("请输入RootCause和CA ,再提交!")
+        }
+    })
+
+    //查看downtime信息
+    function ViewDowntimeInfo(row) {
+        $("#CA-title").html("查看 Downtime 信息");
+        $("#ca-department").val(row['department']);
+        $("#ca-project").val(row['project']);
+        $("#ca-line").val(row['line']);
+        $("#ca-station").val(row['station']);
+        $("#ca-issue").val(row['issue']);
+        $("#ca-issueremark").val(row['issueremark']);
+        $("#ca-employee").val(row['respperson']);
+        $("#ca-labor").val(row['labor']);
+        $(':radio[name=caldowntime][value=' + row['calcdowntime'] + ']').prop('checked', 'true');
+        $(':radio[name=caldowntime]').attr('disabled','disabled');
+        showDowntimeControls(row['calcdowntime'].toString());
+        $("#ca-starttime").val(row['occurtime'].replace('T', ' '));
+        $("#ca-finishtime").val(row['finishtime'].replace('T', ' '));
+        $("#ca-downtime").val(row['downtime']);
+        $("#ca-rootcause").val(row['rootcause']);
+        $("#ca-rootcauseremark").val(row['rootcauseremark']);
+        $("#ca-action").val(row['action']);
+        $("#ca-actionremark").val(row['actionremark']);
+        $(".raca").attr('readonly', true);
+        $("#addCA").addClass("elehide");
+        $("#CAModal").data("id", row['id']);
+        $("#CAModal").modal('show');
+    }
+
+    //downtime相关控件是否显示
+    $(':radio[name=caldowntime]').on('change', function (e) {
+        showDowntimeControls(e.target.defaultValue);
+    })
+    function showDowntimeControls(flag) {
+        if (flag == "false") {
+            console.log("NO");
+            $(".downtime-item").addClass("elehide");
+        } else {
+            console.log("YES");
+            $(".downtime-item").removeClass("elehide");
+        }
+    }
+
+    //创建DowntimeIncidence
+    $("#new").on('click', function () {
+        $("input").val("");
+        $("textarea").val("");
+        iniDatetimepicker();
+        $("#CreateIncidenceModal").modal("show");
+    })
+    function CreateIncidence() {
+        var items = $(".need");
+        for (var i = 0; i < items.length; i++) {
+            console.log($(items[i]));
+            if (!$(items[i]).val()) {
+                alert("请填写" + $(items[i]).data("remark"));
+                return;
+            }
+        }
+        $.ajax({
+            url: '/EC/CreateDowmtimeIncident',
+            method: 'POST',
+            data: {
+                comefrom: "Downtime System",
+                alarmtype: "Downtime Incident Created",
+                project: $("#cr-project").val(),
+                line: $("#cr-line").val(),
+                station: $("#cr-station").val(),
+                occurtime: $("#cr-occtime").val(),
+                calcdowntime: "true",
+                department: $("#cr-department").val(),
+                issue: $("#cr-issue").val(),
+                issueremark: $("#cr-issueremark").val(),
+                creator: $("#cr-creator").val(),
+                action:"",
+            },
+            success: function (data) {
+                $("#CreateIncidenceModal").modal('hide');
+                alert("Downtime信息已创建，请尽快维修！");
+            },
+            fail: function (err, status, xhr) {
+                alert(err.responseTextr);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            },
+            complete: function (res) {
+                $('#department-select').val($("#cr-department").val());
+                $('#project-select').val($("#cr-project").val())
+                $('#line-select').val($("#cr-line").val())
+                $('#station-select').val($("#cr-station").val())
+                $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
+            }
+        })
+    }
+
+</script>

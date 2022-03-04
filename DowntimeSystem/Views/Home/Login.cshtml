@@ -1,0 +1,122 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>DownTime - Log In</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/customer.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+
+    <link href="~/topicon.ico" rel="shortcut icon" />
+
+</head>
+<body>
+    <div class="sso-container">
+        <div class="panel panel-default">
+            <div class="panel-header">
+                <img src="~/img/jabil.png" class="sso-logo" alt="Jabil Circuit - Prod">
+            </div>
+            <div class="panel-body">
+                <div class="form-login" runat="server" id="formLogin">
+                    <p class="form-login-heading" id="sys-head">
+                        Downtime System
+                        <!-- <strong>系统</strong> -->
+                    </p>
+                    <br />
+                    <div class="form-group has-feedback">
+                        <label class="sr-only" for="ntid"> NTID </label>
+                        <input id="user" class="form-control input" placeholder="-- Account --"/>
+                        <span class="glyphicon glyphicon-user form-control-feedback input-icon"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="password" class="sr-only"> PassWord </label>
+                        <input id="password" class="form-control input" type="password" placeholder="-- Password --"/>
+                        <span class="glyphicon glyphicon-lock form-control-feedback input-icon"></span>
+                        <label id="errormsg1" class="warning-text" style="display:none">Error PassWord or UserName</label>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <button id="loginbtn" class="btn btn-primary" type="button" style="margin-bottom:0px;width:100%" onclick="Auth()">Log In</button>
+                    </div>
+
+                </div>
+                <div class="sso-hint">
+                    <span id="hint"></span>
+                </div>
+            </div>
+        </div>
+
+        <footer style="text-align:center;color:gray">
+            <p>&copy; @DateTime.Now.Year - Downtime System V0.0.1</p>
+        </footer>
+    </div>
+
+    <!-- effect js -->
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/cookie.js"></script>
+    <!-- //effect js -->
+    <script>
+        $(document).keyup(function (event) {
+            if (event.keyCode == 13) {
+                $("#loginbtn").trigger("click");
+            }
+        });
+
+        $(".input").focus(function () {
+            console.log("xiaoshi");
+            $("#errormsg1").css("display", "none");
+        })
+
+        function Auth() {
+            var user = $("#user").val();
+             var password = $("#password").val();
+            if (!user) {
+                alert("请输入用户名");
+            }
+            else if (!password) {
+                alert("请输入密码");
+            } else {
+                 $.ajax({
+                     url: '/Basic/Auth',
+                     type: 'GET',
+                     data: {
+                         ntid: user,
+                         password: password,
+                     },
+                     dataType: 'JSON',
+                     success: function (data, status, xhr) {
+                         if (data) {
+                             console.log(data);
+                             setCookie("dt-NTID", data.uid, 20);
+                             setCookie("dt-displayname", data.displayName, 20);
+                             setCookie("dt-Department", data.department, 20);
+                             setCookie("dt-eMail", data.email, 20);
+                             window.location = "/Home/Query";
+                         } else {
+                             $("#errormsg1").removeAttr("style");
+                        }
+                     },
+                     fail: function (err, status, xhr) {
+                         console.log(xhr)
+                         alert(xhr.statusText);
+                     },
+                     error: function (err) {
+                         console.log(err)
+                         alert(err.statusText);
+                     }
+                 })
+             }
+        }
+    </script>
+
+</body>
+
+</html>
