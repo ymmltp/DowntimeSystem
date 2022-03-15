@@ -21,6 +21,7 @@ namespace DowntimeSystem
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }

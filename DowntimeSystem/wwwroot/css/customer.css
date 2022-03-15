@@ -3,9 +3,11 @@
     font-size: 14px;
 }
 
+
+
 .navbar {
-    background-color: #008651;
-    border-color: #008651;
+    background-color: #003865;
+    border-color: #003865;
 }
 
 .bootstrap-select > .dropdown-toggle {
@@ -13,8 +15,9 @@
 }
 
 .panel-default > .panel-heading {
-    background-color: #f5f5f5;
-    border-color: #ddd;
+    background-color: #f39c12;
+    border-color: #f39c12;
+    color:white;
     padding: 10px 15px;
     border-bottom: 1px solid transparent;
     border-top-left-radius: 3px;
@@ -32,12 +35,10 @@
     width: 70px;
     text-align: center;
 }
-
 .scroll-table {
     max-height: 400px;
     overflow-y: scroll;
 }
-
 .customer-nav {
     background-color: #003865 /*#605ca8*/ /*#23313f*/;
     border-color: #003865 /*#605ca8*/ /*#23313f*/;
@@ -57,9 +58,6 @@
 .weight-font {
     font-weight:800;
 }
-
-
-
 
 .color-purple {
     background-color: #605ca8 !important;
@@ -550,3 +548,161 @@ table {
     background-color: white;
 }
 
+/*侧边栏*/
+#sideToggle {
+    display: none;
+}
+
+#sideToggle:checked + .sidebar {
+        left: -15%;
+    }
+
+#sideToggle:checked ~ .silder-right {
+        margin-left: 0px;
+        padding-right: 20px;
+        width: 100%
+    }
+
+.sidebar-toggle {
+    margin-left: -240px;
+}
+
+.sidebar {
+float: left;
+width: 15%;
+height: calc(100% - 60px);
+/* height: 100%;*/
+background: #003865;
+position: absolute;
+-webkit-transition: all 0.3s ease-in-out;
+-moz-transition: all 0.3s ease-in-out;
+-o-transition: all 0.3s ease-in-out;
+-ms-transition: all 0.3s ease-in-out;
+transition: all 0.3s ease-in-out;
+z-index: 100;
+/*margin-top: 20px;*/
+left: 0
+}
+
+.sidebar #leftside-navigation ul,
+.sidebar #leftside-navigation ul ul {
+margin: -2px 0 0;
+padding: 0;
+}
+
+.sidebar #leftside-navigation ul li {
+    list-style-type: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar #leftside-navigation ul li.active > a {
+    color: white;
+}
+
+.sidebar #leftside-navigation ul li.active ul {
+    display: block;
+}
+
+.sidebar #leftside-navigation ul li a {
+    color: white /*#aeb2b7*/;
+    text-decoration: none;
+    display: block;
+    padding: 18px 0 18px 25px;
+    font-size: 14px;
+    outline: 0;
+    -webkit-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+}
+
+.sidebar #leftside-navigation ul li a:hover {
+    /*color: #e0ff37*/ /*#aeb2b7*/
+
+    background-color: #466CA6 /*#1D8A58*/ /*#35d38b*/;
+}
+
+.sidebar #leftside-navigation ul li a span {
+    display: inline-block;
+}
+
+.sidebar #leftside-navigation ul li a i {
+    width: 20px;
+}
+
+.sidebar #leftside-navigation ul li a i .fa-angle-left,
+.sidebar #leftside-navigation ul li a i .fa-angle-right {
+    padding-top: 3px;
+}
+
+.sidebar #leftside-navigation ul ul {
+    display: none;
+}
+
+.sidebar #leftside-navigation ul ul li {
+    background: #8CABD9 /*#58d49b*/ /*#23313f*/;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    border-bottom: none;
+}
+
+.sidebar #leftside-navigation ul ul li a {
+    font-size: 13px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    color: white;
+}
+
+.silder-right {
+    float: left;
+    margin-left: 15%;
+    width: 85%;
+    height: calc(100% - 60px);
+    padding-right: 0px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.silder-right-body {
+    width: 100%;
+    height: calc(100vh - 20px);
+    background: rgba(255,255,255,0);
+    overflow: auto;
+    max-height: 1000px;
+}
+
+@media (min-height: 700px) {
+    .silder-right-body {
+        height: calc(100vh - 150px); /* 640px;*/
+    }
+}
+
+@media (min-height: 800px) {
+    .silder-right-body {
+        /*height: 650px;*/
+        height: calc(100vh - 150px);
+    }
+}
+
+@media (min-height: 1000px) {
+    .silder-right-body {
+        /*height: 850px;*/
+        height: calc(100vh - 150px);
+    }
+}
+
+@media (min-height: 1280px) {
+    .silder-right-body {
+        /*height: 1130px;*/
+        height: calc(100vh - 150px);
+    }
+}
+
+.nano-content {
+    background-color: #003865 /*#00a65a*/;
+}

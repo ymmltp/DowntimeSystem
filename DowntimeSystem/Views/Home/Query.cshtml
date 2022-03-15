@@ -1,32 +1,33 @@
 ﻿@{
-    ViewData["Title"] = "Downtime";
+    ViewData["Title"] = "Task";
 }
 <div class="container-fluid">
     <div class="panel-default">
-        <div class="panel-heading"><b>@ViewData["Title"]</b></div>
+        <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> *Department:</label>
+                    <label class="form-label"> Department:</label>
                     <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true">
                         <option value="TE">TE</option>
                         <option value="ME">ME</option>
+                        <option value="PD">PD</option>
                     </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> *Line:</label>
+                    <label class="form-label"> Line:</label>
                     <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="getProject($('#project-select'), $('#line-select').val()); getStation($('#station-select'), $('#line-select').val(), $('#project-select').val());"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> *Project:</label>
+                    <label class="form-label"> Project:</label>
                     <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="getStation($('#station-select'), $('#line-select').val(), $('#project-select').val())"> </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> *Station:</label>
+                    <label class="form-label"> Station:</label>
                     <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> *Incident Status:</label>
+                    <label class="form-label"> Incident Status:</label>
                     <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1">
                         <option value="0">Open</option>
                         <option value="1">Repairing</option>
@@ -52,24 +53,24 @@
             <div class="modal-body row">
                 <div class="col-lg-6">
                     <label for="cr-department" class="form-label text-right warning-text">Department:</label>
-                    <input type='text' class="form-control need" data-remark="部门" id='cr-department' placeholder="---例 : ME---" />
+                    <input type='text' class="form-control need create-input" data-remark="部门" id='cr-department' placeholder="---例 : ME---" />
                 </div>
                 <div class="col-lg-6">
                     <label for="cr-line" class="form-label text-right warning-text">Line:</label>
-                    <input type='text' class="form-control need" data-remark="线体" id='cr-line' placeholder="---例 : Bay13---" />
+                    <input type='text' class="form-control need create-input" data-remark="线体" id='cr-line' placeholder="---例 : Bay13---" />
                 </div>
                 <div class="col-lg-6">
                     <label for="cr-project" class="form-label text-right warning-text">Project:</label>
-                    <input type='text' class="form-control need" data-remark="项目" id='cr-project' placeholder="---例 : AOP---" />
+                    <input type='text' class="form-control need create-input" data-remark="项目" id='cr-project' placeholder="---例 : AOP---" />
                 </div>
                 <div class="col-lg-6">
                     <label for="cr-station" class="form-label text-right warning-text">Station:</label>
-                    <input type='text' class="form-control need" data-remark="站位" id='cr-station' placeholder="---例 : UV---" />
+                    <input type='text' class="form-control need create-input" data-remark="站位" id='cr-station' placeholder="---例 : UV---" />
                 </div>
                 <div class="col-lg-6">
                     <label for="cr-occtime" class="form-label text-right warning-text">Occurt Time:</label>
                     <div class='input-group date form_datetime'>
-                        <input type='text' class="form-control need"  data-remark=" Downtime 发生时间" id='cr-occtime' />
+                        <input type='text' class="form-control need create-input"  data-remark=" Downtime 发生时间" id='cr-occtime' />
                         <span class="input-group-addon">
                             <span class="fa fa-calendar"></span>
                         </span>
@@ -77,15 +78,15 @@
                 </div>
                 <div class="col-lg-12">
                     <label for="cr-issue" class="form-label text-right warning-text">Issue:</label>
-                    <input type='text' class="form-control need" data-remark="问题" id='cr-issue' placeholder="---请输入问题---" />
+                    <input type='text' class="form-control need create-input" data-remark="问题" id='cr-issue' placeholder="---请输入问题---" />
                 </div>
                 <div class="col-lg-12">
                     <label for="cr-issueremark" class="form-label text-right">Issue Remark:</label>
-                    <textarea type='text' class="form-control" id='cr-issueremark' placeholder="---请输入问题描述---"></textarea>
+                    <textarea type='text' class="form-control create-input" id='cr-issueremark' placeholder="---请输入问题描述---"></textarea>
                 </div>
                 <div class="col-lg-12">
                     <label for="cr-creator" class="form-label text-right warning-text">Creator:</label>
-                    <input type='text' class="form-control need" data-remark="创建人" id='cr-creator' placeholder="---例 : W1234---" />
+                    <input type='text' class="form-control need create-input" data-remark="创建人" id='cr-creator' placeholder="---例 : W1234---" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -259,7 +260,7 @@
             pagination: true,
             paginationLoop: false,
             pageSize: 25,
-            pageList: [25, 50],
+            pageList: [10, 25, 50],
             showExport: function (row, index) {
                 var sUserAgent = navigator.userAgent.toLowerCase();
                 var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
@@ -301,6 +302,7 @@
                     title: 'Department',
                     align: 'center',
                     valign: 'middle',
+                    visible: false,
                 }, {
                     field: 'project',
                     title: 'Project',
@@ -330,6 +332,16 @@
                     formatter: function (value, row, index) {
                         return value.replace('T', ' ');
                     },
+                }, {
+                    field: 'issue',
+                    title: 'Issue',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'issueremark',
+                    title: 'Issue Description',
+                    align: 'center',
+                    valign: 'middle',
                 }, {
                     field: 'repairtime',
                     title: 'Repaire Time',
@@ -395,35 +407,29 @@
                     valign: 'middle',
                     visible: false,
                 }, {
-                    field: 'issue',
-                    title: 'Issue',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    field: 'issueremark',
-                    title: 'Issue Description',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
                     field: 'rootcause',
                     title: 'RC',
                     align: 'center',
-                    valign: 'middle',
+                valign: 'middle',
+                visible: false,
                 }, {
                     field: 'rootcauseremark',
                     title: 'RC Description',
                     align: 'center',
-                    valign: 'middle',
+                valign: 'middle',
+                visible: false,
                 }, {
                     field: 'action',
                     title: 'CA',
                     align: 'center',
-                    valign: 'middle',
+                valign: 'middle',
+                visible: false,
                 }, {
                     field: 'actionremark',
                     title: 'CA Description',
                     align: 'center',
-                    valign: 'middle',
+                valign: 'middle',
+                visible: false,
                 }, {
                     field: 'option',
                     title: 'Option',
@@ -623,8 +629,7 @@
 
     //创建DowntimeIncidence
     $("#new").on('click', function () {
-        $("input").val("");
-        $("textarea").val("");
+        $(".create-input").val("");
         iniDatetimepicker();
         $("#CreateIncidenceModal").modal("show");
     })
