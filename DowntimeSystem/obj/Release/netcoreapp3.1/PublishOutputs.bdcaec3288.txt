@@ -12,13 +12,17 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\fonts\fontawesome-webfont.woff
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\fonts\fontawesome-webfont.woff2
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\fonts\FontAwesome.otf
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\img\arrowleft.png
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\img\arrowleft1.png
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\img\bg0.png
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\img\jabil.png
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\bootstrap-table-export.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\bootstrap-table-export.min.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\cookie.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\customer.js
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\dashboard.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\FileSaver.min.js
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\index.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\moment.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\popper.min.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\site.js
@@ -65,6 +69,8 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\bootstrap\LICENSE
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\echarts\dist\js\echarts.js
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\echarts\dist\js\echarts.js.map
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt

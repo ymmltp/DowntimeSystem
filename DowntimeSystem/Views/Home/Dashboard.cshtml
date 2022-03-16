@@ -2,20 +2,20 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="row" style="margin-right: 0px">
+<div class="row" style="margin-right: 0px;">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xl-6" >
-        <div id="CountTopCode" class="mychart" style="width:100%;height:300px"> Top Five Error Code</div>
+        <div id="CountTopCode" class="mychart" style="width:100%;height:300px"> Top Five Error Code In Last 30 Days</div>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xl-6" >
-        <div id="CountTopRootCause" class="mychart" style="width:100%;height:300px"> Top Five RootCause</div>
+        <div id="CountTopRootCause" class="mychart" style="width:100%;height:300px"> Top Five RootCause In Last 30 Days</div>
     </div>
 </div>
-<div class="row" style="margin-right: 0px">
+<div class="row" style="margin-right: 0px; margin-top: 5px;">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xl-6" >
-        <div id="echart3" class="mychart"> 我的图标3</div>
+        <div id="DowntimeOfStation" class="mychart" style="width:100%;height:300px"> Downtime of Station In Last 30 Days</div>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xl-6" >
-        <div id="echart4" class="mychart"> 我的图标4</div>
+        <div id="DowntimePerDepartment" class="mychart"  style="width:100%;height:300px"> Downtime of per Department In Last 30 Days</div>
     </div>
 </div>
 
@@ -25,5 +25,9 @@
 <script>
     $(document).ready(function () {
         gettopErrorcode_bycount();
+        //gettopRootCause_byDowntime();
+        getAllErrorCode_TopFiveRootCause();
+        gettopErrorCode_byDowntime();
+        getDowntime_byDepartment();
     })
 </script>

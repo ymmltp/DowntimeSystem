@@ -76,3 +76,4 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.genruntimeconfig.cache
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard.cshtml.g.cs

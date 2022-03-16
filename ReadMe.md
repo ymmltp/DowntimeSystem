@@ -94,20 +94,25 @@ Action Traker：记录所有系统发出来的事件，并对其经行分析，�
 
 Dashboard设计要求
 
-- [x] Top 5 error code with station/line/equipment
+- [ ] 只获取计算downtime的，来自E-Calling,Sparepart,FPY,Downtime系统自身的数据
+
+> 暂无数据
+
+- [x] **计算30天内的数据**
+- [x] Top 5 error code with station/line/equipment  
 
 > 前五项 error code(按次数),每个station占多少个->line占多少个->equipment占多少个(数据库不记录equipment信息)
 > 1、查询前五项error code:SELECT issue,count(issue) as quantity from public.incident_det group by issue order by quantity desc limit 5
 
-- [ ] Top 5 root cause with per downtime defect code
+- [x] Top 5 root cause with per downtime defect code   
 
 > 前五项 rootcause (按downtime)，每个 error code 各占多少时间（不显示占时少于5min的error code）
 
-- [ ] Top 5 downtime with machine/station category
+- [x] Top 5 downtime with machine/station category
 
 > 前五项 error code(按downtime),每个系统各占多少时间
 
-- [ ] Total downtime per functionalteam
+- [x] Total downtime per functionalteam
 
 > 前五项 error code(按downtime),每个部门各占多少时间
 
@@ -116,3 +121,4 @@ Dashboard设计要求
 
 > 根据Project筛选出 最近50条downtime历史记录（分两页，每页25条），根据incidentstatus显示不同的颜色
 > 报警灯提示，每条报警产生后显示红灯，技术员录入工号后表示开始维修显示黄灯、维修结束后点击结束按钮显示绿灯
+
