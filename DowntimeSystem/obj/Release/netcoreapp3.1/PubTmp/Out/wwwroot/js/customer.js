@@ -1,20 +1,19 @@
 ﻿function iniDatetimepicker() {
     $(".form_datetime").datetimepicker({
         fontAwesome: 'font-awesome',
-        format: 'yyyy-mm-dd hh:ii',//hh:00:00', //时间显示的格式
-        value: new Date(),
+        format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
         todayBtn: true, //一键选中今天的日期
         minDate: '2022/01/01',
         maxDate: 0,//今天
         pickerPosition: "bottom-left", //打开选择卡的位置
         weekStart: 1, //周开始的星期：0-6 星期日-星期六
         autoclose: true,//选好时间后自动关闭
-        startView: 1,
+        startView: 2,
         maxView: 4,
-        minView: 0,//显示的最小选项卡：0-4 hour,day,month,year,decade
-        minuteStep: 5,
+        minView: 2,//显示的最小选项卡：0-4 hour,day,month,year,decade
+        //minuteStep: 5,
         language: 'zh-CN',
-        startDate: getDay(-1,'-'),
+        startDate: new Date("2022-01-01"),
         endDate: new Date()
     });
 }
