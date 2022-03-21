@@ -559,7 +559,6 @@ table {
 
 #sideToggle:checked ~ .silder-right {
         margin-left: 0px;
-        padding-right: 20px;
         width: 100%
     }
 
@@ -670,15 +669,15 @@ padding: 0;
 
 .silder-right-body {
     width: 100%;
-    height: calc(100vh - 20px);
+    /*height: calc(100vh - 20px);*/
     background: rgba(255,255,255,0);
-    overflow: auto;
+    overflow-y: scroll;
     max-height: 1000px;
 }
 
 @media (min-height: 700px) {
     .silder-right-body {
-        height: calc(100vh - 150px); /* 640px;*/
+        height: calc(100vh - 120px); /* 640px;*/
     }
 }
 
@@ -691,14 +690,14 @@ padding: 0;
 
 @media (min-height: 1000px) {
     .silder-right-body {
-        /*height: 850px;*/
+        /*height: 800px;*/
         height: calc(100vh - 150px);
     }
 }
 
 @media (min-height: 1280px) {
     .silder-right-body {
-        /*height: 1130px;*/
+        /*height: 1080px;*/
         height: calc(100vh - 150px);
     }
 }

@@ -37,6 +37,9 @@ function gettopErrorcode_bycount(project, lastday, currentDay) {
                     text: 'Top 5 Error Code with Line/Station/Root Cause information',
                     //subtext: '',
                     left: 'center',
+                    textStyle: {
+                        fontSize:15,
+                    }
                 },
                 color: ['#5470c6'],
                 grid: {
@@ -537,6 +540,9 @@ function getOpenCloseCount(project, lastday, currentDay) {
                 title: {
                     text: 'Downtime Open & Close QTY and Detail information',
                     left: 'center',
+                    textStyle: {
+                        fontSize: 15,
+                    }
                 },
                 color: ['#5470c6'],
                 grid: {
@@ -732,6 +738,9 @@ function gettopErrorCode_byDowntime(project, lastday, currentDay) {
                     title: {
                         text: 'Top Five Station with Downtime',
                         left: 'center',
+                        textStyle: {
+                            fontSize: 15,
+                        }
                     },
                     color: ['#5470c6'],
                     grid: {
@@ -815,6 +824,9 @@ function getDowntime_byDepartment(project, lastday, currentDay) {
                     title: {
                         text: 'Total Downtime per Functional Team',
                         left: 'center',
+                        textStyle: {
+                            fontSize: 15,
+                        }
                     },
                     color: ['#5470c6'],
                     grid: {
@@ -870,3 +882,38 @@ function getDowntime_byDepartment(project, lastday, currentDay) {
             }
         })
 }
+
+
+//监听Dom元素的大小变化
+//let mainchart = document.querySelector(".silder-right-body");
+//let observer = new MutationObserver(function (mutations, observer) {
+//    mutations.forEach(function (mutation) {
+//        console.log(mutation);
+//    });
+
+//    //console.log("发生了");
+//    //myChart1.resize();
+//    //myChart2.resize();
+//    //myChart3.resize();
+//    //myChart4.resize();
+//});
+//observer.observe(mainchart, { attributes: true, attributeFilter: ['style'], attributeOldValue: true });
+
+//监听窗口的大小变化
+window.onresize = function () {
+    myChart1.resize();
+    myChart2.resize();
+    myChart3.resize();
+    myChart4.resize();
+}
+
+$("#sideToggle").on('change', function () {
+    setTimeout(function () {
+        myChart1.resize();
+        myChart2.resize();
+        myChart3.resize();
+        myChart4.resize();
+    },350);
+})
+
+

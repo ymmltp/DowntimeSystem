@@ -76,3 +76,4 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\CreateDowntimeInfo.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Contact.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.csproj.AssemblyReference.cache

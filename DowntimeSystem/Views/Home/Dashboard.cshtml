@@ -2,7 +2,7 @@
     ViewData["Title"] = "Dashboard";
 }
 <div class="row" style="margin-right: 0px">
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xl-2">
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> *Project:</label>
         <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="updateChart()">
             <option value="FATP M52">M52</option>
@@ -10,7 +10,7 @@
             <option value="FATP AOP">AOP</option>
         </select>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xl-2">
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label" for="start"> *Start Date:</label>
         <div class='input-group date form_datetime'>
             <input type='text' class="form-control" id='start' onchange="updateChart()"/>
@@ -19,7 +19,7 @@
             </span>
         </div>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xl-2">
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label" for="end"> *End Date </label>
         <div class='input-group date form_datetime'>
             <input type='text' class="form-control" id='end' onchange="updateChart()"/>
@@ -29,22 +29,24 @@
         </div>
     </div>
 </div>
-<div class="row" style="margin-right: 0px; margin-top:10px;">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xl-6" >
+
+<div class="row" style="margin-right: 0px; margin-top:5px;">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <div id="chart1" class="mychart" style="width:100%;height:300px"> Top Five Error Code</div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xl-6" >
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <div id="chart2" class="mychart" style="width:100%;height:300px"> Downtime Open & Close QTY</div>
     </div>
 </div>
-<div class="row" style="margin-right: 0px; margin-top: 5px;">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xl-6" >
+<div class="row" style="margin-right: 0px; margin-top: 2px;">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <div id="chart3" class="mychart" style="width:100%;height:300px"> Top Five Station with Downtime</div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xl-6" >
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <div id="chart4" class="mychart" style="width:100%;height:300px">Total Downtime per Functional Team</div>
     </div>
 </div>
+
 
 
 <div class="modal fade" id="ListModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
@@ -54,7 +56,7 @@
                 <h5 class="modal-title" id="modalName" style="text-wrap:normal">Detail Information </h5>
             </div>
             <div class="modal-body row">
-                <div style="height:70vh;overflow:scroll">
+                <div style="height:70vh;overflow-y:scroll">
                     <table id="detaillist"></table>
                 </div>
             </div>
