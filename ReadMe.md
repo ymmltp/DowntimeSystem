@@ -122,8 +122,9 @@ Dashboard设计要求
 > 根据Project筛选出 最近50条downtime历史记录（分两页，每页25条），根据incidentstatus显示不同的颜色
 > 报警灯提示，每条报警产生后显示红灯，技术员录入工号后表示开始维修显示黄灯、维修结束后点击结束按钮显示绿灯###
 
-#### 2022.03.17 Demand Edu
+#### 2022.03.17 Demand
 
-- [x] 增加 project 和时间的filter
-- [x] 表二调整为downtime open & close QTY,钻取显示具体的downtime incident
+- [x] add filter for project and time zone
+- [x] 表一,增加对rootcause的数据钻取
+- [x] 表二,调整为downtime open & close QTY,钻取显示具体的downtime incident list
 - [x] downtime以小时为单位

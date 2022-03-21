@@ -11,16 +11,20 @@ namespace DowntimeSystem.Controllers
     {
         //查询EC表单
         [HttpGet]
-        public IActionResult GetDowntimeList(IncidentDet tmp)
+        public IActionResult GetDowntimeList(IncidentDet tmp,string starttime ,string endtime)
         {
             try {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true).ToList(); //
+                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true).ToList(); 
                     if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Station)) items = items.Where(e => e.Station.Equals(tmp.Station)).ToList();
+
+                    if (!string.IsNullOrEmpty(starttime)) items = items.Where(e => e.Occurtime >= Convert.ToDateTime(starttime)).ToList();
+                    if (!string.IsNullOrEmpty(endtime)) items = items.Where(e => e.Occurtime <= Convert.ToDateTime(endtime)).ToList();
+
                     if (!string.IsNullOrEmpty(tmp.Incidentstatus.ToString())) items = items.Where(e => e.Incidentstatus.Equals(tmp.Incidentstatus)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Actionstatus.ToString())) items = items.Where(e => e.Actionstatus.Equals(tmp.Actionstatus)).ToList();
                     return Json(items.OrderBy(e => e.Incidentstatus).OrderBy(e=>e.Actionstatus).ToList()) ;
@@ -80,6 +84,22 @@ namespace DowntimeSystem.Controllers
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
                     return Json(items.OrderBy(e => e.Station).Select(e => e.Station).Distinct().ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        public IActionResult GetDepartment(IncidentDet tmp)
+        {
+            try
+            {
+                using (ECContext db = new ECContext())
+                {
+                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true).ToList();
+                    return Json(items.OrderBy(e => e.Department).Select(e => e.Department).Distinct().ToList());
                 }
             }
             catch (Exception ex)

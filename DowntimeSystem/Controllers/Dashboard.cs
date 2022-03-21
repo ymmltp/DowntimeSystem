@@ -9,9 +9,9 @@ namespace DowntimeSystem.Controllers
 {
     public class Dashboard : Controller
     {
-        private string[] contains = { "E-Calling", "Sparepart", "FPY", "Downtime System","EPM System" };
+        private string[] contains = { "E-Calling", "Sparepart", "FPY", "Downtime System" ,"EPM System" };
 
-        # region 获取Error Code 最高频次的前五项
+        #region 获取Error Code 最高频次的前五项
         public IActionResult GetTopErrorCode_ByCount(string[] project, string currentDay, string lastDay , int limit =5)
         {
             using (ECContext db = new ECContext()) {
@@ -93,7 +93,7 @@ namespace DowntimeSystem.Controllers
                         .GroupBy(e => e.Rootcause)
                         .Select(g => new
                         {
-                            item = g.Key==null?"None Rootcause":g.Key,
+                            item = g.Key==null?"None Root Cause":g.Key,
                             value = g.Count(),
                         }).OrderByDescending(e => e.value).Take(limit).ToList();
                     return Json(items);
@@ -120,7 +120,7 @@ namespace DowntimeSystem.Controllers
                         .Select(g => new
                         {
                             item = g.Key == 2 ? "Close" : "Open",
-                            value = g.Count(),
+                            value = g.Key == 2 ?g.Sum(e=>e.Downtime) / 3600 : g.Sum(e=>Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds)) / 3600,
                         }).OrderByDescending(e => e.value).Take(limit).ToList();
                     return Json(items);
                 }
@@ -259,7 +259,8 @@ namespace DowntimeSystem.Controllers
                     var items = tmp.Where(e => Convert.ToDateTime(lastDay )< e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).GroupBy(e => e.Station).Select(g => new
                     {
                         item = g.Key,
-                        value =g.Sum(e => e.Downtime)/3600,
+                        value = g.Sum(e=>e.Incidentstatus==2?e.Downtime: Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds))  / 3600,
+                        //value =g.Sum(e => e.Downtime)/3600,
                     }).OrderByDescending(e => e.value).Take(limit).ToList();
                     return Json(items);
                 }
@@ -284,7 +285,8 @@ namespace DowntimeSystem.Controllers
                     var items = tmp.Where(e => Convert.ToDateTime(lastDay)< e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).GroupBy(e => e.Department).Select(g => new
                     {
                         item = g.Key,
-                        value = g.Sum(e => e.Downtime) / 3600,
+                        value = g.Sum(e => e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds)) / 3600,
+                        //value = g.Sum(e => e.Downtime) / 3600,
                     }).OrderByDescending(e => e.value).ToList();
                     return Json(items);
                 }

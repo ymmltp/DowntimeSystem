@@ -34,7 +34,7 @@ function gettopErrorcode_bycount(project, lastday, currentDay) {
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'Top 5 Error Code with Line/Station/RootCause information',
+                    text: 'Top 5 Error Code with Line/Station/Root Cause information',
                     //subtext: '',
                     left: 'center',
                 },
@@ -520,7 +520,7 @@ function getOpenCloseCount(project, lastday, currentDay) {
                     value: res[i].value,
                     groupId: res[i].item,
                     itemStyle: {
-                        color: res[i].item.toLowerCase() == 'open' ? "#a90000" : "#5470c6",
+                        color: res[i].item.toLowerCase() == 'open' ? "#a90000" : "#91cc75",
                     },
                 };
                 dataArray.data.push(item);
@@ -565,7 +565,7 @@ function getOpenCloseCount(project, lastday, currentDay) {
                 yAxis: [
                     {
                         type: 'value',
-                        name: 'Frequency',
+                        name: 'Downtime(h)',
                     }
                 ],
                 series: [

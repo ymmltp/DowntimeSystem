@@ -8,11 +8,7 @@
             <div class="row">
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Department:</label>
-                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true">
-                        <option value="TE">TE</option>
-                        <option value="ME">ME</option>
-                        <option value="PD">PD</option>
-                    </select>
+                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Line:</label>
@@ -34,8 +30,26 @@
                         <option value="2">Close</option>
                     </select>
                 </div>
+                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
+                    <label class="form-label" for="start"> *Start Date:</label>
+                    <div class='input-group date form_datetime searchTime'>
+                        <input type='text' class="form-control" id='start' />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
+                    <label class="form-label" for="end"> *End Date </label>
+                    <div class='input-group date form_datetime searchTime'>
+                        <input type='text' class="form-control" id='end'/>
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
-                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new">New</button></div>
+                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new">Create</button></div>
             </div>
         </div>
     </div>
@@ -69,7 +83,7 @@
                 </div>
                 <div class="col-lg-6">
                     <label for="cr-occtime" class="form-label text-right warning-text">Occurt Time:</label>
-                    <div class='input-group date form_datetime'>
+                    <div class='input-group date form_datetime' id="createDT">
                         <input type='text' class="form-control need create-input"  data-remark=" Downtime 发生时间" id='cr-occtime' />
                         <span class="input-group-addon">
                             <span class="fa fa-calendar"></span>
@@ -225,18 +239,35 @@
 </div>
 
 
-
 <script src="~/js/customer.js"></script>
 <script src="~/js/cookie.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 <script src="~/js/bootstrap-table-export.js"></script>
 <script src="~/js/tableExport.js"></script>
 <script src="~/js/FileSaver.min.js"></script>
 <script src="~/js/xlsx.core.min.js"></script>
 
-
 <script>
     $(document).ready(function () {
+        $(".searchTime").datetimepicker({
+            fontAwesome: 'font-awesome',
+            format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
+            todayBtn: true, //一键选中今天的日期
+            minDate: '2022/01/01',
+            maxDate: 0,//今天
+            pickerPosition: "bottom-left", //打开选择卡的位置
+            weekStart: 1, //周开始的星期：0-6 星期日-星期六
+            autoclose: true,//选好时间后自动关闭
+            startView: 2,
+            maxView: 4,
+            minView: 2,//显示的最小选项卡：0-4 hour,day,month,year,decade
+            //minuteStep: 5,
+            language: 'zh-CN',
+            startDate: new Date("2022-01-01"),
+            endDate: new Date()
+        });
+        getDepartment($("#department-select"));
         getLine($('#line-select'));
         getProject($('#project-select'));
         getStation($('#station-select'));
@@ -254,6 +285,8 @@
                 Line: $("#line-select").val()[0],
                 Station: $("#station-select").val()[0],
                 Incidentstatus: $("#status-select").val()[0],
+                starttime: $("#start").val(),
+                endtime: $("#end").val(),
             },
             showColumns: true,
             dataType: 'json',
@@ -632,7 +665,23 @@
     //创建DowntimeIncidence
     $("#new").on('click', function () {
         $(".create-input").val("");
-        iniDatetimepicker();
+        $("#createDT").datetimepicker({
+            fontAwesome: 'font-awesome',
+            format: 'yyyy-mm-dd hh:ii',//hh:00:00', //时间显示的格式
+            todayBtn: true, //一键选中今天的日期
+            minDate: '2022/01/01',
+            maxDate: 0,//今天
+            pickerPosition: "bottom-left", //打开选择卡的位置
+            weekStart: 1, //周开始的星期：0-6 星期日-星期六
+            autoclose: true,//选好时间后自动关闭
+            startView: 1,
+            maxView: 4,
+            minView: 0,//显示的最小选项卡：0-4 hour,day,month,year,decade
+            minuteStep: 5,
+            language: 'zh-CN',
+            startDate: getDay(-1, '-'),
+            endDate: new Date(),
+        });
         $("#CreateIncidenceModal").modal("show");
     })
     function CreateIncidence() {

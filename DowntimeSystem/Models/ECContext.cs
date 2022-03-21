@@ -34,6 +34,8 @@ namespace DowntimeSystem.Models
 
             modelBuilder.Entity<IncidentDet>(entity =>
             {
+                entity.HasQueryFilter(e=>e.Calcdowntime.Equals(true));                   //Adele add 只查询计算downtime的数据
+
                 entity.ToTable("incident_det");
 
                 entity.HasIndex(e => new { e.Comefrom, e.Occurtime }, "comefrom");
@@ -67,6 +69,7 @@ namespace DowntimeSystem.Models
                     .HasDefaultValueSql("true");
 
                 entity.Property(e => e.Comefrom)
+                
                     .IsRequired()
                     .HasMaxLength(32)
                     .HasColumnName("comefrom");

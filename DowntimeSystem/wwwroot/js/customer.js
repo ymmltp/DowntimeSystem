@@ -113,6 +113,29 @@ function getDataWithArray(url, para = null) {
 }
 
 //查询及一些基础ajax方法
+function getDepartment(obj) {
+    $.ajax({
+        url: '/EC/GetDepartment',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            console.log(err);
+            alert(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            alert(err.statusText);
+        }
+    })
+}
 function getLine(obj) {
     $.ajax({
         url: '/EC/GetLine',
