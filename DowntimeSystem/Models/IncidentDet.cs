@@ -32,5 +32,6 @@ namespace DowntimeSystem.Models
         public string Actionremark { get; set; }
         public string Creator { get; set; }
         public DateTime? Repairtime { get; set; }
+        public string Machine { get; set; }
     }
 }

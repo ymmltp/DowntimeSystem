@@ -125,6 +125,10 @@ Dashboard设计要求
 #### 2022.03.17 Demand
 
 - [x] add filter for project and time zone
-- [x] 表一,增加对rootcause的数据钻取
-- [x] 表二,调整为downtime open & close QTY,钻取显示具体的downtime incident list
-- [x] downtime以小时为单位
+- [x] Chart1:Add information of rootcause
+- [x] Chart2:downtime open & close QTY,click function->Show downtime incident list
+- [x] downtime calculate in hours
+
+#### 2022.03.22 Update
+
+- [ ] 数据库增加 machine 属性，web 做相应的调整

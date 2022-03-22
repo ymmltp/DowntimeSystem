@@ -82,9 +82,13 @@
                     <input type='text' class="form-control need create-input" data-remark="站位" id='cr-station' placeholder="---例 : UV---" />
                 </div>
                 <div class="col-lg-6">
+                    <label for="cr-machine" class="form-label text-right warning-text">Machine:</label>
+                    <input type='text' class="form-control need create-input" data-remark="机器名" id='cr-machine' placeholder="---例 : WUXDRX0001---" />
+                </div>
+                <div class="col-lg-6">
                     <label for="cr-occtime" class="form-label text-right warning-text">Occurt Time:</label>
                     <div class='input-group date form_datetime' id="createDT">
-                        <input type='text' class="form-control need create-input"  data-remark=" Downtime 发生时间" id='cr-occtime' />
+                        <input type='text' class="form-control need create-input" data-remark=" Downtime 发生时间" id='cr-occtime' />
                         <span class="input-group-addon">
                             <span class="fa fa-calendar"></span>
                         </span>
@@ -134,6 +138,10 @@
                     <input type='text' class="form-control" readonly id='sr-station' />
                 </div>
                 <div class="col-lg-12">
+                    <label for="sr-machine" class="form-label text-right">Machine:</label>
+                    <input type='text' class="form-control" readonly id='sr-machine' />
+                </div>
+                <div class="col-lg-12">
                     <label for="sr-issue" class="form-label text-right">Issue:</label>
                     <input type='text' class="form-control" readonly id='sr-issue' />
                 </div>
@@ -160,21 +168,25 @@
                 <h5 class="modal-title" id="CA-title" style="text-wrap:normal">填写 RootCause 和 CA </h5>
             </div>
             <div class="modal-body row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label for="ca-department" class="form-label text-right">Department:</label>
                     <input type='text' class="form-control" readonly id='ca-department' />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label for="ca-line" class="form-label text-right">Line:</label>
                     <input type='text' class="form-control" readonly id='ca-line' />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label for="ca-project" class="form-label text-right">Project:</label>
                     <input type='text' class="form-control" readonly id='ca-project' />
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-station" class="form-label text-right">Station:</label>
                     <input type='text' class="form-control" readonly id='ca-station' />
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-machine" class="form-label text-right">Machine:</label>
+                    <input type='text' class="form-control" readonly id='ca-machine' />
                 </div>
                 <div class="col-lg-12">
                     <label for="ca-issue" class="form-label text-right">Issue:</label>
@@ -195,7 +207,7 @@
                 <div class="col-lg-4">
                     <label for="caldowntime" class="form-label text-right warning-text">Calculate Downtime:</label>
                     <div class="radio-group">
-                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="true"  /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
                     </div>
                 </div>
@@ -285,8 +297,8 @@
                 Line: $("#line-select").val()[0],
                 Station: $("#station-select").val()[0],
                 Incidentstatus: $("#status-select").val()[0],
-                starttime: $("#start").val(),
-                endtime: $("#end").val(),
+                starttime: $("#start").val()+" 00:00:00",
+                endtime: $("#end").val()+" 23:59:59",
             },
             showColumns: true,
             dataType: 'json',
@@ -352,6 +364,11 @@
                     align: 'center',
                     valign: 'middle',
                 }, {
+                    field: 'machine',
+                    title: 'Machine',
+                    align: 'center',
+                    valign: 'middle',
+                },  {
                     field: 'urgentlevel',
                     title: 'Ugentlevel',
                     align: 'center',
@@ -490,6 +507,7 @@
                         $("#sr-line").val(row['line']);
                         $("#sr-station").val(row['station']);
                         $("#sr-issue").val(row['issue']);
+                        $("#sr-machine").val(row['machine']);
                         $("#sr-issueremark").val(row['issueremark']);
                         $("#StartRepaireModal").data("id", row['id']);
                         $("#StartRepaireModal").modal('show');
@@ -567,6 +585,7 @@
         $("#ca-department").val(row['department']);
         $("#ca-project").val(row['project']);
         $("#ca-line").val(row['line']);
+        $("#ca-machine").val(row['machine']);
         $("#ca-station").val(row['station']);
         $("#ca-issue").val(row['issue']);
         $("#ca-issueremark").val(row['issueremark']);
@@ -627,6 +646,7 @@
         $("#ca-department").val(row['department']);
         $("#ca-project").val(row['project']);
         $("#ca-line").val(row['line']);
+        $("#ca-machine").val(row['machine']);
         $("#ca-station").val(row['station']);
         $("#ca-issue").val(row['issue']);
         $("#ca-issueremark").val(row['issueremark']);
@@ -708,6 +728,7 @@
                 issue: $("#cr-issue").val(),
                 issueremark: $("#cr-issueremark").val(),
                 creator: $("#cr-creator").val(),
+                machine:$("#cr-machine").val(),
                 action:"",
             },
             success: function (data) {
