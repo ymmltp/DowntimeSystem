@@ -34,6 +34,8 @@ namespace DowntimeSystem.Models
 
             modelBuilder.Entity<IncidentDet>(entity =>
             {
+                entity.HasQueryFilter(e => e.Calcdowntime.Equals(true));
+
                 entity.ToTable("incident_det");
 
                 entity.HasIndex(e => new { e.Comefrom, e.Occurtime }, "comefrom");

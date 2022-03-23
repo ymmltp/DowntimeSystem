@@ -627,6 +627,11 @@ function getOpenCloseCount(project, lastday, currentDay) {
                             align: 'center',
                             valign: 'middle',
                         }, {
+                            field: 'machine',
+                            title: 'Machine',
+                            align: 'center',
+                            valign: 'middle',
+                        },{
                             field: 'occurtime',
                             title: 'Occurt Time',
                             align: 'center',

@@ -131,4 +131,4 @@ Dashboard设计要求
 
 #### 2022.03.22 Update
 
-- [ ] 数据库增加 machine 属性，web 做相应的调整
+- [x] 数据库增加 machine 属性，web 做相应的调整
