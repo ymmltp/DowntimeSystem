@@ -9,7 +9,7 @@ namespace DowntimeSystem.Controllers
 {
     public class Dashboard : Controller
     {
-        private string[] contains = { "E-Calling", "Sparepart", "FPY", "Downtime System" ,"EPM System" };
+        private string[] contains = { "E-Calling", "Sparepart", "FPY", "Downtime System", "EPM System" }; // ,"EPM System"
 
         #region 获取Error Code 最高频次的前五项
         public IActionResult GetTopErrorCode_ByCount(string[] project, string currentDay, string lastDay , int limit =5)

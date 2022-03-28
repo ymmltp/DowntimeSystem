@@ -9,6 +9,7 @@ namespace DowntimeSystem.Controllers
 {
     public class EC : Controller
     {
+        private string[] contains = { "E-Calling", "Sparepart", "FPY", "Downtime System" };
         //查询EC表单
         [HttpGet]
         public IActionResult GetDowntimeList(IncidentDet tmp,string starttime ,string endtime)

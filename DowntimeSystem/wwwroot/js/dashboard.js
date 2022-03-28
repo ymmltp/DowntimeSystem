@@ -538,7 +538,7 @@ function getOpenCloseCount(project, lastday, currentDay) {
             myChart2 = echarts.init(chartDom);
             var option = {
                 title: {
-                    text: 'Downtime Open & Close QTY and Detail information',
+                    text: 'Downtime Open & Close and Detail information',
                     left: 'center',
                     textStyle: {
                         fontSize: 15,
