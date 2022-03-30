@@ -86,7 +86,7 @@
                     <input type='text' class="form-control need create-input" data-remark="机器名" id='cr-machine' placeholder="---例 : WUXDRX0001---" />
                 </div>
                 <div class="col-lg-6">
-                    <label for="cr-occtime" class="form-label text-right warning-text">Occurt Time:</label>
+                    <label for="cr-occtime" class="form-label text-right warning-text">Start Time:</label>
                     <div class='input-group date form_datetime' id="createDT">
                         <input type='text' class="form-control need create-input" data-remark=" Downtime 发生时间" id='cr-occtime' />
                         <span class="input-group-addon">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="col-lg-12">
-                    <label for="cr-issue" class="form-label text-right warning-text">Issue:</label>
+                    <label for="cr-issue" class="form-label text-right warning-text">Error Code:</label>
                     <input type='text' class="form-control need create-input" data-remark="问题" id='cr-issue' placeholder="---请输入问题---" />
                 </div>
                 <div class="col-lg-12">
@@ -103,7 +103,7 @@
                     <textarea type='text' class="form-control create-input" id='cr-issueremark' placeholder="---请输入问题描述---"></textarea>
                 </div>
                 <div class="col-lg-12">
-                    <label for="cr-creator" class="form-label text-right warning-text">Creator:</label>
+                    <label for="cr-creator" class="form-label text-right warning-text">Reporter:</label>
                     <input type='text' class="form-control need create-input" data-remark="创建人" id='cr-creator' placeholder="---例 : W1234---" />
                 </div>
             </div>
@@ -114,10 +114,10 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="StartRepaireModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document" style="width: 30%;min-width:150px">
-        <div class="modal-content">
-            <div class="modal-header">
+<div class="modal fade" id="StartRepaireModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" >
+    <div class="modal-dialog" role="document" style="width: 30%;min-width:150px ">
+        <div class="modal-content" @*style="background-color: #b37272; color: white"*@>
+            <div class="modal-header" style="background-color: #a73d3d; color: white">
                 <h5 class="modal-title" id="title" style="text-wrap:normal">检查 Downtime 信息</h5>
             </div>
             <div class="modal-body row">
@@ -155,16 +155,16 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="startRepaire">Start Repaire</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+                <button type="button" class="btn btn-success" id="startRepaire" @*style="background-color: #017246; border-color: #017246 "*@>Start Repaire</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close" @*style="background-color: brown; border-color: brown "*@>Cancel</button>
             </div>
         </div>
     </div>
 </div>
 <div class="modal fade" id="CAModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document" style="width: 50%;min-width:150px">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content" @*style="background-color: #62a58a; color: white"*@>
+            <div class="modal-header" style="background-color: #3e9472; color: white" >
                 <h5 class="modal-title" id="CA-title" style="text-wrap:normal">填写 RootCause 和 CA </h5>
             </div>
             <div class="modal-body row">
@@ -243,12 +243,16 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="addCA" >Submit</button>
+                <button type="button" class="btn btn-success" id="addCA">Submit</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<div class="alert"></div>
 
 
 <script src="~/js/customer.js"></script>
@@ -444,21 +448,7 @@
                     align: 'center',
                     valign: 'middle',
                     visible: false,
-                },
-                //{
-                //    field: 'incidentstatus',
-                //    title: 'Incident Status',
-                //    align: 'center',
-                //    valign: 'middle',
-                //    visible: false,
-                //}, {
-                //    field: 'actionstatus',
-                //    title: 'Action Status',
-                //    align: 'center',
-                //    valign: 'middle',
-                //    visible: false,
-                //},
-                {
+                }, {
                     field: 'rootcause',
                     title: 'RC',
                     align: 'center',
@@ -521,16 +511,16 @@
                                     id: row['id'],
                                 },
                                 success: function (data) {
-                                    alert("维修结束，辛苦了! ");
+                                    showSuccess('维修结束，辛苦了!');
                                     //if (confirm("开始填写 RC & CA ?")) {
                                     //    ShowCARA(row);
                                     //}
                                 },
                                 fail: function (err, status, xhr) {
-                                    alert(err.responseTextr);
+                                    showWarning(err.responseText);
                                 },
                                 error: function (err) {
-                                    alert(err.responseText);
+                                    showWarning(err.responseText);
                                 },
                                 complete: function (res) {
                                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
@@ -561,13 +551,13 @@
                 },
                 success: function (data) {
                     $("#StartRepaireModal").modal('hide');
-                    alert("开始维修，祝你工作愉快！");
+                    showInfo("开始维修，祝你工作愉快!");
                 },
                 fail: function (err, status, xhr) {
-                    alert(err.responseTextr);
+                    showWarning(err.responseText);
                 },
                 error: function (err) {
-                    alert(err.responseText);
+                    showWarning(err.responseText);
                 },
                 complete: function (res) {
                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
@@ -575,7 +565,7 @@
             })
         }
         else {
-            alert("请输入维修人员工号 !")
+            showWarning("请输入维修人员工号 !");
         }
     });
 
@@ -622,13 +612,13 @@
                 },
                 success: function (data) {
                     $("#CAModal").modal('hide');
-                    alert("完成！");
+                    showSuccess("完成!");
                 },
                 fail: function (err, status, xhr) {
-                    alert(err.responseTextr);
+                    showWarning(err.responseText);
                 },
                 error: function (err) {
-                    alert(err.responseText);
+                    showWarning(err.responseText);
                 },
                 complete: function (res) {
                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
@@ -636,7 +626,7 @@
             })
         }
         else {
-            alert("请输入RootCause和CA ,再提交!")
+            showWarning("请输入RootCause和CA ,再提交!");
         }
     })
 
@@ -709,7 +699,7 @@
         for (var i = 0; i < items.length; i++) {
             console.log($(items[i]));
             if (!$(items[i]).val()) {
-                alert("请填写" + $(items[i]).data("remark"));
+                showWarning("请填写" + $(items[i]).data("remark"));
                 return;
             }
         }
@@ -733,13 +723,13 @@
             },
             success: function (data) {
                 $("#CreateIncidenceModal").modal('hide');
-                alert("Downtime信息已创建，请尽快维修！");
+                showInfo("Downtime信息已创建，请尽快维修!");
             },
             fail: function (err, status, xhr) {
-                alert(err.responseTextr);
+                showWarning(err.responseText);
             },
             error: function (err) {
-                alert(err.responseText);
+                showWarning(err.responseText);
             },
             complete: function (res) {
                 $('#department-select').val($("#cr-department").val());

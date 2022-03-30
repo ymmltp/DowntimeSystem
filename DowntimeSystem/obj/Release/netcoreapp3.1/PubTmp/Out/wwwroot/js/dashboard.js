@@ -523,7 +523,7 @@ function getOpenCloseCount(project, lastday, currentDay) {
                     value: res[i].value,
                     groupId: res[i].item,
                     itemStyle: {
-                        color: res[i].item.toLowerCase() == 'open' ? "#a90000" : "#91cc75",
+                        color: res[i].item.toLowerCase() == 'open' ? "#a90000" : res[i].item.toLowerCase() == 'close' ? "#91cc75" :"#DC582A",
                     },
                 };
                 dataArray.data.push(item);
@@ -571,7 +571,7 @@ function getOpenCloseCount(project, lastday, currentDay) {
                 yAxis: [
                     {
                         type: 'value',
-                        name: 'Downtime(h)',
+                        name: 'Downtime(H)',
                     }
                 ],
                 series: [
@@ -666,7 +666,7 @@ function getOpenCloseCount(project, lastday, currentDay) {
                             },
                         }, {
                             field: 'downday',
-                            title: 'Downtime(Days)',
+                            title: 'Downtime(H)',
                             align: 'center',
                             valign: 'middle',
                             visible: function (value, row, index) {
@@ -675,13 +675,13 @@ function getOpenCloseCount(project, lastday, currentDay) {
                             },
                             formatter: function (value, row, index) {
                                 if (row['incidentstatus'] == 2) {
-                                    return parseInt(Math.abs(new Date(row['finishtime'].replace('T', ' ')) - new Date(row['occurtime'].replace('T', ' '))) / 1000 / 60 / 60 / 24);
+                                    return parseInt(Math.abs(new Date(row['finishtime'].replace('T', ' ')) - new Date(row['occurtime'].replace('T', ' '))) / 1000 / 60 / 60 );
                                 }
                                 return "--";
                             },
                         }, {
                             field: 'openday',
-                            title: 'Open Days(Days)',
+                            title: 'Open Hours(H)',
                             align: 'center',
                             valign: 'middle',
                             visible: function (value, row, index) {
@@ -692,22 +692,22 @@ function getOpenCloseCount(project, lastday, currentDay) {
                                 if (row['incidentstatus'] == 2) {
                                     return 0;
                                 } else {
-                                    return parseInt(Math.abs(Date.now() - new Date(row['occurtime'].replace('T', ' '))) / 1000 / 60 / 60 / 24);
+                                    return parseInt(Math.abs(Date.now() - new Date(row['occurtime'].replace('T', ' '))) / 1000 / 60 / 60 );
                                 }
                             },
                         }
                         ]
                     })
-                    if (event.name == "Open") {
-                        $("#modalName").html("Open Downtime incident Detail Information")
-                        $('#detaillist').bootstrapTable('showColumn', 'openday');
-                        $('#detaillist').bootstrapTable('hideColumn', 'downday');
-                        $('#detaillist').bootstrapTable('hideColumn', 'finishtime');
-                    } else {
+                    if (event.name == "Close") {
                         $("#modalName").html("Closed Downtime incident Detail Information")
                         $('#detaillist').bootstrapTable('hideColumn', 'openday');
                         $('#detaillist').bootstrapTable('showColumn', 'downday');
                         $('#detaillist').bootstrapTable('showColumn', 'finishtime');
+                    } else {
+                        $("#modalName").html("Open Downtime incident Detail Information")
+                        $('#detaillist').bootstrapTable('showColumn', 'openday');
+                        $('#detaillist').bootstrapTable('hideColumn', 'downday');
+                        $('#detaillist').bootstrapTable('hideColumn', 'finishtime');
                     }
                     $("#ListModal").modal('show');
                 }
@@ -741,7 +741,7 @@ function gettopErrorCode_byDowntime(project, lastday, currentDay) {
                 var optionArray = [];
                 var option = {
                     title: {
-                        text: 'Top Five Station with Downtime',
+                        text: 'Top 5 Station with Downtime',
                         left: 'center',
                         textStyle: {
                             fontSize: 15,
@@ -774,7 +774,7 @@ function gettopErrorCode_byDowntime(project, lastday, currentDay) {
                     yAxis: [
                         {
                             type: 'value',
-                            name: 'Downtime(h)',
+                            name: 'Downtime(H)',
                         }
                     ],
                     series: [
@@ -860,7 +860,7 @@ function getDowntime_byDepartment(project, lastday, currentDay) {
                     yAxis: [
                         {
                             type: 'value',
-                            name: 'Downtime(h)',
+                            name: 'Downtime(H)',
                         }
                     ],
                     series: [

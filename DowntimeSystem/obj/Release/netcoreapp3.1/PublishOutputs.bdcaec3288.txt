@@ -1,4 +1,5 @@
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\DowntimeSystem.exe
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\alert.css
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\customer.css
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\fontawesome-all.css
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\login.css

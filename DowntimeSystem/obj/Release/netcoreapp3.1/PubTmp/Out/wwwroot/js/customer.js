@@ -128,11 +128,11 @@ function getDepartment(obj) {
         },
         fail: function (err) {
             console.log(err);
-            alert(err.statusText);
+            showWarning(err.statusText);
         },
         error: function (err) {
             console.log(err);
-            alert(err.statusText);
+            showWarning(err.statusText);
         }
     })
 }
@@ -151,11 +151,11 @@ function getLine(obj) {
         },
         fail: function (err) {
             console.log(err);
-            alert(err.statusText);
+            showWarning(err.statusText);
         },
         error: function (err) {
             console.log(err);
-            alert(err.statusText);
+            showWarning(err.statusText);
         }
     })
 }
@@ -177,11 +177,11 @@ function getProject(obj,line) {
         },
         fail: function (err) {
             console.log(err);
-            alert(err.statusText);
+            showWarning(err.statusText);
         },
         error: function (err) {
             console.log(err);
-            alert(err.statusText);
+            showWarning(err.statusText);
         }
     })
 }
@@ -204,12 +204,27 @@ function getStation(obj,line,project) {
         },
         fail: function (err) {
             console.log(err);
-            alert(err.statusText);
+            showWarning(err.statusText);
         },
         error: function (err) {
             console.log(err);
-            alert(err.statusText);
+            showWarning(err.statusText);
         }
     })
 }
+
+
+function showWarning(text) {
+    $('.alert').attr('class', 'alert');
+    $('.alert').html(text).addClass('alert-danger').show().delay(1500).fadeOut();
+}
+function showInfo(text) {
+    $('.alert').attr('class', 'alert');
+    $('.alert').html(text).addClass('alert-info').show().delay(1500).fadeOut();
+}
+function showSuccess(text) {
+    $('.alert').attr('class', 'alert');
+    $('.alert').html(text).addClass('alert-success').show().delay(1500).fadeOut();
+}
+
 

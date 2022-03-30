@@ -119,7 +119,7 @@ namespace DowntimeSystem.Controllers
                     var items = tmp.GroupBy(e => e.Incidentstatus)
                         .Select(g => new
                         {
-                            item = g.Key == 2 ? "Close" : "Open",
+                            item = g.Key == 2 ? "Close" : g.Key == 1? "OnGoing" : "Open",
                             value = g.Key == 2 ?g.Sum(e=>e.Downtime) / 3600 : g.Sum(e=>Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds)) / 3600,
                         }).OrderByDescending(e => e.value).Take(limit).ToList();
                     return Json(items);
@@ -136,13 +136,12 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
+
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     if (project.Length > 0)
                         tmp = tmp.Where(e => project.Contains(e.Project)).ToList();
-                    if (status=="Close")
-                        tmp = tmp.Where(e => e.Incidentstatus==2).ToList();
-                    else
-                        tmp = tmp.Where(e => e.Incidentstatus < 2).ToList();             
+                    int incidentstatus = status == "Close" ? 2 : status == "Open" ? 0 : 1;
+                    tmp = tmp.Where(e => e.Incidentstatus == incidentstatus).ToList();
                     var items = tmp.OrderBy(e => e.Occurtime).ToList();
                     return Json(items);
                 }

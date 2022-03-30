@@ -132,3 +132,15 @@ Dashboard设计要求
 #### 2022.03.22 Update
 
 - [x] 数据库增加 machine 属性，web 做相应的调整
+
+#### 2022.03.30 Demand
+
+- [ ] 调整dashboard位置：station,department,open&close,errorcode
+- [ ] Dashboard增加 system 和 department filter
+
+> open & close table增加表头筛选功能
+
+- [x] 增加当前时间显示
+- [x] Downtime Task界面的弹窗可自动消失，减少人员的点击操作
+- [x] Debug:修复Dashboard不显示当天数据的问题
+- [x] Open&Close Detail information时间统一为小时
