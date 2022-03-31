@@ -9,7 +9,7 @@ namespace DowntimeSystem.Controllers
 {
     public class EC : Controller
     {
-        private string[] contains = { "E-Calling", "Sparepart", "FPY", "Downtime System" };
+        private string[] contains = { "eCalling", "Sparepart", "FPY", "Downtime System" };
         //查询EC表单
         [HttpGet]
         public IActionResult GetDowntimeList(IncidentDet tmp,string starttime ,string endtime)
@@ -22,6 +22,7 @@ namespace DowntimeSystem.Controllers
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Station)) items = items.Where(e => e.Station.Equals(tmp.Station)).ToList();
+                    if (!string.IsNullOrEmpty(tmp.Comefrom)) items = items.Where(e => e.Comefrom.Equals(tmp.Comefrom)).ToList();
 
                     if (!string.IsNullOrEmpty(starttime)) items = items.Where(e => e.Occurtime >= Convert.ToDateTime(starttime)).ToList();
                     if (!string.IsNullOrEmpty(endtime)) items = items.Where(e => e.Occurtime <= Convert.ToDateTime(endtime)).ToList();

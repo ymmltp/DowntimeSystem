@@ -4,8 +4,8 @@ var myChart3;
 var myChart4;
 
 //Chart1
-function gettopErrorcode_bycount(project, lastday, currentDay) {
-    getDataWithArray("/Dashboard/GetTopErrorCode_ByCount", { project: project, currentDay: currentDay, lastday: lastday })
+function gettopErrorcode_bycount(system, project, lastday, currentDay) {
+    getDataWithArray("/Dashboard/GetTopErrorCode_ByCount", { comefrom:system, projectlist: project, currentDay: currentDay, lastday: lastday })
         .then(res => {
             var dataArray = {
                 axis: [],
@@ -119,7 +119,7 @@ function gettopErrorcode_bycount(project, lastday, currentDay) {
                     else {
                         return;
                     }
-                    getDataWithArray(url, { errorcode: errorcode, project: project, currentDay: currentDay, lastday: lastday,line: line, station: station })
+                    getDataWithArray(url, { errorcode: errorcode, comefrom: system, projectlist: project, currentDay: currentDay, lastday: lastday,line: line, station: station })
                         .then(res => {
                             var dataArray = {
                                 dataGroupId: event.data.groupId,
@@ -510,8 +510,8 @@ function getAllErrorCode_TopFiveRootCause() {
             myChart.setOption(optionArray[dataFloor]);
         })
 }
-function getOpenCloseCount(project, lastday, currentDay) {
-    getDataWithArray("/Dashboard/OpenClose_ByCount", { project: project,currentDay: currentDay, lastday: lastday})
+function getOpenCloseCount(system,project, lastday, currentDay) {
+    getDataWithArray("/Dashboard/OpenClose_ByCount", { comefrom: system, projectlist: project,currentDay: currentDay, lastday: lastday})
         .then(res => {
             var dataArray = {
                 axis: [],
@@ -598,7 +598,8 @@ function getOpenCloseCount(project, lastday, currentDay) {
                         url: '/Dashboard/OpenClose_Items',
                         queryParams: {
                             status: event.name,
-                            project: project,
+                            projectlist: project,
+                            comefrom: system,
                             currentDay: currentDay,
                             lastday: lastday
                         },
@@ -717,8 +718,8 @@ function getOpenCloseCount(project, lastday, currentDay) {
 }
 
 //Chart3
-function gettopErrorCode_byDowntime(project, lastday, currentDay) {
-    getDataWithArray("/Dashboard/GetTopDowntime_ByStation", { project: project,currentDay: currentDay, lastday: lastday })
+function gettopErrorCode_byDowntime(system,project, lastday, currentDay) {
+    getDataWithArray("/Dashboard/GetTopDowntime_ByStation", { comefrom: system,projectlist: project,currentDay: currentDay, lastday: lastday })
         .then(res => {
             var dataArray = {
                 axis: [],
@@ -803,8 +804,8 @@ function gettopErrorCode_byDowntime(project, lastday, currentDay) {
 }
 
 //Chart4
-function getDowntime_byDepartment(project, lastday, currentDay) {
-    getDataWithArray("/Dashboard/GetTopDowntime_ByDepartment", { project: project, currentDay: currentDay, lastday: lastday })
+function getDowntime_byDepartment(system,project, lastday, currentDay) {
+    getDataWithArray("/Dashboard/GetTopDowntime_ByDepartment", { comefrom: system,projectlist: project, currentDay: currentDay, lastday: lastday })
         .then(res => {
             var dataArray = {
                 axis: [],

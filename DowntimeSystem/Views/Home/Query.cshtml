@@ -7,6 +7,14 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                    <label class="form-label"> System:</label>
+                    <select id="system-select" class="form-control selectpicker" title="Select System" data-size="6" multiple data-max-options="1" >
+                        <option value="eCalling">E-Calling</option>
+                        <option value="Sparepart">Sparepart</option>
+                        <option value="Downtime System">Downtime System</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Department:</label>
                     <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
                 </div>
@@ -42,7 +50,7 @@
                 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
                     <label class="form-label" for="end"> *End Date </label>
                     <div class='input-group date form_datetime searchTime'>
-                        <input type='text' class="form-control" id='end'/>
+                        <input type='text' class="form-control" id='end' />
                         <span class="input-group-addon">
                             <span class="fa fa-calendar"></span>
                         </span>
@@ -301,6 +309,7 @@
                 Line: $("#line-select").val()[0],
                 Station: $("#station-select").val()[0],
                 Incidentstatus: $("#status-select").val()[0],
+                comefrom: $("#system-select").val()[0],
                 starttime: $("#start").val() ? $("#start").val() + " 00:00:00" : null,
                 endtime: $("#end").val() ? $("#end").val() + " 23:59:59" : null,
             },
@@ -384,7 +393,7 @@
                     align: 'center',
                     valign: 'middle',
                     formatter: function (value, row, index) {
-                        return value.replace('T', ' ');
+                        return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     },
                 }, {
                     field: 'issue',
@@ -403,7 +412,7 @@
                     valign: 'middle',
                     formatter: function (value, row, index) {
                         if (value)
-                            return value.replace('T', ' ');
+                            return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                         else
                             return value;
                     },
@@ -419,7 +428,7 @@
                     valign: 'middle',
                     formatter: function (value, row, index) {
                         if (value)
-                            return value.replace('T', ' ');
+                            return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                         else
                             return value;
                     },
@@ -584,8 +593,8 @@
         $(':radio[name=caldowntime][value=' + row['calcdowntime'] + ']').prop('checked', 'true');
         $(':radio[name=caldowntime]').removeAttr('disabled', 'disabled');
         showDowntimeControls(row['calcdowntime'].toString());
-        $("#ca-starttime").val(row['occurtime'].replace('T', ' '));
-        $("#ca-finishtime").val(row['finishtime'].replace('T', ' '));
+        $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
+        $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-downtime").val(row['downtime']);
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);
@@ -645,8 +654,8 @@
         $(':radio[name=caldowntime][value=' + row['calcdowntime'] + ']').prop('checked', 'true');
         $(':radio[name=caldowntime]').attr('disabled','disabled');
         showDowntimeControls(row['calcdowntime'].toString());
-        $("#ca-starttime").val(row['occurtime'].replace('T', ' '));
-        $("#ca-finishtime").val(row['finishtime'].replace('T', ' '));
+        $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
+        $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-downtime").val(row['downtime']);
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);

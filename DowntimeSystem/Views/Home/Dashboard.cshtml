@@ -3,12 +3,16 @@
 }
 <div class="row" style="margin-right: 0px">
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-        <label class="form-label"> *Project:</label>
-        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="updateChart()">
-            <option value="FATP M52">M52</option>
-            <option value="FATP M58">M58</option>
-            <option value="FATP AOP">AOP</option>
+        <label class="form-label"> System:</label>
+        <select id="system-select" class="form-control selectpicker" title="Select System" data-size="6" multiple data-max-options="1" onchange="updateChart()">
+            <option value="eCalling">E-Calling</option>
+            <option value="Sparepart">Sparepart</option>
+            <option value="Downtime System">Downtime System</option>
         </select>
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+        <label class="form-label"> *Project:</label>
+        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="updateChart()"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label" for="start"> *Start Date:</label>
@@ -52,9 +56,6 @@
 </div>
 
 
-
-
-
 <div class="modal fade" id="ListModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document" style="width: 80%;min-width:150px">
         <div class="modal-content">
@@ -62,8 +63,8 @@
                 <h5 class="modal-title" id="modalName" style="text-wrap:normal">Detail Information </h5>
             </div>
             <div class="modal-body row">
-                <div style="height:70vh;overflow-y:scroll">
-                    <table id="detaillist"></table>
+                <div style="height:70vh;overflow-y:scroll;width:100%">
+                    <table id="detaillist" ></table>
                 </div>
             </div>
             <div class="modal-footer">
@@ -90,10 +91,10 @@
         $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
         let start = $("#start").val() + " 00:00:00";
         let end = $("#end").val() + " 23:59:59";
-        gettopErrorcode_bycount(new Array(), start, end);
-        getOpenCloseCount(new Array(), start, end);
-        gettopErrorCode_byDowntime(new Array(), start, end);
-        getDowntime_byDepartment(new Array(), start, end);
+        gettopErrorcode_bycount(new Array(), new Array(), start, end);
+        getOpenCloseCount(new Array(), new Array(), start, end);
+        gettopErrorCode_byDowntime(new Array(), new Array(), start, end);
+        getDowntime_byDepartment(new Array(), new Array(), start, end);
     })
     function updateChart() {
         if ($("#start").val() > $("#end").val()) {
@@ -102,10 +103,10 @@
         else {
             let start = $("#start").val() + " 00:00:00";
             let end = $("#end").val() + " 23:59:59";
-            gettopErrorcode_bycount($("#project-select").val(), start, end);
-            getOpenCloseCount($("#project-select").val(), start, end);
-            gettopErrorCode_byDowntime($("#project-select").val(), start, end);
-            getDowntime_byDepartment($("#project-select").val(), start, end);
+            gettopErrorcode_bycount($("#system-select").val()[0], $("#project-select").val(), start, end);
+            getOpenCloseCount($("#system-select").val()[0],$("#project-select").val(), start, end);
+            gettopErrorCode_byDowntime($("#system-select").val()[0],$("#project-select").val(), start, end);
+            getDowntime_byDepartment($("#system-select").val()[0],$("#project-select").val(), start, end);
         }
     }
 </script>
