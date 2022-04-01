@@ -11,8 +11,12 @@
         </select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+        <label class="form-label"> *Department:</label>
+        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="updateChart()"></select>
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> *Project:</label>
-        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="updateChart()"></select>
+        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-live-search="true" onchange="updateChart()"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label" for="start"> *Start Date:</label>
@@ -84,6 +88,7 @@
 <script>
     $(document).ready(function () {
         getProject($("#project-select"));
+        getDepartment($("#department-select"));
         iniDatetimepicker();
         var today = new Date();
         var lastthirtyDay = new Date(today.getTime() - 5184000000);
@@ -91,10 +96,10 @@
         $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
         let start = $("#start").val() + " 00:00:00";
         let end = $("#end").val() + " 23:59:59";
-        gettopErrorcode_bycount(new Array(), new Array(), start, end);
-        getOpenCloseCount(new Array(), new Array(), start, end);
-        gettopErrorCode_byDowntime(new Array(), new Array(), start, end);
-        getDowntime_byDepartment(new Array(), new Array(), start, end);
+        gettopErrorcode_bycount(new Array(), new Array(),'', start, end);
+        getOpenCloseCount(new Array(), new Array(),'', start, end);
+        gettopErrorCode_byDowntime(new Array(), new Array(), '',start, end);
+        getDowntime_byDepartment(new Array(), new Array(),'', start, end);
     })
     function updateChart() {
         if ($("#start").val() > $("#end").val()) {
@@ -103,10 +108,10 @@
         else {
             let start = $("#start").val() + " 00:00:00";
             let end = $("#end").val() + " 23:59:59";
-            gettopErrorcode_bycount($("#system-select").val()[0], $("#project-select").val(), start, end);
-            getOpenCloseCount($("#system-select").val()[0],$("#project-select").val(), start, end);
-            gettopErrorCode_byDowntime($("#system-select").val()[0],$("#project-select").val(), start, end);
-            getDowntime_byDepartment($("#system-select").val()[0],$("#project-select").val(), start, end);
+            gettopErrorcode_bycount($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val()[0], start, end);
+            getOpenCloseCount($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val()[0], start, end);
+            gettopErrorCode_byDowntime($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val()[0],start, end);
+            getDowntime_byDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val()[0],start, end);
         }
     }
 </script>

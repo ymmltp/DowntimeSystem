@@ -10,13 +10,14 @@ namespace DowntimeSystem.Controllers
     public class Dashboard : Controller
     {
         #region 获取Error Code 最高频次的前五项
-        public IActionResult GetTopErrorCode_ByCount(IncidentDet item, string[] projectlistlist, string currentDay, string lastDay , int limit =5)
+        public IActionResult GetTopErrorCode_ByCount(IncidentDet item, string[] projectlist, string currentDay, string lastDay , int limit =5)
         {
             using (ECContext db = new ECContext()) {
                 try {
                     var tmp = db.IncidentDets.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
-                    if (projectlistlist.Length>0)  tmp = tmp.Where(e => projectlistlist.Contains(e.Project)).ToList();
-                    if(!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
+                    if (projectlist.Length>0)  tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
+                    if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = tmp.GroupBy(e => e.Issue).Select(g => new
                     {
                         item = g.Key,
@@ -38,6 +39,7 @@ namespace DowntimeSystem.Controllers
                 {
                     var tmp = db.IncidentDets.Where(e =>  Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     if (projectlist.Length > 0)tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = tmp.Where(e =>  e.Issue.Equals(errorcode) ).GroupBy(e => e.Line).Select(g => new
                     {
@@ -60,6 +62,7 @@ namespace DowntimeSystem.Controllers
                 {
                     var tmp = db.IncidentDets.Where(e =>Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)) .ToList();
                     if (projectlist.Length > 0) tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = tmp.Where(e => e.Issue.Equals(errorcode)&e.Line.Equals(line)).GroupBy(e => e.Station  )
                         .Select(g => new
@@ -84,6 +87,7 @@ namespace DowntimeSystem.Controllers
                     var tmp = db.IncidentDets.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     if (projectlist.Length > 0)
                         tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = tmp.Where(e =>  e.Issue.Equals(errorcode) & e.Line.Equals(line) & e.Station.Equals(station) )
                         .GroupBy(e => e.Rootcause)
@@ -103,21 +107,23 @@ namespace DowntimeSystem.Controllers
         #endregion
 
         #region open & close count
-        public IActionResult OpenClose_ByCount(IncidentDet item,string[] projectlistlist, string currentDay, string lastDay, int limit = 5)
+        public IActionResult OpenClose_ByCount(IncidentDet item,string[] projectlist, string currentDay, string lastDay, int limit = 5)
         {
             using (ECContext db = new ECContext())
             {
                 try
                 {
                     var tmp = db.IncidentDets.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
-                    if (projectlistlist.Length > 0)
-                        tmp = tmp.Where(e => projectlistlist.Contains(e.Project)).ToList();
+                    if (projectlist.Length > 0)
+                        tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = tmp.GroupBy(e => e.Incidentstatus)
                         .Select(g => new
                         {
                             item = g.Key == 2 ? "Close" : g.Key == 1? "OnGoing" : "Open",
-                            value = g.Key == 2 ?g.Sum(e=>e.Downtime) / 3600 : g.Sum(e=>Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds)) / 3600,
+                            value = g.Key == 2 ?g.Sum(e=>e.Downtime) / 3600 :g.Sum(e=>Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds)) / 3600,
+                            //value = g.Key == 2 ?Math.Round(Convert.ToDecimal(g.Sum(e=>e.Downtime) / 3600),2) : Math.Round(Convert.ToDecimal(g.Sum(e=>Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds)) / 3600),2),
                         }).OrderByDescending(e => e.value).Take(limit).ToList();
                     return Json(items);
                 }
@@ -127,7 +133,7 @@ namespace DowntimeSystem.Controllers
                 }
             }
         }
-        public IActionResult OpenClose_Items(IncidentDet item, string[] projectlistlist, string currentDay, string lastDay,string status )
+        public IActionResult OpenClose_Items(IncidentDet item, string[] projectlist, string currentDay, string lastDay,string status )
         { 
             using (ECContext db = new ECContext())
             {
@@ -135,8 +141,9 @@ namespace DowntimeSystem.Controllers
                 {
 
                     var tmp = db.IncidentDets.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
-                    if (projectlistlist.Length > 0)
-                        tmp = tmp.Where(e => projectlistlist.Contains(e.Project)).ToList();
+                    if (projectlist.Length > 0)
+                        tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     int incidentstatus = status == "Close" ? 2 : status == "Open" ? 0 : 1;
                     tmp = tmp.Where(e => e.Incidentstatus == incidentstatus).ToList();
@@ -161,6 +168,7 @@ namespace DowntimeSystem.Controllers
                     var tmp = db.IncidentDets.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     if (projectlist.Length > 0)
                         tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = db.IncidentDets.GroupBy(e => e.Rootcause).Select(g => new
                     {
@@ -184,6 +192,7 @@ namespace DowntimeSystem.Controllers
                     var tmp = db.IncidentDets.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     if (projectlist.Length > 0)
                         tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = db.IncidentDets.Where(e => e.Rootcause.Equals(rootcause) ).GroupBy(e => e.Issue).Select(g => new
                     {
@@ -208,6 +217,7 @@ namespace DowntimeSystem.Controllers
                     var tmp = db.IncidentDets.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     if (projectlist.Length > 0)
                         tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = db.IncidentDets.GroupBy(e => e.Issue).Select(g => new
                     {
@@ -231,6 +241,7 @@ namespace DowntimeSystem.Controllers
                     var tmp = db.IncidentDets.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     if (projectlist.Length > 0)
                         tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = db.IncidentDets.Where(e=>e.Issue.Equals(errorcode)).GroupBy(e => e.Rootcause).Select(g => new
                     {
@@ -257,12 +268,12 @@ namespace DowntimeSystem.Controllers
                     var tmp = db.IncidentDets.ToList();
                     if (projectlist.Length > 0)
                         tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = tmp.Where(e => Convert.ToDateTime(lastDay )< e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).GroupBy(e => e.Station).Select(g => new
                     {
                         item = g.Key,
                         value = g.Sum(e=>e.Incidentstatus==2?e.Downtime: Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds))  / 3600,
-                        //value =g.Sum(e => e.Downtime)/3600,
                     }).OrderByDescending(e => e.value).Take(limit).ToList();
                     return Json(items);
                 }
@@ -283,6 +294,7 @@ namespace DowntimeSystem.Controllers
                 {
                     var tmp = db.IncidentDets.ToList();
                     if (projectlist.Length > 0) tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
+                    if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
                     var items = tmp.Where(e => Convert.ToDateTime(lastDay)< e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).GroupBy(e => e.Department).Select(g => new
                     {

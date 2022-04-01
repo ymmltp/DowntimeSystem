@@ -135,8 +135,8 @@ Dashboard设计要求
 
 #### 2022.03.30 Demand
 
-- [ ] 调整dashboard位置：station,department,open&close,errorcode
-- [ ] Dashboard增加 system filter 和 department filter
+- [ ] ~~调整dashboard位置：station,department,open&close,errorcode~~
+- [x] Dashboard增加 system filter 和 department filter
 
 > open & close table增加表头筛选功能
 
@@ -147,4 +147,7 @@ Dashboard设计要求
 
 #### 2022.03.31 Update
 
-- [ ] 增加system filter
+- [x] 增加system filter
+- [x] Dashboard增加 department filter
+- [x] Chart1根据内容显示title
+- [ ] ~~小时显示小数位~~
