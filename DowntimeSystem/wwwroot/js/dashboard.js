@@ -2,7 +2,6 @@
 var myChart2;
 var myChart3;
 var myChart4;
-
 //Chart1
 function gettopErrorcode_bycount(system, project, department,lastday, currentDay) {
     getDataWithArray("/Dashboard/GetTopErrorCode_ByCount", { comefrom: system, department: department, projectlist: project, currentDay: currentDay, lastday: lastday })
@@ -190,7 +189,6 @@ function gettopErrorcode_bycount(system, project, department,lastday, currentDay
             myChart1.setOption(optionArray[dataFloor]);
         })
 }
-
 //Chart2
 function gettopRootCause_byDowntime() {
     getData("/Dashboard/GetTopRootCause_ByDowntime")
@@ -730,7 +728,6 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
             myChart2.setOption(option);
         })
 }
-
 //Chart3
 function gettopErrorCode_byDowntime(system, project, department, lastday, currentDay) {
     getDataWithArray("/Dashboard/GetTopDowntime_ByStation", { comefrom: system, department:department,projectlist: project,currentDay: currentDay, lastday: lastday })
@@ -816,7 +813,6 @@ function gettopErrorCode_byDowntime(system, project, department, lastday, curren
             }
         })
 }
-
 //Chart4
 function getDowntime_byDepartment(system, project, department, lastday, currentDay) {
     getDataWithArray("/Dashboard/GetTopDowntime_ByDepartment", { comefrom: system, department:department,projectlist: project, currentDay: currentDay, lastday: lastday })
@@ -902,8 +898,6 @@ function getDowntime_byDepartment(system, project, department, lastday, currentD
             }
         })
 }
-
-
 //监听Dom元素的大小变化
 //let mainchart = document.querySelector(".silder-right-body");
 //let observer = new MutationObserver(function (mutations, observer) {

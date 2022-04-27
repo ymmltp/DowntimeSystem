@@ -90,8 +90,8 @@
         getProject($("#project-select"));
         getDepartment($("#department-select"));
         iniDatetimepicker();
-        var today = new Date();
-        var lastthirtyDay = new Date(today.getTime() - 5184000000);
+        var today = new Date()
+        var lastthirtyDay = new Date(today.getTime() - 604800000);//7天
         $("#start").val(lastthirtyDay.getFullYear() + "-" + (lastthirtyDay.getMonth() + 1).toString() + "-" + lastthirtyDay.getDate());
         $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
         let start = $("#start").val() + " 00:00:00";
