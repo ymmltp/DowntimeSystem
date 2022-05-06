@@ -1,25 +1,38 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
 }
-<div class="row" style="margin-right: 0px">
-    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+
+@*菜单*@
+<div class="row" style="margin-right: 0px;">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+      <a style="float:right" ><i class="fa fa-cog" id="searchBox"></i></a> 
+    </div>
+</div>
+<div class="row elehide" style="margin-right: 0px" id="searchBoxMenu">
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4" style="display:none">
         <label class="form-label"> System:</label>
         <select id="system-select" class="form-control selectpicker" title="Select System" data-size="6" multiple data-max-options="1" onchange="updateChart()">
-            <option value="eCalling">E-Calling</option>
-            <option value="Sparepart">Sparepart</option>
-            <option value="Downtime System">Downtime System</option>
         </select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-        <label class="form-label"> *Department:</label>
-        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="updateChart()"></select>
+        <label class="form-label"> Department:</label>
+        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-none-selected-text="All" data-actions-box="true" onchange="updateChart()"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-        <label class="form-label"> *Project:</label>
-        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-live-search="true" onchange="updateChart()"></select>
+        <label class="form-label"> Project:</label>
+        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-live-search="true" data-none-selected-text="All" data-actions-box="true" onchange="updateChart()"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-        <label class="form-label" for="start"> *Start Date:</label>
+        <label class="form-label"> Time Zone:</label>
+        <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1" onchange="updateTime()">
+            <option value="1">Current Week</option>
+            <option value="4">Last Week</option>
+            <option value="2">Current Month</option>
+            <option value="3">Last Month</option>
+        </select>
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4" style="display:none">
+        <label class="form-label" for="start"> Start Date:</label>
         <div class='input-group date form_datetime'>
             <input type='text' class="form-control" id='start' onchange="updateChart()" />
             <span class="input-group-addon">
@@ -27,8 +40,8 @@
             </span>
         </div>
     </div>
-    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-        <label class="form-label" for="end"> *End Date </label>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4" style="display:none">
+        <label class="form-label" for="end"> End Date: </label>
         <div class='input-group date form_datetime'>
             <input type='text' class="form-control" id='end' onchange="updateChart()" />
             <span class="input-group-addon">
@@ -36,40 +49,37 @@
             </span>
         </div>
     </div>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+        <label class="form-label" for="end"> Refresh Time (mins): </label>
+        <input type='number' class="form-control" id='refresh-input' onchange="setrefresh()"  value="5"/>
+    </div>
 </div>
 
-
-<div class="alert"></div>
-
-
+@*图表*@
 <div class="row" style="margin-right: 0px; margin-top:5px;">
     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <div id="chart1" class="mychart" style="width:100%;height:300px"> Top Five Error Code</div>
     </div>
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
         <div id="chart2" class="mychart" style="width:100%;height:300px"> Downtime Open & Close </div>
     </div>
 </div>
 <div class="row" style="margin-right: 0px; margin-top: 2px;">
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
         <div id="chart3" class="mychart" style="width:100%;height:300px"> Top Five Station with Downtime</div>
     </div>
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
         <div id="chart4" class="mychart" style="width:100%;height:300px">Total Downtime per Functional Team</div>
     </div>
 </div>
-
-
-<div class="modal fade" id="ListModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="Chart1Modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document" style="width: 80%;min-width:150px">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalName" style="text-wrap:normal">Detail Information </h5>
+                <h5 class="modal-title" id="modal1Name" style="text-wrap:normal">Detail Information </h5>
             </div>
             <div class="modal-body row">
-                <div style="height:70vh;overflow-y:scroll;width:100%">
-                    <table id="detaillist" ></table>
-                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
@@ -77,6 +87,33 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="Chart2Modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 80%;min-width:150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalName" style="text-wrap:normal">Detail Information </h5>
+            </div>
+            <div class="modal-body ">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div id="chart21" class="mychart" style="width:100%;height:500px"> Top Five Error Code</div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div id="chart22" class="mychart" style="width:100%;height:500px"> Top Five Error Code</div>
+                    </div>
+                </div>
+                @*<div style="height:50vh;overflow-y:scroll;width:100%">
+                    <table id="detaillist" ></table>
+                </div>*@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger"  onclick="CloseModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert"></div>
 
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 <script src="~/lib/echarts/dist/js/echarts.js"></script>
@@ -85,22 +122,22 @@
 
 <script src="~/js/customer.js"></script>
 <script src="~/js/dashboard.js"></script>
+
 <script>
     $(document).ready(function () {
         getProject($("#project-select"));
         getDepartment($("#department-select"));
+        getDashboardSystem($("#system-select"));
         iniDatetimepicker();
-        var today = new Date()
-        var lastthirtyDay = new Date(today.getTime() - 604800000);//7天
-        $("#start").val(lastthirtyDay.getFullYear() + "-" + (lastthirtyDay.getMonth() + 1).toString() + "-" + lastthirtyDay.getDate());
-        $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
-        let start = $("#start").val() + " 00:00:00";
-        let end = $("#end").val() + " 23:59:59";
-        gettopErrorcode_bycount(new Array(), new Array(),'', start, end);
-        getOpenCloseCount(new Array(), new Array(),'', start, end);
-        gettopErrorCode_byDowntime(new Array(), new Array(), '',start, end);
-        getDowntime_byDepartment(new Array(), new Array(),'', start, end);
+        //chartssize($("#chartbox"), $(".mychart"));
+        $("#timeZone option[value='1']").attr("selected", true);
+        $("#timeZone").selectpicker('refresh');
+        $("#timeZone").trigger("onchange");
+        setInterval(function () {
+            updateChart();
+        },300000);
     })
+
     function updateChart() {
         if ($("#start").val() > $("#end").val()) {
             alert("开始时间要小于结束时间，请重新选择时间段");
@@ -108,10 +145,89 @@
         else {
             let start = $("#start").val() + " 00:00:00";
             let end = $("#end").val() + " 23:59:59";
-            gettopErrorcode_bycount($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val()[0], start, end);
-            getOpenCloseCount($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val()[0], start, end);
-            gettopErrorCode_byDowntime($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val()[0],start, end);
-            getDowntime_byDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val()[0],start, end);
+            gettopErrorcode_bycount($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
+            getOpenCloseCount($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
+            gettopErrorCode_byDowntime($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(),start, end);
+            getDowntime_byDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(),start, end);
         }
     }
+
+    function updateTime() {
+        var today = new Date()
+        switch ($("#timeZone").val()) {
+            case "1": //Current Week
+                var dayOfWeek = today.getDay();  
+                if (dayOfWeek == 0) dayOfWeek = 7;
+                var lastDay = new Date(today.getTime() - (dayOfWeek - 1) * 86400000); //本周的第一天
+                $("#start").val(lastDay.getFullYear() + "-" + (lastDay.getMonth() + 1).toString() + "-" + lastDay.getDate());
+                $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
+                break;
+            case "4": //Last Week
+                var dayOfWeek = today.getDay();
+                if (dayOfWeek == 0) dayOfWeek = 7;
+                var endDay = new Date(today.getTime() - (dayOfWeek) * 86400000); //上周最后一天
+                var startDay = new Date(today.getTime() - (dayOfWeek+6) * 86400000); //上周第一天
+                $("#start").val(startDay.getFullYear() + "-" + (startDay.getMonth() + 1).toString() + "-" + startDay.getDate());
+                $("#end").val(endDay.getFullYear() + "-" + (endDay.getMonth() + 1).toString() + "-" + endDay.getDate());
+                break;
+            case "2": //Current Month 
+                $("#start").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-01"); 
+                $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
+                break;
+            case "3": //Last Month
+                $("#start").val(today.getFullYear() + "-" + (today.getMonth()).toString() + "-01");
+                var EndOfMonth = new Date();
+                EndOfMonth.setDate(0);   //上个月的最后一天
+                $("#end").val(EndOfMonth.getFullYear() + "-" + (EndOfMonth.getMonth() + 1).toString() + "-" + EndOfMonth.getDate());
+                break;
+            default:
+                break;
+        }
+        updateChart();
+    }
+
+    function setrefresh() {
+        var min = $("#refresh-input").val()*60*1000;
+        setInterval(function () {
+            updateChart();
+        }, min);
+    }
+
+    function CloseModal() {
+        $("#chart2_1").html("");
+        $("#chart2_2").html("");
+        $("#Chart2Modal").modal('hide');
+    }
+
+    // #region 根据窗体大小，自动调整echart的大小
+    // function chartssize(container, charts) {
+    //    var wi = getStyle(container, 'width').width;
+    //    var hi = getStyle(container, 'height').height;
+    //    charts.style.width = wi
+    //    charts.style.height = hi
+    //}
+    //function getStyle(el, name) {
+    //    if (!el) return false;
+    //    if (window.getComputedStyle) {
+    //        return window.getComputedStyle(el, null);
+    //    } else {
+    //        return el.currentStyle;
+    //    }
+    //}
+    //#endregion
+
+    //#region 可隐藏的搜索栏
+    $("#searchBox").on('click', function () {
+        if ($("#searchBoxMenu").hasClass("elehide")) {
+            $("#searchBoxMenu").removeClass("elehide");
+            $("#searchBox").removeClass("fa-cog");
+            $("#searchBox").addClass("fa-minus-square");
+        }
+        else {
+            $("#searchBoxMenu").addClass("elehide");
+            $("#searchBox").removeClass("fa-minus-square");
+            $("#searchBox").addClass("fa-cog");
+        }
+    })
+    //#endregion
 </script>

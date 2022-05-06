@@ -3,46 +3,31 @@
     font-size: 14px;
 }
 
-
-
-.navbar {
-    background-color: #003865;
-    border-color: #003865;
+/* #region 自定义*/
+/*echart大小自适应屏幕*/
+.chartbox {
+    width: 100%;
+    height: 35vh;
+    margin: 0 auto;
 }
 
-.bootstrap-select > .dropdown-toggle {
-    background-color: white;
-}
-
-.panel-default > .panel-heading {
-    background-color: #f39c12;
-    border-color: #f39c12;
-    color:white;
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom: 1px solid #ddd;
-}
-
-.btn {
-    font-size:14px;
-}
-
-/*自定义*/
 .mybtn {
     margin-top: 22px;
     width: 70px;
     text-align: center;
 }
+
 .scroll-table {
     max-height: 400px;
     overflow-y: scroll;
 }
+
 .customer-nav {
     background-color: #003865 /*#605ca8*/ /*#23313f*/;
     border-color: #003865 /*#605ca8*/ /*#23313f*/;
 }
+
+/* 颜色*/
 .white-font {
     color: white !important;
 }
@@ -87,6 +72,23 @@
     background-color: red !important;
     border-color: red !important;
 }
+
+.good {
+    background-color: #28a745;
+}
+.warning {
+    background-color: #ffc107;
+}
+.bad {
+    background-color: #dc3545;
+}
+.primary {
+    background-color: #1e668f;
+}
+.default {
+    background-color: #777;
+}
+
 .label-box {
     display: inline-block;
     z-index: 10;
@@ -96,27 +98,6 @@
     border-width: 1px;
 }
 
-.form-label,
-.form-control,
-.btn {
-    font-size: 12px;
-}
-
-table {
-    font-size: 12px;
-}
-/*Add*/
-.input-group-addon {
-    padding: 7px 12px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1;
-    color: #555;
-    text-align: center;
-    background-color: #eee;
-    border: 1px solid #ccc;
-    border-radius: 0px 4px 4px 0px;
-}
 .chartPie {
     width: 100px;
     height: 100px;
@@ -133,21 +114,7 @@ table {
     margin-top: auto;
     margin-bottom: auto;
 }
-.good {
-    background-color: #28a745;
-}
-.warning {
-    background-color: #ffc107;
-}
-.bad {
-    background-color: #dc3545;
-}
-.primary {
-    background-color: #1e668f;
-}
-.default {
-    background-color: #777;
-}
+
 .warning-text:after {
     content: '*';
     color: red;
@@ -156,19 +123,60 @@ table {
 .elehide {
     display:none;
 }
+/*#endregion*/
 
-
-
-
-/*修改bootstrap*/
-.modal-dialog {
-    max-width:1000px;
+/*#region 修改bootstrap*/
+.navbar {
+    background-color: #003865;
+    border-color: #003865;
 }
-/*.panel-default > .panel-heading {
-    color: black;
-    background-color: #fff;
+
+.bootstrap-select > .dropdown-toggle {
+    background-color: white;
+}
+
+.panel-default > .panel-heading {
+    background-color: #f39c12;
     border-color: #f39c12;
-}*/
+    color: white;
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid #ddd;
+}
+
+.input-group-addon {
+    padding: 7px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 0px 4px 4px 0px;
+}
+
+.form-label,
+.form-control,
+.btn {
+    font-size: 12px;
+}
+
+label {
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.modal-dialog {
+    max-width: 90vw;
+}
+
+table {
+    font-size: 12px;
+}
 
 .table > thead > tr > th {
     background-color: #337ab7; /*#CA7508 #f39c12*/
@@ -232,7 +240,7 @@ table {
     will-change: transform;
 }
 
-    .dropdown-menu.show {
+.dropdown-menu.show {
         display: block;
     }
 
@@ -253,14 +261,15 @@ table {
     float: right !important;
 }
 
+/*#endregion*/
+
 /*Error : OverDue Fail*/
 .eq-list-red {
     margin-top: 20px;
     border: solid 1px #CB333B;
     border-radius: 5px;
 }
-
-    .eq-list-red .eq-title {
+.eq-list-red .eq-title {
         background-color: #CB333B !important;
         border-color: #CB333B !important;
     }
@@ -271,8 +280,7 @@ table {
     border: solid 1px #00a65a;
     border-radius: 5px;
 }
-
-    .eq-list-green .eq-title {
+.eq-list-green .eq-title {
         background-color: #00a65a !important;
         border-color: #00a65a !important;
     }
@@ -283,8 +291,7 @@ table {
     border: solid 1px #DC582A;
     border-radius: 5px;
 }
-
-    .eq-list-orange .eq-title {
+.eq-list-orange .eq-title {
         background-color: #DC582A !important;
         border-color: #DC582A !important;
     }
@@ -295,8 +302,7 @@ table {
     border: solid 1px #999;
     border-radius: 5px;
 }
-
-    .eq-list-gray .eq-title {
+.eq-list-gray .eq-title {
         background-color: #999 !important;
         border-color: #999 !important;
     }
@@ -304,7 +310,6 @@ table {
 .eq-img {
     height: 150px;
 }
-
 .view-img {
     width: 100%;
 }
@@ -317,15 +322,7 @@ table {
     max-width: 150px;
 }
 
-/*map*/
-.map {
-    position: relative;
-    width: 100%
-}
-
-
-
-/*点击放大图片*/
+/*#region 点击放大图片*/
 /*使图片在浏览器中居中显示*/
 .bigImg {
     position: absolute;
@@ -344,10 +341,9 @@ table {
     top: 0;
     left: 0;
 }
+/*#endregion*/
 
-
-
-
+/*#region 自制面板*/
 .myGrid {
     display: grid;
     grid-template-columns: repeat(3,80px);
@@ -356,24 +352,24 @@ table {
     grid-column-gap: 40px;
 }
 
-    .myGrid .item {
-        width: 80px;
-        height: 80px;
-        /*border: 1px #ccc solid;*/
-        border-radius: 5px;
-        box-shadow: #888888 3px 3px 8px;
-        text-align: center;
-    }
+.myGrid .item {
+    width: 80px;
+    height: 80px;
+    /*border: 1px #ccc solid;*/
+    border-radius: 5px;
+    box-shadow: #888888 3px 3px 8px;
+    text-align: center;
+}
 
-        .myGrid .item .icon {
-            margin-top: 3px;
-            width: 80px;
-            height: 50px;
-            text-align: center;
-            /*background-size: 100%;*/
-        }
+.myGrid .item .icon {
+    margin-top: 3px;
+    width: 80px;
+    height: 50px;
+    text-align: center;
+    /*background-size: 100%;*/
+}
 
-        .myGrid .item .desc {
+.myGrid .item .desc {
             padding-top: 5px;
             width: 80px;
             height: 20px;
@@ -511,8 +507,9 @@ table {
     text-align: center;
     color: #333333 !important;
 }
+/*#endregion*/
 
-/*使用bootstrap4之后丢失的bootstrap3的内容*/
+/* #region 使用bootstrap4之后丢失的bootstrap3的内容*/
 .panel {
     margin-bottom: 20px;
     background-color: #fff;
@@ -533,9 +530,9 @@ table {
     border-top-right-radius: 3px;
 }
 
-    .panel-heading > .dropdown .dropdown-toggle {
-        color: inherit;
-    }
+.panel-heading > .dropdown .dropdown-toggle {
+    color: inherit;
+}
 
 .panel-title {
     margin-top: 0;
@@ -547,8 +544,9 @@ table {
 .bootstrap-select > .dropdown-toggle {
     background-color: white;
 }
+/*#endregion*/
 
-/*侧边栏*/
+/*#region 可折叠侧边栏*/
 #sideToggle {
     display: none;
 }
@@ -701,9 +699,13 @@ padding: 0;
         height: calc(100vh - 150px);
     }
 }
+/*#endregion*/
+
 
 .nano-content {
     background-color: #003865 /*#00a65a*/;
 }
+
+
 
 

@@ -45,6 +45,9 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Home"><i class="fa fa-home"></i></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-light" title="Enter Full Screen" onclick="fullScreen()"><i class="fa fa-arrows-alt"></i></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Contact" title="Contact"><i class="fa fa-info-circle"></i></a>
                         </li>
                     </ul>
@@ -106,6 +109,13 @@
                 document.getElementById('Currenttime').innerHTML =  (new Date()).format('yyyy-MM-dd hh:mm:ss');
             }, 1000);
         })
+
+        function fullScreen() {
+            // documentElement 属性以一个元素对象返回一个文档的文档元素
+            var el = document.documentElement;
+            el.requestFullscreen || el.mozRequestFullScreen || el.webkitRequestFullscreen || el.msRequestFullScreen ?
+                el.requestFullscreen() || el.mozRequestFullScreen() || el.webkitRequestFullscreen() || el.msRequestFullscreen() : null;
+        }
     </script>
 </body>
 </html>

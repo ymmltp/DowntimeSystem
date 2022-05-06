@@ -104,7 +104,7 @@ Dashboard设计要求
 > 前五项 error code(按次数),每个station占多少个->line占多少个->equipment占多少个(数据库不记录equipment信息)
 > 1、查询前五项error code:SELECT issue,count(issue) as quantity from public.incident_det group by issue order by quantity desc limit 5
 
-- [x] Top 5 root cause with per downtime defect code   
+- [x] Top 5 root cause with per downtime defect code
 
 > 前五项 rootcause (按downtime)，每个 error code 各占多少时间（不显示占时少于5min的error code）
 
@@ -151,3 +151,37 @@ Dashboard设计要求
 - [x] Dashboard增加 department filter
 - [x] Chart1根据内容显示title
 - [ ] ~~小时显示小数位~~
+
+#### 2022.04.29 Demand
+
+**有其他需求,需求待整合**
+
+- [ ] Sparepart数据，单独列出来，不显示在Downtime Dashboard中
+
+> 具体的界面内容待确定 
+
+- [ ] Trouble shot guid问题分析导航（参考e-DMS）
+- [ ] Downtime初始数据可维护（咨询xiaowei）
+
+> 需要维护的内容，在哪一步修改数据
+
+- [x] Downtime item增加索引和根据索引查询的功能
+- [x] Dashboard 不区分 system
+- [x] Dashboard 增加固定时区选择功能（周、月/current、last）
+- [ ] Dashboard Chart2 改为层叠图,层叠对象为department,下层报表增加 Defect Code 和 station 的时间占比图（Pie）
+- [ ] Dashbaord Chart1 取消逐层钻取，下层报表显示被选则的 Defect Code 的 Line,Station, RootCause top 5
+- [x] Dashboard Chart4 改为层叠图，层叠对象为Downtime Incident状态
+- [x] 一些内容的英文表述需要修改
+- [x] 在Dashboard页面上面，增加全屏的按键，
+- [x] 页面刷新的间隔时间，例如5分钟、10分钟、30分钟
+
+|错误描述|修正|
+|---|---|
+|None Rootcause|No FA/CA|
+|Issue/Error Code|Defect Code|
+|Close|Closed|
+|OnGoing|On-going|
+
+#### 2022.05.05 Debug
+
+- [ ] ~~关闭downtime Incident时没有检查当前关闭的人是否是本人~~

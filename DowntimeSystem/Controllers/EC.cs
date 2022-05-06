@@ -9,7 +9,7 @@ namespace DowntimeSystem.Controllers
 {
     public class EC : Controller
     {
-        private string[] contains = { "eCalling", "Sparepart", "FPY", "Downtime System" };
+        private string[] contains = { "eCalling",  "FPY", "Downtime System" };//"Sparepart", 
         //查询EC表单
         [HttpGet]
         public IActionResult GetDowntimeList(IncidentDet tmp,string starttime ,string endtime)
@@ -17,12 +17,14 @@ namespace DowntimeSystem.Controllers
             try {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true).ToList(); 
+                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList(); 
                     if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Station)) items = items.Where(e => e.Station.Equals(tmp.Station)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Comefrom)) items = items.Where(e => e.Comefrom.Equals(tmp.Comefrom)).ToList();
+                    if (tmp.Id!=0) items = items.Where(e => e.Id.Equals(tmp.Id)).ToList();
+
 
                     if (!string.IsNullOrEmpty(starttime)) items = items.Where(e => e.Occurtime >= Convert.ToDateTime(starttime)).ToList();
                     if (!string.IsNullOrEmpty(endtime)) items = items.Where(e => e.Occurtime <= Convert.ToDateTime(endtime)).ToList();
@@ -109,6 +111,7 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         //编辑EC表单
         [HttpPost]
