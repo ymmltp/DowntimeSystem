@@ -27,7 +27,7 @@ namespace DowntimeSystem.Controllers
             return View();
         }
 
-        public IActionResult CreateDowntimeInfo()
+        public IActionResult Coming()
         {
             return View();
         }

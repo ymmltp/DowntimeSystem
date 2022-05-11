@@ -61,7 +61,6 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.TagHelpers.output.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.RazorCoreGenerate.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Contact.cshtml.g.cs
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\CreateDowntimeInfo.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Query.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
@@ -77,3 +76,4 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.genruntimeconfig.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Coming.cshtml.g.cs

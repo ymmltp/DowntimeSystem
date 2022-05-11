@@ -1,5 +1,12 @@
 ﻿var myChart1;
+var myChart11;
+var myChart12;
+var myChart13;
+
 var myChart2;
+var myChart21;
+var myChart22;
+
 var myChart3;
 var myChart4;
 
@@ -22,9 +29,9 @@ function gettopErrorcode_bycount(system, project, department,lastday, currentDay
             return dataArray;
         })
         .then(res => {
-            var errorcode;
-            var station;
-            var line;
+            //var errorcode;
+            //var station;
+            //var line;
             var dataFloor = 0;
             var chartDom = document.getElementById('chart1');
             if (myChart1 != null && myChart1 != "" && myChart1 != undefined) {
@@ -100,94 +107,312 @@ function gettopErrorcode_bycount(system, project, department,lastday, currentDay
             optionArray[0] = option;
             myChart1.on('click', function (event) {
                 if (event.data) {
-                    var url;
-                    let titlename;
-                     if (dataFloor == 0) {
-                        url = "/Dashboard/GetLine_ByErrorCode";
-                        errorcode = event.name
-                         dataFloor = 1;
-                         titlename = 'Line';
-                    }
-                    else if (dataFloor == 1) {
-                         url = "/Dashboard/GetStation_ByLine"
-                        line = event.name;
-                         dataFloor = 2;
-                         titlename = 'Station';
-                     }
-                     else if (dataFloor == 2) {
-                         url = "/Dashboard/GetRootCause_ByStation"
-                         station = event.name;
-                         dataFloor = 3;
-                         titlename = 'Root Cause';
-                     }
-                    else {
-                        return;
-                    }
-                    getDataWithArray(url, { errorcode: errorcode, comefrom: system, departmentlist:department,projectlist: project, currentDay: currentDay, lastday: lastday,line: line, station: station })
-                        .then(res => {
-                            var dataArray = {
-                                dataGroupId: event.data.groupId,
-                                data: [],
-                            };
-                            for (var i = 0; i < res.length; i++) {
-                                var item = {
-                                    value: res[i].value,
-                                    groupId: res[i].item,
-                                };
-                                dataArray.data.push(item);
-                            }
-                            return dataArray;
-                        })
-                        .then(res => {
-                            var option1 = {
-                                title: {
-                                    text: 'Top 5 ' + titlename+' Information',
-                                    left: 'center',
-                                    textStyle: {
-                                        fontSize: 15,
-                                    }
-                                },
-                                xAxis: {
-                                    data: res.data.map(function (item) {
-                                        return item.groupId;
-                                    }),
-                                },
-                                series: {
-                                    type: 'bar',
-                                    id: 'errorcode',
-                                    dataGroupId: res.dataGroupId,
-                                    data: res.data.map(function (item) {
-                                        return item.value;
-                                    }),
-                                    universalTransition: {
-                                        enabled: true,
-                                        divideShape: 'clone'
-                                    }
-                                },
-                                graphic: [
-                                    {
-                                        type: 'image',
-                                        right: 40,
-                                        top: 20,
-                                        style: {
-                                            image: '/img/arrowleft.png',
-                                        }, 
-                                        invisible: false,                                       
-                                        onclick: function () {
-                                            if (dataFloor) {
-                                                dataFloor -= 1;
-                                            }
-                                            myChart1.setOption(optionArray[dataFloor]);
-                                        }
-                                    }
-                                ]
-                            };
-                            optionArray[dataFloor] = option1;
-                            myChart1.setOption(optionArray[dataFloor]);
-                        })
+                    gettopStation_bycount(system, project, department, lastday, currentDay, event.name);
+                    gettopLine_bycount(system, project, department, lastday, currentDay, event.name);
+                    gettopRootCause_bycount(system, project, department, lastday, currentDay, event.name);
+                    $("#Chart1Modal").modal('show');
                 }
+                // #region 向下钻取
+                //if (event.data) {
+                //    var url;
+                //    let titlename;
+                //     if (dataFloor == 0) {
+                //        url = "/Dashboard/GetLine_ByErrorCode";
+                //        errorcode = event.name
+                //         dataFloor = 1;
+                //         titlename = 'Line';
+                //    }
+                //    else if (dataFloor == 1) {
+                //         url = "/Dashboard/GetStation_ByLine"
+                //        line = event.name;
+                //         dataFloor = 2;
+                //         titlename = 'Station';
+                //     }
+                //     else if (dataFloor == 2) {
+                //         url = "/Dashboard/GetRootCause_ByStation"
+                //         station = event.name;
+                //         dataFloor = 3;
+                //         titlename = 'Root Cause';
+                //     }
+                //    else {
+                //        return;
+                //    }
+                //    getDataWithArray(url, { errorcode: errorcode, comefrom: system, departmentlist:department,projectlist: project, currentDay: currentDay, lastday: lastday,line: line, station: station })
+                //        .then(res => {
+                //            var dataArray = {
+                //                dataGroupId: event.data.groupId,
+                //                data: [],
+                //            };
+                //            for (var i = 0; i < res.length; i++) {
+                //                var item = {
+                //                    value: res[i].value,
+                //                    groupId: res[i].item,
+                //                };
+                //                dataArray.data.push(item);
+                //            }
+                //            return dataArray;
+                //        })
+                //        .then(res => {
+                //            var option1 = {
+                //                title: {
+                //                    text: 'Top 5 ' + titlename+' Information',
+                //                    left: 'center',
+                //                    textStyle: {
+                //                        fontSize: 15,
+                //                    }
+                //                },
+                //                xAxis: {
+                //                    data: res.data.map(function (item) {
+                //                        return item.groupId;
+                //                    }),
+                //                },
+                //                series: {
+                //                    type: 'bar',
+                //                    id: 'errorcode',
+                //                    dataGroupId: res.dataGroupId,
+                //                    data: res.data.map(function (item) {
+                //                        return item.value;
+                //                    }),
+                //                    universalTransition: {
+                //                        enabled: true,
+                //                        divideShape: 'clone'
+                //                    }
+                //                },
+                //                graphic: [
+                //                    {
+                //                        type: 'image',
+                //                        right: 40,
+                //                        top: 20,
+                //                        style: {
+                //                            image: '/img/arrowleft.png',
+                //                        }, 
+                //                        invisible: false,                                       
+                //                        onclick: function () {
+                //                            if (dataFloor) {
+                //                                dataFloor -= 1;
+                //                            }
+                //                            myChart1.setOption(optionArray[dataFloor]);
+                //                        }
+                //                    }
+                //                ]
+                //            };
+                //            optionArray[dataFloor] = option1;
+                //            myChart1.setOption(optionArray[dataFloor]);
+                //        })
+                //}
+                // #endregion
             });
             myChart1.setOption(optionArray[dataFloor]);
+        })
+}
+function gettopStation_bycount(system, project, department, lastday, currentDay, errorcode) {
+    getDataWithArray("/Dashboard/GetStation_ByLine", { comefrom: system, departmentlist: department, projectlist: project, currentDay: currentDay, lastday: lastday, errorcode: errorcode })
+        .then(res => {
+            var dataArray = {
+                axis: [],
+                data: []
+            };
+            for (var i = 0; i < res.length; i++) {
+                dataArray.axis.push(res[i].item);
+                dataArray.data.push(res[i].value);
+            }
+            return dataArray;
+        })
+        .then(res => {
+            var chartDom = document.getElementById('chart12');
+            if (myChart12 != null && myChart12 != "" && myChart12 != undefined) {
+                myChart12.dispose();//解决echarts dom已经加载的报错
+            }
+            myChart12 = echarts.init(chartDom);
+            option = {
+                title: {
+                    right: 'center',
+                    text: 'Station',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                },
+                xAxis: {
+                    type: 'category',
+                    data: res.axis,
+                    axisLabel: {
+                        interval: 0,
+                        overflow: 'truncate',
+                        width: 50,
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Frequency',
+                },
+                series: [
+                    {
+                        data: res.data,
+                        label: {
+                            show: true
+                        },
+                        type: 'bar',
+                        barWidth: '30%',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(180, 180, 180, 0.2)'
+                        }
+                    }
+                ]
+            };
+            myChart12.setOption(option);
+        })
+}
+function gettopLine_bycount(system, project, department, lastday, currentDay, errorcode) {
+    getDataWithArray("/Dashboard/GetLine_ByErrorCode", { comefrom: system, departmentlist: department, projectlist: project, currentDay: currentDay, lastday: lastday, errorcode: errorcode })
+        .then(res => {
+            var dataArray = {
+                axis: [],
+                data: []
+            };
+            for (var i = 0; i < res.length; i++) {
+                dataArray.axis.push(res[i].item);
+                dataArray.data.push(res[i].value);
+            }
+            return dataArray;
+        })
+        .then(res => {
+            var chartDom = document.getElementById('chart11');
+            if (myChart11 != null && myChart11 != "" && myChart11 != undefined) {
+                myChart11.dispose();//解决echarts dom已经加载的报错
+            }
+            myChart11 = echarts.init(chartDom);
+            option = {
+                title: {
+                    right: 'center',
+                    text: 'Line',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                },
+                xAxis: {
+                    type: 'category',
+                    data: res.axis,
+                    axisLabel: {
+                        interval: 0,
+                        overflow: 'truncate',
+                        width: 50,
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Frequency',
+                },
+                series: [
+                    {
+                        data: res.data,
+                        label: {
+                            show: true
+                        },
+                        type: 'bar',
+                        barWidth: '30%',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(180, 180, 180, 0.2)'
+                        }
+                    }
+                ]
+            };
+            myChart11.setOption(option);
+        })
+}
+function gettopRootCause_bycount(system, project, department, lastday, currentDay, errorcode) {
+    getDataWithArray("/Dashboard/GetRootCause_ByStation", { comefrom: system, departmentlist: department, projectlist: project, currentDay: currentDay, lastday: lastday, errorcode: errorcode })
+        .then(res => {
+            var dataArray = {
+                axis: [],
+                data: []
+            };
+            for (var i = 0; i < res.length; i++) {
+                dataArray.axis.push(res[i].item);
+                dataArray.data.push(res[i].value);
+            }
+            return dataArray;
+        })
+        .then(res => {
+            var chartDom = document.getElementById('chart13');
+            if (myChart13 != null && myChart13 != "" && myChart13 != undefined) {
+                myChart13.dispose();//解决echarts dom已经加载的报错
+            }
+            myChart13 = echarts.init(chartDom);
+            option = {
+                title: {
+                    right: 'center',
+                    text: 'Root Cause',
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: res.axis,
+                    axisLabel: {
+                        interval: 0,
+                        overflow: 'truncate',
+                        width: 50,
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Frequency',
+                },
+                series: [
+                    {
+                        data: res.data,
+                        label: {
+                            show: true
+                        },
+                        type: 'bar',
+                        barWidth: '30%',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(180, 180, 180, 0.2)'
+                        }
+                    }
+                ]
+            };
+            myChart13.setOption(option);
         })
 }
 // #endregion
@@ -275,133 +500,134 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
             };
             myChart2.on('click', function (event) {
                 if (event.data) {
-                    //$("#detaillist").bootstrapTable('destroy').bootstrapTable({
-                    //    cache: false,
-                    //    type: 'GET',
-                    //    url: '/Dashboard/OpenClose_Items',
-                    //    queryParams: {
-                    //        status: event.name,
-                    //        projectlist: project,
-                    //        departmentlist: department,
-                    //        comefrom: system,
-                    //        currentDay: currentDay,
-                    //        lastday: lastday
-                    //    },
-                    //    ajaxOptions: {                      //传参ajax设置
-                    //        traditional: true,              //允许传递数组类型的参数
-                    //    },
-                    //    dataType: 'json',
-                    //    columns: [{
-                    //        field: 'id',
-                    //        title: 'Ticket No.',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //    }, {
-                    //        field: 'department',
-                    //        title: 'Department',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //    }, {
-                    //        field: 'project',
-                    //        title: 'Project',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //    }, {
-                    //        field: 'line',
-                    //        title: 'Line',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //    }, {
-                    //        field: 'station',
-                    //        title: 'Station Name',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //    }, {
-                    //        field: 'machine',
-                    //        title: 'Machine Name',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //    }, {
-                    //        field: 'occurtime',
-                    //        title: 'Occurt Time',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //        formatter: function (value, row, index) {
-                    //            return new Date(value).format('yyyy-MM-dd hh:mm:ss');
-                    //        },
-                    //    }, {
-                    //        field: 'issue',
-                    //        title: 'Defect Code',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //    }, {
-                    //        field: 'issueremark',
-                    //        title: 'Issue Description',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //    }, {
-                    //        field: 'finishtime',
-                    //        title: 'Finish Time',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //        visible: function (value, row, index) {
-                    //            if (row['incidentstatus'] == 2) return true;
-                    //            else return false;
-                    //        },
-                    //        formatter: function (value, row, index) {
-                    //            if (value)
-                    //                return new Date(value).format('yyyy-MM-dd hh:mm:ss');
-                    //            else
-                    //                return value;
-                    //        },
-                    //    }, {
-                    //        field: 'downday',
-                    //        title: 'Downtime(H)',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //        visible: function (value, row, index) {
-                    //            if (row['incidentstatus'] == 2) return true;
-                    //            else return false;
-                    //        },
-                    //        formatter: function (value, row, index) {
-                    //            if (row['incidentstatus'] == 2) {
-                    //                return parseInt(Math.abs(new Date(row['finishtime']) - new Date(row['occurtime'])) / 3600000);
-                    //                //return parseFloat(Math.abs(new Date(row['finishtime']) - new Date(row['occurtime'])) / 3600000).toFixed(2);
-                    //            }
-                    //            return "--";
-                    //        },
-                    //    }, {
-                    //        field: 'openday',
-                    //        title: 'Open Hours(H)',
-                    //        align: 'center',
-                    //        valign: 'middle',
-                    //        visible: function (value, row, index) {
-                    //            if (row['incidentstatus'] == 2) return false;
-                    //            else return true;
-                    //        },
-                    //        formatter: function (value, row, index) {
-                    //            if (row['incidentstatus'] == 2) {
-                    //                return 0;
-                    //            } else {
-                    //                return parseInt(Math.abs(Date.now() - new Date(row['occurtime'])) / 3600000);
-                    //                //return parseFloat(Math.abs(Date.now() - new Date(row['occurtime'])) / 3600000).toFixed(2);
-                    //            }
-                    //        },
-                    //    }
-                    //    ]
-                    //})
+                    $("#detaillist").bootstrapTable('destroy').bootstrapTable({
+                        cache: false,
+                        type: 'GET',
+                        url: '/Dashboard/OpenClose_Items',
+                        queryParams: {
+                            status: event.name,
+                            projectlist: project,
+                            departmentlist: department,
+                            comefrom: system,
+                            currentDay: currentDay,
+                            lastday: lastday
+                        },
+                        ajaxOptions: {                      //传参ajax设置
+                            traditional: true,              //允许传递数组类型的参数
+                        },
+                        dataType: 'json',
+                        columns: [{
+                            field: 'id',
+                            title: 'Ticket No.',
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'department',
+                            title: 'Department',
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'project',
+                            title: 'Project',
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'line',
+                            title: 'Line',
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'station',
+                            title: 'Station Name',
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'machine',
+                            title: 'Machine Name',
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'occurtime',
+                            title: 'Occurt Time',
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index) {
+                                return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+                            },
+                        }, {
+                            field: 'issue',
+                            title: 'Defect Code',
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'issueremark',
+                            title: 'Issue Description',
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'finishtime',
+                            title: 'Finish Time',
+                            align: 'center',
+                            valign: 'middle',
+                            visible: function (value, row, index) {
+                                if (row['incidentstatus'] == 2) return true;
+                                else return false;
+                            },
+                            formatter: function (value, row, index) {
+                                if (value)
+                                    return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+                                else
+                                    return value;
+                            },
+                        }, {
+                            field: 'downday',
+                            title: 'Downtime(min)',
+                            align: 'center',
+                            valign: 'middle',
+                            visible: function (value, row, index) {
+                                if (row['incidentstatus'] == 2) return true;
+                                else return false;
+                            },
+                            formatter: function (value, row, index) {
+                                if (row['incidentstatus'] == 2) {
+                                    return parseInt(Math.abs(new Date(row['finishtime']) - new Date(row['occurtime'])) / 60000);
+                                    //return parseFloat(Math.abs(new Date(row['finishtime']) - new Date(row['occurtime'])) / 3600000).toFixed(2);
+                                }
+                                return "--";
+                            },
+                        }, {
+                            field: 'openday',
+                            title: 'Open Time(min)',
+                            align: 'center',
+                            valign: 'middle',
+                            visible: function (value, row, index) {
+                                if (row['incidentstatus'] == 2) return false;
+                                else return true;
+                            },
+                            formatter: function (value, row, index) {
+                                if (row['incidentstatus'] == 2) {
+                                    return 0;
+                                } else {
+                                    return parseInt(Math.abs(Date.now() - new Date(row['occurtime'])) / 60000);
+                                    //return parseFloat(Math.abs(Date.now() - new Date(row['occurtime'])) / 3600000).toFixed(2);
+                                }
+                            },
+                        }
+                        ]
+                    })
                     openCloseDowntime_StationPieChart(system, project, department, lastday, currentDay, event.name);
-                    //if (event.name == "Closed") {
-                    //    $("#modalName").html("Closed Downtime incident Detail Information")
-                    //    $('#detaillist').bootstrapTable('hideColumn', 'openday');
-                    //    $('#detaillist').bootstrapTable('showColumn', 'downday');
-                    //    $('#detaillist').bootstrapTable('showColumn', 'finishtime');
-                    //} else {
-                    //    $("#modalName").html("Open Downtime incident Detail Information")
-                    //    $('#detaillist').bootstrapTable('showColumn', 'openday');
-                    //    $('#detaillist').bootstrapTable('hideColumn', 'downday');
-                    //    $('#detaillist').bootstrapTable('hideColumn', 'finishtime');
-                    //}
+                    openCloseDowntime_DefectCodePieChart(system, project, department, lastday, currentDay, event.name);
+                    if (event.name == "Closed") {
+                        $("#modalName").html("Closed Downtime incident Detail Information")
+                        $('#detaillist').bootstrapTable('hideColumn', 'openday');
+                        $('#detaillist').bootstrapTable('showColumn', 'downday');
+                        $('#detaillist').bootstrapTable('showColumn', 'finishtime');
+                    } else {
+                        $("#modalName").html("Open Downtime incident Detail Information")
+                        $('#detaillist').bootstrapTable('showColumn', 'openday');
+                        $('#detaillist').bootstrapTable('hideColumn', 'downday');
+                        $('#detaillist').bootstrapTable('hideColumn', 'finishtime');
+                    }
                     $("#Chart2Modal").modal('show');
                 }
             });
@@ -423,32 +649,32 @@ function openCloseDowntime_StationPieChart(system, project, department, lastday,
         })
         .then(res => {
             var chartDom = document.getElementById('chart21');
-            var myChart21 = echarts.init(chartDom);
+            if (myChart21) {
+                myChart21.dispose();//解决echarts dom已经加载的报错
+            }
+            myChart21 = echarts.init(chartDom);
             var option = {
                 title: {
-                    text: 'Referer of a Website',
-                    subtext: 'Fake Data',
+                    text: 'Station',
                     left: 'center'
                 },
                 tooltip: {
-                    trigger: 'item'
+                    trigger: 'item',
+                    formatter: '{b} : {d}%'
                 },
                 legend: {
-                    orient: 'vertical',
-                    left: 'left'
+                    orient: 'horizontal',
+                    type: 'scroll',
+                    top: 30,
+                    left: 'center'
                 },
                 series: [
                     {
-                        name: 'Access From',
+                        name: 'Station',
                         type: 'pie',
                         radius: '50%',
-                        data: [
-                            { value: 1048, name: 'Search Engine' },
-                            { value: 735, name: 'Direct' },
-                            { value: 580, name: 'Email' },
-                            { value: 484, name: 'Union Ads' },
-                            { value: 300, name: 'Video Ads' }
-                        ],
+                        center: ['50%', '60%'],
+                        data: res,
                         emphasis: {
                             itemStyle: {
                                 shadowBlur: 10,
@@ -460,6 +686,60 @@ function openCloseDowntime_StationPieChart(system, project, department, lastday,
                 ]
             };
             myChart21.setOption(option);
+        })
+}
+function openCloseDowntime_DefectCodePieChart(system, project, department, lastday, currentDay, status) {
+    getDataWithArray("/Dashboard/OpenCloseDowntime_DefectCodePieChart", { comefrom: system, departmentlist: department, projectlist: project, currentDay: currentDay, lastday: lastday, status: status })
+        .then(res => {
+            var dataArray = []
+            for (var i = 0; i < res.length; i++) {
+                var item = {
+                    value: res[i].value,
+                    name: res[i].key
+                };
+                dataArray.push(item);
+            }
+            return dataArray;
+        })
+        .then(res => {
+            var chartDom = document.getElementById('chart22');
+            if (myChart22) {
+                myChart22.dispose();//解决echarts dom已经加载的报错
+            }
+            myChart22 = echarts.init(chartDom);
+            var option = {
+                title: {
+                    text: 'Defect Code',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b} : {d}%'
+                },
+                legend: {
+                    orient: 'horizontal',
+                    type: 'scroll',
+                    top: 30,
+                    left: 'center'
+                },
+                series: [
+                    {
+                        name: 'Station',
+                        type: 'pie',
+                        radius: '50%',
+                        center: ['50%', '60%'],
+                        data: res,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            myChart22.setOption(option);
         })
 }
 // #endregion

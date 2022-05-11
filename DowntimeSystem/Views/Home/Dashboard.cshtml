@@ -5,7 +5,7 @@
 @*菜单*@
 <div class="row" style="margin-right: 0px;">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-      <a style="float:right" ><i class="fa fa-cog" id="searchBox"></i></a> 
+        <a style="float:right"><i class="fa fa-cog" id="searchBox"></i></a>
     </div>
 </div>
 <div class="row elehide" style="margin-right: 0px" id="searchBoxMenu">
@@ -40,7 +40,7 @@
             </span>
         </div>
     </div>
-    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4" style="display:none">
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4"  style="display:none">
         <label class="form-label" for="end"> End Date: </label>
         <div class='input-group date form_datetime'>
             <input type='text' class="form-control" id='end' onchange="updateChart()" />
@@ -51,7 +51,7 @@
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label" for="end"> Refresh Time (mins): </label>
-        <input type='number' class="form-control" id='refresh-input' onchange="setrefresh()"  value="5"/>
+        <input type='number' class="form-control" id='refresh-input' onchange="setrefresh()" value="5" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
     </div>
 </div>
 
@@ -73,13 +73,23 @@
     </div>
 </div>
 <div class="modal fade" id="Chart1Modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document" style="width: 80%;min-width:150px">
+    <div class="modal-dialog" role="document" style="width: 80%;min-width:1000px">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal1Name" style="text-wrap:normal">Detail Information </h5>
             </div>
-            <div class="modal-body row">
-
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                        <div id="chart11" class="mychart" style="width:300px;height: 400px"> Line</div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                        <div id="chart12" class="mychart" style="width: 300px; height: 400px ">Station</div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                        <div id="chart13" class="mychart" style="width: 300px; height: 400px "> Root Cause</div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
@@ -88,7 +98,7 @@
     </div>
 </div>
 <div class="modal fade" id="Chart2Modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document" style="width: 80%;min-width:150px">
+    <div class="modal-dialog" role="document" style="width: 80%;min-width:1000px">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalName" style="text-wrap:normal">Detail Information </h5>
@@ -96,18 +106,20 @@
             <div class="modal-body ">
                 <div class="row">
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <div id="chart21" class="mychart" style="width:100%;height:500px"> Top Five Error Code</div>
+                        <div id="chart21" class="mychart" style="width:500px;height:300px"> Top Five Error Code</div>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <div id="chart22" class="mychart" style="width:100%;height:500px"> Top Five Error Code</div>
+                        <div id="chart22" class="mychart" style="width:500px; height: 300px "> Top Five Error Code</div>
                     </div>
                 </div>
-                @*<div style="height:50vh;overflow-y:scroll;width:100%">
-                    <table id="detaillist" ></table>
-                </div>*@
+                <div class="row">
+                    <div style="width:100%; height:35vh;overflow-y:scroll">
+                        <table id="detaillist" class="table table-bordered" data-toggle="table"></table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger"  onclick="CloseModal()">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Close</button>
             </div>
         </div>
     </div>
@@ -117,13 +129,11 @@
 
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 <script src="~/lib/echarts/dist/js/echarts.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js"></script>
-
 <script src="~/js/customer.js"></script>
 <script src="~/js/dashboard.js"></script>
 
 <script>
+    var interval;
     $(document).ready(function () {
         getProject($("#project-select"));
         getDepartment($("#department-select"));
@@ -133,22 +143,22 @@
         $("#timeZone option[value='1']").attr("selected", true);
         $("#timeZone").selectpicker('refresh');
         $("#timeZone").trigger("onchange");
-        setInterval(function () {
+        interval = setInterval(function () {
             updateChart();
-        },300000);
+        }, 300000);
     })
 
     function updateChart() {
-        if ($("#start").val() > $("#end").val()) {
-            alert("开始时间要小于结束时间，请重新选择时间段");
+        if (Date.parse($("#start").val()) > Date.parse($("#end").val())) {
+            showWarning("开始时间要小于结束时间，请重新选择时间段");
         }
         else {
             let start = $("#start").val() + " 00:00:00";
             let end = $("#end").val() + " 23:59:59";
             gettopErrorcode_bycount($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
             getOpenCloseCount($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
-            gettopErrorCode_byDowntime($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(),start, end);
-            getDowntime_byDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(),start, end);
+            gettopErrorCode_byDowntime($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
+            getDowntime_byDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
         }
     }
 
@@ -156,29 +166,33 @@
         var today = new Date()
         switch ($("#timeZone").val()) {
             case "1": //Current Week
-                var dayOfWeek = today.getDay();  
+                var dayOfWeek = today.getDay();
                 if (dayOfWeek == 0) dayOfWeek = 7;
                 var lastDay = new Date(today.getTime() - (dayOfWeek - 1) * 86400000); //本周的第一天
                 $("#start").val(lastDay.getFullYear() + "-" + (lastDay.getMonth() + 1).toString() + "-" + lastDay.getDate());
                 $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
+                showSuccess("显示本周数据");
                 break;
             case "4": //Last Week
                 var dayOfWeek = today.getDay();
                 if (dayOfWeek == 0) dayOfWeek = 7;
                 var endDay = new Date(today.getTime() - (dayOfWeek) * 86400000); //上周最后一天
-                var startDay = new Date(today.getTime() - (dayOfWeek+6) * 86400000); //上周第一天
+                var startDay = new Date(today.getTime() - (dayOfWeek + 6) * 86400000); //上周第一天
                 $("#start").val(startDay.getFullYear() + "-" + (startDay.getMonth() + 1).toString() + "-" + startDay.getDate());
                 $("#end").val(endDay.getFullYear() + "-" + (endDay.getMonth() + 1).toString() + "-" + endDay.getDate());
+                showSuccess("显示上周数据");
                 break;
-            case "2": //Current Month 
-                $("#start").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-01"); 
+            case "2": //Current Month
+                $("#start").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-01");
                 $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
+                showSuccess("显示本月数据");
                 break;
             case "3": //Last Month
                 $("#start").val(today.getFullYear() + "-" + (today.getMonth()).toString() + "-01");
                 var EndOfMonth = new Date();
                 EndOfMonth.setDate(0);   //上个月的最后一天
                 $("#end").val(EndOfMonth.getFullYear() + "-" + (EndOfMonth.getMonth() + 1).toString() + "-" + EndOfMonth.getDate());
+                showSuccess("显示上月数据");
                 break;
             default:
                 break;
@@ -187,16 +201,16 @@
     }
 
     function setrefresh() {
-        var min = $("#refresh-input").val()*60*1000;
-        setInterval(function () {
+        if ($("#refresh-input").val() <= 0) {
+            showWarning("刷新时间必须大于0");
+            return;
+        }
+        clearInterval(interval);
+        var min = $("#refresh-input").val() * 60 * 1000;
+        interval = setInterval(function () {
             updateChart();
         }, min);
-    }
-
-    function CloseModal() {
-        $("#chart2_1").html("");
-        $("#chart2_2").html("");
-        $("#Chart2Modal").modal('hide');
+        showSuccess("页面刷新时间设定完成，每 " + $("#refresh-input").val() + " 分钟刷新一次");
     }
 
     // #region 根据窗体大小，自动调整echart的大小

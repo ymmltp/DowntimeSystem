@@ -156,21 +156,17 @@ Dashboard设计要求
 
 **有其他需求,需求待整合**
 
-- [ ] Sparepart数据，单独列出来，不显示在Downtime Dashboard中
-
-> 具体的界面内容待确定 
-
-- [ ] Trouble shot guid问题分析导航（参考e-DMS）
-- [ ] Downtime初始数据可维护（咨询xiaowei）
-
-> 需要维护的内容，在哪一步修改数据
+- [ ] Troubleshoting Guide问题分析导航（参考e-DMS）
+- [ ] Sparepart具体的界面内容待确定 
+- [x] Sparepart数据，单独列出来，不显示在Downtime Dashboard中
+- [x] Downtime初始数据可维护:在填写 RC/CA 阶段维护 station,machine,defect code 和 issue description 信息
 
 - [x] Downtime item增加索引和根据索引查询的功能
 - [x] Dashboard 不区分 system
 - [x] Dashboard 增加固定时区选择功能（周、月/current、last）
-- [ ] Dashboard Chart2 改为层叠图,层叠对象为department,下层报表增加 Defect Code 和 station 的时间占比图（Pie）
-- [ ] Dashbaord Chart1 取消逐层钻取，下层报表显示被选则的 Defect Code 的 Line,Station, RootCause top 5
-- [x] Dashboard Chart4 改为层叠图，层叠对象为Downtime Incident状态
+- [x] Dashboard Chart2 下层报表增加 Defect Code 和 station 的时间占比图（Pie）
+- [x] Dashbaord Chart1 取消逐层钻取，下层报表显示被选则的 Defect Code 的 Line,Station, RootCause top 5
+- [x] Dashboard Chart4 改为层叠图，层叠对象为 Downtime Incident 状态
 - [x] 一些内容的英文表述需要修改
 - [x] 在Dashboard页面上面，增加全屏的按键，
 - [x] 页面刷新的间隔时间，例如5分钟、10分钟、30分钟
@@ -185,3 +181,8 @@ Dashboard设计要求
 #### 2022.05.05 Debug
 
 - [ ] ~~关闭downtime Incident时没有检查当前关闭的人是否是本人~~
+
+#### 2022.05.10 Demand
+
+- [ ] Dashboard Chart1 钻取的图表（line,station,rootcause）用不同的颜色表示
+- [x] 刷新时间不可为负

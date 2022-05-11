@@ -27,14 +27,6 @@
                     <label class="form-label"> Station:</label>
                     <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
                 </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Incident Status:</label>
-                    <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1">
-                        <option value="0">New Open</option>
-                        <option value="1">On-going Check</option>
-                        <option value="2">Closed</option>
-                    </select>
-                </div>
                 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
                     <label class="form-label" for="start"> Start Date:</label>
                     <div class='input-group date form_datetime searchTime'>
@@ -53,20 +45,28 @@
                         </span>
                     </div>
                 </div>
+                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                    <label class="form-label"> Incident Status:</label>
+                    <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1">
+                        <option value="0">New Open</option>
+                        <option value="1">On-going Check</option>
+                        <option value="2">Closed</option>
+                    </select>
+                </div>
                 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
                     <label class="form-label" for="id"> Index: </label>
                     <input type='text' class="form-control" id='id' />
                 </div>
-
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 100px">New Incident</button></div>
             </div>
         </div>
     </div>
-
 </div>
 
-<table id="dtList" class="table-condensed"></table>
+   <table id="dtList"></table>
+
+
 
 <div class="modal fade" id="CreateIncidenceModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document" style="width: 30%;min-width:150px">
@@ -192,19 +192,19 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-station" class="form-label text-right">Station:</label>
-                    <input type='text' class="form-control" readonly id='ca-station' />
+                    <input type='text' class="form-control raca"  id='ca-station' />
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-machine" class="form-label text-right">Machine:</label>
-                    <input type='text' class="form-control" readonly id='ca-machine' />
+                    <input type='text' class="form-control raca"  id='ca-machine' />
                 </div>
                 <div class="col-lg-12">
-                    <label for="ca-issue" class="form-label text-right">Defect Code:</label>
-                    <input type='text' class="form-control" readonly id='ca-issue' />
+                    <label for="ca-issue" class="form-label text-right warning-text">Defect Code:</label>
+                    <input type='text' class="form-control raca"  id='ca-issue' />
                 </div>
                 <div class="col-lg-12">
                     <label for="ca-issueremark" class="form-label text-right">Issue Description:</label>
-                    <textarea type='text' class="form-control" readonly id='ca-issueremark'></textarea>
+                    <textarea type='text' class="form-control raca"  id='ca-issueremark'></textarea>
                 </div>
                 <div class="col-lg-4">
                     <label for="ca-employee" class="form-label text-right">Employee:</label>
@@ -267,7 +267,6 @@
 
 <script src="~/js/customer.js"></script>
 <script src="~/js/cookie.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 <script src="~/js/bootstrap-table-export.js"></script>
 <script src="~/js/tableExport.js"></script>
@@ -321,7 +320,7 @@
             dataType: 'json',
             pagination: true,
             paginationLoop: false,
-            pageSize: 25,
+            pageSize: 10,
             pageList: [10, 25, 50],
             showExport: function (row, index) {
                 var sUserAgent = navigator.userAgent.toLowerCase();
@@ -615,7 +614,7 @@
         $("#CAModal").modal('show');
     }
     $("#addCA").on('click', function () {
-        if ($("#ca-rootcause").val() && $("#ca-action").val()) {
+        if ($("#ca-rootcause").val() && $("#ca-action").val() && $("#ca-issue").val()) {
             $.ajax({
                 url: '/EC/RCCA',
                 method: 'POST',
@@ -627,6 +626,10 @@
                     rootcauseremark: $("#ca-rootcauseremark").val(),
                     action: $("#ca-action").val(),
                     actionremark: $("#ca-actionremark").val(),
+                    station: $("#ca-station").val(),
+                    machine: $("#ca-machine").val(),
+                    issue: $("#ca-issue").val(),
+                    issueremark: $("#ca-issueremark").val(),
                 },
                 success: function (data) {
                     $("#CAModal").modal('hide');
@@ -644,7 +647,7 @@
             })
         }
         else {
-            showWarning("请输入RootCause和CA ,再提交!");
+            showWarning("请输入RootCause和CA ，完善Defect Code，再提交!");
         }
     })
 

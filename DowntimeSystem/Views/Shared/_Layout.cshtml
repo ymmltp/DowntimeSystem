@@ -13,7 +13,7 @@
     <link href="~/css/customer.css" rel="stylesheet" />
     <link href="~/fonts/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/alert.css" rel="stylesheet" />
-    <link href="~/topicon.ico" rel="shortcut icon"/>
+    <link href="~/topicon.ico" rel="shortcut icon" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/popper.min.js"></script>
@@ -62,14 +62,16 @@
             <div id="leftside-navigation" class="nano-content">
                 <ul class="nano-content">
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Dashboard"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Dashboard"><i class="fa fa-hand-o-right"></i>Downtime</a></li>
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Downtime"><i class="fa fa-hand-o-right"></i>Downtime</a></li>
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Coming" title="Spare part"><i class="fa fa-hand-o-right"></i>Spare part</a></li>
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Coming" title="Trouble shot guid"><i class="fa fa-hand-o-right"></i>Troubleshoting Guide</a></li>
                     @*<li class="sub-menu">
-                            <a href="javascript:void(0);"><i class="fa fa-hand-o-right"></i><span>DownTime</span><i class="arrow fa fa-angle-right pull-right"></i></a>
-                            <ul>
-                                <li><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Home"><i class="fa fa-plus-square"></i>Create</a></li>
-                                <li><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Home"><i class="fa fa-tasks"></i>Task</a></li>
-                            </ul>
-                        </li>*@
+            <a href="javascript:void(0);"><i class="fa fa-hand-o-right"></i><span>DownTime</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+            <ul>
+                <li><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Home"><i class="fa fa-plus-square"></i>Create</a></li>
+                <li><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Home"><i class="fa fa-tasks"></i>Task</a></li>
+            </ul>
+        </li>*@
                 </ul>
             </div>
         </div>
@@ -80,7 +82,7 @@
                 </main>
             </div>
             <footer class="border-top footer text-muted" style="position:relative;bottom:0px;">
-                &copy; @DateTime.Today.Year - Downtime System  V0.0.2
+                &copy; @DateTime.Today.Year - Downtime System  V0.0.3
             </footer>
         </div>
     </div>

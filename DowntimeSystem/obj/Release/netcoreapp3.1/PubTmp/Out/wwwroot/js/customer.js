@@ -212,6 +212,30 @@ function getStation(obj,line,project) {
         }
     })
 }
+function getDashboardSystem(obj) {
+    $.ajax({
+        url: '/Dashboard/GetSystem',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        }
+    })
+}
+
 
 
 function showWarning(text) {

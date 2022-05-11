@@ -45,7 +45,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true).ToList();
+                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true & contains.Contains(e.Comefrom)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
@@ -188,6 +188,11 @@ namespace DowntimeSystem.Controllers
                 using (ECContext db = new ECContext())
                 {
                     IncidentDet tmp = db.IncidentDets.Find(item.Id);
+                    tmp.Station = item.Station;
+                    tmp.Machine = item.Machine;
+                    tmp.Issue = item.Issue;
+                    tmp.Issueremark = item.Issueremark;
+
                     tmp.Calcdowntime = item.Calcdowntime;
                     tmp.Labor = item.Labor;
                     tmp.Actionstatus = 3;

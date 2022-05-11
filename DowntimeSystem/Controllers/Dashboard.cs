@@ -85,9 +85,10 @@ namespace DowntimeSystem.Controllers
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) &  Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)) .ToList();
                     if (projectlist.Length > 0) tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
                     if (departmentlist.Length > 0) tmp = tmp.Where(e => departmentlist.Contains(e.Department)).ToList();
+                    if(!string.IsNullOrEmpty(line)) tmp = tmp.Where(e => e.Line.Equals(line)).ToList();
                     if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
-                    var items = tmp.Where(e => e.Issue.Equals(errorcode)&e.Line.Equals(line)).GroupBy(e => e.Station  )
+                    var items = tmp.Where(e => e.Issue.Equals(errorcode)).GroupBy(e => e.Station  )
                         .Select(g => new
                         {
                             item = g.Key,
@@ -110,9 +111,11 @@ namespace DowntimeSystem.Controllers
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     if (projectlist.Length > 0)  tmp = tmp.Where(e => projectlist.Contains(e.Project)).ToList();
                     if (departmentlist.Length > 0) tmp = tmp.Where(e => departmentlist.Contains(e.Department)).ToList();
+                    if (!string.IsNullOrEmpty(line)) tmp = tmp.Where(e => e.Line.Equals(line)).ToList();
+                    if (!string.IsNullOrEmpty(station)) tmp = tmp.Where(e => e.Station.Equals(station)).ToList();
                     if (!string.IsNullOrEmpty(item.Department)) tmp = tmp.Where(e => e.Department.Equals(item.Department)).ToList();
                     if (!string.IsNullOrEmpty(item.Comefrom)) tmp = tmp.Where(e => e.Comefrom.Equals(item.Comefrom)).ToList();
-                    var items = tmp.Where(e =>  e.Issue.Equals(errorcode) & e.Line.Equals(line) & e.Station.Equals(station) )
+                    var items = tmp.Where(e =>  e.Issue.Equals(errorcode))
                         .GroupBy(e => e.Rootcause)
                         .Select(g => new
                         {
