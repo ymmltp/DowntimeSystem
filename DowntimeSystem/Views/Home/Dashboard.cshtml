@@ -23,15 +23,20 @@
         <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-live-search="true" data-none-selected-text="All" data-actions-box="true" onchange="updateChart()"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+        <label class="form-label" for="end"> Refresh Time (mins): </label>
+        <input type='number' class="form-control" id='refresh-input' onchange="setrefresh()" value="5" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" />
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> Time Zone:</label>
         <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1" onchange="updateTime()">
             <option value="1">Current Week</option>
             <option value="4">Last Week</option>
             <option value="2">Current Month</option>
             <option value="3">Last Month</option>
+            <option value="0">Customize</option>
         </select>
     </div>
-    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4" style="display:none">
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 invisible">
         <label class="form-label" for="start"> Start Date:</label>
         <div class='input-group date form_datetime'>
             <input type='text' class="form-control" id='start' onchange="updateChart()" />
@@ -40,7 +45,7 @@
             </span>
         </div>
     </div>
-    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4"  style="display:none">
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 invisible">
         <label class="form-label" for="end"> End Date: </label>
         <div class='input-group date form_datetime'>
             <input type='text' class="form-control" id='end' onchange="updateChart()" />
@@ -48,10 +53,6 @@
                 <span class="fa fa-calendar"></span>
             </span>
         </div>
-    </div>
-    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-        <label class="form-label" for="end"> Refresh Time (mins): </label>
-        <input type='number' class="form-control" id='refresh-input' onchange="setrefresh()" value="5" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
     </div>
 </div>
 
@@ -164,13 +165,20 @@
 
     function updateTime() {
         var today = new Date()
+        $("#start").parent().parent().addClass("invisible");
+        $("#end").parent().parent().addClass("invisible");
         switch ($("#timeZone").val()) {
+            case "0": //Last Month
+                $("#start").parent().parent().removeClass("invisible");
+                $("#end").parent().parent().removeClass("invisible");
+                showSuccess("自定义时间范围");
+                break;
             case "1": //Current Week
                 var dayOfWeek = today.getDay();
                 if (dayOfWeek == 0) dayOfWeek = 7;
                 var lastDay = new Date(today.getTime() - (dayOfWeek - 1) * 86400000); //本周的第一天
-                $("#start").val(lastDay.getFullYear() + "-" + (lastDay.getMonth() + 1).toString() + "-" + lastDay.getDate());
-                $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
+                $("#start").val(lastDay.format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
                 showSuccess("显示本周数据");
                 break;
             case "4": //Last Week
@@ -178,20 +186,20 @@
                 if (dayOfWeek == 0) dayOfWeek = 7;
                 var endDay = new Date(today.getTime() - (dayOfWeek) * 86400000); //上周最后一天
                 var startDay = new Date(today.getTime() - (dayOfWeek + 6) * 86400000); //上周第一天
-                $("#start").val(startDay.getFullYear() + "-" + (startDay.getMonth() + 1).toString() + "-" + startDay.getDate());
-                $("#end").val(endDay.getFullYear() + "-" + (endDay.getMonth() + 1).toString() + "-" + endDay.getDate());
+                $("#start").val(startDay.format("yyyy-MM-dd"));
+                $("#end").val(endDay.format("yyyy-MM-dd"));
                 showSuccess("显示上周数据");
                 break;
             case "2": //Current Month
-                $("#start").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-01");
-                $("#end").val(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate());
+                $("#start").val(new Date(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-01").format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
                 showSuccess("显示本月数据");
                 break;
             case "3": //Last Month
-                $("#start").val(today.getFullYear() + "-" + (today.getMonth()).toString() + "-01");
+                $("#start").val(new Date(today.getFullYear() + "-" + (today.getMonth()).toString() + "-01").format("yyyy-MM-dd"));
                 var EndOfMonth = new Date();
                 EndOfMonth.setDate(0);   //上个月的最后一天
-                $("#end").val(EndOfMonth.getFullYear() + "-" + (EndOfMonth.getMonth() + 1).toString() + "-" + EndOfMonth.getDate());
+                $("#end").val(EndOfMonth.format("yyyy-MM-dd"));
                 showSuccess("显示上月数据");
                 break;
             default:

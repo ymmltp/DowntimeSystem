@@ -18,6 +18,7 @@ namespace DowntimeSystem.Models
         }
 
         public virtual DbSet<IncidentDet> IncidentDets { get; set; }
+        public virtual DbSet<IssueSummary> IssueSummaries { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,17 +28,15 @@ namespace DowntimeSystem.Models
                 optionsBuilder.UseNpgsql("Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123");
             }
         }
-        private string[] contains = { "eCalling", "Sparepart", "FPY", "Downtime System" }; 
+        private string[] contains = { "eCalling", "Sparepart", "FPY", "Downtime System" };
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.HasAnnotation("Relational:Collation", "English_United States.1252");
+
             modelBuilder.Entity<IncidentDet>(entity =>
             {
                 entity.HasQueryFilter(e => e.Calcdowntime.Equals(true));
-                entity.HasQueryFilter(e =>Array.AsReadOnly(contains).Contains(e.Comefrom));
-
-
+                entity.HasQueryFilter(e => Array.AsReadOnly(contains).Contains(e.Comefrom));
                 entity.ToTable("incident_det");
 
                 entity.HasIndex(e => new { e.Comefrom, e.Occurtime }, "comefrom");
@@ -151,6 +150,66 @@ namespace DowntimeSystem.Models
                 entity.Property(e => e.Urgentlevel)
                     .HasColumnName("urgentlevel")
                     .HasDefaultValueSql("0");
+            });
+
+            modelBuilder.Entity<IssueSummary>(entity =>
+            {
+                entity.ToTable("issue_summary");
+
+                entity.HasIndex(e => new { e.Department, e.Project, e.Line, e.Station, e.Issue, e.Rootcause }, "issue_summary_department_project_line_station_issue_rootcau_key")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Action)
+                    .HasMaxLength(512)
+                    .HasColumnName("action");
+
+                entity.Property(e => e.Correctiveaction)
+                    .HasMaxLength(512)
+                    .HasColumnName("correctiveaction");
+
+                entity.Property(e => e.Department)
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .HasColumnName("department");
+
+                entity.Property(e => e.Editor)
+                    .HasMaxLength(32)
+                    .HasColumnName("editor");
+
+                entity.Property(e => e.Issue)
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnName("issue");
+
+                entity.Property(e => e.Lastupdatedate)
+                    .HasColumnName("lastupdatedate")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.Line)
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .HasColumnName("line");
+
+                entity.Property(e => e.Project)
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .HasColumnName("project");
+
+                entity.Property(e => e.Qty).HasColumnName("qty");
+
+                entity.Property(e => e.Rootcause)
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnName("rootcause");
+
+                entity.Property(e => e.Station)
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnName("station");
+
+                entity.Property(e => e.Totaldowntime).HasColumnName("totaldowntime");
             });
 
             OnModelCreatingPartial(modelBuilder);

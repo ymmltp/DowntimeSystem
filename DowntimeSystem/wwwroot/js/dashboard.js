@@ -569,10 +569,6 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                             title: 'Finish Time',
                             align: 'center',
                             valign: 'middle',
-                            visible: function (value, row, index) {
-                                if (row['incidentstatus'] == 2) return true;
-                                else return false;
-                            },
                             formatter: function (value, row, index) {
                                 if (value)
                                     return new Date(value).format('yyyy-MM-dd hh:mm:ss');
@@ -584,14 +580,9 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                             title: 'Downtime(min)',
                             align: 'center',
                             valign: 'middle',
-                            visible: function (value, row, index) {
-                                if (row['incidentstatus'] == 2) return true;
-                                else return false;
-                            },
                             formatter: function (value, row, index) {
                                 if (row['incidentstatus'] == 2) {
                                     return parseInt(Math.abs(new Date(row['finishtime']) - new Date(row['occurtime'])) / 60000);
-                                    //return parseFloat(Math.abs(new Date(row['finishtime']) - new Date(row['occurtime'])) / 3600000).toFixed(2);
                                 }
                                 return "--";
                             },
@@ -600,19 +591,26 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                             title: 'Open Time(min)',
                             align: 'center',
                             valign: 'middle',
-                            visible: function (value, row, index) {
-                                if (row['incidentstatus'] == 2) return false;
-                                else return true;
-                            },
                             formatter: function (value, row, index) {
-                                if (row['incidentstatus'] == 2) {
+                                if (row['incidentstatus'] == 2) 
                                     return 0;
-                                } else {
-                                    return parseInt(Math.abs(Date.now() - new Date(row['occurtime'])) / 60000);
-                                    //return parseFloat(Math.abs(Date.now() - new Date(row['occurtime'])) / 3600000).toFixed(2);
+                                 else 
+                                    return parseInt(Math.abs(Date.now() - new Date(row['occurtime'])) / 60000);                             
                                 }
+                            },  {
+                            field: 'option',
+                            title: '操作 ',
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index) {
+                                return ['<button type="button" class="btn gray" id="do"><i class="fa fa-wrench"></i></button>'];
                             },
-                        }
+                            events: {
+                                "click #do": function (e, value, row, index) {
+                                    window.location = encodeURI("/Home/Query/?ticket=" + row['id']);
+                                }
+                            }
+                            }
                         ]
                     })
                     openCloseDowntime_StationPieChart(system, project, department, lastday, currentDay, event.name);
@@ -620,11 +618,13 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                     if (event.name == "Closed") {
                         $("#modalName").html("Closed Downtime incident Detail Information")
                         $('#detaillist').bootstrapTable('hideColumn', 'openday');
+                        $('#detaillist').bootstrapTable('hideColumn', 'option');
                         $('#detaillist').bootstrapTable('showColumn', 'downday');
                         $('#detaillist').bootstrapTable('showColumn', 'finishtime');
                     } else {
                         $("#modalName").html("Open Downtime incident Detail Information")
                         $('#detaillist').bootstrapTable('showColumn', 'openday');
+                        $('#detaillist').bootstrapTable('showColumn', 'option');
                         $('#detaillist').bootstrapTable('hideColumn', 'downday');
                         $('#detaillist').bootstrapTable('hideColumn', 'finishtime');
                     }

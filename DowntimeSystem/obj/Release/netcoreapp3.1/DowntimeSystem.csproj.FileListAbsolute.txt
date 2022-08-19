@@ -77,3 +77,10 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.genruntimeconfig.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Coming.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Negotiate.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\System.IO.Pipelines.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\IssueSummary.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\PredictiveDashboard.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\testDashboardPage.cshtml.g.cs

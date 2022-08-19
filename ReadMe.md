@@ -156,7 +156,6 @@ Dashboard设计要求
 
 **有其他需求,需求待整合**
 
-- [ ] Troubleshoting Guide问题分析导航（参考e-DMS）
 - [ ] Sparepart具体的界面内容待确定 
 - [x] Sparepart数据，单独列出来，不显示在Downtime Dashboard中
 - [x] Downtime初始数据可维护:在填写 RC/CA 阶段维护 station,machine,defect code 和 issue description 信息
@@ -186,3 +185,17 @@ Dashboard设计要求
 
 - [ ] Dashboard Chart1 钻取的图表（line,station,rootcause）用不同的颜色表示
 - [x] 刷新时间不可为负
+
+
+#### 2022.06.09 Demand
+
+- [ ] 每周发送本月的downtime情况，给各FM
+
+#### 2022.06.22 Update
+
+- [X] excel导出增加限制,只导出当前页面的内容,导出条数最多500条数据。
+- [X] Troubleshooting Guide问题分析导航(参考e-DMS)
+
+#### 2022.08.18 Update
+
+- [x] Dashboard 增加自定义时间

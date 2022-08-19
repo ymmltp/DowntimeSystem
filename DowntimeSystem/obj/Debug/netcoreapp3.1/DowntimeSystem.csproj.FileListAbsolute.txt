@@ -59,8 +59,12 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.TagHelpers.input.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.TagHelpers.output.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.RazorCoreGenerate.cache
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Coming.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Contact.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Query.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\testDashboardPage.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -73,6 +77,10 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.genruntimeconfig.cache
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Contact.cshtml.g.cs
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard.cshtml.g.cs
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Coming.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\IssueSummary.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Negotiate.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\System.IO.Pipelines.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\PredictiveDashboard.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.csproj.AssemblyReference.cache

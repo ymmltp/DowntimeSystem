@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "Predivtive Dashboard";
+}
+
+<div class="row" style="margin-right: 0px; margin-top:5px;">
+    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-xs-12">
+        <div id="Predivtivechart" class="mychart" style="width:100%;height:350px"> Predivtive Dashboard</div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+       <table class="table table-bordered table-sm" style="margin-top:30px;background-color:white;">
+           <thead><tr><th colspan="3">Predivtive Downtime Summary (Mins)</th></tr></thead>
+           <tbody>
+               <tr><td rowspan="2">Last Month</td><td>Prediction DT</td><td>1450</td></tr>
+               <tr><td>Variance vs actual %</td><td>3.45%</td></tr>
+               <tr><td rowspan="2">Current Month</td><td>Prediction DT</td><td>1520</td></tr>
+               <tr><td>Variance vs actual %</td><td>5.26%</td></tr>
+               <tr><td rowspan="2">Next Month</td><td>Prediction DT</td><td>1360</td></tr>
+               <tr><td>Variance vs actual %</td><td>0%</td></tr>
+               <tr></tr>
+               <tr><td>Basic Line</td><td>Prediction variance %</td><td>3.48%</td></tr>
+               <tr><td>Yearly Aumulated</td><td>Prediction DT</td><td>9500</td></tr>
+               <tr><td>Yearly Prediction %</td><td>variance %</td><td>3%</td></tr>
+           </tbody>
+       </table>
+    </div>
+</div>
+<div class="row" style="margin-right: 0px; margin-top:5px;">
+    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-xs-12">
+        <div id="Variancechart" class="mychart" style="width:100%;height:350px"> Variance Dashboard</div>
+    </div>
+</div>
+
+<div class="modal fade" id="StationModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" style="top:10%">
+    <div class="modal-dialog" role="document" style="width: 30%;min-width:400px">
+        <div class="modal-content">
+            <div class="modal-body">
+                    <table class="table table-bordered table-sm" style="margin-top:30px;background-color:white;">
+                        <thead><tr><th>Station Name</th><th>Downtime</th><th>Percentage</th></tr></thead>
+                        <tbody>
+                            <tr><td>STN01</td><td>453</td><td>33.31%</td></tr>
+                            <tr><td>STN02</td><td>321</td><td>23.60%</td></tr>
+                            <tr><td>STN03</td><td>325</td><td>23.90%</td></tr>
+                            <tr><td>STN04</td><td>210</td><td>15.44%</td></tr>
+                            <tr><td>STN05</td><td>51</td><td>3.75%</td></tr>
+                        </tbody>
+                    </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert"></div>
+
+<script src="~/lib/echarts/dist/js/echarts.js"></script>
+<script>
+    $(document).ready(function () {
+        PredivtiveChart();
+        VarianceChart();
+    })
+    var mychart;
+    function PredivtiveChart() {
+        var chartDom = document.getElementById('Predivtivechart');
+        if (mychart != null && mychart != "" && mychart != undefined) {
+            mychart.dispose();//解决echarts dom已经加载的报错
+        }
+        data = [
+            [1200, 1400, 1200, 1300, 1500, 1600],
+            [1250, 1350, 1210, 1360, 1450, 1520,1360]
+        ]
+        mychart = echarts.init(chartDom);
+        var option = {
+            title: {
+                text: '2022 Actual vs Predicion Downtime',
+                left: 'center',
+                textStyle: {
+                    fontSize: 18,
+                }
+            },
+            //tooltip: {
+            //    trigger: 'axis',
+            //    axisPointer: {
+            //        type: 'shadow'
+            //    }
+            //},
+            legend: {
+                show: true,
+                top: 25,
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+                type: 'category',
+                data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+            },
+            series: [
+                {
+                    name: 'Year - 2022 Actual Downtime (min)',
+                    type: 'bar',
+                    label: {
+                        show: true,
+                        position: 'insideRight'
+                    },
+                    data: data[0]
+                },
+                {
+                    name: 'Year - 2022 Predictive Downtime (min)',
+                    type: 'bar',
+                    label: {
+                        show: true,
+                        position: 'insideRight'
+                    },
+                    data: data[1]
+                }
+            ]
+        };
+        mychart.setOption(option);
+        mychart.on('click', function (event) {
+            $("#StationModal").modal('show');
+        })
+    }
+    var myVariancechart;
+    function VarianceChart() {
+        var chartDom = document.getElementById('Variancechart');
+        if (myVariancechart != null && myVariancechart != "" && myVariancechart != undefined) {
+            myVariancechart.dispose();//解决echarts dom已经加载的报错
+        }
+        myVariancechart = echarts.init(chartDom);
+        var option = {
+            title: {
+                text: 'Monthly Predictive Variance',
+                left: 'center',
+                textStyle: {
+                    fontSize: 18,
+                }
+            },
+            legend: {
+                show: true,
+                top: 25,
+            },
+            xAxis: {
+                type: 'category',
+                data: ['2022年1月', '2022年2月', '2022年3月', '2022年4月', '2022年5月', '2022年6月','2022年7月']
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: { //y轴设置为%
+                    show: true,
+                    interval: 'auto',
+                    formatter: '{value} %',
+                }
+            },
+            series: [
+                {
+                    name:'Predictive Variance',
+                    data: [-4.17, 3.57, -0.83, -4.62, 3.33, 5.00, 0],
+                    type: 'line',
+                    label: {
+                        show: true,
+                        formatter: '{c} %',
+                    },
+                }
+            ]
+        };
+        myVariancechart.setOption(option);
+    }
+</script>

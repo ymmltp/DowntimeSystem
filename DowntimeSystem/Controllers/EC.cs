@@ -10,7 +10,7 @@ namespace DowntimeSystem.Controllers
     public class EC : Controller
     {
         private string[] contains = { "eCalling",  "FPY", "Downtime System" };//"Sparepart", 
-        //查询EC表单
+        #region 查询EC表单
         [HttpGet]
         public IActionResult GetDowntimeList(IncidentDet tmp,string starttime ,string endtime)
         {
@@ -38,6 +38,7 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+      
         [HttpGet]
         public IActionResult GetProject(IncidentDet tmp)
         {
@@ -57,6 +58,7 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         [HttpGet]
         public IActionResult GetLine(IncidentDet tmp)
         {
@@ -64,7 +66,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true).ToList();
+                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList();
                     if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
@@ -76,6 +78,7 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         [HttpGet]
         public IActionResult GetStation(IncidentDet tmp)
         {
@@ -83,7 +86,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true).ToList();
+                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList();
                     if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
@@ -95,6 +98,7 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         [HttpGet]
         public IActionResult GetDepartment(IncidentDet tmp)
         {
@@ -102,7 +106,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => e.Calcdowntime == true).ToList();
+                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList();
                     return Json(items.OrderBy(e => e.Department).Select(e => e.Department).Distinct().ToList());
                 }
             }
@@ -111,9 +115,9 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
 
-
-        //编辑EC表单
+        #region 编辑EC表单
         [HttpPost]
         public IActionResult CreateDowmtimeIncident(IncidentDet item)
         {
@@ -192,7 +196,6 @@ namespace DowntimeSystem.Controllers
                     tmp.Machine = item.Machine;
                     tmp.Issue = item.Issue;
                     tmp.Issueremark = item.Issueremark;
-
                     tmp.Calcdowntime = item.Calcdowntime;
                     tmp.Labor = item.Labor;
                     tmp.Actionstatus = 3;
@@ -209,5 +212,6 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
     }
 }

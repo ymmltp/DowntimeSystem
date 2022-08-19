@@ -34,7 +34,6 @@ function getDay(num, str) {
     return oYear + str + oMoth + str + oDay;
 }
 
-
 //Date->string
 function changeDateFormat(cellval) {
     if (cellval != null) {
@@ -65,7 +64,6 @@ function formatDate(date) {
     d = d < 10 ? ('0' + d) : d;
     return y + '-' + m + '-' + d;
 }
-
 
 function getData(url, para = null) {
     return new Promise(function (resolve, reject) {
@@ -107,6 +105,24 @@ function getDataWithArray(url, para = null) {
             },
             error: function (e) {
                 reject(e.responseText);
+            }
+        });
+    });
+}
+function postData(url, para) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: para,
+            success(data, status, xhr) {
+                resolve({ data: data, status: status, xhr: xhr });
+            },
+            fail(err, status, xhr) {
+                reject(err.responseTextr);
+            },
+            error: function (err) {
+                reject(err.responseText);
             }
         });
     });
@@ -236,7 +252,19 @@ function getDashboardSystem(obj) {
     })
 }
 
-
+//获取URL中的参数内容
+function GetParms(name) {
+    var url = decodeURI(window.location.href);
+    var index = url.indexOf('?');
+    var str = url.substring(index + 1);
+    var arr = str.split('&');
+    var result = {};
+    arr.forEach((item) => {
+        var a = item.split('=');
+        result[a[0]] = a[1];
+    });
+    return result[name];
+}
 
 function showWarning(text) {
     $('.alert').attr('class', 'alert');
@@ -252,3 +280,66 @@ function showSuccess(text) {
 }
 
 
+/**
+ * 合并单元格
+ * @param data 原始数据（在服务端完成排序）
+ * @param fieldName 合并属性名称
+ * @param colspan  合并列
+ * @param target  目标表格对象
+ */
+function mergeCells(data, fieldName, colspan, target) {
+    //声明一个map计算相同属性值在data对象出现的次数和
+    var sortMap = {};
+    var totalqtyMap = {};
+    var startindexMap = {};
+    var sumQTY = 0;
+    for (var i = 0; i < data.length; i++) {
+        sumQTY += data[i]['qty'];
+        for (var prop in data[i]) {
+            if (prop == fieldName) {
+                var key = data[i][prop]
+                if (sortMap.hasOwnProperty(key)) {
+                    sortMap[key] = sortMap[key] * 1 + 1;
+                    totalqtyMap[key] = totalqtyMap[key] + data[i]['qty'];
+                } else {
+                    sortMap[key] = 1;
+                    totalqtyMap[key] = data[i]['qty'];
+                    startindexMap[key] = i;
+                }
+                break;
+            } 
+        }
+    }
+
+    //更新Analysis Table的数据
+    for (var prop in startindexMap) {
+        $(target).bootstrapTable('updateCell', {
+            index: startindexMap[prop],
+            field: 'totalqty',
+            value: totalqtyMap[prop]
+        });
+        $(target).bootstrapTable('updateCell', {
+            index: startindexMap[prop],
+            field: 'totalPercent',
+            value: parseInt(totalqtyMap[prop] / sumQTY * 100) + "%"
+        });
+    }
+    for (var i = 0; i < data.length; i++) {
+        $(target).bootstrapTable('updateCell', {
+            index: i,
+            field: 'subPercent',
+            value: parseInt(data[i]['qty'] / sumQTY * 100) + "%"
+        });
+    }
+
+
+    //合并单元格
+    var index = 0;
+    for (var prop in sortMap) {
+        var count = sortMap[prop] * 1;
+        $(target).bootstrapTable('mergeCells', { index: index, field: fieldName, colspan: colspan, rowspan: count });
+        $(target).bootstrapTable('mergeCells', { index: index, field: 'totalqty', colspan: colspan, rowspan: count });
+        $(target).bootstrapTable('mergeCells', { index: index, field: 'totalPercent', colspan: colspan, rowspan: count });
+        index += count;
+    }
+}

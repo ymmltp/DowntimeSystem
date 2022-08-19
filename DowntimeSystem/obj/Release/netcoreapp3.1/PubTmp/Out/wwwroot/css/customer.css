@@ -88,6 +88,9 @@
 .default {
     background-color: #777;
 }
+.gray {
+    background-color: #ddd;
+}
 
 .label-box {
     display: inline-block;
@@ -185,7 +188,10 @@ table {
     border-bottom: 2px solid #ddd;
     text-align: center;
 }
-
+.tablegreen > thead > tr > th {
+    background-color: #2a605d;
+    color: white;
+}
 .tablewhite > thead > tr > th {
     background-color: #fdfaf6; /*#CA7508 #f39c12*/
     color: black;
@@ -625,7 +631,7 @@ padding: 0;
 }
 
 .sidebar #leftside-navigation ul li a i {
-    width: 20px;
+    width: 30px;
 }
 
 .sidebar #leftside-navigation ul li a i .fa-angle-left,
