@@ -92,16 +92,17 @@
             <div id="leftside-navigation" class="nano-content">
                 <ul class="nano-content">
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Dashboard"><i class="fa fa-dashboard"></i>Downtime Dashboard</a></li>
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_MTTRandMTBF" title="MTTR & MTBF"><i class="fa fa-dashboard"></i>MTTR & MTBF</a></li>
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_EmployeeWork" title="EmployeeWork"><i class="fa fa-dashboard"></i>EmployeeWork</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Downtime"><i class="fa fa-cogs"></i>Update Downtime</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="IssueSummary" title="Action Step Maintains"><i class="fa fa-handshake-o"></i>Action Step Maintains</a></li>
-                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="MTTRandMTBF" title="MTTR & MTBF"><i class="fa fa-dashboard"></i>Predictive Dashboard</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Coming" title="Spare part"><i class="fa fa-hand-o-right"></i>Spare part</a></li>
-                    @*<li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="testDashboardPage" title="Trouble shot guid"><i class="fa fa-hand-o-right"></i>Dashboard Test</a></li>*@
                 </ul>
             </div>
         </div>
         <div class="silder-right">
             <div class="silder-right-body">
+                <div class="alert"></div>
                 <main role="main" class="">
                     @RenderBody()
                 </main>

@@ -39,15 +39,19 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
-        public IActionResult MTTRandMTBF()
+        public IActionResult Dashboard_MTTRandMTBF()
+        {
+            return View();
+        }
+        public IActionResult Dashboard_EmployeeWork()
+        {
+            return View();
+        }
+        public IActionResult Dashboard_Predictive()
         {
             return View();
         }
         public IActionResult Coming()
-        {
-            return View();
-        }
-        public IActionResult PredictiveDashboard()
         {
             return View();
         }

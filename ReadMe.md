@@ -204,7 +204,8 @@ Dashboard设计要求
 
 - [x] 获取本机登录信息
 - [x] Dashboard 初始默认选择今天的downtime
-- [ ] MTTR: Mean time for repaire (group by customer,department,person)
+- [x] MTTR: Mean time to repaire (group by customer,department,person)
 MTTR (mins) = SUM(Close - Start) / downtime Count
-- [ ] MTBF: Mean time before fail
+- [x] MTBF: Mean time between fail
  MTBF (mins) = (downtime B endtime -  downtime A starttime)/Total downtime Count
+- [ ] 员工的平均维修时间（折线图）和维修次数（柱状图）
