@@ -618,7 +618,7 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                     if (event.name == "Closed") {
                         $("#modalName").html("Closed Downtime incident Detail Information")
                         $('#detaillist').bootstrapTable('hideColumn', 'openday');
-                        $('#detaillist').bootstrapTable('hideColumn', 'option');
+                        $('#detaillist').bootstrapTable('showColumn', 'option');
                         $('#detaillist').bootstrapTable('showColumn', 'downday');
                         $('#detaillist').bootstrapTable('showColumn', 'finishtime');
                     } else {

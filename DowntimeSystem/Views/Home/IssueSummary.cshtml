@@ -43,6 +43,7 @@
 <div class="alert"></div>
 
 <script src="~/js/customer.js"></script>
+<script src="~/js/cookie.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-editable.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table-editable.js"></script>
@@ -150,7 +151,7 @@
                     id: row['id'],
                     action: row['action'],
                     correctiveaction: row['correctiveaction'],
-                    editor: "Auto",
+                    editor: "Auto",//getCookie("dt-displayname"),
                 }
                 $.ajax({
                     url: '/IssueSummary/EditIssueSummary_Action',

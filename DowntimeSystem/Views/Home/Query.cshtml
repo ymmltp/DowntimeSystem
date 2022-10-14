@@ -339,7 +339,6 @@
 <script>
     $(document).ready(function () {
         let id = GetParms("ticket");
-        console.log(id);
         if (id != "" && id != null && id != 'undefined') {
             $("#id").val(id);
             GetDowntimeList();
@@ -587,6 +586,7 @@
                         $("#sr-machine").val(row['machine']);
                         $("#sr-issueremark").val(row['issueremark']);
                         $("#StartRepaireModal").data("id", row['id']);
+                        //$("#sr-employee").val(getCookie("dt-displayname"));
                         $("#StartRepaireModal").modal('show');
                     },
                     "click #close": function (e, value, row, index) {

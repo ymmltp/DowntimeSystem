@@ -37,12 +37,10 @@
                     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
                 return fmt;
             }
-
             setInterval(function () {
                 document.getElementById('Currenttime').innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');
             }, 1000);
         })
-
         function fullScreen() {
             // documentElement 属性以一个元素对象返回一个文档的文档元素
             var el = document.documentElement;
@@ -52,11 +50,10 @@
     </script>
 </head>
 <body>
-
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow ">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Query">Downtime System</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Dashboard"><img src="~/img/titlePIC.png" style="height: 70px; margin-top: -20px; margin-bottom: -30px; pointer-events: none;" /></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -71,6 +68,9 @@
                         <li class="nav-item">
                             <label class="nav-link text-light" style="margin-bottom:0px"><i class="fa fa-clock-o"></i>&nbsp;<span id="Currenttime"></span></label>
                         </li>
+                        @*<li class="nav-item">
+                            <label class="nav-link text-light" style="margin-bottom:0px"><span id="displayname"></span></label>
+                        </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Home"><i class="fa fa-home"></i></a>
                         </li>
@@ -92,14 +92,9 @@
             <div id="leftside-navigation" class="nano-content">
                 <ul class="nano-content">
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Dashboard"><i class="fa fa-dashboard"></i>Downtime Dashboard</a></li>
-                    @*<li class="sub-menu">
-                            <a href="javascript:void(0);"><i class="fa fa-hand-o-right"></i><span>Downtime</span><i class="arrow fa fa-angle-right pull-right"></i></a>
-                            <ul>
-                            </ul>
-                        </li>*@
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Downtime"><i class="fa fa-cogs"></i>Update Downtime</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="IssueSummary" title="Action Step Maintains"><i class="fa fa-handshake-o"></i>Action Step Maintains</a></li>
-                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="PredictiveDashboard" title="PredictiveDashboard"><i class="fa fa-dashboard"></i>Predictive Dashboard</a></li>
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="MTTRandMTBF" title="MTTR & MTBF"><i class="fa fa-dashboard"></i>Predictive Dashboard</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Coming" title="Spare part"><i class="fa fa-hand-o-right"></i>Spare part</a></li>
                     @*<li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="testDashboardPage" title="Trouble shot guid"><i class="fa fa-hand-o-right"></i>Dashboard Test</a></li>*@
                 </ul>
@@ -118,6 +113,13 @@
     </div>
     <script src="~/js/index.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        //$(document).ready(function () {
+        //    $.getJSON("/Home/GetUserName", function (data) {
+        //        document.getElementById('displayname').innerHTML = data;
+        //    });
+        //})
+    </script>
     <script src="~/lib/bootstrap/dist/js/moment.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

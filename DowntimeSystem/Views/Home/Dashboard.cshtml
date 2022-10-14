@@ -34,6 +34,7 @@
             <option value="2">Current Month</option>
             <option value="3">Last Month</option>
             <option value="0">Customize</option>
+            <option value="5">Today</option>
         </select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 invisible">
@@ -141,7 +142,7 @@
         getDashboardSystem($("#system-select"));
         iniDatetimepicker();
         //chartssize($("#chartbox"), $(".mychart"));
-        $("#timeZone option[value='1']").attr("selected", true);
+        $("#timeZone option[value='5']").attr("selected", true);
         $("#timeZone").selectpicker('refresh');
         $("#timeZone").trigger("onchange");
         interval = setInterval(function () {
@@ -202,6 +203,11 @@
                 $("#end").val(EndOfMonth.format("yyyy-MM-dd"));
                 showSuccess("显示上月数据");
                 break;
+            case "5": //Current Day
+                $("#start").val(today.format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
+                showSuccess("显示当天数据");
+                break;
             default:
                 break;
         }
@@ -220,23 +226,6 @@
         }, min);
         showSuccess("页面刷新时间设定完成，每 " + $("#refresh-input").val() + " 分钟刷新一次");
     }
-
-    // #region 根据窗体大小，自动调整echart的大小
-    // function chartssize(container, charts) {
-    //    var wi = getStyle(container, 'width').width;
-    //    var hi = getStyle(container, 'height').height;
-    //    charts.style.width = wi
-    //    charts.style.height = hi
-    //}
-    //function getStyle(el, name) {
-    //    if (!el) return false;
-    //    if (window.getComputedStyle) {
-    //        return window.getComputedStyle(el, null);
-    //    } else {
-    //        return el.currentStyle;
-    //    }
-    //}
-    //#endregion
 
     //#region 可隐藏的搜索栏
     $("#searchBox").on('click', function () {

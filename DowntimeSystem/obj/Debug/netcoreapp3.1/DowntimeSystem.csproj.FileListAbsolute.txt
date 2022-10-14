@@ -84,3 +84,6 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\System.IO.Pipelines.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\PredictiveDashboard.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.csproj.AssemblyReference.cache
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authorization.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Metadata.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\MTTRandMTBF.cshtml.g.cs

@@ -199,3 +199,12 @@ Dashboard设计要求
 #### 2022.08.18 Update
 
 - [x] Dashboard 增加自定义时间
+
+#### 2022.10.13 Update
+
+- [x] 获取本机登录信息
+- [x] Dashboard 初始默认选择今天的downtime
+- [ ] MTTR: Mean time for repaire (group by customer,department,person)
+MTTR (mins) = SUM(Close - Start) / downtime Count
+- [ ] MTBF: Mean time before fail
+ MTBF (mins) = (downtime B endtime -  downtime A starttime)/Total downtime Count

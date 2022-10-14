@@ -1,11 +1,9 @@
 ﻿using DowntimeSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using DowntimeSystem.Models;
 
 namespace DowntimeSystem.Controllers
@@ -25,26 +23,27 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
+
+        public IActionResult IssueSummary()
+        {
+            return View();
+        }
+
         public IActionResult Contact()
         {
             return View();
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
+        #region dashboard
         public IActionResult Dashboard()
         {
             return View();
         }
-
-        public IActionResult Coming()
+        public IActionResult MTTRandMTBF()
         {
             return View();
         }
-
-        public IActionResult IssueSummary()
+        public IActionResult Coming()
         {
             return View();
         }
@@ -52,7 +51,14 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
-        
+        #endregion
+
+        #region Unused
+        public IActionResult Login()
+        {
+            return View();
+        }
+        #endregion
 
         //Test Page
         public IActionResult testDashboardPage()
@@ -67,23 +73,38 @@ namespace DowntimeSystem.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //public ActionResult GetUserName()
-        //{
-        //    try
-        //    {
-        //        ad.Domain = 
-        //        string ntid = ad.GetADDispalyName();
-        //        if (System.Web.HttpContext.Current.Request.Cookies["qn-ntid"] != null)
-        //        {
-        //            ntid = System.Web.HttpContext.Current.Request.Cookies["qn-ntid"].Value.ToString();
-        //        }
-        //        UserInfo ui = ADHelper.GetADUserEntity(ntid);
-        //        return Content(ui.DisplayName, "text/html");
-        //    }
-        //    catch (Exception err)
-        //    {
-        //        return new HttpStatusCodeResult(204, err.Message);
-        //    }
-        //}
+        //获取本地windows 登录信息，并写入cookie中
+        [HttpGet]
+        public ActionResult GetUserName()
+        {
+            try
+            {
+                ad.Domain = domain;
+                string identityName = HttpContext.User.Identity.Name;
+                int splitIndex = identityName.IndexOf('\\');
+                string ntid = splitIndex > -1 ? identityName.Substring(splitIndex + 1) : identityName;
+                string displayname = ad.GetADDispalyName(ntid);
+                HttpContext.Request.Cookies.TryGetValue("dt-ntid", out string value);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    HttpContext.Response.Cookies.Delete("dt-displayname");
+                    HttpContext.Response.Cookies.Delete("dt-ntid");             
+                }
+                HttpContext.Response.Cookies.Append("dt-ntid", ntid, new CookieOptions
+                {
+                    Expires = DateTime.Now.AddMinutes(120)
+                });
+                HttpContext.Response.Cookies.Append("dt-displayname", displayname, new CookieOptions
+                {
+                    Expires = DateTime.Now.AddMinutes(120)
+                });
+                //UserInfo ui = ad.GetADUserEntity(ntid);
+                return Json(displayname);
+            }
+            catch (Exception err)
+            {
+                return new BadRequestResult();
+            }
+        }
     }
 }

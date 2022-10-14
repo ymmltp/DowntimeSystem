@@ -35,8 +35,8 @@ namespace DowntimeSystem.Models
 
             modelBuilder.Entity<IncidentDet>(entity =>
             {
-                entity.HasQueryFilter(e => e.Calcdowntime.Equals(true));
-                entity.HasQueryFilter(e => Array.AsReadOnly(contains).Contains(e.Comefrom));
+                entity.HasQueryFilter(e => e.Calcdowntime.Equals(true)); //只获取downtime事件
+                entity.HasQueryFilter(e => Array.AsReadOnly(contains).Contains(e.Comefrom));  //只获取需要的系统传来的数据
                 entity.ToTable("incident_det");
 
                 entity.HasIndex(e => new { e.Comefrom, e.Occurtime }, "comefrom");
