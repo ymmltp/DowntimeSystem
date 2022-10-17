@@ -208,4 +208,5 @@ Dashboard设计要求
 MTTR (mins) = SUM(Close - Start) / downtime Count
 - [x] MTBF: Mean time between fail
  MTBF (mins) = (downtime B endtime -  downtime A starttime)/Total downtime Count
-- [ ] 员工的平均维修时间（折线图）和维修次数（柱状图）
+- [x] 员工的平均维修时间（折线图）和维修次数（柱状图）
+- [x] 根据员工的 employeeID 筛选出对应的 downtime 事件

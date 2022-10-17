@@ -53,12 +53,17 @@
                         <option value="2">Closed</option>
                     </select>
                 </div>
+
                 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
                     <label class="form-label" for="id"> Ticket No: </label>
                     <input type='text' class="form-control" id='id' />
                 </div>
+                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
+                    <label class="form-label" for="responser"> Repaire Employee: </label>
+                    <input type='text' class="form-control" id='responser' placeholder="--请输入工号 (WY0000) --"/>
+                </div>
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
-                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 100px">New Incident</button></div>              
+                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 100px">New Incident</button></div>
             </div>
         </div>
     </div>
@@ -384,6 +389,7 @@
                 comefrom: $("#system-select").val()[0],
                 starttime: $("#start").val() ? $("#start").val() + " 00:00:00" : null,
                 endtime: $("#end").val() ? $("#end").val() + " 23:59:59" : null,
+                Respperson: $("#responser").val(),
             },
             showColumns: true,
             dataType: 'json',
@@ -517,7 +523,7 @@
                 visible: false,
             }, {
                 field: 'downtime',
-                title: 'DownTime(min)',
+                title: 'DownTime(mins)',
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {

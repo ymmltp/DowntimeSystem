@@ -17,20 +17,19 @@ namespace DowntimeSystem.Controllers
             try {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList(); 
-                    if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Station)) items = items.Where(e => e.Station.Equals(tmp.Station)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Comefrom)) items = items.Where(e => e.Comefrom.Equals(tmp.Comefrom)).ToList();
-                    if (tmp.Id!=0) items = items.Where(e => e.Id.Equals(tmp.Id)).ToList();
-
-
-                    if (!string.IsNullOrEmpty(starttime)) items = items.Where(e => e.Occurtime >= Convert.ToDateTime(starttime)).ToList();
-                    if (!string.IsNullOrEmpty(endtime)) items = items.Where(e => e.Occurtime <= Convert.ToDateTime(endtime)).ToList();
-
-                    if (!string.IsNullOrEmpty(tmp.Incidentstatus.ToString())) items = items.Where(e => e.Incidentstatus.Equals(tmp.Incidentstatus)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Actionstatus.ToString())) items = items.Where(e => e.Actionstatus.Equals(tmp.Actionstatus)).ToList();
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true); 
+                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
+                    if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
+                    if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
+                    if (!string.IsNullOrEmpty(tmp.Station)) where = where.Where(e => e.Station.Equals(tmp.Station));
+                    if (!string.IsNullOrEmpty(tmp.Comefrom)) where = where.Where(e => e.Comefrom.Equals(tmp.Comefrom));
+                    if (tmp.Id!=0) where = where.Where(e => e.Id.Equals(tmp.Id));
+                    if (!string.IsNullOrEmpty(tmp.Respperson)) where = where.Where(e => e.Respperson.Equals(tmp.Respperson));
+                    if (!string.IsNullOrEmpty(starttime)) where = where.Where(e => e.Occurtime >= Convert.ToDateTime(starttime));
+                    if (!string.IsNullOrEmpty(endtime)) where = where.Where(e => e.Occurtime <= Convert.ToDateTime(endtime));
+                    if (!string.IsNullOrEmpty(tmp.Incidentstatus.ToString())) where = where.Where(e => e.Incidentstatus.Equals(tmp.Incidentstatus));
+                    if (!string.IsNullOrEmpty(tmp.Actionstatus.ToString())) where = where.Where(e => e.Actionstatus.Equals(tmp.Actionstatus));
+                    var items = where.ToList();
                     return Json(items.OrderBy(e => e.Incidentstatus).OrderBy(e=>e.Actionstatus).ToList()) ;
                 }
             }

@@ -487,7 +487,7 @@ namespace DowntimeSystem.Controllers
                         value = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Repairtime)).TotalMinutes)/g.Count(),2),
                         count = g.Count(),
                         item = g.Key,
-                    }).OrderBy(e=>e.count).ToList();
+                    }).OrderByDescending(e=>e.count).ToList();
                     return Json(items);
                 }
                 catch (Exception ex)

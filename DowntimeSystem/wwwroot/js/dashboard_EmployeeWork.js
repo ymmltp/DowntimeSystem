@@ -1,4 +1,5 @@
 ﻿var myChart1;
+const colors = ['#5470C6', '#91CC75', '#EE6666'];
 
 function EmployeeWorkEffiency(system, project, department, lastday, currentDay) {
     getDataWithArray("/Dashboard/EmployeeWorkEffiency", { comefrom: system, departmentlist: department, projectlist: project, currentDay: currentDay, lastday: lastday })
@@ -10,6 +11,9 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
             var barchart = {
                 name: 'Repaire Count',
                 type: 'bar',
+                label: {
+                    show: true
+                },
                 tooltip: {
                     valueFormatter: function (value) {
                         return value + ' piece';
@@ -20,6 +24,9 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
             var linechart = {  
                 name: 'Repaire mean time',
                 type: 'line',
+                label: {
+                    show: true
+                },
                 yAxisIndex: 1,
                 tooltip: {
                     valueFormatter: function (value) {
@@ -46,6 +53,7 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
             myChart1 = echarts.init(chartDom);
             var optionArray = [];
             var option = {
+                color: colors,
                 title: {
                     text: 'Employee Work',
                     left: 'center',
@@ -56,15 +64,24 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
-                        type: 'cross',
-                        crossStyle: {
-                            color: '#999'
+                        type: 'shadow',
+                        label: {
+                            show: true
                         }
                     }
                 },
                 legend: {
-                    data: ['Repaire Count', 'Repaire mean time']
+                    data: ['Repaire Count', 'Repaire mean time'],
+                    top:25,
                 },
+                dataZoom: [
+                    {
+                        show: true,
+                        start: 0,
+                        end: 100,
+                        maxValueSpan: 20
+                    },
+                ],
                 xAxis: [
                     {
                         type: 'category',
@@ -77,23 +94,25 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
                 yAxis: [
                     {
                         type: 'value',
-                        name: 'Repaire Count',
+                        name: 'Repaire Count (piece)',
                         min: 0,
-                        max: 250,
-                        interval: 50,
-                        axisLabel: {
-                            formatter: '{value} piece'
-                        }
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: colors[0]
+                            }
+                        },
                     },
                     {
                         type: 'value',
-                        name: 'Repaire mean time',
+                        name: 'Repaire mean time (mins)',
                         min: 0,
-                        max: 25,
-                        interval: 5,
-                        axisLabel: {
-                            formatter: '{value} mins'
-                        }
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: colors[1]
+                            }
+                        },
                     }
                 ],
                 series: res.data,
