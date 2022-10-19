@@ -82,5 +82,9 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\Microsoft.AspNetCore.Http.Features.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\System.IO.Pipelines.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\IssueSummary.cshtml.g.cs
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\PredictiveDashboard.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\testDashboardPage.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\Microsoft.AspNetCore.Authorization.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\Microsoft.AspNetCore.Metadata.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_EmployeeWork.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_MTTRandMTBF.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_Predictive.cshtml.g.cs

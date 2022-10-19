@@ -17,6 +17,8 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\cookie.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\customer.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\dashboard.js
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\dashboard_EmployeeWork.js
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\dashboard_MTTRandMTBF.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\index.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\issueSummary.js
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\site.js
@@ -102,8 +104,10 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\DowntimeSystem.runtimeconfig.json
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\DowntimeSystem.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Authentication.Negotiate.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Authorization.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Connections.Abstractions.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Metadata.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.EntityFrameworkCore.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.EntityFrameworkCore.Relational.dll

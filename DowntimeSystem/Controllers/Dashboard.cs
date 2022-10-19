@@ -470,7 +470,7 @@ namespace DowntimeSystem.Controllers
         }
         #endregion
 
-        #region 员工的平均repaire时间和次数
+        #region 员工的平均repair时间和次数
         public IActionResult EmployeeWorkEffiency(IncidentDet item, string[] departmentlist, string[] projectlist, string currentDay, string lastDay)
         {
             using (ECContext db = new ECContext())
