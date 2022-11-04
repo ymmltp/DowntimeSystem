@@ -46,7 +46,7 @@ namespace DowntimeSystem
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Dashboard}/{id?}");
+                    pattern: "{controller=Home}/{action=Dashboard_MTTRandMTBF_SubPage}/{id?}");
             });
         }
     }

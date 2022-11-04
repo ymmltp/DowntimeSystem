@@ -201,32 +201,45 @@ function getProject(obj,line) {
         }
     })
 }
-function getStation(obj,line,project) {
-    $.ajax({
-        url: '/EC/GetStation',
-        method: 'GET',
-        data: {
-            Line: line?line[0]:null,
-            Project: project?project[0]:null,
-        },
-        dataType: 'json',
-        success: function (data) {
+function getStation(obj, department, project) {
+    getDataWithArray("/EC/GetStation",
+        {
+            departmentList: department ,
+            projectList: project ,
+        })
+        .then(data => {
             var option = "";
             for (var i = 0; i < data.length; i++) {
                 option += '<option value="' + data[i] + '">' + data[i] + '</option>';
             }
             obj.html(option);
             obj.selectpicker('refresh');
-        },
-        fail: function (err) {
-            console.log(err);
-            showWarning(err.statusText);
-        },
-        error: function (err) {
-            console.log(err);
-            showWarning(err.statusText);
-        }
-    })
+        })
+    //$.ajax({
+    //    url: '/EC/GetStation',
+    //    method: 'GET',
+    //    data: {
+    //        Department: department ? department[0]:null,
+    //        Project: project?project[0]:null,
+    //    },
+    //    dataType: 'json',
+    //    success: function (data) {
+    //        var option = "";
+    //        for (var i = 0; i < data.length; i++) {
+    //            option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+    //        }
+    //        obj.html(option);
+    //        obj.selectpicker('refresh');
+    //    },
+    //    fail: function (err) {
+    //        console.log(err);
+    //        showWarning(err.statusText);
+    //    },
+    //    error: function (err) {
+    //        console.log(err);
+    //        showWarning(err.statusText);
+    //    }
+    //})
 }
 function getDashboardSystem(obj) {
     $.ajax({

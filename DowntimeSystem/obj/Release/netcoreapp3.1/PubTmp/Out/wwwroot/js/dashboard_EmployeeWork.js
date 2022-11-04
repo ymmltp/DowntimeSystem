@@ -35,13 +35,29 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
                 },
                 data: [] 
             }
+            var totallinechart = {
+                name: 'Total Repair time',
+                type: 'line',
+                label: {
+                    show: true
+                },
+                yAxisIndex: 2,
+                tooltip: {
+                    valueFormatter: function (value) {
+                        return value + ' mins';
+                    }
+                },
+                data: []
+            }
             for (var i = 0; i < res.length; i++) {
                 dataArray.axis.push(res[i].item);
                 barchart.data.push(res[i].count);
                 linechart.data.push(res[i].value);
+                totallinechart.data.push(res[i].totalValue);
             }
             dataArray.data.push(barchart);
             dataArray.data.push(linechart);
+            dataArray.data.push(totallinechart);
             return dataArray;
         })
         .then(res => {
@@ -71,7 +87,7 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
                     }
                 },
                 legend: {
-                    data: ['Repair Count', 'Repair mean time'],
+                    data: ['Repair Count', 'Repair mean time','Total Repair time'],
                     top:25,
                 },
                 dataZoom: [
@@ -82,6 +98,11 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
                         maxValueSpan: 20
                     },
                 ],
+                grid: {
+                    left: '10%',
+                    right: '10%',
+                    containLabel: true
+                },
                 xAxis: [
                     {
                         type: 'category',
@@ -94,7 +115,10 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
                 yAxis: [
                     {
                         type: 'value',
-                        name: 'Repair Count (piece)',
+                        name: 'Repair Count',
+                        axisLabel: {
+                            formatter: '{value} piece'
+                        },
                         min: 0,
                         axisLine: {
                             show: true,
@@ -105,12 +129,32 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
                     },
                     {
                         type: 'value',
-                        name: 'Repair mean time (mins)',
+                        name: 'Mean time',
+                        axisLabel: {
+                            formatter: '{value} mins'
+                        },
                         min: 0,
                         axisLine: {
                             show: true,
                             lineStyle: {
                                 color: colors[1]
+                            }
+                        },
+                    },
+                    {
+                        type: 'value',
+                        name: 'Total time',
+                        axisLabel: {
+                            formatter: '{value} mins'
+                        },
+                        min: 0,
+                        position: 'right',
+                        alignTicks: true,
+                        offset: 80,
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: colors[2]
                             }
                         },
                     }

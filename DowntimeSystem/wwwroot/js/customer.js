@@ -4,7 +4,7 @@
         format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
         todayBtn: true, //一键选中今天的日期
         minDate: '2022/01/01',
-        maxDate: 0,//今天
+        //maxDate: 0,//今天
         pickerPosition: "bottom-left", //打开选择卡的位置
         weekStart: 1, //周开始的星期：0-6 星期日-星期六
         autoclose: true,//选好时间后自动关闭
@@ -152,10 +152,13 @@ function getDepartment(obj) {
         }
     })
 }
-function getLine(obj) {
+function getLine(obj,project) {
     $.ajax({
         url: '/EC/GetLine',
         method: 'GET',
+        data: {
+            Project: project ? project[0] : null,
+        },
         dataType: 'json',
         success: function (data) {
             var option = "";
@@ -201,32 +204,46 @@ function getProject(obj,line) {
         }
     })
 }
-function getStation(obj,line,project) {
-    $.ajax({
-        url: '/EC/GetStation',
-        method: 'GET',
-        data: {
-            Line: line?line[0]:null,
-            Project: project?project[0]:null,
-        },
-        dataType: 'json',
-        success: function (data) {
+function getStation(obj, department, project,line) {
+    getDataWithArray("/EC/GetStation",
+        {
+            departmentList: department ,
+            projectList: project,
+            lineList: line,
+        })
+        .then(data => {
             var option = "";
             for (var i = 0; i < data.length; i++) {
                 option += '<option value="' + data[i] + '">' + data[i] + '</option>';
             }
             obj.html(option);
             obj.selectpicker('refresh');
-        },
-        fail: function (err) {
-            console.log(err);
-            showWarning(err.statusText);
-        },
-        error: function (err) {
-            console.log(err);
-            showWarning(err.statusText);
-        }
-    })
+        })
+    //$.ajax({
+    //    url: '/EC/GetStation',
+    //    method: 'GET',
+    //    data: {
+    //        Department: department ? department[0]:null,
+    //        Project: project?project[0]:null,
+    //    },
+    //    dataType: 'json',
+    //    success: function (data) {
+    //        var option = "";
+    //        for (var i = 0; i < data.length; i++) {
+    //            option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+    //        }
+    //        obj.html(option);
+    //        obj.selectpicker('refresh');
+    //    },
+    //    fail: function (err) {
+    //        console.log(err);
+    //        showWarning(err.statusText);
+    //    },
+    //    error: function (err) {
+    //        console.log(err);
+    //        showWarning(err.statusText);
+    //    }
+    //})
 }
 function getDashboardSystem(obj) {
     $.ajax({

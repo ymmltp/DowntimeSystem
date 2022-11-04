@@ -15,11 +15,15 @@
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> Department:</label>
-        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-none-selected-text="All" data-actions-box="true" onchange="updateChart()"></select>
+        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-none-selected-text="All" data-actions-box="true" onchange="updateChart(); getStation($('#station-select'),$('#department-select').val(),$('#project-select').val());"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> Project:</label>
-        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-live-search="true" data-none-selected-text="All" data-actions-box="true" onchange="updateChart()"></select>
+        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-live-search="true" data-none-selected-text="All" data-actions-box="true" onchange="updateChart();getStation($('#station-select'),$('#department-select').val(),$('#project-select').val());"></select>
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+        <label class="form-label"> Station:</label>
+        <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-live-search="true" data-none-selected-text="All" data-actions-box="true" onchange="updateChart()"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label" for="end"> Refresh Time (mins): </label>
@@ -59,24 +63,35 @@
 @*图表*@
 <div class="row" style="margin-right: 0px; margin-top:5px;">
     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12">
-        <div id="chart1" class="mychart" style="width:100%;height:300px"> Total MTTR</div>
+        <div id="chart1" class="mychart" style="width:100%;height:280px"> Total MTTR</div>
     </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12">
-        <div id="chart2" class="mychart" style="width:100%;height:300px">MTTR By Department </div>
+    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12">
+        <div id="chart2" class="mychart" style="width:100%;height:280px">MTTR By Department </div>
     </div>
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
-        <div id="chart3" class="mychart" style="width:100%;height:300px"> MTTR By Project  </div>
+    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
+        <div id="chart3" class="mychart" style="height:280px"> MTTR By Project  </div>
     </div>
 </div>
-<div class="row" style="margin-right: 0px; margin-top: 2px;">
+<div class="row" style="margin-right: 0px; margin-top:10px;">
     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12">
-        <div id="chart4" class="mychart" style="width:100%;height:300px"> Total MTBF</div>
+        <div id="chart7" class="mychart" style="width:100%;height:280px"> Total MTTA</div>
     </div>
+    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12">
+        <div id="chart8" class="mychart" style="width:100%;height:280px">MTTA By Department </div>
+    </div>
+    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
+        <div id="chart9" class="mychart" style="height:280px"> MTTA By Project  </div>
+    </div>
+</div>
+<div class="row" style="margin-right: 0px; margin-top: 10px;">
     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12">
-        <div id="chart5" class="mychart" style="width:100%;height:300px">MTBF By Department </div>
+        <div id="chart4" class="mychart" style="width:100%;height:280px"> Total MTBF</div>
     </div>
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
-        <div id="chart6" class="mychart" style="width:100%;height:300px">MTBF By Project </div>
+    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12">
+        <div id="chart5" class="mychart" style="width:100%;height:280px">MTBF By Department </div>
+    </div>
+    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
+        <div id="chart6" class="mychart" style="height:280px">MTBF By Project </div>
     </div>
 </div>
 
@@ -91,6 +106,7 @@
         getProject($("#project-select"));
         getDepartment($("#department-select"));
         getDashboardSystem($("#system-select"));
+        getStation($("#station-select"));
         iniDatetimepicker();
         //chartssize($("#chartbox"), $(".mychart"));
         $("#timeZone option[value='5']").attr("selected", true);
@@ -171,12 +187,15 @@
         else {
             let start = $("#start").val() + " 00:00:00";
             let end = $("#end").val() + " 23:59:59";
-            getTotalMTTR($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
-            getMTTRByDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
-            getMTTRByProject($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
-            getTotalMTBF($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
-            getMTBFByDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
-            getMTBFByProject($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), start, end);
+            getTotalMTTR($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
+            getMTTRByDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
+            getMTTRByProject($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
+            getTotalMTTA($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
+            getMTTAByDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
+            getMTTAByProject($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
+            getTotalMTBF($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
+            getMTBFByDepartment($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
+            getMTBFByProject($("#system-select").val()[0], $("#project-select").val(), $("#department-select").val(), $("#station-select").val(), start, end);
         }
     }
 

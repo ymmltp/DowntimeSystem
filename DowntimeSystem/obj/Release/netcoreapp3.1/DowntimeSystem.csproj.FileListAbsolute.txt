@@ -46,7 +46,6 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Windows.Extensions.dll
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.csproj.AssemblyReference.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.AssemblyInfoInputs.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.AssemblyInfo.cs
@@ -88,3 +87,9 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_EmployeeWork.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_MTTRandMTBF.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_Predictive.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\System.Data.SqlClient.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll

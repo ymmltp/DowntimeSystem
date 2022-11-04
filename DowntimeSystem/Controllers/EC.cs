@@ -37,7 +37,22 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
-      
+        [HttpGet]
+        public IActionResult GetDepartment(IncidentDet tmp)
+        {
+            try
+            {
+                using (ECContext db = new ECContext())
+                {
+                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList();
+                    return Json(items.OrderBy(e => e.Department).Select(e => e.Department).Distinct().ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpGet]
         public IActionResult GetProject(IncidentDet tmp)
         {
@@ -56,19 +71,21 @@ namespace DowntimeSystem.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-        
+        }      
         [HttpGet]
-        public IActionResult GetLine(IncidentDet tmp)
+        public IActionResult GetLine(IncidentDet tmp, string[] departmentList, string[] projectList)
         {
             try
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true);
+                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
+                    if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
+                    if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
+                    if (projectList.Length > 0) where = where.Where(e => projectList.Contains(e.Project));
+                    if (departmentList.Length > 0) where = where.Where(e => departmentList.Contains(e.Department));
+                    var items = where.ToList();
                     return Json(items.OrderBy(e => e.Line).Select(e => e.Line).Distinct().ToList());
                 }
             }
@@ -77,18 +94,21 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
         [HttpGet]
-        public IActionResult GetStation(IncidentDet tmp)
+        public IActionResult GetStation(IncidentDet tmp, string[] departmentList,string[] projectList,string[] lineList)
         {
             try
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true);
+                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
+                    if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
+                    if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
+                    if (projectList.Length>0) where = where.Where(e => projectList.Contains(e.Project));
+                    if (departmentList.Length > 0) where = where.Where(e => departmentList.Contains(e.Department));
+                    if (lineList.Length > 0) where = where.Where(e => lineList.Contains(e.Line));
+                    var items = where.ToList();
                     return Json(items.OrderBy(e => e.Station).Select(e => e.Station).Distinct().ToList());
                 }
             }
@@ -97,16 +117,23 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
         [HttpGet]
-        public IActionResult GetDepartment(IncidentDet tmp)
+        public IActionResult GetFixture(IncidentDet tmp, string[] departmentList, string[] projectList, string[] lineList, string[] stationList)
         {
             try
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IncidentDet> items = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true).ToList();
-                    return Json(items.OrderBy(e => e.Department).Select(e => e.Department).Distinct().ToList());
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true);
+                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
+                    if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
+                    if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
+                    if (projectList.Length > 0) where = where.Where(e => projectList.Contains(e.Project));
+                    if (departmentList.Length > 0) where = where.Where(e => departmentList.Contains(e.Department));
+                    if (lineList.Length > 0) where = where.Where(e => lineList.Contains(e.Line));
+                    if (stationList.Length > 0) where = where.Where(e => stationList.Contains(e.Station));
+                    var items = where.ToList();
+                    return Json(items.OrderBy(e => e.Machine).Select(e => e.Machine).Distinct().ToList());
                 }
             }
             catch (Exception ex)
@@ -114,6 +141,8 @@ namespace DowntimeSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
         #endregion
 
         #region 编辑EC表单

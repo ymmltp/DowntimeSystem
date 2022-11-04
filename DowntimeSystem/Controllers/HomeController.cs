@@ -43,6 +43,15 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
+        public IActionResult Dashboard_MTTRandMTBF_OverView()
+        {
+            return View();
+        }
+        public IActionResult Dashboard_MTTRandMTBF_SubPage()
+        {
+            return View();
+        }
+
         public IActionResult Dashboard_EmployeeWork()
         {
             return View();
