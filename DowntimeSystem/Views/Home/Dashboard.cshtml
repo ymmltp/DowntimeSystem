@@ -227,18 +227,4 @@
         showSuccess("页面刷新时间设定完成，每 " + $("#refresh-input").val() + " 分钟刷新一次");
     }
 
-    //#region 可隐藏的搜索栏
-    $("#searchBox").on('click', function () {
-        if ($("#searchBoxMenu").hasClass("elehide")) {
-            $("#searchBoxMenu").removeClass("elehide");
-            $("#searchBox").removeClass("fa-cog");
-            $("#searchBox").addClass("fa-minus-square");
-        }
-        else {
-            $("#searchBoxMenu").addClass("elehide");
-            $("#searchBox").removeClass("fa-minus-square");
-            $("#searchBox").addClass("fa-cog");
-        }
-    })
-    //#endregion
 </script>

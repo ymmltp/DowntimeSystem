@@ -296,38 +296,10 @@ namespace DowntimeSystem.Controllers
         }
         #endregion
 
-        #region 统计不同状态的 downtime 发生的次数
-        public IActionResult GetCountGroupByDowntimeStatus(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay)
-        {
-            using (ECContext db = new ECContext())
-            {
-                try
-                {
-                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom));
-                    if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
-                    if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
-                    if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
-                    if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
-                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
-                    var items = tmp.GroupBy(e => e.Actionstatus).Select(g => new
-                    {
-                        name = g.Key == 0 ? "New Open" : g.Key == 1 ? "Issue Fix" : g.Key == 2 ? "Closed" : "RC&CA",
-                        value = g.Count()
-                    }).ToList();
-                    return Json(items);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-            }
-        }
-        #endregion
+         
+        #region MTTR & MTTA & MTBF 部分的数据查询 ,只统计已经 close 且维修人不是 Auto 的 DT 
 
-
-        //MTTR / MTBF 部分的报表都只统计已经 close 的 DT
-
-        //未加入mtbf ,
+        #region MTTR & MTTA
         /// <summary>
         /// 返回 MTTR 和 MTTA 具体数值
         /// </summary>
@@ -464,6 +436,7 @@ namespace DowntimeSystem.Controllers
             }
         }
 
+        #endregion
 
         #region MTTR
         public IActionResult TotalMTTR(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay)
@@ -1067,7 +1040,9 @@ namespace DowntimeSystem.Controllers
         }
         #endregion
 
-        #region 员工的平均repair时间 和 次数 和 总计维修时间
+        #endregion
+
+        #region 员工的平均repair时间 和 次数 和 总计维修时间，,只统计已经 close 且维修人不是 Auto 的 DT
         public IActionResult EmployeeWorkEffiency(IncidentDet item, string[] departmentlist, string[] projectlist, string currentDay, string lastDay)
         {
             using (ECContext db = new ECContext())
@@ -1081,11 +1056,11 @@ namespace DowntimeSystem.Controllers
                     var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
                     var items = tmp.GroupBy(e => e.Respperson).Select(g => new
                     {
-                        value = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Repairtime)).TotalMinutes)/g.Count(),2),
-                        totalValue = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Repairtime)).TotalMinutes),2),
+                        value = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Repairtime)).TotalMinutes) / g.Count(), 2),
+                        totalValue = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Repairtime)).TotalMinutes), 2),
                         count = g.Count(),
                         item = g.Key,
-                    }).OrderByDescending(e=>e.count).ToList();
+                    }).OrderByDescending(e => e.count).ToList();
                     return Json(items);
                 }
                 catch (Exception ex)
@@ -1096,33 +1071,22 @@ namespace DowntimeSystem.Controllers
         }
         #endregion
 
-        #region 不同区域downtime发生的频次
-        /// <summary>
-        /// Area as('FATP','BE','SMT','CR')
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="departmentlist"></param>
-        /// <param name="projectlist"></param>
-        /// <param name="currentDay"></param>
-        /// <param name="lastDay"></param>
-        /// <returns></returns>
-        public IActionResult GetCountGroupByArea(IncidentDet item, string[] departmentlist, string[] projectlist, string currentDay, string lastDay)
+        #region Downtime (频率) Distribution by Status
+        public IActionResult GetCountGroupByDowntimeStatus(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay)
         {
             using (ECContext db = new ECContext())
             {
                 try
                 {
-                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Incidentstatus == 2 & e.Respperson != "Auto");
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom));
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                    if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
                     if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
-                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay))
-                        .Select(e=>new {
-                            Project = e.Project=="SMT"?"SMT": e.Project == "BE" ? "BE" : e.Project == "CR" ? "CR" :"FATP"
-                        }).ToList();
-                    var items = tmp.GroupBy(e => e.Project).Select(g => new
+                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
+                    var items = tmp.GroupBy(e => e.Actionstatus).Select(g => new
                     {
-                        item = g.Key,
+                        name = g.Key == 0 ? "New Open" : g.Key == 1 ? "Issue Fix" : g.Key == 2 ? "Closed" : "RC&CA",
                         value = g.Count()
                     }).ToList();
                     return Json(items);
@@ -1135,24 +1099,39 @@ namespace DowntimeSystem.Controllers
         }
         #endregion
 
-        #region Downtime (时间) Distribution by Project,Department
-        public IActionResult GetDTDistribution(IncidentDet item, string[] departmentlist, string[] projectlist, string currentDay, string lastDay)
+        #region Downtime (时间、频率) Distribution by Area
+        /// <summary>
+        /// Area as('FATP','BE','SMT','CR')
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="departmentlist"></param>
+        /// <param name="projectlist"></param>
+        /// <param name="currentDay"></param>
+        /// <param name="lastDay"></param>
+        /// <returns></returns>
+        public IActionResult GetDTDistribution_ByArea(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay)
         {
             using (ECContext db = new ECContext())
             {
                 try
                 {
-                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Incidentstatus == 2 & e.Respperson != "Auto");
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) ); //&e.Incidentstatus == 2 & e.Respperson != "Auto"
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                    if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
+
                     if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
-                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
-                    var items = tmp.GroupBy(e =>new { e.Department,e.Project }).Select(g => new
+                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay))
+                        .Select(e => new {
+                            Project = e.Project == "SMT" ? "SMT" : e.Project == "BE" ? "BE" : e.Project == "CR" ? "CR" : "FATP",
+                            Downtime = e.Incidentstatus == 2? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds),
+                        }).ToList();
+                    var items = tmp.GroupBy(e => e.Project).Select(g => new
                     {
-                        value = Math.Round( Convert.ToDecimal(g.Sum(e=>e.Downtime))/ 3600,2),
-                        Department =g.Key.Department,
-                        Project = g.Key.Project
-                    }).OrderBy(e=>e.Department).OrderBy(e=>e.Project).ToList();
+                        item = g.Key,
+                        count = g.Count(),
+                        dt = Math.Round(Convert.ToDouble(g.Sum(e => e.Downtime / 3600) ), 2),
+                    }).ToList();
                     return Json(items);
                 }
                 catch (Exception ex)
@@ -1162,5 +1141,251 @@ namespace DowntimeSystem.Controllers
             }
         }
         #endregion
+
+        #region Downtime (时间、频率) Distribution by Department & Status
+        /// <summary>
+        /// Area as('FATP','BE','SMT','CR')
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="departmentlist"></param>
+        /// <param name="projectlist"></param>
+        /// <param name="currentDay"></param>
+        /// <param name="lastDay"></param>
+        /// <returns></returns>
+        public IActionResult GetDTDistribution_ByDepartment_Status(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay)
+        {
+            using (ECContext db = new ECContext())
+            {
+                try
+                {
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom)); //&e.Incidentstatus == 2 & e.Respperson != "Auto"
+                    if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
+                    if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                    if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
+
+                    if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
+                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay))
+                        .Select(e => new {
+                            Department = e.Department,
+                            Actionstatus = e.Actionstatus,
+                            Downtime = e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds),
+                        }).ToList();
+                    var items = tmp.GroupBy(e =>new { e.Department,e.Actionstatus }).Select(g => new
+                    {
+                        count = g.Count(),
+                        Department = g.Key.Department,
+                        status = g.Key.Actionstatus == 0?"New Open" : g.Key.Actionstatus == 1?"Issue Fix" : g.Key.Actionstatus == 1 ? "DT Close" :"RC&CA",
+                        dt = Math.Round(Convert.ToDouble(g.Sum(e => e.Downtime / 3600) ), 2),
+                    }).ToList();
+                    return Json(items);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+        #endregion
+
+        #region Downtime (时间、频率) Distribution by Project & Department
+        public IActionResult GetDTDistribution_ByDepartment_Project(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay)
+        {
+            using (ECContext db = new ECContext())
+            {
+                try
+                {
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) ); //& e.Incidentstatus == 2 & e.Respperson != "Auto"
+                    if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
+                    if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                    if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
+                    if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
+                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
+                    var items = tmp.GroupBy(e => new { e.Department, e.Project }).Select(g => new
+                    {
+                        dt = Math.Round(Convert.ToDecimal(g.Sum(e =>e.Incidentstatus == 2? e.Downtime / 3600 : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds) / 3600)), 2),
+                        Department = g.Key.Department,
+                        Project = g.Key.Project,
+                        count = g.Count()
+                    }).OrderBy(e => e.Department).OrderBy(e => e.Project).ToList();
+                    return Json(items);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+        #endregion
+
+        #region Downtime (时间、频率) Distribution by Month
+        public IActionResult GetDTDistribution_ByMonth(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay)
+        {
+            using (ECContext db = new ECContext())
+            {
+                try
+                {
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom)); //& e.Incidentstatus == 2 & e.Respperson != "Auto"
+                    if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
+                    if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                    if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
+                    if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
+                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay))
+                        .Select(e=>new { 
+                            month = e.Occurtime.ToString("yyyy-MM"),
+                            Downtime =  e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds)
+                        }).ToList();
+                    var items = tmp.GroupBy(e => e.month).Select(g => new
+                    {
+                        dt = Math.Round(Convert.ToDouble(g.Sum(e => e.Downtime/3600)), 2),
+                        month = g.Key,
+                        count = g.Count()
+                    }).OrderBy(e => e.month).ToList();
+                    return Json(items);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+        #endregion
+
+        #region Total Downtime (时间)
+        public IActionResult GetTotalDT(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay)
+        {
+            using (ECContext db = new ECContext())
+            {
+                try
+                {
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom));
+                    if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
+                    if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                    if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
+                    if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
+                    var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
+                    var items = tmp.GroupBy(e => true).Select(g => new
+                    {
+                        value = Math.Round(Convert.ToDecimal(g.Sum(e =>e.Incidentstatus==2? e.Downtime / 3600 : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds) / 3600)) , 0),
+                    }).ToList();
+                    return Json(items);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+        #endregion
+
+
+
+        #region Downtime (时间，频率) Distribution by Station & Time
+        public IActionResult GetDTDistribution_byStation_Time(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay, string filterType)
+        {
+                using (ECContext db = new ECContext())
+                {
+                    try
+                    {
+                        var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) ); //& e.Incidentstatus == 2 & e.Respperson != "Auto"
+                        if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
+                        if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                        if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
+                        if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
+                        var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
+                        var calcu = tmp.Select(e => new
+                        {
+                            Station = e.Station,
+                            Downtime = e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds),
+                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
+                        }).ToList();
+                        var items = calcu.GroupBy(e =>new { e.filterType ,e.Station}).Select(g => new
+                        {
+                            filterType = g.Key.filterType,
+                            station = g.Key.Station,
+                            dt =Math.Round( Convert.ToDouble(g.Sum(e=>e.Downtime/3600)),2),
+                            count = g.Count()
+                        }).OrderBy(e => e.filterType).OrderByDescending(e=>e.dt).ToList();
+                        return Json(items);
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                }
+        }
+        #endregion
+
+        #region Downtime (时间，频率) Distribution by Defect Code & Time
+        public IActionResult GetDTDistribution_byDefectCode_Time(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay, string filterType)
+        {
+                using (ECContext db = new ECContext())
+                {
+                    try
+                    {
+                        var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom)); //& e.Incidentstatus == 2 & e.Respperson != "Auto"
+                        if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
+                        if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                        if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
+                        if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
+                        var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
+                        var calcu = tmp.Select(e => new
+                        {
+                            issue = e.Issue,
+                            Downtime = e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds),
+                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
+                        }).ToList();
+                        var items = calcu.GroupBy(e => new { e.filterType, e.issue }).Select(g => new
+                        {
+                            filterType = g.Key.filterType,
+                            issue = g.Key.issue,
+                            dt = Math.Round(Convert.ToDouble(g.Sum(e => e.Downtime / 3600)), 2),
+                            count = g.Count()
+                        }).OrderBy(e => e.filterType).OrderByDescending(e => e.dt).ToList();
+                        return Json(items);
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                }
+        }
+        #endregion
+
+        #region Downtime (时间，频率) Distribution by Line & Time
+        public IActionResult GetDTDistribution_byLine_Time(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay, string filterType)
+        {
+                using (ECContext db = new ECContext())
+                {
+                    try
+                    {
+                        var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom)); //& e.Incidentstatus == 2 & e.Respperson != "Auto"
+                        if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
+                        if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
+                        if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
+                        if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
+                        var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
+                        var calcu = tmp.Select(e => new
+                        {
+                            Line = e.Line,
+                            Downtime = e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds),
+                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
+                        }).ToList();
+                        var items = calcu.GroupBy(e => new { e.filterType, e.Line }).Select(g => new
+                        {
+                            filterType = g.Key.filterType,
+                            line = g.Key.Line,
+                            dt = Math.Round(Convert.ToDouble(g.Sum(e => e.Downtime / 3600)), 2),
+                            count = g.Count()
+                        }).OrderBy(e => e.filterType).OrderByDescending(e => e.dt).ToList();
+                        return Json(items);
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                }
+        }
+        #endregion
+
     }
 }

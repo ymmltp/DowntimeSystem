@@ -93,6 +93,9 @@ function getTotalMTTR(system, project, department,station, lastday, currentDay) 
 function getMTTRByDepartment(system, project, department, station, lastday, currentDay) {
     getDataWithArray("/Dashboard/MTTRByDepartment", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
+            if (res == []) {
+                return new Promise.reject()
+            }
             var dataArray = {
                 axis: [],
                 data: []
@@ -167,6 +170,9 @@ function getMTTRByDepartment(system, project, department, station, lastday, curr
 function getMTTRByProject(system, project, department, station, lastday, currentDay) {
     getDataWithArray("/Dashboard/MTTRByWorkcell", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
+            if (res == []) {
+                return new Promise.reject()
+            }
             var dataArray = {
                 axis: [],
                 data: []
@@ -243,6 +249,9 @@ function getMTTRByProject(system, project, department, station, lastday, current
 function getTotalMTTA(system, project, department, station, lastday, currentDay) {
     getDataWithArray("/Dashboard/TotalMTTA", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
+            if (res == []) {
+                return new Promise.reject("本时间段没有MTTA数据")
+            }
             var dataFloor = 0;
             var chartDom = document.getElementById('chart7');
             if (myChart7 != null && myChart7 != "" && myChart7 != undefined) {
@@ -307,7 +316,7 @@ function getTotalMTTA(system, project, department, station, lastday, currentDay)
                         },
                         data: [
                             {
-                                value: res[0].totalMTTR
+                                value: res[0].totalMTTA
                             }
                         ]
                     }
@@ -320,6 +329,9 @@ function getTotalMTTA(system, project, department, station, lastday, currentDay)
 function getMTTAByDepartment(system, project, department, station, lastday, currentDay) {
     getDataWithArray("/Dashboard/MTTAByDepartment", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
+            if (res == []) {
+                return new Promise.reject();
+            }
             var dataArray = {
                 axis: [],
                 data: []
@@ -394,6 +406,9 @@ function getMTTAByDepartment(system, project, department, station, lastday, curr
 function getMTTAByProject(system, project, department, station, lastday, currentDay) {
     getDataWithArray("/Dashboard/MTTAByWorkcell", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
+            if (res == []) {
+                return new Promise.reject();
+            }
             var dataArray = {
                 axis: [],
                 data: []
@@ -470,6 +485,9 @@ function getMTTAByProject(system, project, department, station, lastday, current
 function getTotalMTBF(system, project, department, station,lastday, currentDay) {
     getDataWithArray("/Dashboard/TotalMTBF", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
+            if (res == []) {
+                return new Promise.reject("本段时间没有MTBF数据");
+            }
             var dataFloor = 0;
             var chartDom = document.getElementById('chart4');
             if (myChart4 != null && myChart4 != "" && myChart4 != undefined) {
@@ -550,6 +568,9 @@ function getTotalMTBF(system, project, department, station,lastday, currentDay) 
 function getMTBFByDepartment(system, project, department, station,lastday, currentDay) {
     getDataWithArray("/Dashboard/MTBFByDepartment", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
+            if (res == []) {
+                return new Promise.reject();
+            }
             var dataArray = {
                 axis: [],
                 data: []
@@ -627,6 +648,9 @@ function getMTBFByDepartment(system, project, department, station,lastday, curre
 function getMTBFByProject(system, project, department, station,lastday, currentDay) {
     getDataWithArray("/Dashboard/MTBFByWorkcell", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
+            if (res == []) {
+                return new Promise.reject();
+            }
             var dataArray = {
                 axis: [],
                 data: []

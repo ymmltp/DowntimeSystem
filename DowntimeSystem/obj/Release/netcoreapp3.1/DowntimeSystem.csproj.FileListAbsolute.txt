@@ -93,3 +93,8 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\win-x86\native\sni.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Release\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_Downtime_OverView.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_Downtime_SubPage.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_MTTRandMTBF_OverView.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Dashboard_MTTRandMTBF_SubPage.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\DowntimeSystem.csproj.AssemblyReference.cache

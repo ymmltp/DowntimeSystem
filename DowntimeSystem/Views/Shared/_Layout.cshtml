@@ -1,5 +1,5 @@
 ﻿@{ 
-    ViewData["Version"] = "0.0.5";
+    ViewData["Version"] = "0.0.6";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -95,9 +95,11 @@
             <div id="leftside-navigation" class="nano-content">
                 <ul class="nano-content">
                     <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fa fa-dashboard"></i><span>Dashboard</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                        <a href="javascript:void(0);"><i class="fa fa-dashboard"></i><span>Dashboard</span><i class="arrow fa fa-angle-right pull-right"></i></a>               
                         <ul>
-                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Dashboard"><i class="fa fa-dashboard"></i>Downtime Dashboard</a></li>
+                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Dashboard"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_Downtime_OverView" title="Downtime Overview"><i class="fa fa-dashboard"></i>Downtime Overview</a></li>
+                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_Downtime_SubPage" title="Downtime Overview"><i class="fa fa-dashboard"></i>Downtime SubPage</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_MTTRandMTBF_OverView" title="MTTR & MTBF"><i class="fa fa-dashboard"></i>MTTR & MTBF OverView</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_MTTRandMTBF_SubPage" title="MTTR & MTBF"><i class="fa fa-dashboard"></i>MTTR & MTBF SubPage</a></li>
 

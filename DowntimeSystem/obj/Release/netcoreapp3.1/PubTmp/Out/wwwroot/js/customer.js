@@ -1,10 +1,11 @@
-﻿function iniDatetimepicker() {
+﻿//#region datetimepicker 设定
+function iniDatetimepicker() {
     $(".form_datetime").datetimepicker({
         fontAwesome: 'font-awesome',
         format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
         todayBtn: true, //一键选中今天的日期
         minDate: '2022/01/01',
-        maxDate: 0,//今天
+        //maxDate: 0,//今天
         pickerPosition: "bottom-left", //打开选择卡的位置
         weekStart: 1, //周开始的星期：0-6 星期日-星期六
         autoclose: true,//选好时间后自动关闭
@@ -17,6 +18,21 @@
         endDate: new Date()
     });
 }
+//#endregion
+//#region 可隐藏的搜索栏
+$("#searchBox").on('click', function () {
+    if ($("#searchBoxMenu").hasClass("elehide")) {
+        $("#searchBoxMenu").removeClass("elehide");
+        $("#searchBox").removeClass("fa-cog");
+        $("#searchBox").addClass("fa-minus-square");
+    }
+    else {
+        $("#searchBoxMenu").addClass("elehide");
+        $("#searchBox").removeClass("fa-minus-square");
+        $("#searchBox").addClass("fa-cog");
+    }
+})
+ //#endregion
 
 //正数为后一天，负数为前一天，str为日期间隔符，例如 -,/ 
 function getDay(num, str) {
@@ -152,10 +168,13 @@ function getDepartment(obj) {
         }
     })
 }
-function getLine(obj) {
+function getLine(obj,project) {
     $.ajax({
         url: '/EC/GetLine',
         method: 'GET',
+        data: {
+            Project: project ? project[0] : null,
+        },
         dataType: 'json',
         success: function (data) {
             var option = "";
@@ -201,11 +220,12 @@ function getProject(obj,line) {
         }
     })
 }
-function getStation(obj, department, project) {
+function getStation(obj, department, project,line) {
     getDataWithArray("/EC/GetStation",
         {
             departmentList: department ,
-            projectList: project ,
+            projectList: project,
+            lineList: line,
         })
         .then(data => {
             var option = "";

@@ -17,12 +17,12 @@
                     <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Line:</label>
-                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="getProject($('#project-select'), $('#line-select').val()); getStation($('#station-select'), $('#line-select').val(), $('#project-select').val());"></select>
+                    <label class="form-label"> Project:</label>
+                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="getLine($('#line-select'),$('#project-select').val()); getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val())"> </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Project:</label>
-                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="getStation($('#station-select'), $('#line-select').val(), $('#project-select').val())"> </select>
+                    <label class="form-label"> Line:</label>
+                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange=" getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val());"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Station:</label>

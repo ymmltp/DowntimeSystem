@@ -1,4 +1,5 @@
-﻿function iniDatetimepicker() {
+﻿//#region datetimepicker 设定
+function iniDatetimepicker() {
     $(".form_datetime").datetimepicker({
         fontAwesome: 'font-awesome',
         format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
@@ -17,6 +18,21 @@
         endDate: new Date()
     });
 }
+//#endregion
+//#region 可隐藏的搜索栏
+$("#searchBox").on('click', function () {
+    if ($("#searchBoxMenu").hasClass("elehide")) {
+        $("#searchBoxMenu").removeClass("elehide");
+        $("#searchBox").removeClass("fa-cog");
+        $("#searchBox").addClass("fa-minus-square");
+    }
+    else {
+        $("#searchBoxMenu").addClass("elehide");
+        $("#searchBox").removeClass("fa-minus-square");
+        $("#searchBox").addClass("fa-cog");
+    }
+})
+ //#endregion
 
 //正数为后一天，负数为前一天，str为日期间隔符，例如 -,/ 
 function getDay(num, str) {
