@@ -1304,8 +1304,8 @@ namespace DowntimeSystem.Controllers
                             station = g.Key.Station,
                             dt =Math.Round( Convert.ToDouble(g.Sum(e=>e.Downtime/3600)),2),
                             count = g.Count()
-                        }).OrderBy(e => e.filterType).OrderByDescending(e=>e.dt).ToList();
-                        return Json(items);
+                        }).OrderBy(e => e.filterType).ToList();   //.OrderByDescending(e=>e.dt)
+                    return Json(items);
                     }
                     catch (Exception ex)
                     {
@@ -1340,8 +1340,8 @@ namespace DowntimeSystem.Controllers
                             issue = g.Key.issue,
                             dt = Math.Round(Convert.ToDouble(g.Sum(e => e.Downtime / 3600)), 2),
                             count = g.Count()
-                        }).OrderBy(e => e.filterType).OrderByDescending(e => e.dt).ToList();
-                        return Json(items);
+                        }).OrderBy(e => e.filterType).ToList(); //OrderByDescending(e => e.dt).
+                    return Json(items);
                     }
                     catch (Exception ex)
                     {
@@ -1376,8 +1376,8 @@ namespace DowntimeSystem.Controllers
                             line = g.Key.Line,
                             dt = Math.Round(Convert.ToDouble(g.Sum(e => e.Downtime / 3600)), 2),
                             count = g.Count()
-                        }).OrderBy(e => e.filterType).OrderByDescending(e => e.dt).ToList();
-                        return Json(items);
+                        }).OrderBy(e => e.filterType).ToList(); //OrderByDescending(e => e.dt).
+                    return Json(items);
                     }
                     catch (Exception ex)
                     {
