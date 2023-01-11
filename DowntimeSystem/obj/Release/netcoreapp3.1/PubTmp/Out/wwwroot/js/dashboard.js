@@ -748,15 +748,15 @@ function openCloseDowntime_DefectCodePieChart(system, project, department, lastd
 function gettopErrorCode_byDowntime(system, project, department, lastday, currentDay) {
     getDataWithArray("/Dashboard/GetTopDowntime_ByStation", { comefrom: system, departmentlist:department,projectlist: project,currentDay: currentDay, lastday: lastday })
         .then(res => {
-            var dataArray = {
-                axis: [],
-                data: []
-            };
-            for (var i = 0; i < res.length; i++) {
-                dataArray.axis.push(res[i].item);
-                dataArray.data.push(res[i].value);
-            }
-            return dataArray;
+                var dataArray = {
+                    axis: [],
+                    data: []
+                };
+                for (var i = 0; i < res.length; i++) {
+                    dataArray.axis.push(res[i].item);
+                    dataArray.data.push(res[i].value);
+                }
+                return (dataArray);       
         })
         .then(res => {
             if (res) {
@@ -827,6 +827,9 @@ function gettopErrorCode_byDowntime(system, project, department, lastday, curren
             else {
                 console.log("无数据");
             }
+        })
+        .catch(err => {
+            alert(err);
         })
 }
 // #endregion

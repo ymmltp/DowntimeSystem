@@ -86,7 +86,7 @@ function getTotalDT(system, project, department ,station,lastday, currentDay) {
                         data: [
                             {
                                 value: res[0].value,
-                                name: 'Total Downtime',
+                                name: 'Plant Total Downtime',
                             }
                         ]
                     },
@@ -217,10 +217,10 @@ function getDT_ByDefectCode_Time(system, project, department, station, lastday, 
                 var optionArray = [];
                 var option = {
                 title: {
-                    text: 'Top5 Defect Code',
-                    textStyle: {
-                        fontSize: 15,
-                    }
+                        text: 'Top5 Downtime (by Defect Code)',
+                        extStyle: {
+                            fontSize: 15,
+                        }
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -308,7 +308,7 @@ function getDT_ByStation_Time(system, project, department, station, lastday, cur
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'Top5 Station',
+                    text: 'Top5 Downtime (by Station)',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -399,7 +399,7 @@ function getDT_ByLine_Time(system, project, department, station, lastday, curren
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'Top5 Line',
+                    text: 'Top5 Downtime (by Line)',
                     textStyle: {
                         fontSize: 15,
                     }

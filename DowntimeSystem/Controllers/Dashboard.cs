@@ -366,7 +366,7 @@ namespace DowntimeSystem.Controllers
                         {
                             mttr = (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Repairtime)).TotalMinutes, //mins
                             mtta = (Convert.ToDateTime(e.Repairtime) - Convert.ToDateTime(e.Occurtime)).TotalMinutes, //mins
-                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
+                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? "WK"+ gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
                         }).ToList();
                         var items = calcu.GroupBy(e => e.filterType).Select(g => new
                         {
@@ -417,7 +417,7 @@ namespace DowntimeSystem.Controllers
                             Repairtime = e.Repairtime,
                             Downtime = e.Downtime,
                             Occurtime = e.Occurtime,
-                            filterType = filterType == "Daily"? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
+                            filterType = filterType == "Daily"? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? "WK"+gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
                         }).ToList();
                     var items = tmp.GroupBy(e => new { e.filterType, e.Department }).Select(g => new
                     {
@@ -955,7 +955,7 @@ namespace DowntimeSystem.Controllers
                         Project = e.Project,
                         Station = e.Station,
                         Machine = e.Machine,
-                        filterType = filterType == "Daily" ? e.downtimeOccurtTime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.downtimeOccurtTime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.downtimeOccurtTime.ToString("yyyy-MM"),
+                        filterType = filterType == "Daily" ? e.downtimeOccurtTime.ToString("yyyy-MM-dd") : filterType == "Weekly" ?"WK"+ gc.GetWeekOfYear(e.downtimeOccurtTime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.downtimeOccurtTime.ToString("yyyy-MM"),
                         Workhours = (Convert.ToDateTime(e.downtimeOccurtTime) - Convert.ToDateTime(e.startworkTime)).TotalHours
                     }).Where(e => e.Workhours > 0).GroupBy(e =>new { e.filterType,e.Department }).Select(g => new
                     {
@@ -1012,7 +1012,7 @@ namespace DowntimeSystem.Controllers
                     {
                         Station = e.Station,
                         Machine = e.Machine,
-                        filterType = filterType == "Daily" ? e.downtimeOccurtTime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.downtimeOccurtTime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.downtimeOccurtTime.ToString("yyyy-MM"),
+                        filterType = filterType == "Daily" ? e.downtimeOccurtTime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? "WK"+gc.GetWeekOfYear(e.downtimeOccurtTime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.downtimeOccurtTime.ToString("yyyy-MM"),
                         Workhours = (Convert.ToDateTime(e.downtimeOccurtTime) - Convert.ToDateTime(e.startworkTime)).TotalHours
                     }).Where(e => e.Workhours > 0).GroupBy(e => e.filterType).Select(g => new
                     {
@@ -1296,7 +1296,7 @@ namespace DowntimeSystem.Controllers
                         {
                             Station = e.Station,
                             Downtime = e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds),
-                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
+                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? "WK"+gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
                         }).ToList();
                         var items = calcu.GroupBy(e =>new { e.filterType ,e.Station}).Select(g => new
                         {
@@ -1332,7 +1332,7 @@ namespace DowntimeSystem.Controllers
                         {
                             issue = e.Issue,
                             Downtime = e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds),
-                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
+                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ?"WK"+ gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
                         }).ToList();
                         var items = calcu.GroupBy(e => new { e.filterType, e.issue }).Select(g => new
                         {
@@ -1364,11 +1364,11 @@ namespace DowntimeSystem.Controllers
                         if (stationlist.Length > 0) where = where.Where(e => stationlist.Contains(e.Station));
                         if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
                         var tmp = where.Where(e => Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)).ToList();
-                        var calcu = tmp.Select(e => new
+                    var calcu = tmp.Select(e => new
                         {
                             Line = e.Line,
                             Downtime = e.Incidentstatus == 2 ? e.Downtime : Convert.ToInt32((DateTime.Now - e.Occurtime).TotalSeconds),
-                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
+                            filterType = filterType == "Daily" ? e.Occurtime.ToString("yyyy-MM-dd") : filterType == "Weekly" ? "WK" + gc.GetWeekOfYear(e.Occurtime, CalendarWeekRule.FirstDay, DayOfWeek.Monday).ToString() : e.Occurtime.ToString("yyyy-MM"),
                         }).ToList();
                         var items = calcu.GroupBy(e => new { e.filterType, e.Line }).Select(g => new
                         {

@@ -227,7 +227,7 @@ function gettopStation_bycount(system, project, department, lastday, currentDay,
             option = {
                 title: {
                     right: 'center',
-                    text: 'Station',
+                    text: 'Frequency by station',
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -297,7 +297,7 @@ function gettopLine_bycount(system, project, department, lastday, currentDay, er
             option = {
                 title: {
                     right: 'center',
-                    text: 'Line',
+                    text: 'Frequency by line',
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -367,7 +367,7 @@ function gettopRootCause_bycount(system, project, department, lastday, currentDa
             option = {
                 title: {
                     right: 'center',
-                    text: 'Root Cause',
+                    text: 'Frequency by root cause',
                 },
                 grid: {
                     left: '3%',
@@ -748,15 +748,15 @@ function openCloseDowntime_DefectCodePieChart(system, project, department, lastd
 function gettopErrorCode_byDowntime(system, project, department, lastday, currentDay) {
     getDataWithArray("/Dashboard/GetTopDowntime_ByStation", { comefrom: system, departmentlist:department,projectlist: project,currentDay: currentDay, lastday: lastday })
         .then(res => {
-            var dataArray = {
-                axis: [],
-                data: []
-            };
-            for (var i = 0; i < res.length; i++) {
-                dataArray.axis.push(res[i].item);
-                dataArray.data.push(res[i].value);
-            }
-            return dataArray;
+                var dataArray = {
+                    axis: [],
+                    data: []
+                };
+                for (var i = 0; i < res.length; i++) {
+                    dataArray.axis.push(res[i].item);
+                    dataArray.data.push(res[i].value);
+                }
+                return (dataArray);       
         })
         .then(res => {
             if (res) {
@@ -827,6 +827,9 @@ function gettopErrorCode_byDowntime(system, project, department, lastday, curren
             else {
                 console.log("无数据");
             }
+        })
+        .catch(err => {
+            alert(err);
         })
 }
 // #endregion
