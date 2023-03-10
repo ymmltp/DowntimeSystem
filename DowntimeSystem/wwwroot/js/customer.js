@@ -284,6 +284,28 @@ function getDashboardSystem(obj) {
         }
     })
 }
+function getEQID(obj) {
+    $.ajax({
+        url: '/PMMS/getEQID',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        }
+    })
+}
 
 //获取URL中的参数内容
 function GetParms(name) {

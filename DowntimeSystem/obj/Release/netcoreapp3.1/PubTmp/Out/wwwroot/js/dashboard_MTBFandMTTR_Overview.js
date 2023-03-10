@@ -103,7 +103,7 @@ function getDTcount_GroupByStatus(system, project, department, station,lastday, 
             var option = {
                 color: ['#5470c6', '#e66', '#fac858', '#91cc75'],
                 title: {
-                    text: 'DT Ticket Fulfill Status',
+                    text: 'Downtime Ticket Status',
                     left: 'center',
                     textStyle: {
                         fontSize: 15,
@@ -116,7 +116,6 @@ function getDTcount_GroupByStatus(system, project, department, station,lastday, 
                 },
                 legend: {
                     orient: 'horizontal',
-                    //orient: 'vertical',
                     top: '10%',
                     itemGap: 3,
                     textStyle: {
@@ -187,7 +186,7 @@ function getMTTR_ActualvsTarget_GroupByProject(system, project, department, stat
                 var optionArray = [];
                 var option = {
                     title: {
-                        text: 'MTTR each Project Actual vs Target',
+                        text: 'MTTR Tracking (by project)',
                         textStyle: {
                             fontSize: 15,
                         }
@@ -302,7 +301,7 @@ function getMTBF_ActualvsTarget_GroupByProject(system, project, department, stat
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'MTBF each Project Actual vs Target',
+                    text: 'MTBF Tracking (by project)',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -417,6 +416,7 @@ function getMTBF_MTTR_MTTA_Overview(system, project, department, station,lastday
                 series: [
                     {
                         title: {
+                            text:'MTTA/MTTR/MTBF Indicator',
                             fontSize: 12,
                             fontWeight: 600
                         },
@@ -762,7 +762,7 @@ function getMTBF_ActualvsTarget_EachMonth(system, project, department, station, 
                 var optionArray = [];
                 var option = {
                     title: {
-                        text: '12 Months MTBF Avg. Trend Chart',
+                        text: 'MTBF Tracking Trend(by 12 Months Avg.)',
                         textStyle: {
                             fontSize: 15,
                         }
@@ -874,7 +874,7 @@ function getMTTR_ByArea(system, project, department, station, lastday, currentDa
                 var optionArray = [];
                 var option = option = {
                     title: {
-                        text: 'MTTR each Project Area Actual vs Target',
+                        text: 'MTTR Tracking Trend(by 12 Months Avg.)',
                         textStyle: {
                             fontSize: 15,
                         }

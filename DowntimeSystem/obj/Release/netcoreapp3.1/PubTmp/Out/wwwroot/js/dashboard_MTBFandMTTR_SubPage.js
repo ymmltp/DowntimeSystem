@@ -47,7 +47,7 @@ function getMTTR_GroupByDepartment_Time(system, project, department,station, las
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'Function Team MTTR ' + filterType+' Trade',
+                    text: 'MTTR ' + filterType+' Tracking (by Functional Team) ',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -133,7 +133,7 @@ function getMTBF_GroupByDepartment_Time(system, project, department, station, la
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'Function Team MTBF ' + filterType + ' Trade',
+                    text: 'MTBF ' + filterType +' Tracking (by Functional Team) ',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -208,7 +208,7 @@ function getMTTR_MTTA_ByTime(system, project, department, station, lastday, curr
                 var option = {
                 color: ["#fac858", "#5470c6"],
                 title: {
-                    text: 'MTTR and MTTA ' + filterType+' Tracking',
+                    text: 'MTTR/MTBF ' + filterType+' Tracking',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -308,7 +308,7 @@ function getMTTR_withTarget_ByTime(system, project, department, station, lastday
             var optionArray = [];
             var option = {
                 title: {
-                    text:  filterType+' MTTR Avg. Trend Chart',
+                    text: 'MTTR ' + filterType+' Tracking(Avg.)',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -419,7 +419,7 @@ function getMTBF_withTarget_ByTime(system, project, department, station, lastday
             var optionArray = [];
             var option = {
                 title: {
-                    text:  filterType + ' MTBF Avg. Trend Chart',
+                    text: 'MTBF ' + filterType + ' Tracking(Avg.)',,
                     textStyle: {
                         fontSize: 15,
                     }

@@ -227,7 +227,7 @@ function gettopStation_bycount(system, project, department, lastday, currentDay,
             option = {
                 title: {
                     right: 'center',
-                    text: 'Station',
+                    text: 'Frequency by station',
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -297,7 +297,7 @@ function gettopLine_bycount(system, project, department, lastday, currentDay, er
             option = {
                 title: {
                     right: 'center',
-                    text: 'Line',
+                    text: 'Frequency by line',
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -367,7 +367,7 @@ function gettopRootCause_bycount(system, project, department, lastday, currentDa
             option = {
                 title: {
                     right: 'center',
-                    text: 'Root Cause',
+                    text: 'Frequency by root cause',
                 },
                 grid: {
                     left: '3%',

@@ -210,3 +210,10 @@ MTTR (mins) = SUM(Close - Start) / downtime Count
  MTBF (mins) = (downtime B endtime -  downtime A starttime)/Total downtime Count
 - [x] 员工的平均维修时间（折线图）和维修次数（柱状图）
 - [x] 根据员工的 employeeID 筛选出对应的 downtime 事件   
+
+#### 2023.02.14 Demand
+
+- [x] PowerBi Dashboard1：by project-department-station 每天的 的 machine DT 比较图，设置 target，total工作时间（12小时）
+- [x] Dashboard2：每天 total Downtime 各 error message 的分布，设置 target，total工作时间（12小时）
+- [x] Dashboard3：每天 by machine 的 Total DT,Count，MTTR （？？？？有问题：MTTR计算是 by machine /图像试 By Station 的 ）
+- [x] Dashboard4：按 Error Message 统计 total downtime 时间的柏拉图
