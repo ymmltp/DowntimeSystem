@@ -154,7 +154,7 @@ function getDepartment(obj) {
             var option = "";
             for (var i = 0; i < data.length; i++) {
                 option += '<option value="' + data[i] + '">' + data[i] + '</option>';
-            }
+            }            
             obj.html(option);
             obj.selectpicker('refresh');
         },
@@ -235,31 +235,6 @@ function getStation(obj, department, project,line) {
             obj.html(option);
             obj.selectpicker('refresh');
         })
-    //$.ajax({
-    //    url: '/EC/GetStation',
-    //    method: 'GET',
-    //    data: {
-    //        Department: department ? department[0]:null,
-    //        Project: project?project[0]:null,
-    //    },
-    //    dataType: 'json',
-    //    success: function (data) {
-    //        var option = "";
-    //        for (var i = 0; i < data.length; i++) {
-    //            option += '<option value="' + data[i] + '">' + data[i] + '</option>';
-    //        }
-    //        obj.html(option);
-    //        obj.selectpicker('refresh');
-    //    },
-    //    fail: function (err) {
-    //        console.log(err);
-    //        showWarning(err.statusText);
-    //    },
-    //    error: function (err) {
-    //        console.log(err);
-    //        showWarning(err.statusText);
-    //    }
-    //})
 }
 function getDashboardSystem(obj) {
     $.ajax({

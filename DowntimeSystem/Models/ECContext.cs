@@ -29,7 +29,7 @@ namespace DowntimeSystem.Models
                 optionsBuilder.UseNpgsql("Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123");
             }
         }
-        private string[] contains = { "eCalling", "Sparepart", "FPY", "Downtime System" };
+        private string[] contains = { "eCalling", "FPY", "Downtime System" }; //"Sparepart", 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "English_United States.1252");

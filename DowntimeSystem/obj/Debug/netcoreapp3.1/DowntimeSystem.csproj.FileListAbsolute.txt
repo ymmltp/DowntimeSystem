@@ -97,7 +97,6 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard_MTTRandMTBF_SubPage.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard_Downtime_OverView.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard_Downtime_SubPage.cshtml.g.cs
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.csproj.AssemblyReference.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
@@ -123,3 +122,4 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.csproj.AssemblyReference.cache

@@ -61,7 +61,6 @@
                     <label class="form-label" for="responser"> Repair Employee: </label>
                     <input type='text' class="form-control" id='responser' placeholder="--请输入工号 (WY0000) --" />
                 </div>
-
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 100px">New Incident</button></div>
             </div>
@@ -219,7 +218,7 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-machine" class="form-label text-right">Machine:</label>
-                    <select class="form-control raca  selectpicker" id='ca-machine'  data-size="6" title="--Select EQID--" data-live-search="true"></select>
+                    <select class="form-control raca " id='ca-machine' data-size="6" title="--Select EQID--"></select>
                 </div>
                 <div class="col-lg-12">
                     <label for="ca-issue" class="form-label text-right warning-text">Defect Code:</label>
@@ -332,6 +331,7 @@
 
 <div class="alert"></div>
 
+<script src="~/lib/bootstrap/dist/js/select2.full.min.js" type="text/javascript"></script>
 <script src="~/js/customer.js"></script>
 <script src="~/js/cookie.js"></script>
 <script src="~/lib/echarts/dist/js/echarts.js"></script>
@@ -340,7 +340,6 @@
 <script src="~/lib/bootstrap/dist/js/tableExport.js"></script>
 <script src="~/lib/bootstrap/dist/js/FileSaver.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/xlsx.core.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/jquery-editable-select.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         let id = GetParms("ticket");
@@ -528,10 +527,17 @@
                 valign: 'middle',
                 formatter: function (value, row, index) {
                     if (row['calcdowntime']) {
-                        return parseInt(Math.abs(value / 60));
+                        if (row['finishtime'] == null) {
+                            let tmp = new Date(row['occurtime']);
+                            let Downtime = new Date() - tmp;
+                            return parseInt(Downtime / 1000 / 60);
+                        }
+                        else {
+                            return parseInt(Math.abs(value / 60));
+                        }
                     }
                     else {
-                        return 'NULL';
+                        return 'Null';
                     }
                 },
             }, {
@@ -681,14 +687,40 @@
 
     //填写CA
     function ShowCARA(row) {
-        getEQID($("#ca-machine"));
+        $.ajax({
+            url: '/PMMS/getEQID',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                let option = "";
+                if (data.indexOf(row['machine']) < 0) {
+                    option += '<option value="' + row['machine'] + '">' + row['machine'] + '</option>';
+                }
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+                }
+                $("#ca-machine").html(option);
+            },
+            fail: function (err) {
+                showWarning(err.statusText);
+            },
+            error: function (err) {
+                console.log(err);
+                showWarning(err.statusText);
+            }
+        })
+
+        $("#ca-machine").select2({
+            tags: true,
+            maximumInputLength: 40,
+            minimumResultsForSearch: 10,
+        });
 
         $("#CA-title").html("填写 RootCause 和 CA");
         $("#ca-department").val(row['department']);
         $("#ca-project").val(row['project']);
         $("#ca-line").val(row['line']);
         $("#ca-machine").val(row['machine']);
-        $("#ca-machine").selectpicker('refresh');
         $("#ca-station").val(row['station']);
         $("#ca-issue").val(row['issue']);
         $("#ca-issueremark").val(row['issueremark']);
@@ -709,6 +741,8 @@
         $("#CAModal").data("id", row['id']);
         $("#CAModal").modal('show');
     }
+
+
     $("#addCA").on('click', function () {
         if ($("#ca-rootcause").val() && $("#ca-action").val() && $("#ca-issue").val()) {
             var tmp = {
