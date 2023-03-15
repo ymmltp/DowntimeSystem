@@ -213,16 +213,16 @@
                     <input type='text' class="form-control" readonly id='ca-project' />
                 </div>
                 <div class="col-lg-3">
-                    <label for="ca-station" class="form-label text-right">Station:</label>
-                    <input type='text' class="form-control raca" id='ca-station' />
+                    <label for="ca-station" class="form-label text-right warning-text">Station:</label>
+                    <input type='text' class="form-control raca noNull" id='ca-station'  noNull="Station"/>
                 </div>
                 <div class="col-lg-3">
-                    <label for="ca-machine" class="form-label text-right">Machine:</label>
-                    <select class="form-control raca " id='ca-machine' data-size="6" title="--Select EQID--"></select>
+                    <label for="ca-machine" class="form-label text-right warning-text">Equipment:</label>
+                    <select class="form-control raca noNull" id='ca-machine' data-size="6" title="--Select EQID--" noNull="Equipment"></select>
                 </div>
                 <div class="col-lg-12">
                     <label for="ca-issue" class="form-label text-right warning-text">Defect Code:</label>
-                    <input type='text' class="form-control raca" id='ca-issue' />
+                    <input type='text' class="form-control raca noNull" id='ca-issue' noNull="Defect Code"/>
                 </div>
                 <div class="col-lg-12">
                     <label for="ca-issueremark" class="form-label text-right">Issue Description:</label>
@@ -259,11 +259,11 @@
                 @*downtime相关*@
                 <div class="col-lg-6">
                     <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
-                    <input type='text' class="form-control raca" id='ca-rootcause' />
+                    <input type='text' class="form-control raca noNull" id='ca-rootcause' noNull="Root Cause"/>
                 </div>
                 <div class="col-lg-6">
                     <label for="ca-action" class="form-label text-right warning-text">Action:</label>
-                    <input type='text' class="form-control raca" id='ca-action' />
+                    <input type='text' class="form-control raca noNull" id='ca-action' noNull="Action"/>
                 </div>
                 <div class="col-lg-6">
                     <label for="ca-rootcauseremark" class="form-label text-right">Root Cause Remark:</label>
@@ -692,7 +692,7 @@
             method: 'GET',
             dataType: 'json',
             success: function (data) {
-                let option = "";
+                let option = '<option value=""></option>';
                 if (data.indexOf(row['machine']) < 0) {
                     option += '<option value="' + row['machine'] + '">' + row['machine'] + '</option>';
                 }
@@ -713,14 +713,16 @@
         $("#ca-machine").select2({
             tags: true,
             maximumInputLength: 40,
+            minimumInputLength: 2,
             minimumResultsForSearch: 10,
+            placeholder:"请输入设备ID"
         });
 
         $("#CA-title").html("填写 RootCause 和 CA");
         $("#ca-department").val(row['department']);
         $("#ca-project").val(row['project']);
         $("#ca-line").val(row['line']);
-        $("#ca-machine").val(row['machine']);
+        //$("#ca-machine").val(row['machine']);
         $("#ca-station").val(row['station']);
         $("#ca-issue").val(row['issue']);
         $("#ca-issueremark").val(row['issueremark']);
@@ -744,7 +746,7 @@
 
 
     $("#addCA").on('click', function () {
-        if ($("#ca-rootcause").val() && $("#ca-action").val() && $("#ca-issue").val()) {
+        if (checkFormNoNull()) {
             var tmp = {
                 id: $("#CAModal").data('id'),
                 calcdowntime: $(':radio[name=caldowntime]:checked').val(),
@@ -784,13 +786,17 @@
                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
                 })
         }
-        else {
-            showWarning("请输入RootCause和CA ，完善Defect Code，再提交!");
-        }
     })
 
     //查看downtime信息
     function ViewDowntimeInfo(row) {
+        let option = '<option value="' + row['machine'] + '">' + row['machine'] + '</option>';
+        $("#ca-machine").html(option);
+        $("#ca-machine").select2({
+            readonly: true,
+            disable:true,
+        });
+
         $("#CA-title").html("查看 Downtime 信息");
         $("#ca-department").val(row['department']);
         $("#ca-project").val(row['project']);
@@ -812,6 +818,8 @@
         $("#ca-action").val(row['action']);
         $("#ca-actionremark").val(row['actionremark']);
         $(".raca").attr('readonly', true);
+        $(".raca").attr('disable', "disable");
+
         $("#addCA").addClass("elehide");
         $("#CAModal").data("id", row['id']);
         $("#CAModal").modal('show');

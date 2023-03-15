@@ -274,6 +274,36 @@ function GetParms(name) {
     return result[name];
 }
 
+function checkFormNoNull() {
+    var flag = true;
+    $(".noNull").each(function () {
+        var name = $(this).attr("name");
+        if ($(this).attr("type") == "radio") {
+            if ($('input[name="' + name + '"]:checked').length < 1) {
+                showWarning($(this).attr('noNull') + "不能为空!");
+                flag = false;
+                return false;
+            }
+        }
+        else if ($(this).attr("type") == "checkbox") {
+            if ($('input[name="' + name + '"]:checked').length < 1) {
+                showWarning($(this).attr('noNull') + "不能为空!");
+                flag = false;
+                return false;
+            }
+        }
+        else if ($(this).val().length == 0) {
+            if ($(this)[0].attributes.length > 1) {
+                showWarning($(this).attr('noNull') + "不能为空!");
+                flag = false;
+                return false;
+            }
+        }
+    });
+    return flag;
+}
+
+
 function showWarning(text) {
     $('.alert').attr('class', 'alert');
     $('.alert').html(text).addClass('alert-danger').show().delay(1500).fadeOut();
