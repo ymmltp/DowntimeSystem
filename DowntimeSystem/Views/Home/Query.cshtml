@@ -27,23 +27,16 @@
                     <label class="form-label"> Station:</label>
                     <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
                 </div>
-                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
-                    <label class="form-label" for="start"> Start Date:</label>
-                    <div class='input-group date form_datetime searchTime'>
-                        <input type='text' class="form-control" id='start' />
-                        <span class="input-group-addon">
-                            <span class="fa fa-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
-                    <label class="form-label" for="end"> End Date: </label>
-                    <div class='input-group date form_datetime searchTime'>
-                        <input type='text' class="form-control" id='end' />
-                        <span class="input-group-addon">
-                            <span class="fa fa-calendar"></span>
-                        </span>
-                    </div>
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+                    <label class="form-label"> Time Zone:</label>
+                    <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1" onchange="updateTime()">
+                        <option value="5">Today</option>
+                        <option value="1">Current Week</option>
+                        <option value="4">Last Week</option>
+                        <option value="2">Current Month</option>
+                        <option value="3">Last Month</option>
+                        <option value="0">Customize</option>
+                    </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Incident Status:</label>
@@ -61,6 +54,25 @@
                     <label class="form-label" for="responser"> Repair Employee: </label>
                     <input type='text' class="form-control" id='responser' placeholder="--请输入工号 (WY0000) --" />
                 </div>
+                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 invisible">
+                    <label class="form-label" for="start"> Start Date:</label>
+                    <div class='input-group date form_datetime'>
+                        <input type='text' class="form-control" id='start' />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 invisible ">
+                    <label class="form-label" for="end"> End Date: </label>
+                    <div class='input-group date form_datetime'>
+                        <input type='text' class="form-control" id='end' />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 100px">New Incident</button></div>
             </div>
@@ -347,30 +359,67 @@
             $("#id").val(id);
             GetDowntimeList();
         }
-        $(".searchTime").datetimepicker({
-            fontAwesome: 'font-awesome',
-            format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
-            todayBtn: true, //一键选中今天的日期
-            minDate: '2022/01/01',
-            maxDate: 0,//今天
-            pickerPosition: "bottom-left", //打开选择卡的位置
-            weekStart: 1, //周开始的星期：0-6 星期日-星期六
-            autoclose: true,//选好时间后自动关闭
-            startView: 2,
-            maxView: 4,
-            minView: 2,//显示的最小选项卡：0-4 hour,day,month,year,decade
-            //minuteStep: 5,
-            language: 'zh-CN',
-            startDate: new Date("2022-01-01"),
-            endDate: new Date()
-        });
+        iniDatetimepicker();
         getDepartment($("#department-select"));
         getLine($('#line-select'));
         getProject($('#project-select'));
         getStation($('#station-select'));
         getDashboardSystem($("#system-select"));
         //var name = getCookie('dt-displayname');   //自动获取当前维修人员信息
+        $("#timeZone option[value='5']").attr("selected", true);
+        $("#timeZone").selectpicker('refresh');
+        $("#timeZone").trigger("onchange");
     });
+
+
+    function updateTime() {
+        var today = new Date()
+        $("#start").parent().parent().addClass("invisible");
+        $("#end").parent().parent().addClass("invisible");
+        switch ($("#timeZone").val()) {
+            case "0": //Customer
+                $("#start").parent().parent().removeClass("invisible");
+                $("#end").parent().parent().removeClass("invisible");
+                showSuccess("自定义时间范围");
+                break;
+            case "1": //Current Week
+                var dayOfWeek = today.getDay();
+                if (dayOfWeek == 0) dayOfWeek = 7;
+                var lastDay = new Date(today.getTime() - (dayOfWeek - 1) * 86400000); //本周的第一天
+                $("#start").val(lastDay.format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
+                showSuccess("显示本周数据");
+                break;
+            case "4": //Last Week
+                var dayOfWeek = today.getDay();
+                if (dayOfWeek == 0) dayOfWeek = 7;
+                var endDay = new Date(today.getTime() - (dayOfWeek) * 86400000); //上周最后一天
+                var startDay = new Date(today.getTime() - (dayOfWeek + 6) * 86400000); //上周第一天
+                $("#start").val(startDay.format("yyyy-MM-dd"));
+                $("#end").val(endDay.format("yyyy-MM-dd"));
+                showSuccess("显示上周数据");
+                break;
+            case "2": //Current Month
+                $("#start").val(new Date(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-01").format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
+                showSuccess("显示本月数据");
+                break;
+            case "3": //Last Month
+                $("#start").val(new Date(today.getFullYear() + "-" + (today.getMonth()).toString() + "-01").format("yyyy-MM-dd"));
+                var EndOfMonth = new Date();
+                EndOfMonth.setDate(0);   //上个月的最后一天
+                $("#end").val(EndOfMonth.format("yyyy-MM-dd"));
+                showSuccess("显示上月数据");
+                break;
+            case "5": //Current Day
+                $("#start").val(today.format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
+                showSuccess("显示当天数据");
+                break;
+            default:
+                break;
+        }
+    }
 
     //bootstrap-table 获取 downtime 信息
     function GetDowntimeList() {

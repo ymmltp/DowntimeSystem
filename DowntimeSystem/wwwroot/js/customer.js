@@ -5,7 +5,7 @@ function iniDatetimepicker() {
         format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
         todayBtn: true, //一键选中今天的日期
         minDate: '2022/01/01',
-        //maxDate: 0,//今天
+        maxDate: 0,//今天
         pickerPosition: "bottom-left", //打开选择卡的位置
         weekStart: 1, //周开始的星期：0-6 星期日-星期六
         autoclose: true,//选好时间后自动关闭
