@@ -253,7 +253,7 @@
                     <input type='text' class="form-control" id='ca-finishtime' readonly />
                 </div>
                 <div class="col-lg-12  downtime-item">
-                    <label for="ca-downtime" class="form-label text-right warning-text">Downtime(s):</label>
+                    <label for="ca-downtime" class="form-label text-right warning-text">Downtime(mins):</label>
                     <input type='text' class="form-control" id='ca-downtime' readonly />
                 </div>
                 @*downtime相关*@
@@ -733,7 +733,7 @@
         showDowntimeControls(row['calcdowntime'].toString());
         $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
-        $("#ca-downtime").val(row['downtime']);
+        $("#ca-downtime").val(parseInt(row['downtime']/60));
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);
         $("#ca-action").val(row['action']);
@@ -812,7 +812,7 @@
         showDowntimeControls(row['calcdowntime'].toString());
         $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
-        $("#ca-downtime").val(row['downtime']);
+        $("#ca-downtime").val(parseInt(row['downtime']/60));
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);
         $("#ca-action").val(row['action']);

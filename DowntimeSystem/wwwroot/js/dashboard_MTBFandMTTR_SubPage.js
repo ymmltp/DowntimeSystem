@@ -419,7 +419,7 @@ function getMTBF_withTarget_ByTime(system, project, department, station, lastday
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'MTBF ' + filterType + ' Tracking(Avg.)',,
+                    text: 'MTBF ' + filterType + ' Tracking(Avg.)',
                     textStyle: {
                         fontSize: 15,
                     }

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "aFlpRYrmYk0Q/sTWTqulC43On1PwvrQ0v+jRbLEZ9FjuIPMdehTB92UB8lzmzBtE/f+v8S7Pl+qMxY3fiFICsw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\1382919\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
+  ],
+  "logs": []
+}

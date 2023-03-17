@@ -647,7 +647,7 @@ function getMTTR_ActualvsTarget_EachMonth(system, project, department, station,l
                 var optionArray = [];
                 var option = {
                     title: {
-                        text: '12 Months MTTR Avg. Trend Chart',
+                        text: 'MTBF Tracking Trend(by 12 Months Avg.)',
                         textStyle: {
                             fontSize: 15,
                         }
@@ -874,7 +874,7 @@ function getMTTR_ByArea(system, project, department, station, lastday, currentDa
                 var optionArray = [];
                 var option = option = {
                     title: {
-                        text: 'MTTR Tracking Trend(by 12 Months Avg.)',
+                        text: 'MTTR Each Project Area Actual vs Target',
                         textStyle: {
                             fontSize: 15,
                         }

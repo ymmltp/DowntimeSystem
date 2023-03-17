@@ -607,7 +607,7 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                             },
                             events: {
                                 "click #do": function (e, value, row, index) {
-                                    window.location = encodeURI("/Home/Query/?ticket=" + row['id']);
+                                    window.open(encodeURI("/Home/Query/?ticket=" + row['id']));
                                 }
                             }
                             }
