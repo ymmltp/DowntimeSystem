@@ -17,13 +17,16 @@ namespace DowntimeSystem.Models
         {
         }
 
+        public virtual DbSet<EscalationNameList> EscalationNameLists { get; set; }
+        public virtual DbSet<EscalationRule> EscalationRules { get; set; }
         public virtual DbSet<IncidentDet> IncidentDets { get; set; }
         public virtual DbSet<IssueSummary> IssueSummaries { get; set; }
+        public virtual DbSet<WeeklyAlarmNameList> WeeklyAlarmNameLists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {
+            { 
                 //optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseNpgsql("Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123");
@@ -34,6 +37,65 @@ namespace DowntimeSystem.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "English_United States.1252");
 
+            modelBuilder.Entity<EscalationNameList>(entity =>
+            {
+                entity.HasKey(e => new { e.Department, e.Project, e.Email })
+                    .HasName("escalation_name_list_pkey");
+
+                entity.ToTable("escalation_name_list");
+
+                entity.Property(e => e.Department)
+                    .HasMaxLength(32)
+                    .HasColumnName("department");
+
+                entity.Property(e => e.Project)
+                    .HasMaxLength(32)
+                    .HasColumnName("project");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(64)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.Chinesename)
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .HasColumnName("chinesename");
+
+                entity.Property(e => e.Contacttype)
+                    .HasMaxLength(64)
+                    .HasColumnName("contacttype");
+
+                entity.Property(e => e.Englishname)
+                    .HasMaxLength(32)
+                    .HasColumnName("englishname");
+
+                entity.Property(e => e.Jobtitle)
+                    .HasMaxLength(32)
+                    .HasColumnName("jobtitle");
+
+                entity.Property(e => e.Level).HasColumnName("level");
+            });
+
+            modelBuilder.Entity<EscalationRule>(entity =>
+            {
+                entity.HasKey(e => new { e.Department, e.Project, e.Level })
+                    .HasName("escalation_rule_pkey");
+
+                entity.ToTable("escalation_rule");
+
+                entity.Property(e => e.Department)
+                    .HasMaxLength(32)
+                    .HasColumnName("department");
+
+                entity.Property(e => e.Project)
+                    .HasMaxLength(32)
+                    .HasColumnName("project");
+
+                entity.Property(e => e.Level).HasColumnName("level");
+
+                entity.Property(e => e.Timespan).HasColumnName("timespan");
+            });
+
             modelBuilder.Entity<IncidentDet>(entity =>
             {
                 entity.HasQueryFilter(e => e.Calcdowntime.Equals(true)); //只获取downtime事件
@@ -41,6 +103,8 @@ namespace DowntimeSystem.Models
                 entity.ToTable("incident_det");
 
                 entity.HasIndex(e => new { e.Comefrom, e.Occurtime }, "comefrom");
+
+                entity.HasIndex(e => new { e.Machine, e.Incidentstatus, e.Occurtime }, "machine_incidentstatus");
 
                 entity.HasIndex(e => new { e.Project, e.Line, e.Occurtime }, "occurtime");
 
@@ -193,6 +257,10 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(32)
                     .HasColumnName("line");
 
+                entity.Property(e => e.Preventiveaction)
+                    .HasMaxLength(512)
+                    .HasColumnName("preventiveaction");
+
                 entity.Property(e => e.Project)
                     .IsRequired()
                     .HasMaxLength(32)
@@ -211,6 +279,30 @@ namespace DowntimeSystem.Models
                     .HasColumnName("station");
 
                 entity.Property(e => e.Totaldowntime).HasColumnName("totaldowntime");
+
+                entity.Property(e => e.Week)
+                    .HasMaxLength(10)
+                    .HasColumnName("week");
+            });
+
+            modelBuilder.Entity<WeeklyAlarmNameList>(entity =>
+            {
+                entity.HasKey(e => new { e.Project, e.Department, e.Email })
+                    .HasName("weekly_alarm_name_list_pkey");
+
+                entity.ToTable("weekly_alarm_name_list");
+
+                entity.Property(e => e.Project)
+                    .HasMaxLength(32)
+                    .HasColumnName("project");
+
+                entity.Property(e => e.Department)
+                    .HasMaxLength(32)
+                    .HasColumnName("department");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(64)
+                    .HasColumnName("email");
             });
 
             OnModelCreatingPartial(modelBuilder);

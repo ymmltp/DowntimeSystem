@@ -20,5 +20,7 @@ namespace DowntimeSystem.Models
         public string Editor { get; set; }
         public DateTime Lastupdatedate { get; set; }
         public string Correctiveaction { get; set; }
+        public string Preventiveaction { get; set; }
+        public string Week { get; set; }
     }
 }
