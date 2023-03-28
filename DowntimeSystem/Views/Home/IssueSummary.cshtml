@@ -116,8 +116,8 @@
 <script>
     $(document).ready(function () {
         getDepartment($("#department-select"));
-        getLine($('#line-select'));
         getProject($('#project-select'));
+        getLine($('#line-select'));
         getStation($('#station-select'));
     });
 
@@ -328,32 +328,33 @@
             ],
         });
     }
-
     function EditFACA() {
-        window.open(encodeURI('https://10.136.16.135:4433/'));
-        var tmp = {
-            id: $("#CAModal").data('id'),
-            action: $("#ca-analysisstep").val(),
-            correctiveaction: $("#ca-action").val(),
-            preventiveaction: $("#ca-pvaction").val(),
-            editor: "Auto",//getCookie("dt-displayname"),
-        }
-        $.ajax({
-            url: '/IssueSummary/EditIssueSummary_Action',
-            method: 'POST',
-            data: tmp,
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (err) {
-                alert(err.responseText);
-            },
-            complete: function (res) {
-                $("#weeklyDT").bootstrapTable("refreshOptions", { url: "/IssueSummary/GetIssueWeekly" });
-                $("#dtAnalysis").bootstrapTable("refreshOptions", { url: "/IssueSummary/GetIssueSummary" });
-                $("#CAModal").modal('hide');
+        if (checkFormNoNull()) {
+            window.open(encodeURI('https://10.136.16.135:4433/'));
+            var tmp = {
+                id: $("#CAModal").data('id'),
+                action: $("#ca-analysisstep").val(),
+                correctiveaction: $("#ca-action").val(),
+                preventiveaction: $("#ca-pvaction").val(),
+                editor: "Auto",//getCookie("dt-displayname"),
             }
-        })    
+            $.ajax({
+                url: '/IssueSummary/EditIssueSummary_Action',
+                method: 'POST',
+                data: tmp,
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                },
+                complete: function (res) {
+                    $("#weeklyDT").bootstrapTable("refreshOptions", { url: "/IssueSummary/GetIssueWeekly" });
+                    $("#dtAnalysis").bootstrapTable("refreshOptions", { url: "/IssueSummary/GetIssueSummary" });
+                    $("#CAModal").modal('hide');
+                }
+            })
+        }
     }
 
 </script>
