@@ -10,6 +10,7 @@ namespace DowntimeSystem.Controllers
     public class IssueSummaryController : Controller
     {
         #region 查询 Issue Summary 
+        //All
         [HttpGet]
         public IActionResult GetIssueSummary(IssueSummary tmp)
         {
@@ -17,14 +18,40 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IssueSummary> items = db.IssueSummaries.ToList();
-                    if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Station)) items = items.Where(e => e.Station.Equals(tmp.Station)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Issue)) items = items.Where(e => e.Issue.Equals(tmp.Issue)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Rootcause)) items = items.Where(e => e.Rootcause.Equals(tmp.Rootcause)).ToList();
-                    return Json(items.OrderByDescending(e=>e.Qty).OrderByDescending(e=>e.Totaldowntime));
+                    var where = db.IssueSummaryAlls.Where(e=>true);
+                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
+                    if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
+                    if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
+                    if (!string.IsNullOrEmpty(tmp.Station)) where = where.Where(e => e.Station.Equals(tmp.Station));
+                    if (!string.IsNullOrEmpty(tmp.Issue)) where = where.Where(e => e.Issue.Equals(tmp.Issue));
+                    if (!string.IsNullOrEmpty(tmp.Rootcause)) where = where.Where(e => e.Rootcause.Equals(tmp.Rootcause));
+                    var items = where.ToList();
+                    return Json(items.OrderByDescending(e=>e.Qty));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        //Weekly
+        [HttpGet]
+        public IActionResult GetIssueWeekly(IssueSummary tmp)
+        {
+            try
+            {
+                using (ECContext db = new ECContext())
+                {
+                    var where = db.IssueSummaries.Where(e => true);
+                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
+                    if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
+                    if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
+                    if (!string.IsNullOrEmpty(tmp.Station)) where = where.Where(e => e.Station.Equals(tmp.Station));
+                    if (!string.IsNullOrEmpty(tmp.Issue)) where = where.Where(e => e.Issue.Equals(tmp.Issue));
+                    if (!string.IsNullOrEmpty(tmp.Rootcause)) where = where.Where(e => e.Rootcause.Equals(tmp.Rootcause));
+                    if (!string.IsNullOrEmpty(tmp.Week)) where = where.Where(e => e.Week.Equals(tmp.Week));
+                    var items = where.ToList();
+                    return Json(items.OrderByDescending(e => e.Qty));
                 }
             }
             catch (Exception ex)
@@ -71,6 +98,7 @@ namespace DowntimeSystem.Controllers
                     IssueSummary item = db.IssueSummaries.Find(tmp.Id);
                     if (!string.IsNullOrEmpty(tmp.Action)) item.Action = tmp.Action;
                     if (!string.IsNullOrEmpty(tmp.Correctiveaction)) item.Correctiveaction = tmp.Correctiveaction;
+                    if (!string.IsNullOrEmpty(tmp.Preventiveaction)) item.Preventiveaction = tmp.Preventiveaction;
                     if (!string.IsNullOrEmpty(tmp.Editor)) item.Editor = tmp.Editor;
                     item.Lastupdatedate = DateTime.Now;
                     db.SaveChanges();
@@ -84,9 +112,9 @@ namespace DowntimeSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddIssueSummary_QTY_TotalDowntime(IssueSummary issueSummary, IssueSummary newOne)
+        public IActionResult AddIssueSummary_QTY_TotalDowntime(int Id, IssueSummary newOne)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(issueSummary.Id)))
+            if (string.IsNullOrEmpty(Convert.ToString(Id)))
             {
                 return BadRequest("Please select one issue to modify ");
             }
@@ -94,7 +122,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    IssueSummary item = db.IssueSummaries.Find(issueSummary.Id);
+                    IssueSummary item = db.IssueSummaries.Find(Id);
                     item.Qty += newOne.Qty;
                     item.Totaldowntime += newOne.Totaldowntime;
                     db.SaveChanges();
@@ -114,16 +142,18 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    List<IssueSummary> items = db.IssueSummaries.ToList();
-                    if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Station)) items = items.Where(e => e.Station.Equals(tmp.Station)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Issue)) items = items.Where(e => e.Issue.Equals(tmp.Issue)).ToList();
-                    if (!string.IsNullOrEmpty(tmp.Rootcause)) items = items.Where(e => e.Rootcause.Equals(tmp.Rootcause)).ToList();
+                    var where = db.IssueSummaries.Where(e=>true);
+                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
+                    if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
+                    if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
+                    if (!string.IsNullOrEmpty(tmp.Station)) where = where.Where(e => e.Station.Equals(tmp.Station));
+                    if (!string.IsNullOrEmpty(tmp.Issue)) where = where.Where(e => e.Issue.Equals(tmp.Issue));
+                    if (!string.IsNullOrEmpty(tmp.Rootcause)) where = where.Where(e => e.Rootcause.Equals(tmp.Rootcause));
+                    if (!string.IsNullOrEmpty(tmp.Week)) where = where.Where(e => e.Week.Equals(tmp.Week));
+                    var items = where.ToList();
                     if (items.Count > 0)
                     {
-                        AddIssueSummary_QTY_TotalDowntime(items[0],tmp);
+                        AddIssueSummary_QTY_TotalDowntime(items[0].Id,tmp);
                     }
                     else {
                         CreateIssueSummary(tmp);

@@ -21,12 +21,13 @@ namespace DowntimeSystem.Models
         public virtual DbSet<EscalationRule> EscalationRules { get; set; }
         public virtual DbSet<IncidentDet> IncidentDets { get; set; }
         public virtual DbSet<IssueSummary> IssueSummaries { get; set; }
+        public virtual DbSet<IssueSummaryAll> IssueSummaryAlls { get; set; }
         public virtual DbSet<WeeklyAlarmNameList> WeeklyAlarmNameLists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            { 
+            {
                 //optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseNpgsql("Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123");
@@ -283,6 +284,57 @@ namespace DowntimeSystem.Models
                 entity.Property(e => e.Week)
                     .HasMaxLength(10)
                     .HasColumnName("week");
+            });
+
+            modelBuilder.Entity<IssueSummaryAll>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("issue_summary_all");
+
+                entity.Property(e => e.Action)
+                    .HasMaxLength(512)
+                    .HasColumnName("action");
+
+                entity.Property(e => e.Correctiveaction)
+                    .HasMaxLength(512)
+                    .HasColumnName("correctiveaction");
+
+                entity.Property(e => e.Department)
+                    .HasMaxLength(32)
+                    .HasColumnName("department");
+
+                entity.Property(e => e.Editor)
+                    .HasMaxLength(32)
+                    .HasColumnName("editor");
+
+                entity.Property(e => e.Issue)
+                    .HasMaxLength(64)
+                    .HasColumnName("issue");
+
+                entity.Property(e => e.Lastupdatedate).HasColumnName("lastupdatedate");
+
+                entity.Property(e => e.Line)
+                    .HasMaxLength(32)
+                    .HasColumnName("line");
+
+                entity.Property(e => e.Preventiveaction)
+                    .HasMaxLength(512)
+                    .HasColumnName("preventiveaction");
+
+                entity.Property(e => e.Project)
+                    .HasMaxLength(32)
+                    .HasColumnName("project");
+
+                entity.Property(e => e.Qty).HasColumnName("qty");
+
+                entity.Property(e => e.Rootcause)
+                    .HasMaxLength(64)
+                    .HasColumnName("rootcause");
+
+                entity.Property(e => e.Station)
+                    .HasMaxLength(64)
+                    .HasColumnName("station");
             });
 
             modelBuilder.Entity<WeeklyAlarmNameList>(entity =>

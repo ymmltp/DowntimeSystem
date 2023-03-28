@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Action Step Maintains";
+    ViewData["Title"] = "Issue Summary";
 }
 
 <div class="container-fluid">
@@ -32,15 +32,80 @@
                     <label class="form-label"> Defect Code:</label>
                     <input type="text" class="form-control " id="defect-input" placeholder="Defect Input" />
                 </div>
-                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="analysis" onclick="GetIssueSummary()">Search</button></div>
+                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="analysis" onclick="GetIssueSummary();GetIssueWeekly()">Search</button></div>
             </div>
         </div>
     </div>
 </div>
 
-<table id="dtAnalysis"></table>
+<ul id="myTab" class="nav nav-tabs" role="tablist">
+    <li class="nav-item"><a class="nav-link active" id="tab1" href="#Tab1" data-toggle="tab" role="tab" aria-selected="false">Current Week</a></li>
+    <li class="nav-item"><a class="nav-link " id="tab2" href="#Tab2" data-toggle="tab" role="tab" aria-selected="true">Totally</a></li>
+</ul>
+<div id="myTabContent" class="tab-content border border-top-0">
+    <div class="tab-pane fade   show active" id="Tab1" role="tabpanel" aria-labelledby="tab1">
+        <table id="weeklyDT" class="tablegreen"></table>
+    </div>
+    <div class="tab-pane fade" id="Tab2" role="tabpanel" aria-labelledby="tab2">
+        <table id="dtAnalysis"></table>
+    </div>
+</div>
 
-<div class="alert"></div>
+<div class="modal fade" id="CAModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 50%;min-width:150px">
+        <div class="modal-content" @*style="background-color: #62a58a; color: white"*@>
+            <div class="modal-header" style="background-color: #3e9472; color: white">
+                <h5 class="modal-title" id="CA-title" style="text-wrap:normal">填写 FACA </h5>
+            </div>
+            <div class="modal-body row">
+                <div class="col-lg-2">
+                    <label for="ca-department" class="form-label text-right">Department:</label>
+                    <input type='text' class="form-control" readonly id='ca-department' />
+                </div>
+                <div class="col-lg-2">
+                    <label for="ca-project" class="form-label text-right">Project:</label>
+                    <input type='text' class="form-control" readonly id='ca-project' />
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-line" class="form-label text-right">Line:</label>
+                    <input type='text' class="form-control" readonly id='ca-line' />
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-station" class="form-label text-right warning-text">Station:</label>
+                    <input type='text' class="form-control raca " id='ca-station' readonly />
+                </div>
+                <div class="col-lg-2">
+                    <label for="ca-qty" class="form-label text-right">QTY:</label>
+                    <input type='number' step="1" class="form-control raca" id='ca-qty' value="1" title="1" readonly />
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-issue" class="form-label text-right warning-text">Defect Code:</label>
+                    <input type='text' class="form-control raca " id='ca-issue' readonly />
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                    <input type='text' class="form-control raca" id='ca-rootcause' readonly />
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-analysisstep" class="form-label text-right warning-text">Analysis Step:</label>
+                    <textarea type='text' class="form-control raca noNull" id='ca-analysisstep' noNull="Analysis Step"></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-action" class="form-label text-right warning-text">Correction Action:</label>
+                    <textarea type='text' class="form-control raca noNull" id='ca-action' noNull="Correction Action"></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-pvaction" class="form-label text-right warning-text">Preventive Action:</label>
+                    <textarea type='text' class="form-control raca noNull" id='ca-pvaction' noNull="Preventive Action"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="EditFACA()">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="~/js/customer.js"></script>
 <script src="~/js/cookie.js"></script>
@@ -90,7 +155,7 @@
                     title: 'Station',
                     align: 'center',
                     valign: 'middle',
-                },{
+                }, {
                     field: 'issue',
                     title: 'Defect Code',
                     align: 'center',
@@ -110,27 +175,22 @@
                     title: 'Total Downtime',
                     align: 'center',
                     valign: 'middle',
-                    visible:false,
+                    visible: false,
                 }, {
                     field: 'action',
                     title: 'Analysis Steps',
                     align: 'center',
                     valign: 'middle',
-                    editable: {
-                        title: 'Action',
-                        type: 'textarea',
-                        mode: 'inline',
-                    }
                 }, {
                     field: 'correctiveaction',
                     title: 'Corrective Action',
                     align: 'center',
                     valign: 'middle',
-                    editable: {
-                        title: 'Action',
-                        type: 'textarea',
-                        mode: 'inline',
-                    }
+                }, {
+                    field: 'preventiveaction',
+                    title: 'Preventive Action',
+                    align: 'center',
+                    valign: 'middle',
                 }, {
                     field: 'editor',
                     title: 'Editor',
@@ -145,30 +205,155 @@
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     },
                 }],
-            onEditableSave: function (field, row, oldValue, $el) {
-                console.log(field);
-                var tmp = {
-                    id: row['id'],
-                    action: row['action'],
-                    correctiveaction: row['correctiveaction'],
-                    editor: "Auto",//getCookie("dt-displayname"),
-                }
-                $.ajax({
-                    url: '/IssueSummary/EditIssueSummary_Action',
-                    method: 'POST',
-                    data: tmp,
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (err) {
-                        alert(err.responseText);
-                    },
-                    complete: function (res) {
-                        $("#dtAnalysis").bootstrapTable("refreshOptions", { url: "/IssueSummary/GetIssueSummary" });
-                    }
-                })
-            },
         });
+    }
+    function GetIssueWeekly() {
+        let currentWeek = new Date().getFullYear().toString() + getWeek(new Date()).toString();//获取本周的数据
+        $("#weeklyDT").bootstrapTable('destroy').bootstrapTable({
+            cache: false,
+            type: 'GET',
+            url: '/IssueSummary/GetIssueWeekly',
+            queryParams: {
+                Department: $("#department-select").val()[0],
+                Project: $("#project-select").val()[0],
+                Line: $("#line-select").val()[0],
+                Station: $("#station-select").val()[0],
+                issue: $("#defect-input").val(),
+                week: currentWeek, 
+            },
+            dataType: 'json',
+            columns: [
+                {
+                    field: 'department',
+                    title: 'Department',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'project',
+                    title: 'Project',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'line',
+                    title: 'Line',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'station',
+                    title: 'Station',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'issue',
+                    title: 'Defect Code',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'rootcause',
+                    title: 'Root Cause',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'week',
+                    title: 'Week',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, role, index) {
+                        return value != null ? value.substring(4) : "--";
+                    }                                                                  
+                }, {
+                    field: 'qty',
+                    title: 'QTY',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'totaldowntime',
+                    title: 'Total Downtime',
+                    align: 'center',
+                    valign: 'middle',
+                    visible: false,
+                }, {
+                    field: 'action',
+                    title: 'Analysis Steps',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'correctiveaction',
+                    title: 'Corrective Action',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'preventiveaction',
+                    title: 'Preventive Action',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'editor',
+                    title: 'Editor',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'lastupdatedate',
+                    title: 'Update Time',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+                    },
+                }, {
+                    field: 'option',
+                    title: 'Option',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                            return ['<button type="button" class="btn primary text-light" id="edit">Edit</button>']    
+                    },
+                    events: {
+                        "click #edit": function (e, value, row, index) {
+                            $("#ca-department").val(row['department']);
+                            $("#ca-project").val(row['project']);
+                            $("#ca-line").val(row['line']);
+                            $("#ca-station").val(row['station']);
+                            $("#ca-issue").val(row['issue']);
+                            $("#ca-rootcause").val(row['rootcause']);
+                            $("#ca-qty").val(row['qty']);
+                            $("#ca-analysisstep").val(row['action']);
+                            $("#ca-action").val(row['correctiveaction']);
+                            $("#ca-pvaction").val(row['preventiveaction']);
+                            $("#CAModal").data('id', row['id']);
+                            $("#CAModal").modal('show');
+                        },
+                    }
+                },
+            ],
+        });
+    }
+
+    function EditFACA() {
+        window.open(encodeURI('https://10.136.16.135:4433/'));
+        var tmp = {
+            id: $("#CAModal").data('id'),
+            action: $("#ca-analysisstep").val(),
+            correctiveaction: $("#ca-action").val(),
+            preventiveaction: $("#ca-pvaction").val(),
+            editor: "Auto",//getCookie("dt-displayname"),
+        }
+        $.ajax({
+            url: '/IssueSummary/EditIssueSummary_Action',
+            method: 'POST',
+            data: tmp,
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            },
+            complete: function (res) {
+                $("#weeklyDT").bootstrapTable("refreshOptions", { url: "/IssueSummary/GetIssueWeekly" });
+                $("#dtAnalysis").bootstrapTable("refreshOptions", { url: "/IssueSummary/GetIssueSummary" });
+                $("#CAModal").modal('hide');
+            }
+        })    
     }
 
 </script>

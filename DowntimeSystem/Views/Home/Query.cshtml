@@ -812,6 +812,7 @@
             postData('/EC/RCCA', tmp)
                 .then(res => {
                     if ($(':radio[name=caldowntime]:checked').val() == 'true') {
+                        let currentWeek = new Date().getFullYear().toString() + getWeek(new Date()).toString();//获取本周的数据
                         var issueSummary = {
                             department: $("#ca-department").val(),
                             project: $("#ca-project").val(),
@@ -821,6 +822,7 @@
                             rootcause: $("#ca-rootcause").val(),
                             qty: 1,
                             action: "",
+                            week: currentWeek,
                         }
                         return postData('/IssueSummary/CloseDowntime_ModifyIssueSummary', issueSummary)
                     }

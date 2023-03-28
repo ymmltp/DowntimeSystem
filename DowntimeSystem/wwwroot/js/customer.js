@@ -50,6 +50,22 @@ function getDay(num, str) {
     return oYear + str + oMoth + str + oDay;
 }
 
+//获取当前周
+function getWeek(date) {
+    if (date) {
+        let d1 = new Date(date);
+        let d2 = new Date(date);
+        d2.setMonth(0)
+        d2.setDate(1)
+        let rq = d1 - d2
+        let s1 = Math.ceil(rq / (24 * 60 * 60 * 1000))
+        let s2 = Math.ceil(s1 / 7) + 1
+        return s2;
+    } else {
+        return '--';
+    }
+}
+
 //Date->string
 function changeDateFormat(cellval) {
     if (cellval != null) {
