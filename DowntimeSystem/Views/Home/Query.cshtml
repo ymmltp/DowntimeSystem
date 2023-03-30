@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Downtime Task";
+    ViewData["Title"] = "Downtime List";
 }
 <div class="container-fluid">
     <div class="panel-default">
@@ -28,7 +28,7 @@
                     <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-                    <label class="form-label"> Time Zone:</label>
+                    <label class="form-label"> Time Range:</label>
                     <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1" onchange="updateTime()">
                         <option value="5">Today</option>
                         <option value="1">Current Week</option>
@@ -39,7 +39,7 @@
                     </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Incident Status:</label>
+                    <label class="form-label"> Ticket Status:</label>
                     <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1">
                         <option value="0">New Open</option>
                         <option value="1">On-going Check</option>
@@ -51,7 +51,7 @@
                     <input type='text' class="form-control" id='id' />
                 </div>
                 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
-                    <label class="form-label" for="responser"> Repair Employee: </label>
+                    <label class="form-label" for="responser"> Employee ID: </label>
                     <input type='text' class="form-control" id='responser' placeholder="--请输入工号 (WY0000) --" />
                 </div>
                 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 invisible">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 invisible ">
-                    <label class="form-label" for="end"> End Date: </label>
+                    <label class="form-label" for="end"> Finish Date: </label>
                     <div class='input-group date form_datetime'>
                         <input type='text' class="form-control" id='end' />
                         <span class="input-group-addon">
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
-                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 100px">New Incident</button></div>
+                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 100px">Create Ticket</button></div>
             </div>
         </div>
     </div>
@@ -82,7 +82,7 @@
 
 
 <ul id="myTab" class="nav nav-tabs" role="tablist">
-    <li class="nav-item"><a class="nav-link " id="analysis-tab" href="#analysisTab" data-toggle="tab" role="tab" aria-selected="false"> Troubleshooting Guide</a></li>
+    <li class="nav-item"><a class="nav-link " id="analysis-tab" href="#analysisTab" data-toggle="tab" role="tab" aria-selected="false">Cookbook</a></li>
     <li class="nav-item"><a class="nav-link active" id="downtimet-tab" href="#downtimeTab" data-toggle="tab" role="tab" aria-selected="true">Downtime</a></li>
 </ul>
 <div id="myTabContent" class="tab-content border border-top-0">
@@ -162,7 +162,7 @@
     <div class="modal-dialog" role="document" style="width: 30%;min-width:150px ">
         <div class="modal-content" @*style="background-color: #b37272; color: white"*@>
             <div class="modal-header" style="background-color: #a73d3d; color: white">
-                <h5 class="modal-title" id="title" style="text-wrap:normal">Check Downtime Message </h5>
+                <h5 class="modal-title" id="title" style="text-wrap:normal">注册维修人员信息</h5>
             </div>
             <div class="modal-body row">
                 <div class="col-lg-6">
@@ -194,16 +194,16 @@
                     <textarea type='text' class="form-control" readonly id='sr-issueremark'></textarea>
                 </div>
                 <div class="col-lg-12">
-                    <label for="sr-downtime" class="form-label text-right">Time Duration [HH:mm:ss]:</label>
+                    <label for="sr-downtime" class="form-label text-right">New Open Duration [HH:mm:ss]:</label>
                     <input type='text' class="form-control" readonly id='sr-downtime'/>
                 </div>
                 <div class="col-lg-12">
-                    <label for="sr-employee" class="form-label text-right warning-text">Employee:</label>
+                    <label for="sr-employee" class="form-label text-right warning-text">Employee ID:</label>
                     <input type='text' class="form-control" id='sr-employee' placeholder="---例 : W1234---" />
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="startRepaire">Go to Fix</button>
+                <button type="button" class="btn btn-success" id="startRepaire">Go 2 Fix</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
             </div>
         </div>
@@ -221,19 +221,19 @@
                     <input type='text' class="form-control" readonly id='ca-department' />
                 </div>
                 <div class="col-lg-2">
-                    <label for="ca-line" class="form-label text-right">Line:</label>
-                    <input type='text' class="form-control" readonly id='ca-line' />
-                </div>
-                <div class="col-lg-2">
                     <label for="ca-project" class="form-label text-right">Project:</label>
                     <input type='text' class="form-control" readonly id='ca-project' />
+                </div>
+                <div class="col-lg-2">
+                    <label for="ca-line" class="form-label text-right">Line:</label>
+                    <input type='text' class="form-control" readonly id='ca-line' />
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-station" class="form-label text-right warning-text">Station:</label>
                     <input type='text' class="form-control raca noNull" id='ca-station' noNull="Station" />
                 </div>
                 <div class="col-lg-3">
-                    <label for="ca-machine" class="form-label text-right warning-text">Equipment:</label>
+                    <label for="ca-machine" class="form-label text-right warning-text">Equipment ID:</label>
                     <select class="form-control raca noNull" id='ca-machine' data-size="6" title="--Select EQID--" noNull="Equipment"></select>
                 </div>
                 <div class="col-lg-12">
@@ -245,7 +245,7 @@
                     <textarea type='text' class="form-control raca" id='ca-issueremark'></textarea>
                 </div>
                 <div class="col-lg-4">
-                    <label for="ca-employee" class="form-label text-right">Employee:</label>
+                    <label for="ca-employee" class="form-label text-right">Employee ID:</label>
                     <input type='text' class="form-control" id='ca-employee' readonly />
                 </div>
                 <div class="col-lg-4">
@@ -269,15 +269,15 @@
                     <input type='text' class="form-control" id='ca-downtime' readonly />
                 </div>
                 <div class="col-lg-6  downtime-item">
-                    <label for="ca-responsetime" class="form-label text-right">Append Time [HH:mm:ss]:</label>
+                    <label for="ca-responsetime" class="form-label text-right">Attend Time [HH:mm:ss]:</label>
                     <input type='text' class="form-control" id='ca-responsetime' readonly />
                 </div>
                 <div class="col-lg-6  downtime-item">
-                    <label for="ca-finishtime" class="form-label text-right warning-text">Finish Time:</label>
+                    <label for="ca-finishtime" class="form-label text-right warning-text">End Time:</label>
                     <input type='text' class="form-control" id='ca-finishtime' readonly />
                 </div>
                 <div class="col-lg-6  downtime-item">
-                    <label for="ca-tmdur" class="form-label text-right">Repaire Time [HH:mm:ss]:</label>
+                    <label for="ca-tmdur" class="form-label text-right">Repair Time [HH:mm:ss]:</label>
                     <input type='text' class="form-control" id='ca-tmdur' readonly />
                 </div>
                 @*downtime相关*@
@@ -286,15 +286,15 @@
                     <input type='text' class="form-control raca noNull" id='ca-rootcause' noNull="Root Cause" />
                 </div>
                 <div class="col-lg-6">
-                    <label for="ca-action" class="form-label text-right warning-text">Action:</label>
+                    <label for="ca-action" class="form-label text-right warning-text">Corrective Action:</label>
                     <input type='text' class="form-control raca noNull" id='ca-action' noNull="Action" />
                 </div>
                 <div class="col-lg-6">
-                    <label for="ca-rootcauseremark" class="form-label text-right">Root Cause Remark:</label>
+                    <label for="ca-rootcauseremark" class="form-label text-right">RC Remark:</label>
                     <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
                 </div>
                 <div class="col-lg-6">
-                    <label for="ca-actionremark" class="form-label text-right">Action Remark:</label>
+                    <label for="ca-actionremark" class="form-label text-right">CA Remark:</label>
                     <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
                 </div>
             </div>
@@ -532,7 +532,7 @@
                 visible: false,
             }, {
                 field: 'occurtime',
-                title: 'Occurt Time',
+                title: 'Start Time',
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {
@@ -561,7 +561,7 @@
                 },
             }, {
                 field: 'respperson',
-                title: 'Response Person',
+                title: 'Employee ID',
                 align: 'center',
                 valign: 'middle',
             }, {
@@ -583,7 +583,7 @@
                 visible: false,
             }, {
                 field: 'downtime',
-                title: 'DownTime(mins)',
+                title: 'Downtime(m)',
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {
@@ -703,12 +703,12 @@
                 }
             }, {
                 field: 'analysis',
-                title: 'Analysis',
+                title: 'Cookbook',
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {
                     //显示分析页面
-                    return ['<button type="button" class="btn gray" id="showanalysis">Analysis</button>']
+                    return ['<button type="button" class="btn gray" id="showanalysis">Cookbook</button>']
                 },
                 events: {
                     "click #showanalysis": function (e, value, row, index) {
@@ -784,7 +784,7 @@
             placeholder:"请输入设备ID"
         });
 
-        $("#CA-title").html("填写 RootCause 和 CA");
+        $("#CA-title").html("填写 RC 和 CA");
         $("#ca-department").val(row['department']);
         $("#ca-project").val(row['project']);
         $("#ca-line").val(row['line']);
