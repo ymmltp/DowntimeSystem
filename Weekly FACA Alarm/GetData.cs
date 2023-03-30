@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using DowntimeSystem.Models;
+using System.Globalization;
 
 namespace Weekly_FACA_Alarm
 {
     public class GetData
     {
         private static ECContext db = new ECContext();
-
+        private GregorianCalendar gc = new GregorianCalendar();
         public GetData()
         {
 
@@ -22,11 +23,7 @@ namespace Weekly_FACA_Alarm
         }
 
         public List<myTableBody> GetInfo(string department=null, string project=null) {
-            DateTime dateTime = new DateTime(DateTime.Now.Year, 1, 1);
-            int dayCount = (int)(DateTime.Now - dateTime).TotalDays;
-            dayCount += Convert.ToInt32(dateTime.DayOfWeek);
-            string week = Math.Ceiling(dayCount / 7.0 +1).ToString();
-            string currentweek = DateTime.Now.Year.ToString() + week;
+            string currentweek = DateTime.Now.Year.ToString() + gc.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString().PadLeft(2, '0');
 
             var where = db.IssueSummaries.Where(e => e.Week == currentweek & e.Action == null & e.Correctiveaction == null & e.Preventiveaction == null);  // 
             where = !string.IsNullOrEmpty(department) ? where.Where(e => e.Department.Equals(department)) : where;

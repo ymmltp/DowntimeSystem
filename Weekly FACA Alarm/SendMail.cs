@@ -43,7 +43,7 @@ namespace Weekly_FACA_Alarm
             mailMessage.Body += "This is an automated message from Downtime System. Please do not reply to this message.<br/>";
             mailMessage.Body += "This message <B>remind you to edit this week's FACA.</B><br/><br/>";
             mailMessage.Body += "You can access Downtime System by following URL, <B>click here ->>></B> http://cnwuxg0te01:8050/ <br/><br/>";  
-            mailMessage.Attachments.Add(new Attachment(Environment.CurrentDirectory + $"/Jabil.png"));
+            mailMessage.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + $"Jabil.png"));
             mailMessage.Attachments[0].ContentType.Name = "image/png";
             mailMessage.Attachments[0].ContentId = "pic";
             mailMessage.Attachments[0].ContentDisposition.Inline = true;

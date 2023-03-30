@@ -15,10 +15,10 @@ namespace Weekly_FACA_Alarm
             foreach (var i in dt) {
                 if (i.count > 0) {
                     List<WeeklyAlarmNameList> econtact = gd.GetContact(i.department, i.project);
+                    if (econtact.Count == 0) continue;
                     //生成联系人信息
                     List<string> to = new List<string>();
                     List<string> cc = new List<string>();
-                    cc.Add("Adele_Lu@jabil.com");
                     foreach (var mail in econtact)
                     {
                         to.Add(mail.Email);
