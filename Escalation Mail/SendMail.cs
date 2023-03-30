@@ -46,8 +46,8 @@ namespace Escalation_Mail
             mailMessage.Body += "You can access Downtime System by following URL, <B>click here ->>></B> http://cnwuxg0te01:8050/ <br/><br/>";
             mailMessage.Body += "<span style='color:#002b49'>==========================================================================================</span><br/><br/>";
             mailMessage.Body += "<B>Current Ecalatation Level:</B><br/>";
-            mailMessage.Attachments.Add(new Attachment(Environment.CurrentDirectory + $"/PIC{level}.png"));
-            mailMessage.Attachments.Add(new Attachment(Environment.CurrentDirectory + $"/Jabil.png"));
+            mailMessage.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + $"PIC{level}.png"));
+            mailMessage.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + $"Jabil.png"));
             mailMessage.Attachments[0].ContentType.Name = "image/png";
             mailMessage.Attachments[1].ContentType.Name = "image1/png";
             mailMessage.Attachments[0].ContentId = "pic";

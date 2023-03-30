@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DowntimeSystem.Models;
+using System.Globalization;
 
 namespace DowntimeSystem.Controllers
 {
@@ -12,6 +13,7 @@ namespace DowntimeSystem.Controllers
     {
         private static ADHelper ad = new ADHelper();
         private static string domain = "corp.jabil.org";
+        private GregorianCalendar gc = new GregorianCalendar();
 
         // GET: Basic
         public ActionResult Auth(string ntid,string password)
@@ -29,6 +31,12 @@ namespace DowntimeSystem.Controllers
             catch(Exception ex) {
                 return Json(false);
             }
+        }
+
+        public ActionResult GetCurrentWeek(string date)
+        {
+            var a = gc.GetWeekOfYear(Convert.ToDateTime(date), CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
+            return Json(a);
         }
     }
 }

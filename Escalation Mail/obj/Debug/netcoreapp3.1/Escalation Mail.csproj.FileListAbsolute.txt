@@ -95,3 +95,4 @@ C:\Users\1382919\source\repos\DowntimeSystem\Escalation Mail\obj\Debug\netcoreap
 C:\Users\1382919\source\repos\DowntimeSystem\Escalation Mail\obj\Debug\netcoreapp3.1\Escalation Mail.dll
 C:\Users\1382919\source\repos\DowntimeSystem\Escalation Mail\obj\Debug\netcoreapp3.1\Escalation Mail.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\Escalation Mail\obj\Debug\netcoreapp3.1\Escalation Mail.genruntimeconfig.cache
+C:\Users\1382919\source\repos\DowntimeSystem\Escalation Mail\obj\Debug\netcoreapp3.1\Escalation Mail.csproj.CopyComplete

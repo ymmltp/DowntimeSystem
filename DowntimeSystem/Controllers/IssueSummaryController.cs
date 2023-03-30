@@ -80,7 +80,7 @@ namespace DowntimeSystem.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message);     //有冲突
             }
         }
 

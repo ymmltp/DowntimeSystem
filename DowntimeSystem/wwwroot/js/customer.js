@@ -50,20 +50,32 @@ function getDay(num, str) {
     return oYear + str + oMoth + str + oDay;
 }
 
-//获取当前周
-function getWeek(date) {
-    if (date) {
-        let d1 = new Date(date);
-        let d2 = new Date(date);
-        d2.setMonth(0)
-        d2.setDate(1)
-        let rq = d1 - d2
-        let s1 = Math.ceil(rq / (24 * 60 * 60 * 1000))
-        let s2 = Math.ceil(s1 / 7) + 1
-        return s2;
-    } else {
-        return '--';
-    }
+
+//获取周
+function getWeekList(obj) {
+    var currentYear = new Date().getFullYear();
+    $.ajax({
+        url: '/Basic/GetCurrentWeek',
+        method: 'GET',
+        dataType: 'json',
+        data: { date: new Date(currentYear + "-12-31").format('yyyy-MM-dd') },
+        success: function (data) {
+            var option = "";
+            for (var i = 1; i <= data; i++) {
+                option += '<option value="' + currentYear.toString() + (Array(2).join(0) + i).slice(-2) + '">' + i + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            showWarning(err.statusText);
+        }
+    })
+
+
 }
 
 //Date->string

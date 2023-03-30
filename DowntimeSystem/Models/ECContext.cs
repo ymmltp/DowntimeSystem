@@ -28,7 +28,6 @@ namespace DowntimeSystem.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseNpgsql("Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123");
             }
@@ -222,7 +221,7 @@ namespace DowntimeSystem.Models
             {
                 entity.ToTable("issue_summary");
 
-                entity.HasIndex(e => new { e.Department, e.Project, e.Line, e.Station, e.Issue, e.Rootcause }, "issue_summary_department_project_line_station_issue_rootcau_key")
+                entity.HasIndex(e => new { e.Department, e.Project, e.Line, e.Station, e.Issue, e.Rootcause, e.Week }, "issue_summary_department_project_line_station_issue_rootcau_key")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");

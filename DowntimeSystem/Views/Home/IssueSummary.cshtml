@@ -32,9 +32,13 @@
                     <label class="form-label"> Defect Code:</label>
                     <input type="text" class="form-control " id="defect-input" placeholder="Defect Input" />
                 </div>
-                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="analysis" onclick="GetIssueSummary();GetIssueWeekly()">Search</button></div>
+                <div class="col-lg-1 col-xs-3 col-sm-3 col-md-1">
+                    <label class="form-label"> Week:</label>
+                    <select id="week-select" class="form-control selectpicker" title="Select Week" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                </div>
+                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="analysis" onclick="GetIssueSummary();GetIssueCurrentWeek()">Search</button></div>
+                </div>
             </div>
-        </div>
     </div>
 </div>
 
@@ -43,7 +47,7 @@
     <li class="nav-item"><a class="nav-link " id="tab2" href="#Tab2" data-toggle="tab" role="tab" aria-selected="true">Totally</a></li>
 </ul>
 <div id="myTabContent" class="tab-content border border-top-0">
-    <div class="tab-pane fade   show active" id="Tab1" role="tabpanel" aria-labelledby="tab1">
+    <div class="tab-pane fade  show active" id="Tab1" role="tabpanel" aria-labelledby="tab1">
         <table id="weeklyDT" class="tablegreen"></table>
     </div>
     <div class="tab-pane fade" id="Tab2" role="tabpanel" aria-labelledby="tab2">
@@ -119,6 +123,14 @@
         getProject($('#project-select'));
         getLine($('#line-select'));
         getStation($('#station-select'));
+        getWeekList($("#week-select"))
+        getData('/Basic/GetCurrentWeek', { date: (new Date()).format('yyyy-MM-dd') })
+            .then(res => {
+                let currentWeek = new Date().getFullYear().toString() + ((Array(2).join(0) + res).slice(-2)).toString();//获取本周的数据
+                $("#week-select option[value='" + currentWeek + "']").attr("selected", true);
+                $("#week-select").selectpicker('refresh');
+                $("#week-select").trigger("onchange");
+            })
     });
 
     function GetIssueSummary() {
@@ -207,8 +219,12 @@
                 }],
         });
     }
-    function GetIssueWeekly() {
-        let currentWeek = new Date().getFullYear().toString() + getWeek(new Date()).toString();//获取本周的数据
+    function GetIssueCurrentWeek() {
+        $("#myTab a[role=tab]").eq(0).addClass('active')
+        $("#myTab a[role=tab]").eq(1).removeClass('active')
+        $("#myTabContent [role=tabpanel]").eq(0).addClass('show active')
+        $("#myTabContent [role=tabpanel]").eq(1).removeClass('show active')
+
         $("#weeklyDT").bootstrapTable('destroy').bootstrapTable({
             cache: false,
             type: 'GET',
@@ -219,7 +235,7 @@
                 Line: $("#line-select").val()[0],
                 Station: $("#station-select").val()[0],
                 issue: $("#defect-input").val(),
-                week: currentWeek, 
+                week: $("#week-select").val()[0],
             },
             dataType: 'json',
             columns: [

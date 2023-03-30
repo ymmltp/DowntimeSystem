@@ -194,6 +194,10 @@
                     <textarea type='text' class="form-control" readonly id='sr-issueremark'></textarea>
                 </div>
                 <div class="col-lg-12">
+                    <label for="sr-downtime" class="form-label text-right">Time Duration [HH:mm:ss]:</label>
+                    <input type='text' class="form-control" readonly id='sr-downtime'/>
+                </div>
+                <div class="col-lg-12">
                     <label for="sr-employee" class="form-label text-right warning-text">Employee:</label>
                     <input type='text' class="form-control" id='sr-employee' placeholder="---例 : W1234---" />
                 </div>
@@ -226,7 +230,7 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-station" class="form-label text-right warning-text">Station:</label>
-                    <input type='text' class="form-control raca noNull" id='ca-station'  noNull="Station"/>
+                    <input type='text' class="form-control raca noNull" id='ca-station' noNull="Station" />
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-machine" class="form-label text-right warning-text">Equipment:</label>
@@ -234,7 +238,7 @@
                 </div>
                 <div class="col-lg-12">
                     <label for="ca-issue" class="form-label text-right warning-text">Defect Code:</label>
-                    <input type='text' class="form-control raca noNull" id='ca-issue' noNull="Defect Code"/>
+                    <input type='text' class="form-control raca noNull" id='ca-issue' noNull="Defect Code" />
                 </div>
                 <div class="col-lg-12">
                     <label for="ca-issueremark" class="form-label text-right">Issue Description:</label>
@@ -260,22 +264,30 @@
                     <label for="ca-starttime" class="form-label text-right warning-text">Start Time:</label>
                     <input type='text' class="form-control" id='ca-starttime' readonly />
                 </div>
+                <div class="col-lg-12  downtime-item " style="display:none">
+                    <label for="ca-downtime" class="form-label text-right warning-text">Dowmtime [HH:mm:ss]:</label>
+                    <input type='text' class="form-control" id='ca-downtime' readonly />
+                </div>
+                <div class="col-lg-6  downtime-item">
+                    <label for="ca-responsetime" class="form-label text-right">Append Time [HH:mm:ss]:</label>
+                    <input type='text' class="form-control" id='ca-responsetime' readonly />
+                </div>
                 <div class="col-lg-6  downtime-item">
                     <label for="ca-finishtime" class="form-label text-right warning-text">Finish Time:</label>
                     <input type='text' class="form-control" id='ca-finishtime' readonly />
                 </div>
-                <div class="col-lg-12  downtime-item">
-                    <label for="ca-downtime" class="form-label text-right warning-text">Downtime(mins):</label>
-                    <input type='text' class="form-control" id='ca-downtime' readonly />
+                <div class="col-lg-6  downtime-item">
+                    <label for="ca-tmdur" class="form-label text-right">Repaire Time [HH:mm:ss]:</label>
+                    <input type='text' class="form-control" id='ca-tmdur' readonly />
                 </div>
                 @*downtime相关*@
                 <div class="col-lg-6">
                     <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
-                    <input type='text' class="form-control raca noNull" id='ca-rootcause' noNull="Root Cause"/>
+                    <input type='text' class="form-control raca noNull" id='ca-rootcause' noNull="Root Cause" />
                 </div>
                 <div class="col-lg-6">
                     <label for="ca-action" class="form-label text-right warning-text">Action:</label>
-                    <input type='text' class="form-control raca noNull" id='ca-action' noNull="Action"/>
+                    <input type='text' class="form-control raca noNull" id='ca-action' noNull="Action" />
                 </div>
                 <div class="col-lg-6">
                     <label for="ca-rootcauseremark" class="form-label text-right">Root Cause Remark:</label>
@@ -647,6 +659,11 @@
                         $("#sr-machine").val(row['machine']);
                         $("#sr-issueremark").val(row['issueremark']);
                         $("#StartRepaireModal").data("id", row['id']);
+
+                        let tmp = new Date(row['occurtime']);
+                        let Downtime = new Date() - tmp;
+
+                        $("#sr-downtime").val((parseInt(Downtime / 1000)).Timeformat("hh:mm:ss"));
                         //$("#sr-employee").val(getCookie("dt-displayname"));
                         $("#StartRepaireModal").modal('show');
                     },
@@ -782,7 +799,11 @@
         showDowntimeControls(row['calcdowntime'].toString());
         $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
-        $("#ca-downtime").val(parseInt(row['downtime']/60));
+        $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
+
+        $("#ca-responsetime").val((parseInt((new Date(row['repairtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
+        $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间
+
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);
         $("#ca-action").val(row['action']);
@@ -812,20 +833,24 @@
             postData('/EC/RCCA', tmp)
                 .then(res => {
                     if ($(':radio[name=caldowntime]:checked').val() == 'true') {
-                        let currentWeek = new Date().getFullYear().toString() + getWeek(new Date()).toString();//获取本周的数据
-                        var issueSummary = {
-                            department: $("#ca-department").val(),
-                            project: $("#ca-project").val(),
-                            line: $("#ca-line").val(),
-                            station: $("#ca-station").val(),
-                            issue: $("#ca-issue").val(),
-                            rootcause: $("#ca-rootcause").val(),
-                            qty: 1,
-                            action: "",
-                            week: currentWeek,
-                        }
-                        return postData('/IssueSummary/CloseDowntime_ModifyIssueSummary', issueSummary)
+                        return getData('/Basic/GetCurrentWeek', { date: (new Date()).format('yyyy-MM-dd') })
                     }
+                })
+                .then(res => {
+                    let tmpweek = res;
+                    let currentWeek = new Date().getFullYear().toString() + ((Array(2).join(0) + tmpweek).slice(-2)).toString();//获取本周的数据
+                    var issueSummary = {
+                        department: $("#ca-department").val(),
+                        project: $("#ca-project").val(),
+                        line: $("#ca-line").val(),
+                        station: $("#ca-station").val(),
+                        issue: $("#ca-issue").val(),
+                        rootcause: $("#ca-rootcause").val(),
+                        qty: 1,
+                        action: "",
+                        week: currentWeek,
+                    }
+                    return postData('/IssueSummary/CloseDowntime_ModifyIssueSummary', issueSummary)
                 })
                 .then(res => {
                     $("#CAModal").modal('hide');
@@ -863,7 +888,11 @@
         showDowntimeControls(row['calcdowntime'].toString());
         $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
-        $("#ca-downtime").val(parseInt(row['downtime']/60));
+        $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
+
+        $("#ca-responsetime").val((parseInt((new Date(row['repairtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
+        $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间
+
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);
         $("#ca-action").val(row['action']);

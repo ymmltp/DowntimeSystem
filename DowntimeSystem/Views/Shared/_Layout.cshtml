@@ -44,6 +44,18 @@
                     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
                 return fmt;
             }
+
+            Number.prototype.Timeformat = function (fmt) {
+                var o = {
+                    "h+": parseInt(this / 3600), // 小时
+                    "m+": parseInt(this%3600/60), //分
+                    "s+": parseInt(this % 3600 % 60) //秒
+                };
+                for (var k in o)
+                    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                return fmt;
+            }
+
             setInterval(function () {
                 document.getElementById('Currenttime').innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');
             }, 1000);
