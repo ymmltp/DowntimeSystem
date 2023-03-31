@@ -46,7 +46,7 @@ function getDTDistribution_GroupByProandDec(system, project, department ,station
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'Downtime Distribution',
+                    text: 'DT Project Distribution',
                     textStyle: {
                         fontSize: 15,
                     },
@@ -73,7 +73,7 @@ function getDTDistribution_GroupByProandDec(system, project, department ,station
                 },
                 series: [
                     {
-                        name: 'Downtime Distribution',
+                        name: 'DT Distribution',
                         type: 'radar',
                         data: res.data,
                     }
@@ -103,7 +103,7 @@ function getDTcount_GroupByStatus(system, project, department, station,lastday, 
             var option = {
                 color: ['#5470c6', '#e66', '#fac858', '#91cc75'],
                 title: {
-                    text: 'Downtime Ticket Status',
+                    text: 'DT Ticket Status',
                     left: 'center',
                     textStyle: {
                         fontSize: 15,
@@ -647,7 +647,7 @@ function getMTTR_ActualvsTarget_EachMonth(system, project, department, station,l
                 var optionArray = [];
                 var option = {
                     title: {
-                        text: 'MTBF Tracking Trend(by 12 Months Avg.)',
+                        text: 'Monthly MTTR Trend',
                         textStyle: {
                             fontSize: 15,
                         }
@@ -762,7 +762,7 @@ function getMTBF_ActualvsTarget_EachMonth(system, project, department, station, 
                 var optionArray = [];
                 var option = {
                     title: {
-                        text: 'MTBF Tracking Trend(by 12 Months Avg.)',
+                        text: 'Monthly MTBF Trend',
                         textStyle: {
                             fontSize: 15,
                         }
@@ -845,7 +845,7 @@ function getMTBF_ActualvsTarget_EachMonth(system, project, department, station, 
 }
 // #endregion
 
-// #region Chart8 个项目MTBF,MTBF,MTTA总览
+// #region Chart8 个项目MTTR BY Area总览
 function getMTTR_ByArea(system, project, department, station, lastday, currentDay) {
     getDataWithArray("/Dashboard/MTTRByArea", { comefrom: system, departmentlist: department, projectlist: project, stationlist: station, currentDay: currentDay, lastday: lastday })
         .then(res => {
@@ -874,7 +874,7 @@ function getMTTR_ByArea(system, project, department, station, lastday, currentDa
                 var optionArray = [];
                 var option = option = {
                     title: {
-                        text: 'MTTR Each Project Area Actual vs Target',
+                        text: 'Area MTTR Actual vs Target',
                         textStyle: {
                             fontSize: 15,
                         }

@@ -87,7 +87,7 @@ function getTotalDT(system, project, department ,station,lastday, currentDay) {
                         data: [
                             {
                                 value: res[0].value,
-                                name: 'Plant Total Downtime',
+                                name: 'Plant Total DT',
                             }
                         ]
                     },
@@ -149,7 +149,7 @@ function getDTDistribution_ByDepartment_Status(system, project, department, stat
             myChart2 = echarts.init(chartDom);
             var option = {
                 title: {
-                    text: 'Downtime Status by Functional Team',
+                    text: 'DT Status by Functional Team',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -222,7 +222,7 @@ function getDT_ByMonth(system, project, department, station, lastday, currentDay
                 var optionArray = [];
                 var option = {
                 title: {
-                        text: 'Plant Downtime Tracker',
+                        text: 'Plant DT Tracker',
                         textStyle: {
                         fontSize: 15,
                     }
@@ -312,7 +312,7 @@ function getDT_ByArea(system, project, department, station,lastday, currentDay) 
             var optionArray = [];
             var option = {
                 title: {
-                    text: "Downtime Distribution by Area",
+                    text: "DT Distribution by Area",
                     left: 'center',
                     textStyle: {
                         fontSize: 13,
@@ -386,7 +386,7 @@ function getDT_Frquency_ByMonth(system, project, department, station,lastday, cu
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'Downtime Time vs Frequency',
+                    text: 'DT Time vs Frequency',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -579,7 +579,7 @@ function getDT_CompareByMonth(system, project, department, station,lastday, curr
                         ],
                         title: {
                             fontSize: 13,
-                            text:'Downtime Comparison ( vs 6 month avg.)',
+                            text:'DT Comparison ( vs 6 month avg.)',
                         },
                         detail: {
                             width: 50,

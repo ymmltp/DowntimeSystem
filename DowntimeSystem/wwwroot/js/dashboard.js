@@ -543,12 +543,12 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                             valign: 'middle',
                         }, {
                             field: 'machine',
-                            title: 'Machine Name',
+                            title: 'Equipment ID',
                             align: 'center',
                             valign: 'middle',
                         }, {
                             field: 'occurtime',
-                            title: 'Occurt Time',
+                            title: 'Start Time',
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index) {
@@ -577,7 +577,7 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                             },
                         }, {
                             field: 'downday',
-                            title: 'Downtime(mins)',
+                            title: 'Downtime(m)',
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index) {
@@ -599,7 +599,7 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                                 }
                             },  {
                             field: 'option',
-                            title: '操作 ',
+                            title: 'Operation ',
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index) {
@@ -616,13 +616,13 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                     openCloseDowntime_StationPieChart(system, project, department, lastday, currentDay, event.name);
                     openCloseDowntime_DefectCodePieChart(system, project, department, lastday, currentDay, event.name);
                     if (event.name == "Closed") {
-                        $("#modalName").html("Closed Downtime incident Detail Information")
+                        $("#modalName").html("Closed downtime ticket pie chart")
                         $('#detaillist').bootstrapTable('hideColumn', 'openday');
                         $('#detaillist').bootstrapTable('showColumn', 'option');
                         $('#detaillist').bootstrapTable('showColumn', 'downday');
                         $('#detaillist').bootstrapTable('showColumn', 'finishtime');
                     } else {
-                        $("#modalName").html("Open Downtime incident Detail Information")
+                        $("#modalName").html("Open downtime ticket pie chart")
                         $('#detaillist').bootstrapTable('showColumn', 'openday');
                         $('#detaillist').bootstrapTable('showColumn', 'option');
                         $('#detaillist').bootstrapTable('hideColumn', 'downday');
@@ -655,7 +655,7 @@ function openCloseDowntime_StationPieChart(system, project, department, lastday,
             myChart21 = echarts.init(chartDom);
             var option = {
                 title: {
-                    text: 'Station',
+                    text: 'Downtime ticket-Station',
                     left: 'center'
                 },
                 tooltip: {
@@ -709,7 +709,7 @@ function openCloseDowntime_DefectCodePieChart(system, project, department, lastd
             myChart22 = echarts.init(chartDom);
             var option = {
                 title: {
-                    text: 'Defect Code',
+                    text: 'Downtime ticket-Defect Code',
                     left: 'center'
                 },
                 tooltip: {

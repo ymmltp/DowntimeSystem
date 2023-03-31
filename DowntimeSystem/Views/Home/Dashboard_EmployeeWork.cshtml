@@ -15,7 +15,7 @@
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> Department:</label>
-        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-none-selected-text="All" data-actions-box="true" onchange="updateChart()"></select>
+        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-live-search="true" data-none-selected-text="All" data-actions-box="true" onchange="updateChart()"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> Project:</label>
@@ -26,7 +26,7 @@
         <input type='number' class="form-control" id='refresh-input' onchange="setrefresh()" value="5" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" />
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-        <label class="form-label"> Time Zone:</label>
+        <label class="form-label"> Time Range:</label>
         <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1" onchange="updateTime()">
             <option value="1">Current Week</option>
             <option value="4">Last Week</option>

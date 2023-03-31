@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "   Downtime SubPage";
+    ViewData["Title"] = "Downtime Top5 Histogram";
 }
 @*菜单*@
 <div class="row" style="margin-right: 0px;">
@@ -20,7 +20,7 @@
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> Department:</label>
-        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-none-selected-text="All" data-actions-box="true" onchange="updateChart(); getStation($('#station-select'),$('#department-select').val(),$('#project-select').val());"></select>
+        <select id="department-select" class="form-control selectpicker" title="Select Department" data-live-search="true" data-size="6" multiple data-none-selected-text="All" data-actions-box="true" onchange="updateChart(); getStation($('#station-select'),$('#department-select').val(),$('#project-select').val());"></select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> Project:</label>
@@ -43,7 +43,7 @@
         </select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
-        <label class="form-label"> Time Zone:</label>
+        <label class="form-label"> Time Range:</label>
         <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1" onchange="updateTime()">
             <option value="1">Current Week</option>
             <option value="4">Last Week</option>
