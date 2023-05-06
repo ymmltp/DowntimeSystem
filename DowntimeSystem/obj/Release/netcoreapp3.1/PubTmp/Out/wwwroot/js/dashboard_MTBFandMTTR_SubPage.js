@@ -208,7 +208,7 @@ function getMTTR_MTTA_ByTime(system, project, department, station, lastday, curr
                 var option = {
                 color: ["#fac858", "#5470c6"],
                 title: {
-                    text: 'MTTR/MTBF ' + filterType+' Tracking',
+                    text: 'MTTA/MTTR ' + filterType+' Tracking',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -355,6 +355,10 @@ function getMTTR_withTarget_ByTime(system, project, department, station, lastday
                                 return value + ' mins';
                             }
                         },
+                        label: {
+                            show: true,
+                            position: 'top',
+                        },
                         itemStyle: {
                             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                                 { offset: 0, color: '#28a745' },
@@ -419,7 +423,7 @@ function getMTBF_withTarget_ByTime(system, project, department, station, lastday
             var optionArray = [];
             var option = {
                 title: {
-                    text: 'MTBF ' + filterType + ' Tracking(Avg.)',,
+                    text: 'MTBF ' + filterType + ' Tracking(Avg.)',
                     textStyle: {
                         fontSize: 15,
                     }
@@ -454,12 +458,16 @@ function getMTBF_withTarget_ByTime(system, project, department, station, lastday
                 },
                 series: [
                     {
-                        name: 'MTTR',
+                        name: 'MTBF',
                         data: res.value,
                         type: 'bar',
                         showBackground: true,
                         backgroundStyle: {
                             color: 'rgba(180, 180, 180, 0.2)'
+                        },
+                        label: {
+                            show: true,
+                            position: 'top',
                         },
                         tooltip: {
                             valueFormatter: function (value) {

@@ -42,7 +42,7 @@
                     <label class="form-label"> Ticket Status:</label>
                     <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1">
                         <option value="0">New Open</option>
-                        <option value="1">On-going Check</option>
+                        <option value="1">On-going</option>
                         <option value="2">Closed</option>
                     </select>
                 </div>
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
-                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 100px">Create Ticket</button></div>
+                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-success" id="new" style="width: 110px">Create Ticket</button></div>
             </div>
         </div>
     </div>
@@ -451,6 +451,9 @@
                 endtime: $("#end").val() ? $("#end").val() + " 23:59:59" : null,
                 Respperson: $("#responser").val(),
             },
+            search: true,                       //开启搜索框
+            visibleSearch: true,
+            showSearchButton: false,
             showColumns: true,
             dataType: 'json',
             pagination: true,
@@ -777,7 +780,7 @@
         })
 
         $("#ca-machine").select2({
-            tags: true,
+            tags: false,
             maximumInputLength: 40,
             minimumInputLength: 2,
             minimumResultsForSearch: 10,

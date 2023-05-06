@@ -146,6 +146,9 @@
                 issue: $("#defect-input").val()
             },
             dataType: 'json',
+            search: true,                       //开启搜索框
+            visibleSearch: true,
+            showSearchButton: false,
             columns: [
                 {
                     field: 'department',
@@ -238,6 +241,9 @@
                 week: $("#week-select").val()[0],
             },
             dataType: 'json',
+            search: true,                       //开启搜索框
+            visibleSearch: true,
+            showSearchButton: false,
             columns: [
                 {
                     field: 'department',

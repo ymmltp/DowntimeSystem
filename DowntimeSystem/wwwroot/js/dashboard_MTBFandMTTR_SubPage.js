@@ -208,7 +208,7 @@ function getMTTR_MTTA_ByTime(system, project, department, station, lastday, curr
                 var option = {
                 color: ["#fac858", "#5470c6"],
                 title: {
-                    text: 'MTTA/MTTR' + filterType+' Tracking',
+                    text: 'MTTA/MTTR ' + filterType+' Tracking',
                     textStyle: {
                         fontSize: 15,
                     }

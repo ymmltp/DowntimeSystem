@@ -71,7 +71,7 @@ function EmployeeWorkEffiency(system, project, department, lastday, currentDay) 
             var option = {
                 color: colors,
                 title: {
-                    text: 'Employee Work',
+                    text: 'Employee Performance',
                     left: 'center',
                     textStyle: {
                         fontSize: 15,

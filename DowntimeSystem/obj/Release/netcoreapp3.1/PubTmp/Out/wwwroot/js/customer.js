@@ -5,7 +5,7 @@ function iniDatetimepicker() {
         format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
         todayBtn: true, //一键选中今天的日期
         minDate: '2022/01/01',
-        //maxDate: 0,//今天
+        maxDate: 0,//今天
         pickerPosition: "bottom-left", //打开选择卡的位置
         weekStart: 1, //周开始的星期：0-6 星期日-星期六
         autoclose: true,//选好时间后自动关闭
@@ -48,6 +48,34 @@ function getDay(num, str) {
     if (oDay.length <= 1)
         oDay = '0' + oDay;
     return oYear + str + oMoth + str + oDay;
+}
+
+
+//获取周
+function getWeekList(obj) {
+    var currentYear = new Date().getFullYear();
+    $.ajax({
+        url: '/Basic/GetCurrentWeek',
+        method: 'GET',
+        dataType: 'json',
+        data: { date: new Date(currentYear + "-12-31").format('yyyy-MM-dd') },
+        success: function (data) {
+            var option = "";
+            for (var i = 1; i <= data; i++) {
+                option += '<option value="' + currentYear.toString() + (Array(2).join(0) + i).slice(-2) + '">' + i + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            showWarning(err.statusText);
+        }
+    })
+
+
 }
 
 //Date->string
@@ -273,6 +301,36 @@ function GetParms(name) {
     });
     return result[name];
 }
+
+function checkFormNoNull() {
+    var flag = true;
+    $(".noNull").each(function () {
+        var name = $(this).attr("name");
+        if ($(this).attr("type") == "radio") {
+            if ($('input[name="' + name + '"]:checked').length < 1) {
+                showWarning($(this).attr('noNull') + "不能为空!");
+                flag = false;
+                return false;
+            }
+        }
+        else if ($(this).attr("type") == "checkbox") {
+            if ($('input[name="' + name + '"]:checked').length < 1) {
+                showWarning($(this).attr('noNull') + "不能为空!");
+                flag = false;
+                return false;
+            }
+        }
+        else if ($(this).val().length == 0) {
+            if ($(this)[0].attributes.length > 1) {
+                showWarning($(this).attr('noNull') + "不能为空!");
+                flag = false;
+                return false;
+            }
+        }
+    });
+    return flag;
+}
+
 
 function showWarning(text) {
     $('.alert').attr('class', 'alert');
