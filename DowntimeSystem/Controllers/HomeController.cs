@@ -34,6 +34,12 @@ namespace DowntimeSystem.Controllers
             return View();
         }
 
+        public IActionResult Manage_Resource_EQID_PN()
+        {
+            return View();
+        }
+
+
         #region dashboard
         public IActionResult Dashboard()
         {

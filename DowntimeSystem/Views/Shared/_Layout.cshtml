@@ -24,7 +24,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js" type="text/javascript"></script>
-
     <link href="~/lib/bootstrap/dist/css/select2_me.css" rel="stylesheet" />
 
 
@@ -111,21 +110,23 @@
             <div id="leftside-navigation" class="nano-content">
                 <ul class="nano-content">
                     <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fa fa-dashboard"></i><span>Dashboard</span><i class="arrow fa fa-angle-right pull-right"></i></a>               
+                        <a href="javascript:void(0);"><i class="fa fa-dashboard"></i><span>Dashboard</span><i class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Dashboard"><i class="fa fa-dashboard"></i>Dashboard</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_Downtime_OverView" title="Downtime Overview"><i class="fa fa-dashboard"></i>Downtime Overview</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_Downtime_SubPage" title="Downtime Overview"><i class="fa fa-dashboard"></i>Downtime Top5 Histogram</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_MTTRandMTBF_OverView" title="MTTR & MTBF"><i class="fa fa-dashboard"></i>MTTR_MTBF OverView</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_MTTRandMTBF_SubPage" title="MTTR & MTBF"><i class="fa fa-dashboard"></i>MTTR_MTBF SubPage</a></li>
-                            <li> <a class="nav-link text-light" href="https://app.powerbi.com/groups/me/reports/939a2148-ac76-46ea-bc1f-ae94cf54ca1c/ReportSection?ctid=bc876b21-f134-4c12-a265-8ed26b7f0f3b"  title="Downtime"><i class="fa fa-dashboard"></i>Downtime Dashboard</a></li>
+                            <li> <a class="nav-link text-light" href="https://app.powerbi.com/groups/me/reports/939a2148-ac76-46ea-bc1f-ae94cf54ca1c/ReportSection?ctid=bc876b21-f134-4c12-a265-8ed26b7f0f3b" title="Downtime"><i class="fa fa-dashboard"></i>Downtime Dashboard</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard_EmployeeWork" title="EmployeeWork"><i class="fa fa-dashboard"></i>EmployeeWork</a></li>
                         </ul>
                     </li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Downtime"><i class="fa fa-cogs"></i>Update Downtime</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="IssueSummary" title="Action Step Maintains"><i class="fa fa-handshake-o"></i>Action Step Maintains</a></li>
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Manage_Resource_EQID_PN" title="EQID & PN"><i class="fa fa-cogs"></i>EQID & PN</a></li>
+
                     @*<li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Coming" title="Spare part"><i class="fa fa-hand-o-right"></i>Spare part</a></li>
-                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="testDashboardPage" title="Test Page"><i class="fa fa-hand-o-right"></i>Test Page</a></li>*@
+        <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="testDashboardPage" title="Test Page"><i class="fa fa-hand-o-right"></i>Test Page</a></li>*@
 
                 </ul>
             </div>
