@@ -158,11 +158,7 @@ function postData(url, para) {
         $.ajax({
             url: url,
             type: "POST",
-            contentType: "application/json",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-            },
-            data: JSON.stringify(para),
+            data:para,
             success(data, status, xhr) {
                 resolve({ data: data, status: status, xhr: xhr });
             },
@@ -593,7 +589,7 @@ function GetSPCategory(obj) {
 }
 function GetSPSubCategory(obj, category) {
     var paras = {
-        category: category ? category.val() : null,
+        category: category ? category : null,
     }
     if (category) {
         GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartBasic/GetSubCategory_ByCategory', paras, obj);
@@ -628,6 +624,66 @@ function GetIPNAlarmType(obj) {
             }
             obj.html(option);
             obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+function GetEQIDLink_PN(obj,eqid) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/SparepartDescription/GetSparepartDescription_ByEQ_PN_LinkInfo',
+        method: 'GET',
+        dataType: 'json',
+        data: {
+            eqid: eqid ? eqid : null,
+        },
+        success: function (data) {
+                let option = '';
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i]["pn"] + '">' + data[i]["pn"] + "/" + data[i]["brand"] + "/" + data[i]["modelType"] + "/" + data[i]["name"] + '</option>';
+                }
+                if (obj.find('optgroup').filter('[label="PN Linked with EQID"]').length > 0) {
+                    $(obj.find('optgroup').filter('[label="PN Linked with EQID"]')[0]).html(option);
+                }
+                else {
+                    obj.html(option);
+                }
+                obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+function GetAllPN(obj, category, subcategory) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/SparepartDescription/GetSparepartDescription_byCategory',
+        method: 'GET',
+        dataType: 'json',
+        traditional: true,
+        data: {
+            Category: category ? category : null,
+            subCategory: subcategory ? subcategory : null,
+        },
+        success: function (data) {
+                let option = '';
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i]["pn"] + '">' + data[i]["pn"] + "/" + data[i]["brand"] + "/" + data[i]["modelType"] + "/" + data[i]["name"] + '</option>';
+                }
+                if (obj.find('optgroup').filter('[label="Other PN"]').length > 0) {
+                    $(obj.find('optgroup').filter('[label="Other PN"]')[0]).html(option);
+                }
+                else {
+                    obj.html(option);
+                }
+                obj.selectpicker("refresh");       
         },
         fail: function (err) {
             showWarning(err.responseText);

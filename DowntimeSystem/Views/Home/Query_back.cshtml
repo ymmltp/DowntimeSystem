@@ -195,7 +195,7 @@
                 </div>
                 <div class="col-lg-12">
                     <label for="sr-downtime" class="form-label text-right">New Open Duration [HH:mm:ss]:</label>
-                    <input type='text' class="form-control" readonly id='sr-downtime' />
+                    <input type='text' class="form-control" readonly id='sr-downtime'/>
                 </div>
                 <div class="col-lg-12">
                     <label for="sr-employee" class="form-label text-right warning-text">Employee ID:</label>
@@ -234,7 +234,7 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-machine" class="form-label text-right warning-text">Equipment ID:</label>
-                    <select class="form-control raca noNull" id='ca-machine' data-size="6" title="--Select EQID--" noNull="Equipment" onchange="GetEQIDLink_PN($('#ca-pn'), $('#ca-machine').val())"></select>
+                    <select class="form-control raca noNull" id='ca-machine' data-size="6" title="--Select EQID--" noNull="Equipment"></select>
                 </div>
                 <div class="col-lg-12">
                     <label for="ca-issue" class="form-label text-right warning-text">Defect Code:</label>
@@ -244,89 +244,43 @@
                     <label for="ca-issueremark" class="form-label text-right">Issue Description:</label>
                     <textarea type='text' class="form-control raca" id='ca-issueremark'></textarea>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="ca-employee" class="form-label text-right">Employee ID:</label>
                     <input type='text' class="form-control" id='ca-employee' readonly />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="ca-labor" class="form-label text-right">Labor:</label>
                     <input type='number' step="1" class="form-control raca" id='ca-labor' value="1" title="1" />
                 </div>
-                <div class="col-lg-3">
-                    <label class="form-label text-right warning-text">Calculate Downtime:</label>
+                <div class="col-lg-4">
+                    <label for="caldowntime" class="form-label text-right warning-text">Calculate Downtime:</label>
                     <div class="radio-group">
                         <label style="font-weight:600"><input type='radio' name="caldowntime" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <label class="form-label text-right warning-text">Sparepart Change:</label>
-                    <div class="radio-group">
-                        <label style="font-weight:600"><input type='radio' name="sparepartchange" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label style="font-weight:600"><input type='radio' name="sparepartchange" value="false" checked /> NO</label>
-                    </div>
+                @*downtime相关*@
+                <div class="col-lg-6  downtime-item">
+                    <label for="ca-starttime" class="form-label text-right warning-text">Start Time:</label>
+                    <input type='text' class="form-control" id='ca-starttime' readonly />
+                </div>
+                <div class="col-lg-12  downtime-item " style="display:none">
+                    <label for="ca-downtime" class="form-label text-right warning-text">Dowmtime [HH:mm:ss]:</label>
+                    <input type='text' class="form-control" id='ca-downtime' readonly />
+                </div>
+                <div class="col-lg-6  downtime-item">
+                    <label for="ca-responsetime" class="form-label text-right">Attend Time [HH:mm:ss]:</label>
+                    <input type='text' class="form-control" id='ca-responsetime' readonly />
+                </div>
+                <div class="col-lg-6  downtime-item">
+                    <label for="ca-finishtime" class="form-label text-right warning-text">End Time:</label>
+                    <input type='text' class="form-control" id='ca-finishtime' readonly />
+                </div>
+                <div class="col-lg-6  downtime-item">
+                    <label for="ca-tmdur" class="form-label text-right">Repair Time [HH:mm:ss]:</label>
+                    <input type='text' class="form-control" id='ca-tmdur' readonly />
                 </div>
                 @*downtime相关*@
-                <fieldset class="step-slide ngMES-border row downtime-item" style="position: relative; margin: 10px 10px; ">
-                    <legend class="ngMES-border">Downtime 时间</legend>
-
-                    <div class="col-lg-6  ">
-                        <label for="ca-starttime" class="form-label text-right warning-text">Start Time:</label>
-                        <input type='text' class="form-control" id='ca-starttime' readonly />
-                    </div>
-                    <div class="col-lg-12  " style="display:none">
-                        <label for="ca-downtime" class="form-label text-right warning-text">Dowmtime [HH:mm:ss]:</label>
-                        <input type='text' class="form-control" id='ca-downtime' readonly />
-                    </div>
-                    <div class="col-lg-6 ">
-                        <label for="ca-responsetime" class="form-label text-right">Attend Time [HH:mm:ss]:</label>
-                        <input type='text' class="form-control" id='ca-responsetime' readonly />
-                    </div>
-                    <div class="col-lg-6  ">
-                        <label for="ca-finishtime" class="form-label text-right warning-text">End Time:</label>
-                        <input type='text' class="form-control" id='ca-finishtime' readonly />
-                    </div>
-                    <div class="col-lg-6  ">
-                        <label for="ca-tmdur" class="form-label text-right">Repair Time [HH:mm:ss]:</label>
-                        <input type='text' class="form-control" id='ca-tmdur' readonly />
-                    </div>
-                </fieldset>
-                @*downtime相关*@
-                @*Sparepart相关*@
-                <fieldset class="step-slide ngMES-border sparepart-item elehide" style="position: relative; margin: 10px 10px; ">
-                    <legend class="ngMES-border">备件更换记录</legend>
-                    <div class="row">
-                        <div class="col-lg-3 ">
-                            <label for="ca-category" class="form-label text-right">Category:</label>
-                            <select class="form-control selectpicker raca" id='ca-category' data-size="6" title="--Select Category--" onchange="GetSPSubCategory($('#ca-subcategory'), $('#ca-category').val());GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
-                        </div>
-                        <div class="col-lg-3 ">
-                            <label for="ca-subcategory" class="form-label text-right">Sub Category:</label>
-                            <select class="form-control selectpicker raca" id='ca-subcategory' data-size="6" title="--Select Sub Category--" onchange="GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
-                        </div>
-                        <div class="col-lg-3 ">
-                            <label for="ca-pn" class="form-label text-right warning-text">P_N:</label>
-                            <select class="form-control selectpicker raca" id='ca-pn' data-size="6" title="--Select PN--" data-live-search="true">
-                                <optgroup label="PN Linked with EQID"></optgroup>
-                                <optgroup label="Other PN"></optgroup>
-                            </select>
-                        </div>
-                        <div class="col-lg-2">
-                            <label for="ca-qty" class="form-label text-right warning-text">QTY:</label>
-                            <input type='number' step="1" class="form-control raca" id='ca-qty' />
-                        </div>
-                        <div class="col-lg-1 ">
-                            <button class="btn btn-success" style="margin-top:27px" data-toggle="tooltip" title="添加记录" id="btn_addsparepart"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <table id="sparepart_table" class="table table table-striped table-hover" style="width:100%"></table>
-                </fieldset>
-                <fieldset class="step-slide ngMES-border sparepart-item-view elehide" style="position: relative; margin: 10px 10px; ">
-                    <legend class="ngMES-border">备件更换记录</legend>
-                    <table id="sparepart_view_table" class="table table table-striped table-hover" style="width:100%"></table>
-                </fieldset>
-                @*Sparepart相关*@
-
                 <div class="col-lg-6">
                     <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
                     <input type='text' class="form-control raca noNull" id='ca-rootcause' noNull="Root Cause" />
@@ -426,6 +380,7 @@
         $("#timeZone").selectpicker('refresh');
         $("#timeZone").trigger("onchange");
     });
+
 
     function updateTime() {
         var today = new Date()
@@ -799,7 +754,6 @@
 
     //填写CA
     function ShowCARA(row) {
-        //获取EQID 配置Select2
         $.ajax({
             url: '/PMMS/getEQID',
             method: 'GET',
@@ -822,21 +776,14 @@
                 showWarning(err.statusText);
             }
         })
+
         $("#ca-machine").select2({
             tags: false,
             maximumInputLength: 40,
             minimumInputLength: 2,
             minimumResultsForSearch: 10,
-            placeholder: "请输入设备ID"
+            placeholder:"请输入设备ID"
         });
-        $(".sparepart-item-view").addClass("elehide");  //view ;里的元素隐藏
-        //获取Sparepart 信息
-        GetSPCategory($("#ca-category"));
-        GetSPSubCategory($("#ca-subcategory"));
-        GetAllPN($("#ca-pn"));
-        sparepartList = [];
-        $("#sparepart_table").bootstrapTable('destroy');
-
 
         $("#CA-title").html("填写 RC 和 CA");
         $("#ca-department").val(row['department']);
@@ -851,10 +798,6 @@
         $(':radio[name=caldowntime][value=' + row['calcdowntime'] + ']').prop('checked', 'true');
         $(':radio[name=caldowntime]').removeAttr('disabled', 'disabled');
         showDowntimeControls(row['calcdowntime'].toString());
-        $(':radio[name=sparepartchange][value=false]').prop('checked', 'true');
-        $(':radio[name=sparepartchange]').removeAttr('disabled', 'disabled');
-        showSparepartControls("false");
-        $("#ca-qty").val(0);
         $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
@@ -871,113 +814,10 @@
         $("#CAModal").data("id", row['id']);
         $("#CAModal").modal('show');
     }
-    //downtime相关控件是否显示
-    $(':radio[name=caldowntime]').on('change', function (e) {
-        showDowntimeControls(e.target.defaultValue);
-    })
-    function showDowntimeControls(flag) {
-        if (flag == "false") {
-            console.log("NO");
-            $(".downtime-item").addClass("elehide");
-        } else {
-            console.log("YES");
-            $(".downtime-item").removeClass("elehide");
-        }
-    }
-    //sparepart相关控件是否显示
-    $(':radio[name=sparepartchange]').on('change', function (e) {
-        showSparepartControls(e.target.defaultValue);
-    })
-    function showSparepartControls(flag) {
-        if (flag == "false") {
-            console.log("NO");
-            $(".sparepart-item").addClass("elehide");
-        } else {
-            console.log("YES");
-            $(".sparepart-item").removeClass("elehide");
-        }
-    }
-    //将备件跟换记录加到表格里，方便检查。
-    var sparepartList = [];
-    $("#btn_addsparepart").on('click', function () {
-        if ($("#ca-qty").val() <= 0 || $("#ca-qty").val() == "") {
-            showWarning("使用的数量不能为0");
-        } else if ($("#ca-pn").val() == "") {
-            showWarning("PN不能为空");
-        }
-        else {
-            sparepartList.push({
-                "pn": $("#ca-pn").val(),
-                "desc": $("#ca-pn option:selected").text().split('/')[3],
-                "qty": $("#ca-qty").val()
-            })
-            $("#sparepart_table").bootstrapTable('destroy').bootstrapTable({
-                data: sparepartList,
-                dataType: 'json',
-                width:'100%',
-                columns: [{
-                    field: 'pn',
-                    title: 'PN',
-                }, {
-                    field: 'desc',
-                    title: 'Description',
-                }, {
-                    field: 'qty',
-                    title: 'QTY',
-                    }, {
-                        field: 'operation',
-                        title: '操作',
-                        formatter: function (value, row, index) {
-                            return ['<button type="button" class="btn bad text-light" id="delete"><i class="fa fa-trash"></i></button>']
-                        },
-                        events: {
-                            "click #delete": function (e, value, row, index) {
-                                if (confirm("确定删除这个 Sparepart 更换记录")) {
-                                    sparepartList.splice(index, 1);
-                                    $("#sparepart_table").bootstrapTable("refreshOptions", { data: sparepartList });
-                                }
-                            }
-                        }
-                    }]
-            });
-        }
-    })
+
+
     $("#addCA").on('click', function () {
-        if (checkFormNoNull("#CAModal")) {
-            //判断 sparepart 是否需要填写 且已经填写
-            if ($("input[name='sparepartchange']:checked").val() == 'true' ) {
-                if (sparepartList.length <= 0) {
-                    showWarning("请填写备件更换记录再提交");
-                    return;
-                } else {
-                    //获取备件更换记录
-                    sparepartList.map(i => {
-                        var tmp = {
-                            cfrom: "Downtime",
-                            linkid: Number($("#CAModal").data('id')),
-                            eqid: $("#ca-machine").val(),
-                            pn: i.pn,
-                            dri: $("#ca-employee").val(),
-                            qty: Number(i.qty),
-                        };
-                        $.ajax({
-                            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqSparepartChangeHistory',
-                            method: 'POST',
-                            contentType: "application/json",
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-                            },
-                            data: JSON.stringify(tmp),
-                            success: function (data) {
-                                console.log("上传 Sparepart 更换记录成功")
-                            },
-                            error: function (err) {
-                                showError(err.responseText);
-                            }
-                        })
-                    });
-                }
-            }
+        if (checkFormNoNull()) {
             var tmp = {
                 id: $("#CAModal").data('id'),
                 calcdowntime: $(':radio[name=caldowntime]:checked').val(),
@@ -1022,20 +862,16 @@
                     showWarning(err);
                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
                 })
-
         }
     })
 
-
     //查看downtime信息
     function ViewDowntimeInfo(row) {
-        $(".sparepart-item").addClass("elehide");
-        ViewSparepartList(row);
         let option = '<option value="' + row['machine'] + '">' + row['machine'] + '</option>';
         $("#ca-machine").html(option);
         $("#ca-machine").select2({
             readonly: true,
-            disable: true,
+            disable:true,
         });
 
         $("#CA-title").html("查看 Downtime 信息");
@@ -1069,41 +905,19 @@
         $("#CAModal").data("id", row['id']);
         $("#CAModal").modal('show');
     }
-    //展示Sparepart记录；不管有没有都要显示
-    function ViewSparepartList(row) {
-        getData( 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqSparepartChangeHistory',
-             {
-                cfrom: "Downtime",
-                linkid: row['id'],
-            })
-            .then(res => {
-                $("#sparepart_view_table").bootstrapTable('destroy').bootstrapTable({
-                    data:res,
-                    dataType: 'json',
-                    width: '100%',
-                    columns: [{
-                        field: 'pn',
-                        title: 'PN',
-                    }, {
-                        field: 'desc',
-                        title: 'Description',
-                    }, {
-                        field: 'qty',
-                        title: 'QTY',
-                    }]
-                });
-                if (res.length > 0) {
-                    $(':radio[name=sparepartchange][value=true]').prop('checked', 'true');
-                    $(".sparepart-item-view").removeClass("elehide");
-                } else {
-                    $(':radio[name=sparepartchange][value=false]').prop('checked', 'true');
-                    $(".sparepart-item-view").addClass("elehide");
-                }
-                $(':radio[name=sparepartchange]').attr('disabled', 'disabled');
-            })
-            .catch(err => {
-                showWarning(err);
-            })
+
+    //downtime相关控件是否显示
+    $(':radio[name=caldowntime]').on('change', function (e) {
+        showDowntimeControls(e.target.defaultValue);
+    })
+    function showDowntimeControls(flag) {
+        if (flag == "false") {
+            console.log("NO");
+            $(".downtime-item").addClass("elehide");
+        } else {
+            console.log("YES");
+            $(".downtime-item").removeClass("elehide");
+        }
     }
 
     //创建DowntimeIncidence
@@ -1131,6 +945,7 @@
     function CreateIncidence() {
         var items = $(".need");
         for (var i = 0; i < items.length; i++) {
+            console.log($(items[i]));
             if (!$(items[i]).val()) {
                 showWarning("请填写" + $(items[i]).data("remark"));
                 return;
