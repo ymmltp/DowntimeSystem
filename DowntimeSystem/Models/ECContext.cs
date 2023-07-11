@@ -354,6 +354,8 @@ namespace DowntimeSystem.Models
                 entity.Property(e => e.Email)
                     .HasMaxLength(64)
                     .HasColumnName("email");
+
+                entity.Property(e => e.Level).HasColumnName("level");
             });
 
             OnModelCreatingPartial(modelBuilder);

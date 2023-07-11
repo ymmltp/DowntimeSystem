@@ -64,7 +64,6 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Query.cshtml.g.cs
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\testDashboardPage.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -124,3 +123,6 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.csproj.AssemblyReference.cache
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Manage_Resource_EQID_PN.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard_Downtime_WeeklyReport_.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Query_back.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\QEQSparepartChangeHistory.cshtml.g.cs

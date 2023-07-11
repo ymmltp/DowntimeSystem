@@ -158,6 +158,44 @@ function postData(url, para) {
         $.ajax({
             url: url,
             type: "POST",
+            data:para,
+            success(data, status, xhr) {
+                resolve({ data: data, status: status, xhr: xhr });
+            },
+            fail(err, status, xhr) {
+                reject(err.responseTextr);
+            },
+            error: function (err) {
+                reject(err.responseText);
+            }
+        });
+    });
+}
+function postDataWithArray(url, para) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(para),
+            success(data, status, xhr) {
+                resolve({ data: data, status: status, xhr: xhr });
+            },
+            fail(err, status, xhr) {
+                reject(err.responseTextr);
+            },
+            error: function (err) {
+                reject(err.responseText);
+            }
+        });
+    });
+}
+
+function deleteData(url, para) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            type: "Delete",
             data: para,
             success(data, status, xhr) {
                 resolve({ data: data, status: status, xhr: xhr });
@@ -171,6 +209,7 @@ function postData(url, para) {
         });
     });
 }
+
 
 //查询及一些基础ajax方法
 function getDepartment(obj) {
@@ -302,9 +341,10 @@ function GetParms(name) {
     return result[name];
 }
 
-function checkFormNoNull() {
+function checkFormNoNull(parentid) {
     var flag = true;
-    $(".noNull").each(function () {
+
+    $( parentid+" .noNull").each(function () {
         var name = $(this).attr("name");
         if ($(this).attr("type") == "radio") {
             if ($('input[name="' + name + '"]:checked').length < 1) {
@@ -340,9 +380,17 @@ function showInfo(text) {
     $('.alert').attr('class', 'alert');
     $('.alert').html(text).addClass('alert-info').show().delay(1500).fadeOut();
 }
+function showInfo_long(text) {
+    $('.alert').attr('class', 'alert');
+    $('.alert').html(text).addClass('alert-info').show().delay(8000).fadeOut();
+}
 function showSuccess(text) {
     $('.alert').attr('class', 'alert');
     $('.alert').html(text).addClass('alert-success').show().delay(1500).fadeOut();
+}
+function showError(text) {
+    $('.alert').attr('class', 'alert');
+    $('.alert').html(text).addClass('alert-danger').show().delay(1500).fadeOut();
 }
 
 
@@ -409,3 +457,266 @@ function mergeCells(data, fieldName, colspan, target) {
         index += count;
     }
 }
+
+
+//获取对应的select的option
+function GetSelectOptions(url,paras,obj,value=null) {
+    $.ajax({
+        url: url,
+        method: 'GET',
+        data: paras,
+        dataType: 'json',
+        traditional: true,
+        success: function (data) {
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            if (value != null && value.length >= 0) {
+                obj.val(value);
+            }
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+
+
+const _FAC= "WUX-FATP"
+//#region  获取iFactory中的信息
+function GetIFRoute(obj, fac = _FAC) {
+    var paras = {
+        url: "/api/Route/GetRoutes?Factory=" + fac,
+    };
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/iFactory/iFactoryGetMethod',
+        method: 'GET',
+        data: paras,
+        dataType: 'json',
+        traditional: true,
+        success: function (res) {
+            var data = res["routes"];
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i]["name"] + '">' + data[i]["name"] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+function GetIFRouteStep(obj, route, fac = _FAC) {
+    var paras = {
+        url: "/api/Route/GetRouteSteps?Factory=" + fac + "&RouteName=" + route.val()[0],
+    };
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/iFactory/iFactoryGetMethod',
+        method: 'GET',
+        data: paras,
+        dataType: 'json',
+        traditional: true,
+        success: function (res) {
+            var data = res["routeSteps"];
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i]["resourceName"] + '">' + data[i]["resourceName"]  + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+//#endregion
+
+
+//#region  获取PMMS中的信息
+function GetPMMSDepartment(obj) {
+    GetSelectOptions('/PMMS/GetDepartment', null, obj);
+}
+function GetPMMSProject(obj) {
+    GetSelectOptions('/PMMS/GetProject', null, obj);
+}
+function GetPMMSLine(obj, department, project) {
+    var paras = {
+        department: department ? department.val() : null,
+        project: project ? project.val() : null,
+    };
+    GetSelectOptions('/PMMS/GetLine', paras, obj);
+}
+function GetPMMSEQType(obj, department, project, line) {
+    var paras = {
+        department: department ? department.val() : null,
+        project: project ? project.val() : null,
+        line: line ? line.val() : null,
+    };
+    GetSelectOptions('/PMMS/GetEQType', paras, obj);
+}
+function GetEQID(obj, department, project, line, type, eqid) {
+    var paras = {
+        department: department ? department.val() : null,
+        project: project ? project.val() : null,
+        line: line ? line.val() : null,
+        type: type ? type.val() : null,
+    };
+    GetSelectOptions('/PMMS/getEQID', paras, obj, eqid);
+}
+//#endregion
+
+
+//#region  获取Sparepart中的信息
+function GetSPDepartment(obj) {
+    GetSelectOptions('http://cnwuxg0te01:9000/api/Basic/GetDepartment', null, obj);
+}
+function GetSPProject(obj) {
+    GetSelectOptions('http://cnwuxg0te01:9000/api/Basic/GetProject', null, obj);
+}
+function GetSPCategory(obj) {
+    GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartBasic/GetCategory', null, obj);
+}
+function GetSPSubCategory(obj, category) {
+    var paras = {
+        category: category ? category : null,
+    }
+    if (category) {
+        GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartBasic/GetSubCategory_ByCategory', paras, obj);
+    }
+    else {
+        GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartBasic/GetSubCategory', null, obj);
+    }
+
+
+}
+function GetPN(obj, category, subcategory) {
+    var paras = {
+        category: category ? category.val() : null,
+        subcategory: subcategory ? subcategory.val() : null,
+    };
+    GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartDescription/GetPN_byCategory', paras, obj);
+}
+//#endregion
+
+
+//#region 获取PN AlarmType
+function GetIPNAlarmType(obj) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_AlarmType',
+        method: 'GET',
+        dataType: 'json',
+        traditional: true,
+        success: function (res) {
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i]["value"] + '">' + data[i]["key"] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+function GetSparepart_HistoryCfrom(obj) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_History_Cfrom',
+        method: 'GET',
+        dataType: 'json',
+        traditional: true,
+        success: function (data) {
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+function GetEQIDLink_PN(obj,eqid) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/SparepartDescription/GetSparepartDescription_ByEQ_PN_LinkInfo',
+        method: 'GET',
+        dataType: 'json',
+        data: {
+            eqid: eqid ? eqid : null,
+        },
+        success: function (data) {
+                let option = '';
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i]["pn"] + '">' + data[i]["pn"] + "/" + data[i]["brand"] + "/" + data[i]["modelType"] + "/" + data[i]["name"] + '</option>';
+                }
+                if (obj.find('optgroup').filter('[label="PN Linked with EQID"]').length > 0) {
+                    $(obj.find('optgroup').filter('[label="PN Linked with EQID"]')[0]).html(option);
+                }
+                else {
+                    obj.html(option);
+                }
+                obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+function GetAllPN(obj, category, subcategory) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/SparepartDescription/GetSparepartDescription_byCategory',
+        method: 'GET',
+        dataType: 'json',
+        traditional: true,
+        data: {
+            Category: category ? category : null,
+            subCategory: subcategory ? subcategory : null,
+        },
+        success: function (data) {
+                let option = '';
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i]["pn"] + '">' + data[i]["pn"] + "/" + data[i]["brand"] + "/" + data[i]["modelType"] + "/" + data[i]["name"] + '</option>';
+                }
+                if (obj.find('optgroup').filter('[label="Other PN"]').length > 0) {
+                    $(obj.find('optgroup').filter('[label="Other PN"]')[0]).html(option);
+                }
+                else {
+                    obj.html(option);
+                }
+                obj.selectpicker("refresh");       
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+//#endregion

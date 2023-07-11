@@ -24,6 +24,12 @@ namespace DowntimeSystem.Controllers
             return View();
         }
 
+        public IActionResult QEQSparepartChangeHistory()
+        {
+            return View();
+        }
+
+
         public IActionResult IssueSummary()
         {
             return View();

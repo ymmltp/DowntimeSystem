@@ -37,22 +37,33 @@ namespace Weekly_FACA_Alarm
                     mailMessage.CC.Add(mailcc[i].Trim());//收件人
             }
 
-            mailMessage.Subject = "Downtime FACA Alarm";//主题      
+            mailMessage.Subject = "Escalation Downtime FACA Alarm by weekly";//主题      
 
             mailMessage.Body += "<B>Hi all，</B><br/>";
             mailMessage.Body += "This is an automated message from Downtime System. Please do not reply to this message.<br/>";
-            mailMessage.Body += "This message <B>remind you to edit this week's FACA.</B><br/><br/>";
-            mailMessage.Body += "You can access Downtime System by following URL, <B>click here ->>></B> http://cnwuxg0te01:8050/ <br/><br/>";  
+            mailMessage.Body += "This message <B>remind you to edit last week's FACA.</B><br/><br/>";
+            mailMessage.Body += "You can access Downtime System by following URL, <B>click here ->>></B> http://cnwuxg0te01:8050/ <br/><br/>";
+            mailMessage.Body += "<span style='color:#002b49'>==========================================================================================</span><br/><br/>";
+            mailMessage.Body += "<B>Ecalatation Level:</B><br/>";
+            mailMessage.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + $"PIC4.png"));
             mailMessage.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + $"Jabil.png"));
             mailMessage.Attachments[0].ContentType.Name = "image/png";
+            mailMessage.Attachments[1].ContentType.Name = "image1/png";
             mailMessage.Attachments[0].ContentId = "pic";
+            mailMessage.Attachments[1].ContentId = "pic1";
             mailMessage.Attachments[0].ContentDisposition.Inline = true;
+            mailMessage.Attachments[1].ContentDisposition.Inline = true;
             mailMessage.Attachments[0].TransferEncoding = System.Net.Mime.TransferEncoding.Base64;
+            mailMessage.Attachments[1].TransferEncoding = System.Net.Mime.TransferEncoding.Base64;
+
+            mailMessage.Body += "<img src=\"cid:pic\"/><br/><br/><br/>";
+
+            mailMessage.Body += cont;
 
             mailMessage.Body += "<br/>";
             mailMessage.Body += "<br/>";
-            mailMessage.Body += "<img src=\"cid:pic\"/><br/>";
-            mailMessage.Body += "<span style='font-size:12px'>https://www.jabil.com</span><br/>"; 
+            mailMessage.Body += "<img src=\"cid:pic1\"/><br/>";
+            mailMessage.Body += "<span style='font-size:12px'>https://www.jabil.com</span><br/>";
             mailMessage.Body += "<span style='font-size:12px ;color:#888'>Address: Lot J9, J10 Export Processing Zone, Wuxi City, Jiangsu Province, PRC, Post Code: 214028 </span><br/>";
 
 

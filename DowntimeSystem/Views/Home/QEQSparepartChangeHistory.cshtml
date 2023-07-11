@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Sparepart Change History";
+}
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><i class="fa fa-table "></i> @ViewBag.Title </div>
+        <div class="panel-body row">
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-3">
+                <label for="systemsele" class="form-label">System:</label>
+                <select id="systemsele" class="form-control selectpicker" data-size="6" data-live-search="true" title="---Select System---" multiple data-max-options="1"></select>
+            </div>
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-3">
+                <label class="form-label"> Department:</label>
+                <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSLine($("#line-select"),$("#department-select"),$("#project-select")); GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
+            </div>
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                <label class="form-label"> Project:</label>
+                <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSLine($("#line-select"),$("#department-select"),$("#project-select")); GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'> </select>
+            </div>
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                <label class="form-label"> Line:</label>
+                <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
+            </div>
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                <label class="form-label"> EQ Type:</label>
+                <select id="type-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
+            </div>
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                <label class="form-label"> EQID:</label>
+                <select id="eqid-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+            </div>
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-3">
+                <label for="startdate" class="form-label">Start Date:</label>
+                <div class='input-group date form_datetime'>
+                    <input type='text' class="form-control" id='startdate' />
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-3">
+                <label for="enddate" class="form-label">End Date:</label>
+                <div class='input-group date form_datetime'>
+                    <input type='text' class="form-control" id='enddate' />
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-2 col-xs-3 col-sm-3 col-md-3">
+                <label for="pn-input" class="form-label">PN:</label>
+                <input id="pn-input" type="text" class="form-control" placeholder="---Input PN---" />
+            </div>
+            <div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
+                <button id="Searchbtn" class="btn btn-primary mybtn" type="button" onclick="SparepartChange_Table()"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+    </div>
+    <table id="table" class="table table-hover table-striped"></table>
+</div>
+<script src="~/js/customer.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+
+<script>
+    $(document).ready(function () {
+        GetSparepart_HistoryCfrom($("#systemsele"));
+        GetPMMSDepartment($("#department-select"));
+        GetPMMSProject($("#project-select"));
+        GetPMMSLine($("#line-select"));
+        GetPMMSEQType($("#type-select"));
+        GetEQID($("#eqid-select"));
+        iniDatetimepicker();
+    });
+    function SparepartChange_Table() {
+        $("#table").bootstrapTable('destroy').bootstrapTable({
+            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqSparepartChangeHistory',
+            queryParams: {
+                cfrom: $("#systemsele").val()[0],
+                department: $("#department-select").val()[0],
+                project: $("#project-select").val()[0],
+                line: $("#line-select").val()[0],
+                Category: $("#type-select").val()[0],
+                EQID: $("#eqid-select").val()[0],
+                PN: $("#pn-input").val(),
+                starttime: $("#startdate").val(),
+                endtime: $("#enddate").val() + " 23:59:59",
+            },
+            dataType: 'json',
+            cache: false,
+            type: 'GET',
+            width: '100%',
+            columns: [{
+                field: 'cfrom',
+                title: 'System',
+            }, {
+                field: 'eqid',
+                title: 'EQID',
+            }, {
+                field: 'pn',
+                title: 'PN',
+            }, {
+                field: 'desc',
+                title: 'Description',
+            }, {
+                field: 'qty',
+                title: 'QTY',
+            }, {
+                field: 'dri',
+                title: 'DRI',
+            }, {
+                field: 'cdate',
+                title: 'Create Date',
+            }]
+        })
+    }
+</script>
+
+
+
+

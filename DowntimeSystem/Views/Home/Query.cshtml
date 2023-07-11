@@ -245,8 +245,8 @@
                     <textarea type='text' class="form-control raca" id='ca-issueremark'></textarea>
                 </div>
                 <div class="col-lg-3">
-                    <label for="ca-employee" class="form-label text-right">Employee ID:</label>
-                    <input type='text' class="form-control" id='ca-employee' readonly />
+                    <label for="ca-employee" class="form-label text-right warning-text">Employee ID:</label>
+                    <input type='text' class="form-control raca noNull" id='ca-employee' noNull="Employee ID"/>
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-labor" class="form-label text-right">Labor:</label>
@@ -292,6 +292,25 @@
                     </div>
                 </fieldset>
                 @*downtime相关*@
+                <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
+                    <legend class="ngMES-border">RC & CA</legend>
+                    <div class="col-lg-6">
+                        <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                        <input type='text' class="form-control raca noNull" id='ca-rootcause' noNull="Root Cause" />
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="ca-action" class="form-label text-right warning-text">Corrective Action:</label>
+                        <input type='text' class="form-control raca noNull" id='ca-action' noNull="Action" />
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="ca-rootcauseremark" class="form-label text-right">RC Remark:</label>
+                        <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="ca-actionremark" class="form-label text-right">CA Remark:</label>
+                        <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
+                    </div>
+                </fieldset>
                 @*Sparepart相关*@
                 <fieldset class="step-slide ngMES-border sparepart-item elehide" style="position: relative; margin: 10px 10px; ">
                     <legend class="ngMES-border">备件更换记录</legend>
@@ -326,24 +345,8 @@
                     <table id="sparepart_view_table" class="table table table-striped table-hover" style="width:100%"></table>
                 </fieldset>
                 @*Sparepart相关*@
-
-                <div class="col-lg-6">
-                    <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
-                    <input type='text' class="form-control raca noNull" id='ca-rootcause' noNull="Root Cause" />
-                </div>
-                <div class="col-lg-6">
-                    <label for="ca-action" class="form-label text-right warning-text">Corrective Action:</label>
-                    <input type='text' class="form-control raca noNull" id='ca-action' noNull="Action" />
-                </div>
-                <div class="col-lg-6">
-                    <label for="ca-rootcauseremark" class="form-label text-right">RC Remark:</label>
-                    <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
-                </div>
-                <div class="col-lg-6">
-                    <label for="ca-actionremark" class="form-label text-right">CA Remark:</label>
-                    <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
-                </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="addCA">Submit</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
@@ -944,13 +947,19 @@
     })
     $("#addCA").on('click', function () {
         if (checkFormNoNull("#CAModal")) {
+            //判断 EmployeeID 不能是Auto
+            if ($("#ca-employee").val().toUpperCase() == "AUTO") {
+                showWarning("请修改Employee ID (不可填Auto)");
+                $("#ca-employee").focus();
+                return;
+            }
             //判断 sparepart 是否需要填写 且已经填写
             if ($("input[name='sparepartchange']:checked").val() == 'true' ) {
                 if (sparepartList.length <= 0) {
                     showWarning("请填写备件更换记录再提交");
                     return;
                 } else {
-                    //获取备件更换记录
+                    //提交备件更换记录
                     sparepartList.map(i => {
                         var tmp = {
                             cfrom: "Downtime",
@@ -959,6 +968,7 @@
                             pn: i.pn,
                             dri: $("#ca-employee").val(),
                             qty: Number(i.qty),
+                            remark: $("#ca-rootcause").val(),
                         };
                         $.ajax({
                             url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqSparepartChangeHistory',
@@ -1022,10 +1032,22 @@
                     showWarning(err);
                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
                 })
-
         }
     })
 
+    //选择EQID后，显示该EQID的PM信息
+    $("#ca-machine").on('change', function() {
+        // 在选择完成后触发的方法
+        console.log('选项已更改');
+        $("#ca-machine").val()
+        getData("/PMMS/GetEQPM_Info", { eqid: $("#ca-machine").val() })
+            .then(res => {
+                if (res.length>0) {
+                    showInfo_long(res[0]["eqid"] + "<br>上次点检时间: " + res[0]["lastConfirmDate"].replace("T", " ") + "<br>下次点检时间：" + res[0]["nextConfirmDate"].replace("T", " ") );
+                }
+            })
+      
+    });
 
     //查看downtime信息
     function ViewDowntimeInfo(row) {

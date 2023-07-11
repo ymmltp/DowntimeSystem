@@ -10,5 +10,6 @@ namespace DowntimeSystem.Models
         public string Department { get; set; }
         public string Project { get; set; }
         public string Email { get; set; }
+        public int Level { get; set; }
     }
 }

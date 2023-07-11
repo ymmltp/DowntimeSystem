@@ -16,32 +16,45 @@ namespace Weekly_FACA_Alarm
 
         }
 
-        public List<WeeklyAlarmNameList> GetContact(string department, string project)
+        public List<WeeklyAlarmNameList> GetContact(string department, string project, int level)
         {
-            List<WeeklyAlarmNameList> item = db.WeeklyAlarmNameLists.Where(e => e.Department.Equals(department) & e.Project.Equals(project)).ToList();
+            List<WeeklyAlarmNameList> item = db.WeeklyAlarmNameLists.Where(e => e.Department.Equals(department) & e.Project.Equals(project) & e.Level <= level).ToList();
             return item;
         }
 
         public List<myTableBody> GetInfo(string department=null, string project=null) {
-            string currentweek = DateTime.Now.Year.ToString() + gc.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString().PadLeft(2, '0');
-
-            var where = db.IssueSummaries.Where(e => e.Week == currentweek & e.Action == null & e.Correctiveaction == null & e.Preventiveaction == null);  // 
+            string currentweek = DateTime.Now.Year.ToString() + (gc.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)-1).ToString().PadLeft(2, '0');
+//#  if DEBUG
+//            currentweek = "202325";
+//#endif
+            var where = db.IssueSummaries.Where(e => e.Week.Equals(currentweek));  //  & e.Action == null & e.Correctiveaction == null & e.Preventiveaction == null
             where = !string.IsNullOrEmpty(department) ? where.Where(e => e.Department.Equals(department)) : where;
             where = !string.IsNullOrEmpty(project) ? where.Where(e => e.Project.Equals(project)) : where;
-            var items = where.GroupBy(e => new { e.Department, e.Project }).Select(g => new myTableBody
+            var tmp = where.OrderByDescending(e => e.Qty).Take(3);  //取前三项
+            var items = tmp.Where(e => e.Action == null & e.Correctiveaction == null & e.Preventiveaction == null).Select(e => new myTableBody
             {
-                department = g.Key.Department,
-                project = g.Key.Project,
-                count = g.Count()
+                Week = e.Week,
+                Department = e.Department,
+                Project = e.Project,
+                Line = e.Line,
+                Station = e.Station,
+                issue = e.Issue,
+                Rootcause = e.Rootcause,
+                QTY = e.Qty.Value
             }).ToList();
             return items;
         }
     }
 
     public class myTableBody{
-        public string department { get; set; }
-        public string project { get; set; }
-        public int count { get; set; }
+        public string Week { get; set; }
+        public string Department { get; set; }
+        public string Project { get; set; }
+        public string Line { get; set; }
+        public string Station { get; set; }
+        public string issue { get; set; }
+        public string Rootcause { get; set; }
+        public int QTY { get; set; }
     }
 
 

@@ -59,5 +59,34 @@ namespace DowntimeSystem.Controllers
             var item = where.Select(e => e.Category).Distinct().ToList();
             return Json(item);
         }
+
+        [HttpGet]
+        public IActionResult GetEQPM_Info(string eqid)
+        {
+            var PMitemList = db.Pmitems.Where(e => e.Eqid.Equals(eqid) & e.Pmtype.Equals("PM") & e.PmitemStatus.Equals("Active")).ToList();
+            var pmid = PMitemList.Select(e => e.Pmid).ToList();
+            var LastConfirmDate = db.Pmrecords.Where(e => pmid.Contains(e.Pmid.Value)).GroupBy(e => e.Pmid.Value).Select(g => new
+            {
+                pmid = g.Key,
+                lastConfirmDate = g.Max(e => e.Pmdate)
+            });
+            var tmp = from pmitem in PMitemList
+                      join pmrecord in LastConfirmDate on pmitem.Pmid equals pmrecord.pmid into vgGroup
+                      from vg in vgGroup
+                      select new 
+                      {
+                          Eqid = pmitem.Eqid,
+                          pmid = pmitem.Pmid,
+                          Cycle = pmitem.Cycle,
+                          Pmtype = pmitem.Pmtype,
+                          LastConfirmDate = vg.lastConfirmDate,
+                          NextConfirmDate = Convert.ToDateTime(vg.lastConfirmDate).AddDays(Convert.ToInt32(pmitem.Cycle) - 1),
+                          PMStatus = Convert.ToDateTime(vg.lastConfirmDate).AddDays(Convert.ToInt32(pmitem.Cycle * 0.9)) > DateTime.Now ? 1 :
+                                             Convert.ToDateTime(vg.lastConfirmDate).AddDays(Convert.ToInt32(pmitem.Cycle * 0.9)) <= DateTime.Now &
+                                             Convert.ToDateTime(vg.lastConfirmDate).AddDays(Convert.ToInt32(pmitem.Cycle * 1.1)) >= DateTime.Now ? 2 : 3
+                      };
+            return Json(tmp.ToList());
+        }
+
     }
 }

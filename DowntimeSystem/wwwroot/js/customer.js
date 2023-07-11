@@ -380,6 +380,10 @@ function showInfo(text) {
     $('.alert').attr('class', 'alert');
     $('.alert').html(text).addClass('alert-info').show().delay(1500).fadeOut();
 }
+function showInfo_long(text) {
+    $('.alert').attr('class', 'alert');
+    $('.alert').html(text).addClass('alert-info').show().delay(8000).fadeOut();
+}
 function showSuccess(text) {
     $('.alert').attr('class', 'alert');
     $('.alert').html(text).addClass('alert-success').show().delay(1500).fadeOut();
@@ -542,20 +546,24 @@ function GetIFRouteStep(obj, route, fac = _FAC) {
 }
 //#endregion
 
-
 //#region  获取PMMS中的信息
 function GetPMMSDepartment(obj) {
-    GetSelectOptions('/PMMS/GetDepartment', null, obj);
+    //GetSelectOptions('/PMMS/GetDepartment', null, obj);
+    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Department', null, obj);
+
 }
 function GetPMMSProject(obj) {
-    GetSelectOptions('/PMMS/GetProject', null, obj);
+    //GetSelectOptions('/PMMS/GetProject', null, obj);
+    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Project', null, obj);
+
 }
 function GetPMMSLine(obj, department, project) {
     var paras = {
         department: department ? department.val() : null,
         project: project ? project.val() : null,
     };
-    GetSelectOptions('/PMMS/GetLine', paras, obj);
+    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Line', paras, obj);
+    //GetSelectOptions('/PMMS/GetLine', paras, obj);
 }
 function GetPMMSEQType(obj, department, project, line) {
     var paras = {
@@ -563,8 +571,10 @@ function GetPMMSEQType(obj, department, project, line) {
         project: project ? project.val() : null,
         line: line ? line.val() : null,
     };
-    GetSelectOptions('/PMMS/GetEQType', paras, obj);
+    //GetSelectOptions('/PMMS/GetEQType', paras, obj);
+    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Category', paras, obj);
 }
+
 function GetEQID(obj, department, project, line, type, eqid) {
     var paras = {
         department: department ? department.val() : null,
@@ -572,10 +582,10 @@ function GetEQID(obj, department, project, line, type, eqid) {
         line: line ? line.val() : null,
         type: type ? type.val() : null,
     };
-    GetSelectOptions('/PMMS/getEQID', paras, obj, eqid);
+    //GetSelectOptions('/PMMS/getEQID', paras, obj, eqid);
+    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_EQID', paras, obj);
 }
 //#endregion
-
 
 //#region  获取Sparepart中的信息
 function GetSPDepartment(obj) {
@@ -611,7 +621,7 @@ function GetPN(obj, category, subcategory) {
 
 
 //#region 获取PN AlarmType
-function GetIPNAlarmType(obj) {
+function GetPNAlarmType(obj) {
     $.ajax({
         url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_AlarmType',
         method: 'GET',
@@ -621,6 +631,28 @@ function GetIPNAlarmType(obj) {
             let option = '';
             for (var i = 0; i < data.length; i++) {
                 option += '<option value="' + data[i]["value"] + '">' + data[i]["key"] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+function GetSparepart_HistoryCfrom(obj) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_History_Cfrom',
+        method: 'GET',
+        dataType: 'json',
+        traditional: true,
+        success: function (data) {
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
             }
             obj.html(option);
             obj.selectpicker("refresh");
