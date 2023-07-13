@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Sparepart Change History";
+    ViewBag.Title = "Sparepart Change";
 }
 <div class="container-fluid">
     <div class="panel-default">
@@ -54,10 +54,79 @@
             <div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
                 <button id="Searchbtn" class="btn btn-primary mybtn" type="button" onclick="SparepartChange_Table()"><i class="fa fa-search"></i> Search</button>
             </div>
+            <div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
+                <button id="Addbtn" class="btn btn-success mybtn" type="button" ><i class="fa fa-plus"></i> Add</button>
+            </div>
         </div>
     </div>
     <table id="table" class="table table-hover table-striped"></table>
 </div>
+
+
+<div class="modal fade" id="CreateModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 50%;min-width:150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title" style="text-wrap:normal">填写备件更换记录</h5>
+                <button type="button" class="close" aria-label="关闭" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*Sparepart相关*@
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="ca-department" class="form-label text-right ">Department:</label>
+                        <select class="form-control selectpicker" id='ca-department' data-size="6" title="--Select Department--" data-live-search="true" multiple data-max-options="1"  onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="ca-project" class="form-label text-right">Project:</label>
+                        <select class="form-control selectpicker" id='ca-project' data-size="6" title="--Select Project--"  data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
+                    </div>
+                    <div class="col-lg-3 ">
+                        <label for="ca-category" class="form-label text-right">Category:</label>
+                        <select class="form-control selectpicker" id='ca-category' data-size="6" title="--Select Category--" data-live-search="true" multiple data-max-options="1"  onchange="GetSPSubCategory($('#ca-subcategory'), $('#ca-category').val());GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
+                    </div>
+                    <div class="col-lg-3 ">
+                        <label for="ca-subcategory" class="form-label text-right">Sub Category:</label>
+                        <select class="form-control selectpicker" id='ca-subcategory' data-size="6" title="--Select Sub Category--" data-live-search="true" multiple data-max-options="1" onchange="GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="ca-machine" class="form-label text-right warning-text">Equipment ID:</label>
+                        <select class="form-control noNull selectpicker" id='ca-machine' data-size="6" data-live-search="true" multiple data-max-options="1"  title="--Select EQID--" noNull="Equipment" onchange="GetEQIDLink_PN($('#ca-pn'), $('#ca-machine').val()[0])"></select>
+                    </div>
+                    <div class="col-lg-3 ">
+                        <label for="ca-pn" class="form-label text-right warning-text">P_N:</label>
+                        <select class="form-control selectpicker noNull" id='ca-pn' data-size="6" title="--Select PN--" data-live-search="true" noNull="PN" multiple data-max-options="1" >
+                            <optgroup label="PN Linked with EQID"></optgroup>
+                            <optgroup label="Other PN"></optgroup>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="ca-qty" class="form-label text-right warning-text">QTY:</label>
+                        <input type='number' step="1" class="form-control noNull" id='ca-qty' noNull="QTY"/>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="ca-employee" class="form-label text-right warning-text">Employee ID:</label>
+                        <input type='text'  class="form-control noNull" id='ca-employee'  noNull="Employee ID"/>
+                    </div>
+                    <div class="col-lg-12">
+                            <label for="ca-remark" class="form-label text-right">Remark:</label>
+                            <textarea type='text' class="form-control" id='ca-remark'></textarea>
+                        </div>
+                    </div>
+                @*Sparepart相关*@
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btn_submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <script src="~/js/customer.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 
@@ -110,9 +179,52 @@
             }, {
                 field: 'cdate',
                 title: 'Create Date',
+            }, {
+                field: 'remark',
+                title: 'Remark',
             }]
         })
     }
+    $("#Addbtn").on('click', function () {
+        GetPMMSDepartment($("#ca-department"));
+        GetPMMSProject($("#ca-project"));
+        GetEQID($("#ca-machine"));
+        GetSPCategory($("#ca-category"));
+        GetSPSubCategory($("#ca-subcategory"));
+        GetAllPN($("#ca-pn"));
+        $("#CreateModal").modal("show");
+    })
+    $("#btn_submit").on('click', function () {
+        //提交备件更换记录
+        if (checkFormNoNull("#CreateModal")) {
+            $.ajax({
+                url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqSparepartChangeHistory',
+                method: 'POST',
+                contentType: "application/json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+                },
+                data: JSON.stringify({
+                    cfrom: "Other",
+                    linkid: 0,
+                    eqid: $("#ca-machine").val()[0],
+                    pn: $("#ca-pn").val()[0],
+                    dri: $("#ca-employee").val(),
+                    qty: Number($("#ca-qty").val()),
+                    remark: $("#ca-remark").val(),
+                }),
+                success: function (data) {
+                    showSuccess("Sparepart 更换记录上传成功");
+                    $("#CreateModal").modal("hide");
+                    SparepartChange_Table();
+                },
+                error: function (err) {
+                    showError(err.responseText);
+                }
+            })
+        }
+    })
+
 </script>
 
 

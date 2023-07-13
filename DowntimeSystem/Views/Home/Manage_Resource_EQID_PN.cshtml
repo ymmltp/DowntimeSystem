@@ -1,57 +1,99 @@
 ﻿@{
     ViewData["Title"] = "Manage Resource & EQID & PN";
-}
+    ViewData["Title1"] = "Manage EQID & PN";
 
+}
 <div class="container-fluid">
-    <div class="panel-default">
-        <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label">Route:</label>
-                    <select id="route-select" class="form-control selectpicker" title="Select Route" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetIFRouteStep($("#resource-select"),$("#route-select"))'>
-                    </select>
-                </div>
-                <div class="col-lg-4 col-xs-4 col-sm-4 col-md-4">
-                    <label class="form-label"> Resource:</label>
-                    <select id="resource-select" class="form-control selectpicker" title="Select Resource" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+    <ul id="myTab" class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active " id="tab1" href="#Tab1" data-toggle="tab" role="tab" aria-selected="true"> @ViewData["Title"]</a></li>
+        <li class="nav-item"><a class="nav-link " id="tab2" href="#Tab2" data-toggle="tab" role="tab" aria-selected="false" data-auth="Add Inspection"> @ViewData["Title1"] </a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content border border-top-0">
+        <div class="tab-pane fade show active" id="Tab1" role="tabpanel" aria-labelledby="tab1">
+            <div class="panel-default">
+                <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label">Route:</label>
+                            <select id="route-select" class="form-control selectpicker" title="Select Route" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetIFRouteStep($("#resource-select"),$("#route-select"))'>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-xs-4 col-sm-4 col-md-4">
+                            <label class="form-label"> Resource:</label>
+                            <select id="resource-select" class="form-control selectpicker" title="Select Resource" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> Department:</label>
+                            <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSLine($("#line-select"),$("#department-select"),$("#project-select")); GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
+                        </div>
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> Project:</label>
+                            <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSLine($("#line-select"),$("#department-select"),$("#project-select")); GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'> </select>
+                        </div>
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> Line:</label>
+                            <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
+                        </div>
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> EQ Type:</label>
+                            <select id="type-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
+                        </div>
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> EQID:</label>
+                            <select id="eqid-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                        </div>
+                        <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px">
+                            <button type="button" class="btn btn-primary" id="analysis" onclick="GetRS_EQTable();">Search</button>
+                        </div>
+                        <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px">
+                            <button id="btnnew" class="btn btn-success " type="button"> New Link</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Department:</label>
-                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSLine($("#line-select"),$("#department-select"),$("#project-select")); GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
-                </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Project:</label>
-                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSLine($("#line-select"),$("#department-select"),$("#project-select")); GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'> </select>
-                </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Line:</label>
-                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSEQType($("#type-select"),$("#department-select"),$("#project-select"),$("#line-select")); GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
-                </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> EQ Type:</label>
-                    <select id="type-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetEQID($("#eqid-select"),$("#department-select"),$("#project-select"),$("#line-select"),$("#type-select"));'></select>
-                </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> EQID:</label>
-                    <select id="eqid-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
-                </div>
-                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px">
-                    <button type="button" class="btn btn-primary" id="analysis" onclick="GetRS_EQTable();">Search</button>
-                </div>
-                <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px">
-                    <button id="btnnew" class="btn btn-success " type="button"> New Link</button>
+            <table id="rseqidtable" class="table table-striped table-hover"></table>
+        </div>
+        <div class="tab-pane fade  " id="Tab2" role="tabpanel" aria-labelledby="tab2">
+            <div class="panel-default">
+                <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title1"]</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> Department:</label>
+                            <select id="department-select01" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSLine($("#line-select01"),$("#department-select01"),$("#project-select01")); GetPMMSEQType($("#type-select01"),$("#department-select01"),$("#project-select01"),$("#line-select01")); GetEQID($("#eqid-select01"),$("#department-select01"),$("#project-select01"),$("#line-select01"),$("#type-select01"));'></select>
+                        </div>
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> Project:</label>
+                            <select id="project-select01" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSLine($("#line-select01"),$("#department-select01"),$("#project-select01")); GetPMMSEQType($("#type-select01"),$("#department-select01"),$("#project-select01"),$("#line-select01")); GetEQID($("#eqid-select01"),$("#department-select01"),$("#project-select01"),$("#line-select01"),$("#type-select01"));'> </select>
+                        </div>
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> Line:</label>
+                            <select id="line-select01" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetPMMSEQType($("#type-select01"),$("#department-select01"),$("#project-select01"),$("#line-select01")); GetEQID($("#eqid-select01"),$("#department-select01"),$("#project-select01"),$("#line-select01"),$("#type-select01"));'></select>
+                        </div>
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> EQ Type:</label>
+                            <select id="type-select01" class="form-control selectpicker" title="Select Category" data-size="6" multiple data-max-options="1" data-live-search="true" onchange='GetEQID($("#eqid-select01"),$("#department-select01"),$("#project-select01"),$("#line-select01"),$("#type-select01"));'></select>
+                        </div>
+                        <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+                            <label class="form-label"> EQID:</label>
+                            <select id="eqid-select01" class="form-control selectpicker" title="Select EQID" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                        </div>
+                        <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px">
+                            <button type="button" class="btn btn-primary" id="analysis" onclick="GetEQ_PNTable1();">Search</button>
+                        </div>
+                        <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px">
+                            <button id="btnneweqid_pn" class="btn btn-success " type="button"> New Link</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <table id="eqidpntable" class="table table-striped table-hover"></table>
         </div>
     </div>
-
-    <table id="rseqidtable" class="table table-striped table-hover"></table>
-
 </div>
-
 
 <div class="modal fade" id="NewModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document" style="min-width:150px;width:50%">
@@ -140,7 +182,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="CreatePNModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document" style="width: 60%;min-width:150px">
         <div class="modal-content">
@@ -183,6 +224,64 @@
     </div>
 </div>
 
+@*eqid ,pn 管理页面*@
+<div class="modal fade" id="NewModal1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="min-width:150px;width:50%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title" style="text-wrap:normal">创建 EQID 和 PN 之间的 Link 关系</h5>
+                <button type="button" class="close" aria-label="关闭" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--选eqid-->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="ca-department" class="form-label text-right ">Department:</label>
+                        <select class="form-control selectpicker" id='ca-department' data-size="6" title="--Select Department--" data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="ca-project" class="form-label text-right">Project:</label>
+                        <select class="form-control selectpicker" id='ca-project' data-size="6" title="--Select Project--" data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="ca-machine" class="form-label text-right warning-text">Equipment ID:</label>
+                        <select class="form-control noNull selectpicker" id='ca-machine' data-size="6" data-live-search="true" multiple data-max-options="1" title="--Select EQID--" noNull="Equipment" ></select>
+                    </div>
+                </div>
+                <!--选pn-->
+                <div class="row">
+                    <div class="col-lg-3 ">
+                        <label for="ca-category" class="form-label text-right">Category:</label>
+                        <select class="form-control selectpicker" id='ca-category' data-size="6" title="--Select Category--" data-live-search="true" multiple data-max-options="1" onchange="GetSPSubCategory($('#ca-subcategory'), $('#ca-category').val());GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
+                    </div>
+                    <div class="col-lg-3 ">
+                        <label for="ca-subcategory" class="form-label text-right">Sub Category:</label>
+                        <select class="form-control selectpicker" id='ca-subcategory' data-size="6" title="--Select Sub Category--" data-live-search="true" multiple data-max-options="1" onchange="GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
+                    </div>
+                    <div class="col-lg-3 ">
+                        <label for="ca-pn" class="form-label text-right warning-text">P_N:</label>
+                        <select class="form-control selectpicker noNull" id='ca-pn' data-size="6" title="--Select PN--" data-live-search="true" noNull="PN" multiple data-max-options="1">
+                            <optgroup label="PN Linked with EQID"></optgroup>
+                            <optgroup label="Other PN"></optgroup>
+                        </select>
+                    </div>
+                    <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px">
+                        <button id="addeqpnLink" class="btn btn-success " type="button"> <i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+                <!--table显示-->
+                <table id="eqpnList"></table>
+            </div>
+            <div class="modal-footer" style="display:block">
+                <button type="button" class="btn btn-success" id="btn_submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="~/js/customer.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-editable.js"></script>
@@ -197,8 +296,14 @@
         GetPMMSLine($("#line-select"));
         GetPMMSEQType($("#type-select"));
         GetEQID($("#eqid-select"));
+        GetPMMSDepartment($("#department-select01"));
+        GetPMMSProject($("#project-select01"));
+        GetPMMSLine($("#line-select01"));
+        GetPMMSEQType($("#type-select01"));
+        GetEQID($("#eqid-select01"));
         _step();
     })
+    //Resource EQID Link关系管理界面
     function GetRS_EQTable() {
         $("#rseqidtable").bootstrapTable('destroy').bootstrapTable({
             cache: false,
@@ -335,14 +440,14 @@
                             })
                     }
                 }
-                }],
+            }],
             onEditableSave: function (field, row, oldValue, $el) {
                 console.log(field);
                 var tmp = {
                     eqid: row['eqid'],
                     pn: row['pn'],
                 };
-                if (field == "expireAlarmtype" || field == "expireCycle" ) {
+                if (field == "expireAlarmtype" || field == "expireCycle") {
                     tmp[field] = Number(row[field]);
                 } else {
                     tmp[field] = row[field];
@@ -365,8 +470,6 @@
             },
         })
     }
-
-    //新增Resource EQID Link关系
     $("#btnnew").on("click", function () {
         GetIFRoute($("#route-select1"));
         GetPMMSDepartment($("#department-select1"));
@@ -407,7 +510,6 @@
         });
 
     }
-
     //查询pn
     function GetPNTable() {
         if (checkFormNoNull("#pnContent")) {
@@ -496,7 +598,7 @@
 
         }
     }
-    //上传eqid 和 PN 关系
+    //在resource table中上传eqid 和 PN 关系
     function AddEQID_PN_Link() {
         let eqid = $("#CreatePNModal").attr('data-eqid');
         let pn = $('#pntable').bootstrapTable('getSelections');
@@ -512,16 +614,199 @@
                     expireCycle: 0
                 };
             });
+            SubmitEQID_PN_Link(list);
+            $("#CreatePNModal").modal('hide');
+            $("#rseqidtable").bootstrapTable("refreshOptions", { url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqResourceList' });
+        }
+    }
+    //提交eqid 和 PN 关系
+    function SubmitEQID_PN_Link(list) { 
             postDataWithArray("http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqPNLists", list)
                 .then(res => {
                     showSuccess("添加成功");
                     //关闭模态框
-                    $("#CreatePNModal").modal('hide');
-                    $("#rseqidtable").bootstrapTable("refreshOptions", { url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqResourceList' });
                 })
                 .catch(err => {
                     showError(err);
-                });
-        }
+                }); 
     }
+
+
+    //PN 和 eqid 管理界面
+    function GetEQ_PNTable1() {
+        $("#eqidpntable").bootstrapTable("destroy").bootstrapTable({
+            cache: false,
+            type: 'GET',
+            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqPNList',
+            queryParams: {
+                Department: $("#department-select01") ? $("#department-select01").val()[0] : null,
+                Project: $("#project-select01")? $("#project-select01").val()[0]:null,
+                Line: $("#line-select01")?$("#line-select01").val()[0]:null,
+                Category: $("#type-select01")?$("#type-select01").val()[0]:null,
+                EQID: $("#eqid-select01")? $("#eqid-select01").val()[0]:null,
+            },
+            pagination: true,
+            paginationLoop: false,
+            pageSize: 10,
+            pageList: '[10, 50 ,100 , ALL]',
+            dataType: 'json',
+            columns: [{
+                field: 'eqid',
+                title: 'EQID',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'pn',
+                title: 'PN',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'expireAlarmtype',
+                title: 'Expire Alarmtype',
+                align: 'center',
+                valign: 'middle',
+                editable: {
+                    title: 'Expire Alarmtype',
+                    type: 'select',
+                    separator: ",",
+                    source: [{ value: "1", text: "ProductCount" }, { value: "0", text: "Time" }],
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
+            }, {
+                field: 'expireCycle',
+                title: 'Expire Cycle (mins/piece) ',
+                align: 'center',
+                valign: 'middle',
+                editable: {
+                    title: 'Expire Cycle',
+                    type: 'number',
+                    step: 1,
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
+            }, {
+                field: 'operation',
+                title: '操作',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    return ['<a href="#"  id="delete" style="color:red">Delete</a>']
+                },
+                events: {
+                    "click #delete": function (e, value, row, index) {
+                        deleteData("http://cnwuxg0te01:9000/api/EqSparepartChange/Delete_EqPNList?EQID=" + row['eqid'] + "&PN=" + row['pn'])
+                            .then(res => {
+                                showSuccess("删除成功");
+                                //GetEQ_PNTable1();
+                                $("#eqidpntable").bootstrapTable("refreshOptions", { url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqPNList' });
+                            }).catch(err => {
+                                showError(err);
+                            })
+                    }
+                }
+            }],
+            onEditableSave: function (field, row, oldValue, $el) {
+                console.log(field);
+                var tmp = {
+                    eqid: row['eqid'],
+                    pn: row['pn'],
+                };
+                if (field == "expireAlarmtype" || field == "expireCycle") {
+                    tmp[field] = Number(row[field]);
+                } else {
+                    tmp[field] = row[field];
+                }
+                $.ajax({
+                    url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Update_EqPNList',
+                    method: 'POST',
+                    contentType: "application/json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+                    },
+                    data: JSON.stringify(tmp),
+                    success: function (data) {
+                        showSuccess("更新成功");
+                    },
+                    error: function (err) {
+                        showError(err.responseText);
+                    }
+                })
+            },
+        })
+    }
+    $("#btnneweqid_pn").on('click', function () {
+        GetPMMSDepartment($("#ca-department"));
+        GetPMMSProject($("#ca-project"));
+        GetEQID($("#ca-machine"));
+        GetSPCategory($("#ca-category"));
+        GetSPSubCategory($("#ca-subcategory"));
+        GetAllPN($("#ca-pn"));
+        sparepartList = [];
+        $("#eqpnList").bootstrapTable('destroy');
+        $("#NewModal1").modal("show");
+    })
+    var sparepartList = [];
+    $("#addeqpnLink").on("click", function () {
+        if (checkFormNoNull("#NewModal1")) {
+            sparepartList.push({
+                "eqid": $("#ca-machine").val()[0],
+                "pn": $("#ca-pn").val()[0],
+                "desc": $("#ca-pn option:selected").text().split('/')[3],
+            })
+            $("#eqpnList").bootstrapTable('destroy').bootstrapTable({
+                data: sparepartList,
+                dataType: 'json',
+                width: '100%',
+                columns: [{
+                    field: 'eqid',
+                    title: 'EQID',
+                }, {
+                    field: 'pn',
+                    title: 'PN',
+                }, {
+                    field: 'desc',
+                    title: 'Description',
+                }, {
+                    field: 'operation',
+                    title: '操作',
+                    formatter: function (value, row, index) {
+                        return ['<button type="button" class="btn bad text-light" id="delete"><i class="fa fa-trash"></i></button>']
+                    },
+                    events: {
+                        "click #delete": function (e, value, row, index) {
+                            if (confirm("确定删除这个 Sparepart ")) {
+                                sparepartList.splice(index, 1);
+                                $("#eqpnList").bootstrapTable("refreshOptions", { data: sparepartList });
+                            }
+                        }
+                    }
+                }]
+            });
+        }
+    })
+    //在eqid _pn 管理页面上传eqid,pn关系
+    $("#btn_submit").on("click", function(){
+        let pn = $('#eqpnList').bootstrapTable('getData');
+        if(pn.length <= 0) {
+            showError("请先选择PN，再提交");
+            return;
+        } else {
+            let list = $.map(pn, function (i) {
+                return {
+                    pn: i.pn,
+                    eqid: i.eqid,
+                    expireAlarmtype: null,
+                    expireCycle: 0
+                };
+            });
+            SubmitEQID_PN_Link(list);
+            $("#NewModal1").modal("hide");
+            $("#eqidpntable").bootstrapTable("refreshOptions", { url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqPNList' });
+        }
+    })
 </script>

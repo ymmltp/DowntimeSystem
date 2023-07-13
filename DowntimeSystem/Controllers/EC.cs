@@ -217,6 +217,7 @@ namespace DowntimeSystem.Controllers
                 {
                     IncidentDet tmp = db.IncidentDets.Find(item.Id);
                     tmp.Station = item.Station;
+                    tmp.Respperson = item.Respperson;
                     tmp.Machine = item.Machine;
                     tmp.Issue = item.Issue;
                     tmp.Issueremark = item.Issueremark;

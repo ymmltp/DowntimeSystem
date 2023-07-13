@@ -346,7 +346,6 @@
                 </fieldset>
                 @*Sparepart相关*@
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="addCA">Submit</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
@@ -997,6 +996,7 @@
                 action: $("#ca-action").val(),
                 actionremark: $("#ca-actionremark").val(),
                 station: $("#ca-station").val(),
+                respperson: $("#ca-employee").val().toUpperCase(),
                 machine: $("#ca-machine").val(),
                 issue: $("#ca-issue").val(),
                 issueremark: $("#ca-issueremark").val(),
