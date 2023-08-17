@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\HR\" />
     <Folder Include="wwwroot\lib\echarts\dist\css\" />
   </ItemGroup>
 

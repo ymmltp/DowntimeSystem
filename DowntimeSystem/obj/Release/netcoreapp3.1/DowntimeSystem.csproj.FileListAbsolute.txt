@@ -126,3 +126,4 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcorea
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Manage_Resource_EQID_PN.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\QEQSparepartChangeHistory.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Query_back.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Release\netcoreapp3.1\Razor\Views\Home\Maintenance.cshtml.g.cs

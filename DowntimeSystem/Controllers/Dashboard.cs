@@ -7,11 +7,13 @@ using DowntimeSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Data.Common;
+using DowntimeSystem.Models.HR;
 
 namespace DowntimeSystem.Controllers
 {
     public class Dashboard : Controller
     {
+        private iccojabilContext _epdb = new iccojabilContext();
         private string[] contains = { "eCalling" }; //, "FPY", "Downtime System"
         private GregorianCalendar gc = new GregorianCalendar();
         # region 获取system
@@ -1061,7 +1063,14 @@ namespace DowntimeSystem.Controllers
                         count = g.Count(),
                         item = g.Key,
                     }).OrderByDescending(e => e.count).ToList();
-                    return Json(items);
+                    var result = items.Join(_epdb.EmpViewForTes, dt => dt.item, ep => ep.Empid, (dt, ep) => new
+                    {
+                        value = dt.value,
+                        totalValue = dt.totalValue,
+                        count = dt.count,
+                        item = ep.ChineseName,
+                    }).ToList();
+                    return Json(result);
                 }
                 catch (Exception ex)
                 {

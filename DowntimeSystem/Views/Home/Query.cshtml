@@ -944,11 +944,27 @@
             });
         }
     })
+    $("#ca-employee").on('change', function () {
+        if (!/^[Ww]/.test($(this).val())) {
+            showWarning("请输入正确的工号，以‘W’开头");
+            $("#ca-employee").focus();
+        }
+    })
+    $("#cr-creator").on('change', function () {
+        if (!/^[Ww]/.test($(this).val())) {
+            showWarning("请输入正确的工号，以‘W’开头");
+            $("#cr-creator").focus();
+        }
+    })
     $("#addCA").on('click', function () {
         if (checkFormNoNull("#CAModal")) {
             //判断 EmployeeID 不能是Auto
             if ($("#ca-employee").val().toUpperCase() == "AUTO") {
                 showWarning("请修改Employee ID (不可填Auto)");
+                $("#ca-employee").focus();
+                return;
+            } else if (!/^[Ww]/.test($("#ca-employee").val())){
+                showWarning("请输入正确的工号，以‘W’开头");
                 $("#ca-employee").focus();
                 return;
             }
@@ -1157,6 +1173,11 @@
                 showWarning("请填写" + $(items[i]).data("remark"));
                 return;
             }
+        }
+        if (!/^[Ww]/.test($("##cr-creator").val())) {
+            showWarning("请输入正确的工号，以‘W’开头");
+            $("#cr-creator").focus();
+            return;
         }
         $.ajax({
             url: '/EC/CreateDowmtimeIncident',

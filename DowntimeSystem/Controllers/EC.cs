@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DowntimeSystem.Models;
+using DowntimeSystem.Models.HR;
 
 namespace DowntimeSystem.Controllers
 {
     public class EC : Controller
     {
+        private iccojabilContext _epdb = new iccojabilContext();
         #region 查询EC表单
         [HttpGet]
         public IActionResult GetDowntimeList(IncidentDet tmp,string starttime ,string endtime)
@@ -29,7 +31,36 @@ namespace DowntimeSystem.Controllers
                     if (!string.IsNullOrEmpty(tmp.Incidentstatus.ToString())) where = where.Where(e => e.Incidentstatus.Equals(tmp.Incidentstatus));
                     if (!string.IsNullOrEmpty(tmp.Actionstatus.ToString())) where = where.Where(e => e.Actionstatus.Equals(tmp.Actionstatus));
                     var items = where.ToList();
-                    return Json(items.OrderBy(e => e.Incidentstatus).OrderBy(e=>e.Actionstatus).ToList()) ;
+                    var result = items.Join(_epdb.EmpViewForTes, dt => dt.Respperson, ep => ep.Empid, (dt, ep) => new IncidentDet
+                    {
+                        Id=dt.Id,
+                        Ctime = dt.Ctime,
+                        Comefrom = dt.Comefrom,
+                        Alarmtype = dt.Alarmtype,
+                        Project = dt.Project,
+                        Line = dt.Line,
+                        Station = dt.Station,
+                        Urgentlevel = dt.Urgentlevel,
+                        Occurtime = dt.Occurtime,
+                        Finishtime = dt.Finishtime,
+                        Calcdowntime = dt.Calcdowntime,
+                        Downtime = dt.Downtime,
+                        Labor = dt.Labor,
+                        Incidentstatus = dt.Incidentstatus,
+                        Department = dt.Department,
+                        Respperson = ep.ChineseName,
+                        Actionstatus = dt.Actionstatus,
+                        Issue = dt.Issue,
+                        Issueremark = dt.Issueremark,
+                        Rootcause = dt.Rootcause,
+                        Rootcauseremark = dt.Rootcauseremark,
+                        Action = dt.Action,
+                        Actionremark = dt.Actionremark,
+                        Creator = dt.Creator,
+                        Repairtime = dt.Repairtime,
+                        Machine = dt.Machine
+    });
+                    return Json(result.OrderBy(e => e.Incidentstatus).OrderBy(e=>e.Actionstatus).ToList()) ;
                 }
             }
             catch (Exception ex) {

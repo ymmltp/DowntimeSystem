@@ -71,7 +71,6 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
-
         public IActionResult Dashboard_EmployeeWork()
         {
             return View();
@@ -81,6 +80,10 @@ namespace DowntimeSystem.Controllers
             return View();
         }
         public IActionResult Coming()
+        {
+            return View();
+        }   
+        public IActionResult Maintenance()
         {
             return View();
         }

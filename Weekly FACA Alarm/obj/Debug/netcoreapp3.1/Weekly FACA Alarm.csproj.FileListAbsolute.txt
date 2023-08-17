@@ -95,3 +95,4 @@ C:\Users\1382919\source\repos\DowntimeSystem\Weekly FACA Alarm\obj\Debug\netcore
 C:\Users\1382919\source\repos\DowntimeSystem\Weekly FACA Alarm\obj\Debug\netcoreapp3.1\Weekly FACA Alarm.dll
 C:\Users\1382919\source\repos\DowntimeSystem\Weekly FACA Alarm\obj\Debug\netcoreapp3.1\Weekly FACA Alarm.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\Weekly FACA Alarm\obj\Debug\netcoreapp3.1\Weekly FACA Alarm.genruntimeconfig.cache
+C:\Users\1382919\source\repos\DowntimeSystem\Weekly FACA Alarm\obj\Debug\netcoreapp3.1\Weekly FACA Alarm.csproj.CopyComplete
