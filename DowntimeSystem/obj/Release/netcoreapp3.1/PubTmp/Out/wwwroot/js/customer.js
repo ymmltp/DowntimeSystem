@@ -589,10 +589,10 @@ function GetEQID(obj, department, project, line, type, eqid) {
 
 //#region  获取Sparepart中的信息
 function GetSPDepartment(obj) {
-    GetSelectOptions('http://cnwuxg0te01:9000/api/Basic/GetDepartment', null, obj);
+    GetSelectOptions('http://cnwuxg0te01:9000/api/Basic/GetDepartmentWithOutAll', null, obj);
 }
 function GetSPProject(obj) {
-    GetSelectOptions('http://cnwuxg0te01:9000/api/Basic/GetProject', null, obj);
+    GetSelectOptions('http://cnwuxg0te01:9000/api/Basic/GetProjectWithOutAll', null, obj);
 }
 function GetSPCategory(obj) {
     GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartBasic/GetCategory', null, obj);

@@ -2,7 +2,7 @@
     ViewBag.Title = "Sparepart Change";
 }
 <div class="container-fluid">
-    <div class="panel-default">
+    <div class="panel-default" id="searchbox">
         <div class="panel-heading"><i class="fa fa-table "></i> @ViewBag.Title </div>
         <div class="panel-body row">
             <div class="col-lg-2 col-xs-3 col-sm-3 col-md-3">
@@ -55,7 +55,7 @@
                 <button id="Searchbtn" class="btn btn-primary mybtn" type="button" onclick="SparepartChange_Table()"><i class="fa fa-search"></i> Search</button>
             </div>
             <div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
-                <button id="Addbtn" class="btn btn-success mybtn" type="button" ><i class="fa fa-plus"></i> Add</button>
+                <button id="Addbtn" class="btn btn-success mybtn" type="button"><i class="fa fa-plus"></i> Add</button>
             </div>
         </div>
     </div>
@@ -77,15 +77,15 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <label for="ca-department" class="form-label text-right ">Department:</label>
-                        <select class="form-control selectpicker" id='ca-department' data-size="6" title="--Select Department--" data-live-search="true" multiple data-max-options="1"  onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
+                        <select class="form-control selectpicker" id='ca-department' data-size="6" title="--Select Department--" data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
                     </div>
                     <div class="col-lg-3">
                         <label for="ca-project" class="form-label text-right">Project:</label>
-                        <select class="form-control selectpicker" id='ca-project' data-size="6" title="--Select Project--"  data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
+                        <select class="form-control selectpicker" id='ca-project' data-size="6" title="--Select Project--" data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
                     </div>
                     <div class="col-lg-3 ">
                         <label for="ca-category" class="form-label text-right">Category:</label>
-                        <select class="form-control selectpicker" id='ca-category' data-size="6" title="--Select Category--" data-live-search="true" multiple data-max-options="1"  onchange="GetSPSubCategory($('#ca-subcategory'), $('#ca-category').val());GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
+                        <select class="form-control selectpicker" id='ca-category' data-size="6" title="--Select Category--" data-live-search="true" multiple data-max-options="1" onchange="GetSPSubCategory($('#ca-subcategory'), $('#ca-category').val());GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
                     </div>
                     <div class="col-lg-3 ">
                         <label for="ca-subcategory" class="form-label text-right">Sub Category:</label>
@@ -93,30 +93,30 @@
                     </div>
                     <div class="col-lg-3">
                         <label for="ca-machine" class="form-label text-right warning-text">Equipment ID:</label>
-                        <select class="form-control noNull selectpicker" id='ca-machine' data-size="6" data-live-search="true" multiple data-max-options="1"  title="--Select EQID--" noNull="Equipment" onchange="GetEQIDLink_PN($('#ca-pn'), $('#ca-machine').val()[0])"></select>
+                        <select class="form-control noNull selectpicker" id='ca-machine' data-size="6" data-live-search="true" multiple data-max-options="1" title="--Select EQID--" noNull="Equipment" onchange="GetEQIDLink_PN($('#ca-pn'), $('#ca-machine').val()[0])"></select>
                     </div>
                     <div class="col-lg-3 ">
                         <label for="ca-pn" class="form-label text-right warning-text">P_N:</label>
-                        <select class="form-control selectpicker noNull" id='ca-pn' data-size="6" title="--Select PN--" data-live-search="true" noNull="PN" multiple data-max-options="1" >
+                        <select class="form-control selectpicker noNull" id='ca-pn' data-size="6" title="--Select PN--" data-live-search="true" noNull="PN" multiple data-max-options="1">
                             <optgroup label="PN Linked with EQID"></optgroup>
                             <optgroup label="Other PN"></optgroup>
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label for="ca-qty" class="form-label text-right warning-text">QTY:</label>
-                        <input type='number' step="1" class="form-control noNull" id='ca-qty' noNull="QTY"/>
+                        <input type='number' step="1" class="form-control noNull" id='ca-qty' noNull="QTY" />
                     </div>
                     <div class="col-lg-3">
                         <label for="ca-employee" class="form-label text-right warning-text">Employee ID:</label>
-                        <input type='text'  class="form-control noNull" id='ca-employee'  noNull="Employee ID"/>
+                        <input type='text' class="form-control noNull" id='ca-employee' noNull="Employee ID" />
                     </div>
                     <div class="col-lg-12">
-                            <label for="ca-remark" class="form-label text-right">Remark:</label>
-                            <textarea type='text' class="form-control" id='ca-remark'></textarea>
-                        </div>
+                        <label for="ca-remark" class="form-label text-right">Remark:</label>
+                        <textarea type='text' class="form-control" id='ca-remark'></textarea>
                     </div>
-                @*Sparepart相关*@
                 </div>
+                @*Sparepart相关*@
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="btn_submit">Submit</button>
             </div>
@@ -129,6 +129,10 @@
 
 <script src="~/js/customer.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-export.js"></script>
+<script src="~/lib/bootstrap/dist/js/tableExport.js"></script>
+<script src="~/lib/bootstrap/dist/js/FileSaver.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/xlsx.core.min.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -143,6 +147,7 @@
     function SparepartChange_Table() {
         $("#table").bootstrapTable('destroy').bootstrapTable({
             url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqSparepartChangeHistory',
+            height: Math.round($('#silder-right-body').height() - $("#searchbox").height(), 0) - 20,
             queryParams: {
                 cfrom: $("#systemsele").val()[0],
                 department: $("#department-select").val()[0],
@@ -161,11 +166,41 @@
             search: true,                       //开启搜索框
             visibleSearch: true,
             showSearchButton: false,
-            pagination: true,
-            paginationLoop: false,
-            pageSize: 10,
-            pageList: '[10, 50 ,100 ,200, 500, ALL]',
+            //pagination: true,
+            //paginationLoop: false,
+            //pageSize: 10,
+            //pageList: '[ALL, 10, 50 ,100 ,200, 500]',
+            showExport: function (row, index) {
+                var sUserAgent = navigator.userAgent.toLowerCase();
+                var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+                var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+                var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+                var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+                var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+                var bIsAndroid = sUserAgent.match(/android/i) == "android";
+                var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+                var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+                if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            exportDataType: 'basic', //'basic', 'all', 'selected'.
+            exportTypes: ['csv', 'excel', 'xlsx'], //导出类型
+            exportOptions: {
+                fileName: 'Sparepart Change History - ' + formatDate(new Date()), //文件名称设置
+                worksheetName: 'Sheet1', //表格工作区名称
+                tableName: 'Sheet1',
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+            },
             columns: [{
+                field: 'index',
+                title: 'No.',
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            },{
                 field: 'cfrom',
                 title: 'System',
             }, {
