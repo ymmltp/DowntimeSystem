@@ -427,7 +427,7 @@ table {
     height: auto;
 }
 
-.desc {
+/*.desc {
     line-height: 1rem;
     height: 20px;
     font-size: 1rem;
@@ -435,7 +435,7 @@ table {
     text-align: center;
     color: #333333 !important;
 }
-
+*/
 
 
 .min-card-body {

@@ -576,28 +576,22 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                                     return value;
                             },
                         }, {
-                            field: 'downday',
+                            field: 'downtime',
                             title: 'Downtime(m)',
                             align: 'center',
                             valign: 'middle',
+                            sortable: true,
                             formatter: function (value, row, index) {
-                                if (row['incidentstatus'] == 2) {
-                                    return parseInt(Math.abs(new Date(row['finishtime']) - new Date(row['occurtime'])) / 60000);
+                                if (row['finishtime'] == null) {
+                                    let tmp = new Date(row['occurtime']);
+                                    let Downtime = new Date() - tmp;
+                                    return (Downtime / 1000 / 60).toFixed(2);
                                 }
-                                return "--";
+                                else {
+                                    return (Math.abs(value / 60)).toFixed(2);
+                                }
                             },
-                        }, {
-                            field: 'openday',
-                            title: 'Open Time(mins)',
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index) {
-                                if (row['incidentstatus'] == 2) 
-                                    return 0;
-                                 else 
-                                    return parseInt(Math.abs(Date.now() - new Date(row['occurtime'])) / 60000);                             
-                                }
-                            },  {
+                        },  {
                             field: 'option',
                             title: 'Operation ',
                             align: 'center',
@@ -617,16 +611,10 @@ function getOpenCloseCount(system, project, department, lastday, currentDay) {
                     openCloseDowntime_DefectCodePieChart(system, project, department, lastday, currentDay, event.name);
                     if (event.name == "Closed") {
                         $("#modalName").html("Closed downtime ticket pie chart")
-                        $('#detaillist').bootstrapTable('hideColumn', 'openday');
                         $('#detaillist').bootstrapTable('showColumn', 'option');
-                        $('#detaillist').bootstrapTable('showColumn', 'downday');
-                        $('#detaillist').bootstrapTable('showColumn', 'finishtime');
                     } else {
                         $("#modalName").html("Open downtime ticket pie chart")
-                        $('#detaillist').bootstrapTable('showColumn', 'openday');
                         $('#detaillist').bootstrapTable('showColumn', 'option');
-                        $('#detaillist').bootstrapTable('hideColumn', 'downday');
-                        $('#detaillist').bootstrapTable('hideColumn', 'finishtime');
                     }
                     $("#Chart2Modal").modal('show');
                 }

@@ -1,11 +1,11 @@
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.dll
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.exe
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.deps.json
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.runtimeconfig.json
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.runtimeconfig.dev.json
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.dll
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.Views.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\DowntimeSystem.Views.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\bin\Debug\netcoreapp3.1\Humanizer.dll
@@ -110,6 +110,7 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Dashboard_Predictive.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\IssueSummary.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
+C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Maintenance.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Manage_Resource_EQID_PN.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\QEQSparepartChangeHistory.cshtml.g.cs
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Query.cshtml.g.cs
@@ -126,4 +127,3 @@ C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.dll
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.pdb
 C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\DowntimeSystem.genruntimeconfig.cache
-C:\Users\1382919\source\repos\DowntimeSystem\DowntimeSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Maintenance.cshtml.g.cs

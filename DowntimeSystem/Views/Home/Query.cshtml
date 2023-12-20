@@ -551,7 +551,6 @@
                 title: 'Department',
                 align: 'center',
                 valign: 'middle',
-                visible: false,
             }, {
                 field: 'project',
                 title: 'Project',
@@ -634,15 +633,16 @@
                 title: 'Downtime(m)',
                 align: 'center',
                 valign: 'middle',
+                sortable: true,
                 formatter: function (value, row, index) {
                     if (row['calcdowntime']) {
                         if (row['finishtime'] == null) {
                             let tmp = new Date(row['occurtime']);
                             let Downtime = new Date() - tmp;
-                            return parseInt(Downtime / 1000 / 60);
+                            return (Downtime / 1000 / 60).toFixed(2);
                         }
                         else {
-                            return parseInt(Math.abs(value / 60));
+                            return (Math.abs(value / 60)).toFixed(2);
                         }
                     }
                     else {
