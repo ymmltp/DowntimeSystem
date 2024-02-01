@@ -1,25 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj": {}
+    "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj": {}
   },
   "projects": {
-    "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj": {
+    "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj",
         "projectName": "DowntimeSystem",
-        "projectPath": "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj",
-        "packagesPath": "C:\\Users\\1382919\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\DowntimeSystem\\obj\\",
+        "projectPath": "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\DowntimeSystem\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\1382919\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -103,12 +103,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[3.1.25, 3.1.25]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -117,26 +111,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj": {
+    "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj",
         "projectName": "Escalation Mail",
-        "projectPath": "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj",
-        "packagesPath": "C:\\Users\\1382919\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\Escalation Mail\\obj\\",
+        "projectPath": "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\Escalation Mail\\Escalation Mail.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\Escalation Mail\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\1382919\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -149,8 +143,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj": {
-                "projectPath": "C:\\Users\\1382919\\source\\repos\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj"
+              "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\Documents\\GitHub\\DowntimeSystem\\DowntimeSystem\\DowntimeSystem.csproj"
               }
             }
           }
@@ -188,18 +182,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[3.1.25, 3.1.25]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
