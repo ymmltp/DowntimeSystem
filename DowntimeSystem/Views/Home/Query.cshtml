@@ -252,13 +252,13 @@
                     <label for="ca-labor" class="form-label text-right">Labor:</label>
                     <input type='number' step="1" class="form-control raca" id='ca-labor' value="1" title="1" />
                 </div>
-                <div class="col-lg-3">
+                @*<div class="col-lg-3">
                     <label class="form-label text-right warning-text">Calculate Downtime:</label>
                     <div class="radio-group">
                         <label style="font-weight:600"><input type='radio' name="caldowntime" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
                     </div>
-                </div>
+                </div>*@
                 <div class="col-lg-3">
                     <label class="form-label text-right warning-text">Sparepart Change:</label>
                     <div class="radio-group">
@@ -279,17 +279,17 @@
                         <input type='text' class="form-control" id='ca-downtime' readonly />
                     </div>
                     <div class="col-lg-6 ">
-                        <label for="ca-responsetime" class="form-label text-right">Attend Time [HH:mm:ss]:</label>
+                        <label for="ca-responsetime" class="form-label text-right">DownTime [HH:mm:ss]:</label>
                         <input type='text' class="form-control" id='ca-responsetime' readonly />
                     </div>
                     <div class="col-lg-6  ">
                         <label for="ca-finishtime" class="form-label text-right warning-text">End Time:</label>
                         <input type='text' class="form-control" id='ca-finishtime' readonly />
                     </div>
-                    <div class="col-lg-6  ">
+                    @*<div class="col-lg-6  ">
                         <label for="ca-tmdur" class="form-label text-right">Repair Time [HH:mm:ss]:</label>
                         <input type='text' class="form-control" id='ca-tmdur' readonly />
-                    </div>
+                    </div>*@
                 </fieldset>
                 @*downtime相关*@
                 <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
@@ -861,8 +861,8 @@
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
 
-        $("#ca-responsetime").val((parseInt((new Date(row['repairtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
-        $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间
+        $("#ca-responsetime").val((parseInt((new Date(row['finishtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
+       /* $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间*/
 
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);

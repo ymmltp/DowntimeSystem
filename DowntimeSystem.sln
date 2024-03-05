@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escalation Mail", "Escalati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Weekly FACA Alarm", "Weekly FACA Alarm\Weekly FACA Alarm.csproj", "{BB291CE1-D940-4D6F-8D40-3F9683724B98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fdsfs", "fdsfs\fdsfs.csproj", "{BF95F351-9EDC-424D-A545-EBFD15374FA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BB291CE1-D940-4D6F-8D40-3F9683724B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB291CE1-D940-4D6F-8D40-3F9683724B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB291CE1-D940-4D6F-8D40-3F9683724B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF95F351-9EDC-424D-A545-EBFD15374FA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF95F351-9EDC-424D-A545-EBFD15374FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF95F351-9EDC-424D-A545-EBFD15374FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF95F351-9EDC-424D-A545-EBFD15374FA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
