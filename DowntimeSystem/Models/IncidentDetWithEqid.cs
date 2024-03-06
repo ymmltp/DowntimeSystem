@@ -5,17 +5,17 @@ using System.Collections.Generic;
 
 namespace DowntimeSystem.Models
 {
-    public partial class IncidentDet
+    public partial class IncidentDetWithEqid
     {
-        public int Id { get; set; }
-        public DateTime Ctime { get; set; }
+        public int? Id { get; set; }
+        public DateTime? Ctime { get; set; }
         public string Comefrom { get; set; }
         public string Alarmtype { get; set; }
         public string Project { get; set; }
         public string Line { get; set; }
         public string Station { get; set; }
         public short? Urgentlevel { get; set; }
-        public DateTime Occurtime { get; set; }
+        public DateTime? Occurtime { get; set; }
         public DateTime? Finishtime { get; set; }
         public bool? Calcdowntime { get; set; }
         public int? Downtime { get; set; }
@@ -32,8 +32,8 @@ namespace DowntimeSystem.Models
         public string Actionremark { get; set; }
         public string Creator { get; set; }
         public DateTime? Repairtime { get; set; }
-        public string Machine { get; set; }
         public double? Pieces { get; set; }
         public double? Frequency { get; set; }
+        public string Machine { get; set; }
     }
 }
