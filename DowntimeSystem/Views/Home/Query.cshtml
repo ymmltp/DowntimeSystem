@@ -686,8 +686,8 @@
                 valign: 'middle',
                 formatter: function (value, row, index) {
                     if (row['incidentstatus'] == 0) {
-                        return ['<button type="button" class="btn bad text-light" id="start">Attendance</button>']
-                    } else if (row['incidentstatus'] == 1) {
+                    //    return ['<button type="button" class="btn bad text-light" id="start">Attendance</button>']
+                    //} else if (row['incidentstatus'] == 1) {
                         return ['<button type="button" class="btn warning text-light" id="close">Close</button>']
                     } else if (row['incidentstatus'] == 2 && row['actionstatus'] == 2) {
                         return ['<button type="button" class="btn primary text-light" id="edit">RC/CA</button>']
