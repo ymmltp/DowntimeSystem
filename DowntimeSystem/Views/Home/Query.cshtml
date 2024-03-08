@@ -246,19 +246,19 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-employee" class="form-label text-right warning-text">Employee ID:</label>
-                    <input type='text' class="form-control raca noNull" id='ca-employee' noNull="Employee ID"/>
+                    <input type='text' class="form-control raca noNull" id='ca-employee' noNull="Employee ID" />
                 </div>
                 <div class="col-lg-3">
                     <label for="ca-labor" class="form-label text-right">Labor:</label>
                     <input type='number' step="1" class="form-control raca" id='ca-labor' value="1" title="1" />
                 </div>
-                @*<div class="col-lg-3">
-                    <label class="form-label text-right warning-text">Calculate Downtime:</label>
-                    <div class="radio-group">
-                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
+                <div class="col-lg-3 elehide">
+                        <label class="form-label text-right warning-text">Calculate Downtime:</label>
+                        <div class="radio-group">
+                            <label style="font-weight:600"><input type='radio' name="caldowntime" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
+                        </div>
                     </div>
-                </div>*@
                 <div class="col-lg-3">
                     <label class="form-label text-right warning-text">Sparepart Change:</label>
                     <div class="radio-group">
@@ -287,9 +287,9 @@
                         <input type='text' class="form-control" id='ca-finishtime' readonly />
                     </div>
                     @*<div class="col-lg-6  ">
-                        <label for="ca-tmdur" class="form-label text-right">Repair Time [HH:mm:ss]:</label>
-                        <input type='text' class="form-control" id='ca-tmdur' readonly />
-                    </div>*@
+                            <label for="ca-tmdur" class="form-label text-right">Repair Time [HH:mm:ss]:</label>
+                            <input type='text' class="form-control" id='ca-tmdur' readonly />
+                        </div>*@
                 </fieldset>
                 @*downtime相关*@
                 <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
@@ -400,6 +400,46 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="RCCAConfirmModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-downtimeid="1">
+    <div class="modal-dialog" role="document" style="width: 50%;min-width:150px">
+        <div class="modal-content" @*style="background-color: #62a58a; color: white"*@>
+            <div class="modal-header" style="background-color: #3e9472; color: white">
+                <h5 class="modal-title" id="RCA-title" style="text-wrap:normal">再次确认RCCA</h5>
+            </div>
+            <div class="modal-body row">
+                <div class="col-lg-12">
+                    <label id="confirmtitle" class="form-label text-right"></label>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type='radio'  name="btn-confirm" value="0" id="cbtn0" />
+                            <label for="cbtn0"  class="form-label">我确认我填写的内容就是停机的根本原因，并对填写的内容负责</label>
+                        </div>
+                        <div class="col-lg-12">
+                            <input type='radio'  name="btn-confirm" value="1" id="cbtn1" />
+                            <label for="cbtn1"  class="form-label">我并不清楚根本原因是什么，我需要我的leader协助填写 </label>
+                        </div>
+                        <div class="col-lg-12">
+                            <input type='radio' name="btn-confirm" value="2" id="cbtn2" />
+                            <label for="cbtn2"  class="form-label">我需要重新更新填写的根本原因和对策 </label>
+                        </div>
+                    </div>
+                </div>    
+                <div class="col-lg-6 elehide reRCCA">
+                    <label for="confirm-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                    <textarea class="form-control reRCCA noNull" id='confirm-rootcause' rows="6" noNull="Root Cause"></textarea>
+                </div>
+                <div class="col-lg-6 elehide reRCCA">
+                    <label for="confirm-action" class="form-label text-right warning-text">Corrective Action:</label>
+                    <textarea class="form-control reRCCA noNull" id='confirm-action' rows="6" noNull="Corrective Action"></textarea>
+                </div>
+            </div>          
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SubmitConfirmbtn" onclick="SubmitConfirm()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script src="~/lib/bootstrap/dist/js/select2.full.min.js" type="text/javascript"></script>
 <script src="~/js/customer.js"></script>
@@ -686,8 +726,8 @@
                 valign: 'middle',
                 formatter: function (value, row, index) {
                     if (row['incidentstatus'] == 0) {
-                    //    return ['<button type="button" class="btn bad text-light" id="start">Attendance</button>']
-                    //} else if (row['incidentstatus'] == 1) {
+                        //    return ['<button type="button" class="btn bad text-light" id="start">Attendance</button>']
+                        //} else if (row['incidentstatus'] == 1) {
                         return ['<button type="button" class="btn warning text-light" id="close">Close</button>']
                     } else if (row['incidentstatus'] == 2 && row['actionstatus'] == 2) {
                         return ['<button type="button" class="btn primary text-light" id="edit">RC/CA</button>']
@@ -744,6 +784,7 @@
                     },
                     "click #edit": function (e, value, row, index) {
                         ShowCARA(row);
+                        $("#RCCAConfirmModal").attr("data-downtimeid", row.id);
                     },
                     "click #view": function (e, value, row, index) {
                         ViewDowntimeInfo(row);
@@ -862,7 +903,7 @@
         $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
 
         $("#ca-responsetime").val((parseInt((new Date(row['finishtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
-       /* $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间*/
+        /* $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间*/
 
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);
@@ -916,7 +957,7 @@
             $("#sparepart_table").bootstrapTable('destroy').bootstrapTable({
                 data: sparepartList,
                 dataType: 'json',
-                width:'100%',
+                width: '100%',
                 columns: [{
                     field: 'pn',
                     title: 'PN',
@@ -926,21 +967,21 @@
                 }, {
                     field: 'qty',
                     title: 'QTY',
-                    }, {
-                        field: 'operation',
-                        title: '操作',
-                        formatter: function (value, row, index) {
-                            return ['<button type="button" class="btn bad text-light" id="delete"><i class="fa fa-trash"></i></button>']
-                        },
-                        events: {
-                            "click #delete": function (e, value, row, index) {
-                                if (confirm("确定删除这个 Sparepart 更换记录")) {
-                                    sparepartList.splice(index, 1);
-                                    $("#sparepart_table").bootstrapTable("refreshOptions", { data: sparepartList });
-                                }
+                }, {
+                    field: 'operation',
+                    title: '操作',
+                    formatter: function (value, row, index) {
+                        return ['<button type="button" class="btn bad text-light" id="delete"><i class="fa fa-trash"></i></button>']
+                    },
+                    events: {
+                        "click #delete": function (e, value, row, index) {
+                            if (confirm("确定删除这个 Sparepart 更换记录")) {
+                                sparepartList.splice(index, 1);
+                                $("#sparepart_table").bootstrapTable("refreshOptions", { data: sparepartList });
                             }
                         }
-                    }]
+                    }
+                }]
             });
         }
     })
@@ -963,13 +1004,13 @@
                 showWarning("请修改Employee ID (不可填Auto)");
                 $("#ca-employee").focus();
                 return;
-            } else if (!/^[Ww]/.test($("#ca-employee").val())){
+            } else if (!/^[Ww]/.test($("#ca-employee").val())) {
                 showWarning("请输入正确的工号，以‘W’开头");
                 $("#ca-employee").focus();
                 return;
             }
             //判断 sparepart 是否需要填写 且已经填写
-            if ($("input[name='sparepartchange']:checked").val() == 'true' ) {
+            if ($("input[name='sparepartchange']:checked").val() == 'true') {
                 if (sparepartList.length <= 0) {
                     showWarning("请填写备件更换记录再提交");
                     return;
@@ -1043,6 +1084,8 @@
                     $("#CAModal").modal('hide');
                     showSuccess("完成!");
                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
+                    ShowRCCAConfirmModal()
+                    $("#RCA-title").html("为什么" + $("#ca-rootcause").val());
                 })
                 .catch(err => {
                     showWarning(err);
@@ -1052,17 +1095,17 @@
     })
 
     //选择EQID后，显示该EQID的PM信息
-    $("#ca-machine").on('change', function() {
+    $("#ca-machine").on('change', function () {
         // 在选择完成后触发的方法
         console.log('选项已更改');
         $("#ca-machine").val()
         getData("/PMMS/GetEQPM_Info", { eqid: $("#ca-machine").val() })
             .then(res => {
-                if (res.length>0) {
-                    showInfo_long(res[0]["eqid"] + "<br>上次点检时间: " + res[0]["lastConfirmDate"].replace("T", " ") + "<br>下次点检时间：" + res[0]["nextConfirmDate"].replace("T", " ") );
+                if (res.length > 0) {
+                    showInfo_long(res[0]["eqid"] + "<br>上次点检时间: " + res[0]["lastConfirmDate"].replace("T", " ") + "<br>下次点检时间：" + res[0]["nextConfirmDate"].replace("T", " "));
                 }
             })
-      
+
     });
 
     //查看downtime信息
@@ -1109,14 +1152,14 @@
     }
     //展示Sparepart记录；不管有没有都要显示
     function ViewSparepartList(row) {
-        getData( 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqSparepartChangeHistory',
-             {
+        getData('http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqSparepartChangeHistory',
+            {
                 cfrom: "Downtime",
                 linkid: row['id'],
             })
             .then(res => {
                 $("#sparepart_view_table").bootstrapTable('destroy').bootstrapTable({
-                    data:res,
+                    data: res,
                     dataType: 'json',
                     width: '100%',
                     columns: [{
@@ -1443,5 +1486,40 @@
             ]
         };
         percentchart.setOption(option);
+    }
+
+
+    //why
+    function ShowRCCAConfirmModal() {
+        $(':radio[name=btn-confirm]').prop('checked', false);
+        $("#cbtn2").prop('checked', true).trigger('click');;
+        $("#confirm-rootcause").val("");
+        $("#confirm-action").val("");
+        $("#RCCAConfirmModal").modal("show");
+    }
+    $(":radio[name=btn-confirm]").on("click", function () {
+        if  ($(this).val()== "2") {
+            $(".reRCCA").removeClass("elehide");
+        } else {
+            $(".reRCCA").addClass("elehide");
+        }
+    })
+    function SubmitConfirm() {
+      if(checkFormNoNull("#RCCAConfirmModal")){
+          let item = {
+            downtimeid: Number($("#RCCAConfirmModal").attr("data-downtimeid")),
+            status: Number($(":radio[name=btn-confirm]:checked").val()),
+            rootcause: $("#confirm-rootcause").hasClass("elehide") ? null : $("#confirm-rootcause").val(),
+            correctaction: $("#confirm-action").hasClass("elehide") ? null : $("#confirm-action").val(),
+        }
+          postDatatoAPI("http://cnwuxg0te01:9000/api/DowntimeRCCAConfirm/Add", item)  ////http://localhost:19292
+            .then(res => {
+                showSuccess("OK");
+                $("#RCCAConfirmModal").modal("hide");
+            })
+            .catch(err => {
+                showError(err);
+            })
+        }
     }
 </script>

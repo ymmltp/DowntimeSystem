@@ -190,7 +190,6 @@ function postDataWithArray(url, para) {
         });
     });
 }
-
 function deleteData(url, para) {
     return new Promise(function (resolve, reject) {
         $.ajax({
@@ -343,8 +342,7 @@ function GetParms(name) {
 
 function checkFormNoNull(parentid) {
     var flag = true;
-
-    $( parentid+" .noNull").each(function () {
+    $(parentid + " .noNull").not('.elehide').each(function () {
         var name = $(this).attr("name");
         if ($(this).attr("type") == "radio") {
             if ($('input[name="' + name + '"]:checked').length < 1) {
@@ -724,5 +722,120 @@ function GetAllPN(obj, category, subcategory) {
             showWarning(err.responseText);
         }
     })
+}
+//#endregion
+
+
+//#region 自动清空模态框内的input内容  不执行
+document.addEventListener('hidden.bs.modal', function (event) {
+    // 获取触发事件的模态框
+    var modal = event.target;
+    if (modal.classList.contains('modal')) {
+        // 清空模态框内部所有输入框的值
+        var inputs = modal.querySelectorAll('input');
+        inputs.forEach(function (input) {
+            input.value = '';
+        });
+        var textarea = modal.querySelectorAll('textarea');
+        textarea.forEach(function (i) {
+            i.value = '';
+        });
+    }
+});
+//#endregion
+
+//#region
+//异步ajax
+function getDataFromAPI(url, para = null) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            data: para,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            },
+            type: "GET",
+            dataType: "json",
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    resolve(data);
+                }
+                else {
+                    reject(xhr.statusText);
+                }
+            },
+            fail: function (err, status, xhr) {
+                reject(err.responseTextr);
+            },
+            error: function (err, status, xhr) {
+                reject(err.responseText);
+            }
+        });
+    });
+}
+function postDatatoAPI(url, para) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            },
+            data: JSON.stringify(para),
+            success(data, status, xhr) {
+                resolve({ data: data, status: status, xhr: xhr });
+            },
+            fail(err, status, xhr) {
+                reject(err.responseText);
+            },
+            error: function (xhr, status, error) {
+                reject(xhr.responseText);
+            }
+        });
+    });
+}
+function deleteDatatoAPI(url, para = null) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            type: "delete",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            },
+            data: para,
+            success(data, status, xhr) {
+                resolve({ data: data, status: status, xhr: xhr });
+            },
+            fail(err, status, xhr) {
+                reject({ err: err, status: status, xhr: xhr });
+            },
+            error: function (e) {
+                reject(e.responseText);
+            }
+        });
+    });
+}
+//put 类型不被认可
+function putDatatoAPI(url, para = null) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            type: "put",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            },
+            data: para,
+            success(data, status, xhr) {
+                resolve({ data: data, status: status, xhr: xhr });
+            },
+            fail(err, status, xhr) {
+                reject({ err: err, status: status, xhr: xhr });
+            },
+            error: function (e) {
+                reject(e.responseText);
+            }
+        });
+    });
 }
 //#endregion
