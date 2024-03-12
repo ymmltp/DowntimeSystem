@@ -234,31 +234,16 @@ function getDepartment(obj) {
         }
     })
 }
-function getLine(obj,project) {
-    $.ajax({
-        url: '/EC/GetLine',
-        method: 'GET',
-        data: {
-            Project: project ? project[0] : null,
-        },
-        dataType: 'json',
-        success: function (data) {
+function getLine(obj, project) {
+    getDataWithArray('/EC/GetLine', { projectList: project })
+        .then(data => {
             var option = "";
             for (var i = 0; i < data.length; i++) {
                 option += '<option value="' + data[i] + '">' + data[i] + '</option>';
             }
             obj.html(option);
             obj.selectpicker('refresh');
-        },
-        fail: function (err) {
-            console.log(err);
-            showWarning(err.statusText);
-        },
-        error: function (err) {
-            console.log(err);
-            showWarning(err.statusText);
-        }
-    })
+        })
 }
 function getProject(obj,line) {
     $.ajax({

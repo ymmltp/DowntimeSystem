@@ -8,24 +8,24 @@
             <div class="row">
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2" style="display:none">
                     <label class="form-label"> System:</label>
-                    <select id="system-select" class="form-control selectpicker" title="Select System" data-size="6" multiple data-max-options="1">
+                    <select id="system-select" class="form-control selectpicker" title="Select System" data-size="6" multiple  data-none-selected-text="All" data-actions-box="true">
                     </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Department:</label>
-                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-live-search="true"  data-none-selected-text="All" data-actions-box="true"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Project:</label>
-                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" onchange="getLine($('#line-select'),$('#project-select').val()); getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val())"> </select>
+                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple  data-live-search="true"  data-none-selected-text="All" data-actions-box="true" onchange="getLine($('#line-select'),$('#project-select').val()); getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val())"> </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Line:</label>
-                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true" onchange=" getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val());"></select>
+                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple  data-none-selected-text="All" data-actions-box="true"  data-live-search="true" onchange=" getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val());"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Station:</label>
-                    <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple  data-none-selected-text="All" data-actions-box="true"  data-live-search="true"></select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
                     <label class="form-label"> Time Range:</label>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Ticket Status:</label>
-                    <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1">
+                    <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1"  data-none-selected-text="All" >
                         <option value="0">New Open</option>
                         <option value="1">On-going</option>
                         <option value="2">Closed</option>
@@ -526,15 +526,18 @@
             url: '/EC/GetDowntimeList',
             queryParams: {
                 id: $("#id").val(),
-                Department: $("#department-select").val()[0],
-                Project: $("#project-select").val()[0],
-                Line: $("#line-select").val()[0],
-                Station: $("#station-select").val()[0],
-                Incidentstatus: $("#status-select").val()[0],
-                comefrom: $("#system-select").val()[0],
+                Department: $("#department-select").val(),
+                Project: $("#project-select").val(),
+                Line: $("#line-select").val(),
+                Station: $("#station-select").val(),
+                Incidentstatus: $("#status-select").val(),
+                comefrom: $("#system-select").val(),
                 starttime: $("#start").val() ? $("#start").val() + " 00:00:00" : null,
                 endtime: $("#end").val() ? $("#end").val() + " 23:59:59" : null,
                 Respperson: $("#responser").val(),
+            },
+            ajaxOptions: {                      //传参ajax设置
+                traditional: true,              //允许传递数组类型的参数
             },
             search: true,                       //开启搜索框
             visibleSearch: true,

@@ -13,53 +13,24 @@ namespace DowntimeSystem.Controllers
         private iccojabilContext _epdb = new iccojabilContext();
         #region 查询EC表单
         [HttpGet]
-        public IActionResult GetDowntimeList(IncidentDet tmp,string starttime ,string endtime)
+        public IActionResult GetDowntimeList(DowntimeQueryInput tmp)
         {
             try {
                 using (ECContext db = new ECContext())
                 {
                     var where = db.IncidentDets.Where(e => e.Calcdowntime == true); 
-                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
-                    if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
-                    if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
-                    if (!string.IsNullOrEmpty(tmp.Station)) where = where.Where(e => e.Station.Equals(tmp.Station));
-                    if (!string.IsNullOrEmpty(tmp.Comefrom)) where = where.Where(e => e.Comefrom.Equals(tmp.Comefrom));
+                    if (tmp.Project!=null && tmp.Project.Length>0) where = where.Where(e => tmp.Project.Contains(e.Project));
+                    if (tmp.Department != null && tmp.Department.Length > 0) where = where.Where(e => tmp.Department.Contains(e.Department));
+                    if (tmp.Line != null && tmp.Line.Length > 0) where = where.Where(e => tmp.Line.Contains(e.Line));
+                    if (tmp.Station != null && tmp.Station.Length > 0) where = where.Where(e => tmp.Station.Contains(e.Station));
+                    if (tmp.Comefrom != null && tmp.Comefrom.Length > 0) where = where.Where(e => tmp.Comefrom.Contains(e.Comefrom));
                     if (tmp.Id!=0) where = where.Where(e => e.Id.Equals(tmp.Id));
                     if (!string.IsNullOrEmpty(tmp.Respperson)) where = where.Where(e => e.Respperson.Equals(tmp.Respperson));
-                    if (!string.IsNullOrEmpty(starttime)) where = where.Where(e => e.Occurtime >= Convert.ToDateTime(starttime));
-                    if (!string.IsNullOrEmpty(endtime)) where = where.Where(e => e.Occurtime <= Convert.ToDateTime(endtime));
-                    if (!string.IsNullOrEmpty(tmp.Incidentstatus.ToString())) where = where.Where(e => e.Incidentstatus.Equals(tmp.Incidentstatus));
-                    if (!string.IsNullOrEmpty(tmp.Actionstatus.ToString())) where = where.Where(e => e.Actionstatus.Equals(tmp.Actionstatus));
+                    if (tmp.starttime>DateTime.MinValue) where = where.Where(e => e.Occurtime >= Convert.ToDateTime(tmp.starttime));
+                    if (tmp.endtime > DateTime.MinValue) where = where.Where(e => e.Occurtime <= Convert.ToDateTime(tmp.endtime));
+                    if (tmp.Incidentstatus!=null) where = where.Where(e => e.Incidentstatus.Equals(tmp.Incidentstatus.Value));
+                    if (tmp.Actionstatus!=null) where = where.Where(e => e.Actionstatus.Equals(tmp.Actionstatus.Value));
                     var items = where.ToList();
-    //                var result = items.Join(_epdb.EmpViewForTes, dt => dt.Respperson, ep => ep.Empid, (dt, ep) => new IncidentDet
-    //                {
-    //                    Id=dt.Id,
-    //                    Ctime = dt.Ctime,
-    //                    Comefrom = dt.Comefrom,
-    //                    Alarmtype = dt.Alarmtype,
-    //                    Project = dt.Project,
-    //                    Line = dt.Line,
-    //                    Station = dt.Station,
-    //                    Urgentlevel = dt.Urgentlevel,
-    //                    Occurtime = dt.Occurtime,
-    //                    Finishtime = dt.Finishtime,
-    //                    Calcdowntime = dt.Calcdowntime,
-    //                    Downtime = dt.Downtime,
-    //                    Labor = dt.Labor,
-    //                    Incidentstatus = dt.Incidentstatus,
-    //                    Department = dt.Department,
-    //                    Respperson = ep.ChineseName,
-    //                    Actionstatus = dt.Actionstatus,
-    //                    Issue = dt.Issue,
-    //                    Issueremark = dt.Issueremark,
-    //                    Rootcause = dt.Rootcause,
-    //                    Rootcauseremark = dt.Rootcauseremark,
-    //                    Action = dt.Action,
-    //                    Actionremark = dt.Actionremark,
-    //                    Creator = dt.Creator,
-    //                    Repairtime = dt.Repairtime,
-    //                    Machine = dt.Machine
-    //});
                     return Json(items.OrderBy(e => e.Incidentstatus).OrderBy(e=>e.Actionstatus).ToList()) ;
                 }
             }
@@ -110,7 +81,7 @@ namespace DowntimeSystem.Controllers
                 using (ECContext db = new ECContext())
                 {
                     var where = db.IncidentDets.Where(e => e.Calcdowntime == true);
-                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
+                    if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e =>  e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
                     if (projectList.Length > 0) where = where.Where(e => projectList.Contains(e.Project));
