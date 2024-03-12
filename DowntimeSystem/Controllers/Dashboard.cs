@@ -1038,8 +1038,8 @@ namespace DowntimeSystem.Controllers
                     if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
                     var items = where.ToList().GroupBy(e => e.Respperson).Select(g => new
                     {
-                        value = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Repairtime)).TotalMinutes) / g.Count(), 2),
-                        totalValue = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Repairtime)).TotalMinutes), 2),
+                        value = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Occurtime)).TotalMinutes) / g.Count(), 2),
+                        totalValue = Math.Round(g.Sum(e => (Convert.ToDateTime(e.Finishtime) - Convert.ToDateTime(e.Occurtime)).TotalMinutes), 2),
                         count = g.Count(),
                         item = g.Key,
                     }).OrderByDescending(e => e.count).ToList();
