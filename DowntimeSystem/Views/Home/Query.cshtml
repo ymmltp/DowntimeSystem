@@ -543,6 +543,9 @@
             visibleSearch: true,
             showSearchButton: false,
             showColumns: true,
+            sortable: true,                     //是否启用排序
+            sortName: 'finishtime',
+            sortOrder: "desc",
             dataType: 'json',
             pagination: true,
             paginationLoop: false,
@@ -659,11 +662,13 @@
                 title: 'Finish Time',
                 align: 'center',
                 valign: 'middle',
+                
                 formatter: function (value, row, index) {
                     if (value)
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     else
                         return value;
+                   
                 },
             }, {
                 field: 'calcdowntime',
@@ -779,8 +784,11 @@
                                 error: function (err) {
                                     showWarning(err.responseText);
                                 },
+
                                 complete: function (res) {
+                                   
                                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
+                                    
                                 }
                             })
                         }
