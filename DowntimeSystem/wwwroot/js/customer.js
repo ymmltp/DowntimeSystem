@@ -212,10 +212,12 @@ function deleteData(url, para) {
 
 //查询及一些基础ajax方法
 function getDepartment(obj) {
-    $.ajax({
+    
+    $.ajax({       
         url: '/EC/GetDepartment',
         method: 'GET',
         dataType: 'json',
+        contentType:'json',
         success: function (data) {
             var option = "";
             for (var i = 0; i < data.length; i++) {
@@ -310,6 +312,33 @@ function getDashboardSystem(obj) {
         }
     })
 }
+
+function getDepartment1(obj) {
+
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetDepartment_FromMatrix',
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'json',
+        success: function (data) {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].paras + '">' + data[i].paras + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        }
+    })
+}
+
 
 //获取URL中的参数内容
 function GetParms(name) {

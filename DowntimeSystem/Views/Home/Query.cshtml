@@ -111,7 +111,7 @@
             <div class="modal-body row">
                 <div class="col-lg-6">
                     <label for="cr-department" class="form-label text-right warning-text">Department:</label>
-                    <input type='text' class="form-control need create-input" data-remark="部门" id='cr-department' placeholder="---例 : ME---" />
+                    <select id="cr-department" class="form-control selectpicker create-input" title="Select Department" data-size="6"  data-live-search="true" data-none-selected-text="All" data-actions-box="true"></select>
                 </div>
                 <div class="col-lg-6">
                     <label for="cr-line" class="form-label text-right warning-text">Line:</label>
@@ -1200,6 +1200,8 @@
 
     //创建DowntimeIncidence
     $("#new").on('click', function () {
+        getDepartment1($("#cr-department"));
+        
         $(".create-input").val("");
         $("#createDT").datetimepicker({
             fontAwesome: 'font-awesome',
