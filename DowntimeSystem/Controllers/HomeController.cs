@@ -23,6 +23,13 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
+        public IActionResult Task_CreateIncident()
+        {
+            return View();
+        }
+
+
+
 
         public IActionResult QEQSparepartChangeHistory()
         {

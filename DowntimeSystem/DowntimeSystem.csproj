@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Shared\_Layout.cshtml~RF138abee1.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="3.1.26" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.30" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />

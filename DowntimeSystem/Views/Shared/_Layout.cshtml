@@ -127,7 +127,14 @@
                             <li> <a class="nav-link text-light" target="_blank" href="https://app.powerbi.com/groups/45ccaeb7-8d5d-4ee3-890c-3a17bef4fdcd/reports/150c8900-a76e-432b-8489-66d750e2a0fc/ReportSectiona79c260286ef0540d244?experience=power-bi" title="Downtime Weekly Report"><i class="fa fa-dashboard"></i>Downtime Weekly Report</a></li>
                         </ul>
                     </li>
-                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Downtime"><i class="fa fa-cogs"></i>Update Downtime</a></li>
+                    <li class="sub-menu">
+                        <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>Task</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Update Downtime"><i class="fa fa-cogs"></i>Update Downtime</a></li>
+                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Task_CreateIncident" title="Create Downtime"><i class="fa fa-cogs"></i>Create Downtime Incident</a></li>
+                        </ul>
+                    </li>
+            
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="IssueSummary" title="Action Step Maintains"><i class="fa fa-handshake-o"></i>Action Step Maintains</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Manage_Resource_EQID_PN" title="Spare part"><i class="fa fa-cogs"></i>Resource & EQID & PN</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="QEQSparepartChangeHistory" title="Sparepart Change"><i class="fa fa-table "></i>Sparepart Change</a></li>

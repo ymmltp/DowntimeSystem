@@ -1,0 +1,57 @@
+﻿@page
+@model DowntimeSystem.Views.Home.Task_CreateIncidentModel
+@{
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 left-content" style="border-right:solid gray 2px">
+            <div class="col-lg-12" style="border-bottom: solid gray 2px; padding: 5px 0px;">
+                <label class="form-label">Create Incident</label>
+                <form>
+                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                        <label class="form-label"> Department:</label>
+                        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                        <label class="form-label"> Project:</label>
+                        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                        <label class="form-label"> Line:</label>
+                        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                        <label class="form-label"> Station:</label>
+                        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                        <label class="form-label"> Machine:</label>
+                        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                        <label class="form-label warning-text"> 创建人:</label>
+                        <input type='text' class="form-control need" data-remark="创建人" id='cr-creator' placeholder="---例 : W1234---" />
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label"> Issue:</label>
+                        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-12 row" style="margin-top: 10px;">
+                        <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-success" onclick="CreateIncidence()">Submit</button></div>
+                        <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-primary" onclick="CreateFastList()">Add Fast List</button></div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-12">
+                <div class="fast-incident-list">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 right-content">
+            <div class="item-table">
+            </div>
+        </div>
+    </div>
+</div>
