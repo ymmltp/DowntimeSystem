@@ -1,56 +1,4 @@
-﻿//#region datetimepicker 设定
-function iniDatetimepicker() {
-    $(".form_datetime").datetimepicker({
-        fontAwesome: 'font-awesome',
-        format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
-        todayBtn: true, //一键选中今天的日期
-        minDate: '2022/01/01',
-        maxDate: 0,//今天
-        pickerPosition: "bottom-left", //打开选择卡的位置
-        weekStart: 1, //周开始的星期：0-6 星期日-星期六
-        autoclose: true,//选好时间后自动关闭
-        startView: 2,
-        maxView: 4,
-        minView: 2,//显示的最小选项卡：0-4 hour,day,month,year,decade
-        //minuteStep: 5,
-        language: 'zh-CN',
-        startDate: new Date("2022-01-01"),
-        endDate: new Date()
-    });
-}
-//#endregion
-//#region 可隐藏的搜索栏
-$("#searchBox").on('click', function () {
-    if ($("#searchBoxMenu").hasClass("elehide")) {
-        $("#searchBoxMenu").removeClass("elehide");
-        $("#searchBox").removeClass("fa-cog");
-        $("#searchBox").addClass("fa-minus-square");
-    }
-    else {
-        $("#searchBoxMenu").addClass("elehide");
-        $("#searchBox").removeClass("fa-minus-square");
-        $("#searchBox").addClass("fa-cog");
-    }
-})
- //#endregion
-
-//正数为后一天，负数为前一天，str为日期间隔符，例如 -,/ 
-function getDay(num, str) {
-    var today = new Date();
-    var nowTime = today.getTime();
-    var ms = 24 * 3600 * 1000 * num;
-    today.setTime(parseInt(nowTime + ms));
-    var oYear = today.getFullYear();
-    var oMoth = (today.getMonth() + 1).toString();
-    if (oMoth.length <= 1)
-        oMoth = '0' + oMoth;
-    var oDay = today.getDate().toString();
-    if (oDay.length <= 1)
-        oDay = '0' + oDay;
-    return oYear + str + oMoth + str + oDay;
-}
-
-
+﻿
 //获取周
 function getWeekList(obj) {
     var currentYear = new Date().getFullYear();
@@ -77,138 +25,6 @@ function getWeekList(obj) {
 
 
 }
-
-//Date->string
-function changeDateFormat(cellval) {
-    if (cellval != null) {
-        var d = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
-        return formatDate(d);
-    } else {
-        return cellval;
-    }
-}
-function formatDateTime(date) {
-    var y = date.getFullYear();
-    var m = date.getMonth() + 1;
-    m = m < 10 ? ('0' + m) : m;
-    var d = date.getDate();
-    d = d < 10 ? ('0' + d) : d;
-    var h = date.getHours();
-    var minute = date.getMinutes();
-    minute = minute < 10 ? ('0' + minute) : minute;
-    var second = date.getSeconds();
-    second = second < 10 ? ('0' + second) : second;
-    return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
-}
-function formatDate(date) {
-    var y = date.getFullYear();
-    var m = date.getMonth() + 1;
-    m = m < 10 ? ('0' + m) : m;
-    var d = date.getDate();
-    d = d < 10 ? ('0' + d) : d;
-    return y + '-' + m + '-' + d;
-}
-
-function getData(url, para = null) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            data: para,
-            type: "GET",
-            dataType: "json",
-            success: function (data, status, xhr) {
-                if (xhr.status === 200) {
-                    resolve(data);
-                }
-                else {
-                    reject(xhr.statusText);
-                }
-            },
-            fail: function (err, status, xhr) {
-                reject(err.responseTextr);
-            },
-            error: function (err, status, xhr) {
-                reject(err.responseText);
-            }
-        });
-    });
-}
-function getDataWithArray(url, para = null) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            data: para,
-            type: "GET",
-            traditional: true,
-            dataType: "json",
-            success: function (data, status, xhr) {
-                resolve(data);
-            },
-            fail: function (err, status, xhr) {
-                reject({ err: err, status: status, xhr: xhr });
-            },
-            error: function (e) {
-                reject(e.responseText);
-            }
-        });
-    });
-}
-function postData(url, para) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            type: "POST",
-            data:para,
-            success(data, status, xhr) {
-                resolve({ data: data, status: status, xhr: xhr });
-            },
-            fail(err, status, xhr) {
-                reject(err.responseTextr);
-            },
-            error: function (err) {
-                reject(err.responseText);
-            }
-        });
-    });
-}
-function postDataWithArray(url, para) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify(para),
-            success(data, status, xhr) {
-                resolve({ data: data, status: status, xhr: xhr });
-            },
-            fail(err, status, xhr) {
-                reject(err.responseTextr);
-            },
-            error: function (err) {
-                reject(err.responseText);
-            }
-        });
-    });
-}
-function deleteData(url, para) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            type: "Delete",
-            data: para,
-            success(data, status, xhr) {
-                resolve({ data: data, status: status, xhr: xhr });
-            },
-            fail(err, status, xhr) {
-                reject(err.responseTextr);
-            },
-            error: function (err) {
-                reject(err.responseText);
-            }
-        });
-    });
-}
-
 
 //查询及一些基础ajax方法
 function getDepartment(obj) {
@@ -311,74 +127,9 @@ function getDashboardSystem(obj) {
     })
 }
 
-//获取URL中的参数内容
-function GetParms(name) {
-    var url = decodeURI(window.location.href);
-    var index = url.indexOf('?');
-    var str = url.substring(index + 1);
-    var arr = str.split('&');
-    var result = {};
-    arr.forEach((item) => {
-        var a = item.split('=');
-        result[a[0]] = a[1];
-    });
-    return result[name];
-}
-
-function checkFormNoNull(parentid) {
-    var flag = true;
-    $(parentid + " .noNull").not('.elehide').each(function () {
-        var name = $(this).attr("name");
-        if ($(this).attr("type") == "radio") {
-            if ($('input[name="' + name + '"]:checked').length < 1) {
-                showWarning($(this).attr('noNull') + "不能为空!");
-                flag = false;
-                return false;
-            }
-        }
-        else if ($(this).attr("type") == "checkbox") {
-            if ($('input[name="' + name + '"]:checked').length < 1) {
-                showWarning($(this).attr('noNull') + "不能为空!");
-                flag = false;
-                return false;
-            }
-        }
-        else if ($(this).val().length == 0) {
-            if ($(this)[0].attributes.length > 1) {
-                showWarning($(this).attr('noNull') + "不能为空!");
-                flag = false;
-                return false;
-            }
-        }
-    });
-    return flag;
-}
-
-
-function showWarning(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-danger').show().delay(1500).fadeOut();
-}
-function showInfo(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-info').show().delay(1500).fadeOut();
-}
-function showInfo_long(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-info').show().delay(8000).fadeOut();
-}
-function showSuccess(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-success').show().delay(1500).fadeOut();
-}
-function showError(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-danger').show().delay(1500).fadeOut();
-}
-
 
 /**
- * 合并单元格
+ *合并单元格
  * @param data 原始数据（在服务端完成排序）
  * @param fieldName 合并属性名称
  * @param colspan  合并列
@@ -442,34 +193,6 @@ function mergeCells(data, fieldName, colspan, target) {
 }
 
 
-//获取对应的select的option
-function GetSelectOptions(url,paras,obj,value=null) {
-    $.ajax({
-        url: url,
-        method: 'GET',
-        data: paras,
-        dataType: 'json',
-        traditional: true,
-        success: function (data) {
-            let option = '';
-            for (var i = 0; i < data.length; i++) {
-                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
-            }
-            obj.html(option);
-            if (value != null && value.length >= 0) {
-                obj.val(value);
-            }
-            obj.selectpicker("refresh");
-        },
-        fail: function (err) {
-            showWarning(err.responseText);
-        },
-        error: function (err) {
-            showWarning(err.responseText);
-        }
-    })
-}
-
 
 const _FAC= "WUX-FATP"
 //#region  获取iFactory中的信息
@@ -531,12 +254,10 @@ function GetIFRouteStep(obj, route, fac = _FAC) {
 
 //#region  获取PMMS中的信息
 function GetPMMSDepartment(obj) {
-    //GetSelectOptions('/PMMS/GetDepartment', null, obj);
     GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Department', null, obj);
 
 }
 function GetPMMSProject(obj) {
-    //GetSelectOptions('/PMMS/GetProject', null, obj);
     GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Project', null, obj);
 
 }
@@ -546,7 +267,6 @@ function GetPMMSLine(obj, department, project) {
         project: project ? project.val() : null,
     };
     GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Line', paras, obj);
-    //GetSelectOptions('/PMMS/GetLine', paras, obj);
 }
 function GetPMMSEQType(obj, department, project, line) {
     var paras = {
@@ -554,10 +274,8 @@ function GetPMMSEQType(obj, department, project, line) {
         project: project ? project.val() : null,
         line: line ? line.val() : null,
     };
-    //GetSelectOptions('/PMMS/GetEQType', paras, obj);
     GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Category', paras, obj);
 }
-
 function GetEQID(obj, department, project, line, type, eqid) {
     var paras = {
         department: department ? department.val() : null,
@@ -565,7 +283,6 @@ function GetEQID(obj, department, project, line, type, eqid) {
         line: line ? line.val() : null,
         type: type ? type.val() : null,
     };
-    //GetSelectOptions('/PMMS/getEQID', paras, obj, eqid);
     GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_EQID', paras, obj);
 }
 //#endregion
@@ -601,7 +318,6 @@ function GetPN(obj, category, subcategory) {
     GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartDescription/GetPN_byCategory', paras, obj);
 }
 //#endregion
-
 
 //#region 获取PN AlarmType
 function GetPNAlarmType(obj) {
@@ -710,117 +426,83 @@ function GetAllPN(obj, category, subcategory) {
 }
 //#endregion
 
+//#region 获取eCalling中的信息
+function GeteCallingDepartment(obj) {
+    GetSelectOptions_paras(BasicURL +'/api/eCallingBasic/GetDepartment', null, obj);
+}
+function GeteCallingProject(obj) {
+    GetSelectOptions_paras(BasicURL + '/api/eCallingBasic/GetProject', null, obj);
+}
+function GeteCallingLine(obj, project) {
+    let paras = { project: project };
+    GetSelectOptions_paras(BasicURL + '/api/eCallingBasic/GetLine', paras, obj);
+}
+function GeteCallingStation(obj, project, line) {
+    let paras = {
+        project: project,
+        line:line,
+    };
+    GetSelectOptions_paras(BasicURL + '/api/eCallingBasic/GetStation', paras, obj);
+}
+function GeteCallingMachine(obj,  project, line, station, eqid) {
+    let paras = {
+        project: project,
+        line: line,
+        station:station,
+    };
+    $.ajax({
+        url: BasicURL + '/api/eCallingBasic/GetMachine',
+        method: 'GET',
+        data: paras,
+        dataType: 'json',
+        traditional: true,
+        success: function (data) {
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].resource + '" data-server="' + data[i].server + '" data-vbnumber="' + data[i].vbnumber + '">' + data[i].resource + '</option>';
+            }
+            obj.html(option);
+            if (eqid != null && eqid.length >= 0) {
+                obj.val(eqid);
+            }
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+function GeteCallingErrocCode(obj, department, vbnumber) {
+    var paras = {
+        department: department,
+        vbnumber: vbnumber
+    };
+    $.ajax({
+        url: BasicURL + '/api/eCallingBasic/GetErrorCode',
+        method: 'GET',
+        data: paras,
+        dataType: 'json',
+        traditional: true,
+        success: function (data) {
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].issue + '" data-callissue="' + data[i].callDepartment + ',' + data[i].callIssue + '" data-isdowntime="' + data[i].isdowntime+'">' + data[i].issue + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+//#endregion 
 
-//#region 自动清空模态框内的input内容  不执行
-document.addEventListener('hidden.bs.modal', function (event) {
-    // 获取触发事件的模态框
-    var modal = event.target;
-    if (modal.classList.contains('modal')) {
-        // 清空模态框内部所有输入框的值
-        var inputs = modal.querySelectorAll('input');
-        inputs.forEach(function (input) {
-            input.value = '';
-        });
-        var textarea = modal.querySelectorAll('textarea');
-        textarea.forEach(function (i) {
-            i.value = '';
-        });
-    }
-});
-//#endregion
 
-//#region
-//异步ajax
-function getDataFromAPI(url, para = null) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            data: para,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-            },
-            type: "GET",
-            dataType: "json",
-            success: function (data, status, xhr) {
-                if (xhr.status === 200) {
-                    resolve(data);
-                }
-                else {
-                    reject(xhr.statusText);
-                }
-            },
-            fail: function (err, status, xhr) {
-                reject(err.responseTextr);
-            },
-            error: function (err, status, xhr) {
-                reject(err.responseText);
-            }
-        });
-    });
-}
-function postDatatoAPI(url, para) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            type: "POST",
-            contentType: "application/json",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-            },
-            data: JSON.stringify(para),
-            success(data, status, xhr) {
-                resolve({ data: data, status: status, xhr: xhr });
-            },
-            fail(err, status, xhr) {
-                reject(err.responseText);
-            },
-            error: function (xhr, status, error) {
-                reject(xhr.responseText);
-            }
-        });
-    });
-}
-function deleteDatatoAPI(url, para = null) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            type: "delete",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-            },
-            data: para,
-            success(data, status, xhr) {
-                resolve({ data: data, status: status, xhr: xhr });
-            },
-            fail(err, status, xhr) {
-                reject({ err: err, status: status, xhr: xhr });
-            },
-            error: function (e) {
-                reject(e.responseText);
-            }
-        });
-    });
-}
-//put 类型不被认可
-function putDatatoAPI(url, para = null) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            type: "put",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-            },
-            data: para,
-            success(data, status, xhr) {
-                resolve({ data: data, status: status, xhr: xhr });
-            },
-            fail(err, status, xhr) {
-                reject({ err: err, status: status, xhr: xhr });
-            },
-            error: function (e) {
-                reject(e.responseText);
-            }
-        });
-    });
-}
-//#endregion
+

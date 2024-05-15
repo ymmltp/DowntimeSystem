@@ -18,14 +18,14 @@
     <link href="~/css/alert.css" rel="stylesheet" />
     <link href="~/topicon.ico" rel="shortcut icon" />
     <link href="~/css/customer.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/select2_me.css" rel="stylesheet" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js" type="text/javascript"></script>
-    <link href="~/lib/bootstrap/dist/css/select2_me.css" rel="stylesheet" />
-
+    <script src="~/js/Basic.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -47,7 +47,7 @@
             Number.prototype.Timeformat = function (fmt) {
                 var o = {
                     "h+": parseInt(this / 3600), // 小时
-                    "m+": parseInt(this%3600/60), //分
+                    "m+": parseInt(this % 3600 / 60), //分
                     "s+": parseInt(this % 3600 % 60) //秒
                 };
                 for (var k in o)
