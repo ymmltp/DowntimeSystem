@@ -44,7 +44,10 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
-
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         #region dashboard
         public IActionResult Dashboard()

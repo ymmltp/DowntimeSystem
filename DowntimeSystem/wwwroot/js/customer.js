@@ -236,12 +236,48 @@ function getDepartment(obj) {
         }
     })
 }
+function getDepartment1(obj) {
+
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetDepartment_FromMatrix',
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'json',
+        success: function (data) {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        }
+    })
+}
 function getLine(obj, project) {
     getDataWithArray('/EC/GetLine', { projectList: project })
         .then(data => {
             var option = "";
             for (var i = 0; i < data.length; i++) {
                 option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        })
+}
+function getLine1(obj, project) {
+    getDataWithArray('http://cnwuxg0te01:9000/api/DowntimeBasic/GetLine_FromMatrix', { project: project })
+        .then(data => {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].paras + '">' + data[i].paras + '</option>';
             }
             obj.html(option);
             obj.selectpicker('refresh');
@@ -273,6 +309,30 @@ function getProject(obj,line) {
         }
     })
 }
+function getProject1(obj) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetProject_FromMatrix',
+        method: 'GET',
+       
+        dataType: 'json',
+        success: function (data) {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].paras + '">' + data[i].paras + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        }
+    })
+}
 function getStation(obj, department, project,line) {
     getDataWithArray("/EC/GetStation",
         {
@@ -284,6 +344,38 @@ function getStation(obj, department, project,line) {
             var option = "";
             for (var i = 0; i < data.length; i++) {
                 option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        })
+}
+function getStation1(obj, project, line) {
+    getDataWithArray('http://cnwuxg0te01:9000/api/DowntimeBasic/GetStation_FromMatrix',
+        {
+           
+            Line: line,
+            Project: project,
+        })
+        .then(data => {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].paras + '">' + data[i].paras + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        })
+}
+ function getErrorCode(obj, Department, vbNumber) {
+    getDataWithArray('http://cnwuxg0te01:9000/api/DowntimeBasic/GetErrorCode_FromMatrix',
+        {
+
+            Department: Department,
+            vbNumber: vbNumber,
+        })
+        .then(data => {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].paras + '">' + data[i].paras + '</option>';
             }
             obj.html(option);
             obj.selectpicker('refresh');
@@ -312,6 +404,36 @@ function getDashboardSystem(obj) {
         }
     })
 }
+function getMachine(Station, Line, Project, obj) {
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetMachine_FromMatrix',
+        data: {
+            Station: Station,
+            Line: Line,
+            Project:Project,
+        },
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        }
+    })
+}
+
+
 
 function getDepartment1(obj) {
 
