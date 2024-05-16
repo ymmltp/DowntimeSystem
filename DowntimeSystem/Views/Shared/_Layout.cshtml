@@ -25,7 +25,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js" type="text/javascript"></script>
-    <script src="~/js/Basic.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -87,8 +86,8 @@
                             <label class="nav-link text-light" style="margin-bottom:0px"><i class="fa fa-clock-o"></i>&nbsp;<span id="Currenttime"></span></label>
                         </li>
                         @*<li class="nav-item">
-                            <label class="nav-link text-light" style="margin-bottom:0px"><span id="displayname"></span></label>
-                        </li>*@
+                                <label class="nav-link text-light" style="margin-bottom:0px"><span id="displayname"></span></label>
+                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Home"><i class="fa fa-home"></i></a>
                         </li>
@@ -134,7 +133,7 @@
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Task_CreateIncident" title="Create Downtime"><i class="fa fa-cogs"></i>Create Downtime Incident</a></li>
                         </ul>
                     </li>
-            
+
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="IssueSummary" title="Action Step Maintains"><i class="fa fa-handshake-o"></i>Action Step Maintains</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Manage_Resource_EQID_PN" title="Spare part"><i class="fa fa-cogs"></i>Resource & EQID & PN</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="QEQSparepartChangeHistory" title="Sparepart Change"><i class="fa fa-table "></i>Sparepart Change</a></li>
@@ -159,14 +158,8 @@
     </div>
     <script src="~/js/index.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        //$(document).ready(function () {
-        //    $.getJSON("/Home/GetUserName", function (data) {
-        //        document.getElementById('displayname').innerHTML = data;
-        //    });
-        //})
-    </script>
     <script src="~/lib/bootstrap/dist/js/moment.js"></script>
+    <script src="~/js/Basic.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

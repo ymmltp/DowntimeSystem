@@ -215,7 +215,7 @@ function postData_CORS(url, para, contentype = "application/json") {
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
             },
-            data: JSON.stringify(para),
+            data:para,
             success(data, status, xhr) {
                 resolve({ data: data, status: status, xhr: xhr });
             },

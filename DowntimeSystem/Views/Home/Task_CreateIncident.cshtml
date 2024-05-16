@@ -105,15 +105,10 @@
     });
     function CreateIncidence() {
         if (checkFormNoNull("#createIncident")) {
-            postData_CORS("http://cnwuxm1tes01:80/eCalling/InsertData2", {
-                comfrom: "Donwtime System",
-                department: $("#department-select").val(),
-                machine: $("#machine-select").val(),
-                ErrorCode: $("#issue-select").val(),
-                ErrorDescription: $("#issueremark").val(),
-                Server: $("#machine-select").find(":selected").data("server"),
-                isDowntime: Boolean($("#issue-select").find(":selected").data("isdowntime"))
-            }, "text/plain")
+            let urlstring = "comfrom=Downtime System&department=" + $("#department-select").val() + "&machine=" + $("#machine-select").val()
+                + "&ErrorCode=" + $("#issue-select").val() + "&ErrorDescription=" + $("#issueremark").val() + "&Server=" + $("#machine-select").find(":selected").data("server")
+                + "&isDowntime=" + Boolean($("#issue-select").find(":selected").data("isdowntime"))
+            postData_CORS("http://cnwuxm1tes01/eCalling/InsertData2?" + urlstring)
                 .then(res => {
                     console.log(res);
                 })
