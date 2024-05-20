@@ -1,4 +1,4 @@
-﻿const BasicURL = "http://cnwuxg0te01:9000";
+﻿const BasicURL = "http://cnwuxg0te01:9000";  //  "http://localhost:19292"; //
 
 
 //#region datetimepicker 初始化设定
@@ -55,6 +55,57 @@ $("#searchBox").on('click', function () {
         $("#searchBox").addClass("fa-cog");
     }
 })
+//#endregion
+
+//#region 自定义时间范围
+function updateTime() {
+    var today = new Date()
+    $("#start").parent().parent().addClass("invisible");
+    $("#end").parent().parent().addClass("invisible");
+    switch ($("#timeZone").val()) {
+        case "0": //Customer
+            $("#start").parent().parent().removeClass("invisible");
+            $("#end").parent().parent().removeClass("invisible");
+            showSuccess("自定义时间范围");
+            break;
+        case "1": //Current Week
+            var dayOfWeek = today.getDay();
+            if (dayOfWeek == 0) dayOfWeek = 7;
+            var lastDay = new Date(today.getTime() - (dayOfWeek - 1) * 86400000); //本周的第一天
+            $("#start").val(lastDay.format("yyyy-MM-dd"));
+            $("#end").val(today.format("yyyy-MM-dd"));
+            showSuccess("显示本周数据");
+            break;
+        case "4": //Last Week
+            var dayOfWeek = today.getDay();
+            if (dayOfWeek == 0) dayOfWeek = 7;
+            var endDay = new Date(today.getTime() - (dayOfWeek) * 86400000); //上周最后一天
+            var startDay = new Date(today.getTime() - (dayOfWeek + 6) * 86400000); //上周第一天
+            $("#start").val(startDay.format("yyyy-MM-dd"));
+            $("#end").val(endDay.format("yyyy-MM-dd"));
+            showSuccess("显示上周数据");
+            break;
+        case "2": //Current Month
+            $("#start").val(new Date(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-01").format("yyyy-MM-dd"));
+            $("#end").val(today.format("yyyy-MM-dd"));
+            showSuccess("显示本月数据");
+            break;
+        case "3": //Last Month
+            $("#start").val(new Date(today.getFullYear() + "-" + (today.getMonth()).toString() + "-01").format("yyyy-MM-dd"));
+            var EndOfMonth = new Date();
+            EndOfMonth.setDate(0);   //上个月的最后一天
+            $("#end").val(EndOfMonth.format("yyyy-MM-dd"));
+            showSuccess("显示上月数据");
+            break;
+        case "5": //Current Day
+            $("#start").val(today.format("yyyy-MM-dd"));
+            $("#end").val(today.format("yyyy-MM-dd"));
+            showSuccess("显示当天数据");
+            break;
+        default:
+            break;
+    }
+}
 //#endregion
 
 //#region 格式化日期2024-02-01/ 
@@ -156,6 +207,7 @@ function postData(url, para) {
         $.ajax({
             url: url,
             type: "POST",
+            contentType: "application/json;charset=utf-8",
             data: para,
             success(data, status, xhr) {
                 resolve({ data: data, status: status, xhr: xhr });
@@ -202,28 +254,6 @@ function deleteData(url, para) {
             },
             error: function (err) {
                 reject(err.responseText);
-            }
-        });
-    });
-}
-function postData_CORS(url, para, contentype = "application/json") {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            method: "POST",          
-            contentType: contentype,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-            },
-            data:para,
-            success(data, status, xhr) {
-                resolve({ data: data, status: status, xhr: xhr });
-            },
-            fail(err, status, xhr) {
-                reject(err);
-            },
-            error: function (err) {
-                reject(err);
             }
         });
     });
@@ -482,7 +512,7 @@ function GetSelectOptions_KeyVal(url, paras, obj, value = null) {
 
 //#endregion
 
-//#region 自动清空模态框内的input内容  不执行
+//#region 自动清空模态框内的input内容  未启用
 document.addEventListener('hidden.bs.modal', function (event) {
     // 获取触发事件的模态框
     var modal = event.target;

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Server.IISIntegration;
 
 
+
 namespace DowntimeSystem
 {
     public class Startup
@@ -22,6 +23,13 @@ namespace DowntimeSystem
         {
             services.AddControllersWithViews();
             services.AddAuthentication(IISDefaults.AuthenticationScheme);
+
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = options.DefaultPolicy;
+            });
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +49,7 @@ namespace DowntimeSystem
             app.UseStaticFiles();
             app.UseRouting();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

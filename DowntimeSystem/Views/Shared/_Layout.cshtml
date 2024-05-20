@@ -25,7 +25,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js" type="text/javascript"></script>
-
     <script>
         $(document).ready(function () {
             Date.prototype.format = function (fmt) {
@@ -64,6 +63,15 @@
             el.requestFullscreen || el.mozRequestFullScreen || el.webkitRequestFullscreen || el.msRequestFullScreen ?
                 el.requestFullscreen() || el.mozRequestFullScreen() || el.webkitRequestFullscreen() || el.msRequestFullscreen() : null;
         }
+
+        // 使用 AJAX 从服务器获取用户名
+        fetch('/Home/GetUserName')
+            .then(response => response.json())
+            .then(data => {
+                // 将用户名显示在页面上
+                document.getElementById('displayname').innerText = data;
+            })
+            .catch(error => showError(error));
     </script>
 </head>
 <body>
@@ -85,9 +93,9 @@
                         <li class="nav-item">
                             <label class="nav-link text-light" style="margin-bottom:0px"><i class="fa fa-clock-o"></i>&nbsp;<span id="Currenttime"></span></label>
                         </li>
-                        @*<li class="nav-item">
-                                <label class="nav-link text-light" style="margin-bottom:0px"><span id="displayname"></span></label>
-                            </li>*@
+                        <li class="nav-item">
+                            <label class="nav-link text-light" style="margin-bottom:0px"><span id="displayname"></span></label>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Dashboard" title="Home"><i class="fa fa-home"></i></a>
                         </li>
@@ -126,13 +134,15 @@
                             <li> <a class="nav-link text-light" target="_blank" href="https://app.powerbi.com/groups/45ccaeb7-8d5d-4ee3-890c-3a17bef4fdcd/reports/150c8900-a76e-432b-8489-66d750e2a0fc/ReportSectiona79c260286ef0540d244?experience=power-bi" title="Downtime Weekly Report"><i class="fa fa-dashboard"></i>Downtime Weekly Report</a></li>
                         </ul>
                     </li>
-                    <li class="sub-menu">
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Update Downtime"><i class="fa fa-cogs"></i>Update Downtime</a></li>
+                    <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Task_ReviewRCCA" title="Create Downtime"><i class="fa fa-handshake-o"></i>Review RCCA</a></li>
+                    
+                    @*<li class="sub-menu">
                         <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>Task</span><i class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
-                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Update Downtime"><i class="fa fa-cogs"></i>Update Downtime</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Task_CreateIncident" title="Create Downtime"><i class="fa fa-cogs"></i>Create Downtime Incident</a></li>
                         </ul>
-                    </li>
+                    </li>*@
 
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="IssueSummary" title="Action Step Maintains"><i class="fa fa-handshake-o"></i>Action Step Maintains</a></li>
                     <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Manage_Resource_EQID_PN" title="Spare part"><i class="fa fa-cogs"></i>Resource & EQID & PN</a></li>
@@ -158,8 +168,8 @@
     </div>
     <script src="~/js/index.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/lib/bootstrap/dist/js/moment.js"></script>
     <script src="~/js/Basic.js"></script>
+    <script src="~/lib/bootstrap/dist/js/moment.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,93 @@
+﻿@*Downtime Incident 查询条件 *@
+<div class="row">
+    <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+        <label class="form-label"> Department:</label>
+        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true" data-none-selected-text="All" data-actions-box="true"></select>
+    </div>
+    <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+        <label class="form-label"> Project:</label>
+        <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" data-none-selected-text="All" data-actions-box="true"> </select>
+    </div>
+    <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+        <label class="form-label"> Line:</label>
+        <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-max-options="1" data-none-selected-text="All" data-actions-box="true" data-live-search="true"></select>
+    </div>
+    <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+        <label class="form-label"> Station:</label>
+        <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-none-selected-text="All" data-actions-box="true" data-live-search="true"></select>
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+        <label class="form-label"> Time Range:</label>
+        <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1">
+            <option value="5">Today</option>
+            <option value="1">Current Week</option>
+            <option value="4">Last Week</option>
+            <option value="2">Current Month</option>
+            <option value="3">Last Month</option>
+            <option value="0">Customize</option>
+        </select>
+    </div>
+    <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+        <label class="form-label"> Ticket Status:</label>
+        <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1" data-none-selected-text="All">
+            <option value="0">New Open</option>
+            <option value="1">On-going</option>
+            <option value="2">Closed</option>
+        </select>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
+        <label class="form-label" for="id"> Ticket No: </label>
+        <input type='text' class="form-control" id='id' />
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
+        <label class="form-label" for="responser"> Employee ID: </label>
+        <input type='text' class="form-control" id='responser' placeholder="--请输入工号 (WY0000) --" />
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 invisible">
+        <label class="form-label" for="start"> Start Date:</label>
+        <div class='input-group date form_datetime'>
+            <input type='text' class="form-control" id='start' />
+            <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 invisible ">
+        <label class="form-label" for="end"> Finish Date: </label>
+        <div class='input-group date form_datetime'>
+            <input type='text' class="form-control" id='end' />
+            <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetDowntimeList()">Search</button></div>
+</div>
+
+<script src="~/js/customer.js"></script>
+<script>
+    $(document).ready(function () {
+        iniDatetimepicker();
+        getDepartment($("#department-select"));
+        getLine($('#line-select'));
+        getProject($('#project-select'));
+        getStation($('#station-select'));
+        getDashboardSystem($("#system-select"));
+        $("#timeZone option[value='5']").attr("selected", true);
+        $("#timeZone").selectpicker('refresh');
+        $("#timeZone").trigger("onchange");
+
+        $("#project-select").on("change", function () {
+            getLine($('#line-select'), $('#project-select').val());
+            getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val());
+        })
+
+        $("#line-select").on("change", function () {
+            getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val());
+        })
+
+        $("#timeZone").on("change", function () {
+            updateTime();
+        })
+    })
+</script>

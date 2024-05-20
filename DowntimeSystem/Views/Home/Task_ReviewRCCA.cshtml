@@ -3,134 +3,32 @@
 }
 
 
-<div class="container-fluid" style="width:50vw">
-    <div class="row">
-        <div class="col-lg-12" id="createIncident">
-                <h4 style="text-align:center">@ViewData["Title"]</h4>
-                <form class="row">
-                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
-                        <label class="form-label  warning-text"> Department:</label>
-                        <select id="department-select" class="form-control selectpicker noNull" noNull="Department" title="Select Department" data-size="6" data-live-search="true"></select>
-                    </div>
-                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
-                        <label class="form-label  warning-text"> Project:</label>
-                        <select id="project-select" class="form-control selectpicker noNull" noNull="Project" title="Select Project" data-size="6" data-live-search="true"></select>
-                    </div>
-                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
-                        <label class="form-label warning-text"> Line:</label>
-                        <select id="line-select" class="form-control selectpicker noNull" noNull="Line" title="Select Line" data-size="6" data-live-search="true"></select>
-                    </div>
-                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
-                        <label class="form-label warning-text"> Station:</label>
-                        <select id="station-select" class="form-control selectpicker noNull" noNull="Station" title="Select Station" data-size="6" data-live-search="true"></select>
-                    </div>
-                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
-                        <label class="form-label warning-text"> Machine:</label>
-                        <select id="machine-select" class="form-control selectpicker noNull"  noNull ="Machine" title="Select Machine" data-size="6" data-live-search="true"></select>
-                    </div>
-                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
-                        <label class="form-label warning-text"> 创建人:</label>
-                        <input type='text' class="form-control noNull" noNull="创建人" data-remark="创建人" id='creator' placeholder="---例 : W1234---" />
-                    </div>
-                    <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
-                        <label for="occtime" class="form-label text-right warning-text">Start Time:</label>
-                        <div class='input-group date form_datetime'>
-                            <input type='text' class="form-control need create-input noNull" noNull="Start Time" data-remark=" Downtime 发生时间" id='occtime' />
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span> 
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-xl-12 col-sm-12">
-                        <label class="form-label warning-text"> Issue:</label>
-                        <select id="issue-select" class="form-control selectpicker noNull" noNull="Issue" title="Select Issue" data-size="6" data-live-search="true"></select>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-xl-12 col-sm-12">
-                        <label for="issueremark" class="form-label text-right">Issue Description:</label>
-                        <textarea type='text' class="form-control create-input" id='issueremark' placeholder="---请输入问题描述---"></textarea>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6">
-                        <label for="howoften" class="form-label">How Often:</label>
-                        <input type='text' class="form-control create-input" id='howoften' placeholder="---请输入发生频次---" />
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6">
-                        <label for="howmanay" class="form-label">How Manay:</label>
-                        <input type='text' class="form-control create-input" id='howmanay' placeholder="---请输入导致了多少不良---" />
-                    </div>
-                    <div class="col-lg-12 row" style="margin-top: 10px;">
-                        <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-success" onclick="CreateIncidence()">Submit</button></div>
-                        <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-primary" onclick="CreateFastList()">Add Fast List</button></div>
-                    </div>
-                </form>
-            </div>
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
+        <div class="panel-body">
+            @await Component.InvokeAsync("_DTIncidentSearchComponent")
+        </div>
     </div>
 </div>
 
-<table incident="incidenttable"></table>
+<table id="incidenttable"></table>
 
-<script src="~/js/customer.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-editable.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-editable.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-export.js"></script>
+<script src="~/lib/bootstrap/dist/js/tableExport.js"></script>
+<script src="~/lib/bootstrap/dist/js/FileSaver.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/xlsx.core.min.js"></script>
+
 <script>
-    $(document).ready(function () {
-        GeteCallingDepartment($("#department-select"));
-        GeteCallingProject($("#project-select"));
-        GeteCallingLine($("#line-select"));
-        GeteCallingStation($("#station-select"));
-        GeteCallingMachine($("#machine-select"));
-        GeteCallingErrocCode($("#issue-select"));
-        iniDatetimepicker_withTime();
-
-        $("#department-select").on("change", function () {
-            GeteCallingErrocCode($("#issue-select"), $("#department-select").val(), $("#machine-select").find(":selected").data("vbnumber"));
-        });
-
-        $("#project-select").on("change", function () {
-            GeteCallingLine($("#line-select"), $("#project-select").val());
-        });
-
-        $("#line-select").on("change", function () {
-            GeteCallingStation($("#station-select"), $("#project-select").val(), $("#line-select").val());
-        });
-
-        $("#station-select").on("change", function () {
-            GeteCallingMachine($("#machine-select"), $("#project-select").val(), $("#line-select").val(), $("#station-select").val());
-        })
-
-        $("#machine-select").on("change", function () {
-            GeteCallingErrocCode($("#issue-select"), $("#department-select").val(), $("#machine-select").find(":selected").data("vbnumber"));
-        })
-
-        $("#issue-select").on("change", function () {
-            $("#issueremark").val($("#issue-select").find(":selected").data("callissue"));
-        })
-    });
-    function CreateIncidence() {
-        if (checkFormNoNull("#createIncident")) {
-            postData_CORS("http://cnwuxm1tes01/eCalling/InsertData2", {
-                comfrom: "Donwtime System",
-                department: $("#department-select").val(),
-                machine: $("#machine-select").val(),
-                ErrorCode: $("#issue-select").val(),
-                ErrorDescription: $("#issueremark").val(),
-                Server: $("#machine-select").find(":selected").data("server"),
-                isDowntime: Boolean($("#issue-select").find(":selected").data("isdowntime"))
-            }, "text/plain")
-                .then(res => {
-                    console.log(res);
-                })
-                .catch(err => {
-                    showError(err);
-                })
-        }
-    }
-
-    //从downtime 查询server 对应的incident
-    //保存到local storage里
-
-    function GetIncident() {
+    function GetDowntimeList() {
         $("#incidenttable").bootstrapTable('destroy').bootstrapTable({
             cache: false,
             type: 'GET',
-            url: '/EC/GetDowntimeList',
+            url: BasicURL+'/api/Downtime/Query_ByFilter',
             queryParams: {
                 id: $("#id").val(),
                 Department: $("#department-select").val(),
@@ -138,7 +36,6 @@
                 Line: $("#line-select").val(),
                 Station: $("#station-select").val(),
                 Incidentstatus: $("#status-select").val(),
-                comefrom: $("#system-select").val(),
                 starttime: $("#start").val() ? $("#start").val() + " 00:00:00" : null,
                 endtime: $("#end").val() ? $("#end").val() + " 23:59:59" : null,
                 Respperson: $("#responser").val(),
@@ -151,7 +48,7 @@
             showSearchButton: false,
             showColumns: true,
             sortable: true,                     //是否启用排序
-            sortName: 'finishtime',
+            sortName: 'downtime',
             sortOrder: "desc",
             dataType: 'json',
             pagination: true,
@@ -188,12 +85,6 @@
                 align: 'center',
                 valign: 'middle',
             }, {
-                field: 'comefrom',
-                title: 'System',
-                align: 'center',
-                valign: 'middle',
-                visible: false,
-            }, {
                 field: 'creator',
                 title: 'Creator',
                 align: 'center',
@@ -225,12 +116,6 @@
                 align: 'center',
                 valign: 'middle',
             }, {
-                field: 'urgentlevel',
-                title: 'Ugentlevel',
-                align: 'center',
-                valign: 'middle',
-                visible: false,
-            }, {
                 field: 'occurtime',
                 title: 'Start Time',
                 align: 'center',
@@ -248,17 +133,7 @@
                 title: 'Issue Description',
                 align: 'center',
                 valign: 'middle',
-            }, {
-                field: 'repairtime',
-                title: 'Repair Time',
-                align: 'center',
-                valign: 'middle',
-                formatter: function (value, row, index) {
-                    if (value)
-                        return new Date(value).format('yyyy-MM-dd hh:mm:ss');
-                    else
-                        return value;
-                },
+                visible: false,
             }, {
                 field: 'respperson',
                 title: 'Employee ID',
@@ -269,20 +144,13 @@
                 title: 'Finish Time',
                 align: 'center',
                 valign: 'middle',
-
+                sortable: true,
                 formatter: function (value, row, index) {
                     if (value)
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     else
                         return value;
-
                 },
-            }, {
-                field: 'calcdowntime',
-                title: 'Calculate Downtime',
-                align: 'center',
-                valign: 'middle',
-                visible: false,
             }, {
                 field: 'downtime',
                 title: 'Downtime(m)',
@@ -304,18 +172,19 @@
                         return 'Null';
                     }
                 },
-            }, {
-                field: 'labor',
-                title: 'Labor',
-                align: 'center',
-                valign: 'middle',
-                visible: false,
-            }, {
+            },{
                 field: 'rootcause',
                 title: 'RC',
                 align: 'center',
                 valign: 'middle',
-                visible: false,
+                editable: {
+                    title: 'rootcause',
+                    type: 'text',
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
             }, {
                 field: 'rootcauseremark',
                 title: 'RC Description',
@@ -327,88 +196,87 @@
                 title: 'CA',
                 align: 'center',
                 valign: 'middle',
-                visible: false,
+                editable: {
+                    title: 'action',
+                    type: 'text',
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
             }, {
                 field: 'actionremark',
                 title: 'CA Description',
                 align: 'center',
                 valign: 'middle',
                 visible: false,
-            }, {
-                field: 'option',
-                title: 'Operation',
+                },
+                {
+                    field: 'actionstatus',
+                    title: 'Status',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        switch (value) {
+                            case 0:
+                            case 1:
+                                return ['<label  style="color:blue">Need Close</label>'];
+                                break;
+                            case 2:
+                                return ['<label  style="color:blue">Need RCCA</label>'];
+                                break;
+                            case 3:
+                                return ['<label style="color:blue">Need Verify</label>']
+                                break;
+                            case 4:
+                                return ['<label style="color:green">Verify OK</label>'];
+                                break;
+                            default:
+                                break;
+                        }
+                    },
+                },
+            {
+                field: 'Option',
+                title: '操作',
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {
-                    if (row['incidentstatus'] == 0) {
-                        //    return ['<button type="button" class="btn bad text-light" id="start">Attendance</button>']
-                        //} else if (row['incidentstatus'] == 1) {
-                        return ['<button type="button" class="btn warning text-light" id="close">Close</button>']
-                    } else if (row['incidentstatus'] == 2 && row['actionstatus'] == 2) {
-                        return ['<button type="button" class="btn primary text-light" id="edit">RC/CA</button>']
-                    } else if (row['incidentstatus'] == 2 && row['actionstatus'] == 3) {
-                        return ['<button type="button" class="btn good text-light" id="view">View</button>']
-                    } else {
-                        return ['<button type="button" class="btn .default text-light" id="error">Default</button>']
-                    }
-                },
-                events: {
-                    "click #start": function (e, value, row, index) {
-                        $("#sr-department").val(row['department']);
-                        $("#sr-project").val(row['project']);
-                        $("#sr-line").val(row['line']);
-                        $("#sr-station").val(row['station']);
-                        $("#sr-issue").val(row['issue']);
-                        $("#sr-machine").val(row['machine']);
-                        $("#sr-issueremark").val(row['issueremark']);
-                        $("#StartRepaireModal").data("id", row['id']);
-
-                        let tmp = new Date(row['occurtime']);
-                        let Downtime = new Date() - tmp;
-
-                        $("#sr-downtime").val((parseInt(Downtime / 1000)).Timeformat("hh:mm:ss"));
-                        //$("#sr-employee").val(getCookie("dt-displayname"));
-                        $("#StartRepaireModal").modal('show');
-                    },
-                    "click #close": function (e, value, row, index) {
-                        if (confirm("确定结束维修: " + row['line'] + ' ' + row['station'] + ' : ' + row['issue'])) {
-                            $.ajax({
-                                url: '/EC/CloseRepaire',
-                                method: 'POST',
-                                data: {
-                                    id: row['id'],
-                                },
-                                success: function (data) {
-                                    showSuccess('维修结束，辛苦了!');
-                                    //结束直接填写 RC & CA
-                                    //if (confirm("开始填写 RC & CA ?")) {
-                                    //    ShowCARA(row);
-                                    //}
-                                },
-                                fail: function (err, status, xhr) {
-                                    showWarning(err.responseText);
-                                },
-                                error: function (err) {
-                                    showWarning(err.responseText);
-                                },
-
-                                complete: function (res) {
-
-                                    $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
-
-                                }
-                            })
+                    switch (row.actionstatus) {
+                        case 3:
+                            return ['<button type="button" class="btn warning text-light"  id="verify">Verify Pass</button>']
+                            break;
+                        default:
+                            break;
                         }
                     },
-                    "click #edit": function (e, value, row, index) {
-                        ShowCARA(row);
-                        $("#RCCAConfirmModal").attr("data-downtimeid", row.id);
-                    },
-                    "click #view": function (e, value, row, index) {
-                        ViewDowntimeInfo(row);
+                events: {
+                        "click #verify": function (e, value, row, index) {
+                            row.actionstatus = 4;
+                            postDatatoAPI(BasicURL + '/api/Downtime/Update', row)
+                                .then(res => {
+                                    showSuccess("Verify OK");
+                                    $("#incidenttable").bootstrapTable("refreshOptions", { url: BasicURL + '/api/Downtime/Query_ByFilter' });
+                                })
+                                .catch(err => {
+                                    showError(err);
+                                })
+                        },
                     }
+            }, ],
+            onEditableSave: function (field, row, oldValue, $el) {
+                if (row.rootcause != null && row.action != null) {
+                    row.actionstatus = 3;
                 }
-            }]
+                postDatatoAPI(BasicURL + '/api/Downtime/Update', row)
+                    .then(res => {
+                        showSuccess("Updated");
+                        $("#incidenttable").bootstrapTable("refreshOptions", { url: BasicURL + '/api/Downtime/Query_ByFilter' });
+                    })
+                    .catch(err => {
+                        showError(err);
+                    })
+            },
         })
     }
 </script>

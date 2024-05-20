@@ -33,8 +33,11 @@
 
   <ItemGroup>
     <Folder Include="Models\HR\" />
-    <Folder Include="Views\Shared\Component\" />
     <Folder Include="wwwroot\lib\echarts\dist\css\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Shared\Components\_DTIncidentSearchComponent\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
