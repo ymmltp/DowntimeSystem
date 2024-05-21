@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\EC.cs~RF23cb336b.TMP" />
     <None Remove="Views\Home\Task_CreateIncident.cshtml~RFa93cb40.TMP" />
     <None Remove="Views\Shared\_Layout.cshtml~RF138abee1.TMP" />
   </ItemGroup>

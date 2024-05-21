@@ -207,7 +207,6 @@ function postData(url, para) {
         $.ajax({
             url: url,
             type: "POST",
-            contentType: "application/json;charset=utf-8",
             data: para,
             success(data, status, xhr) {
                 resolve({ data: data, status: status, xhr: xhr });
