@@ -259,7 +259,7 @@ namespace DowntimeSystem.Controllers
                         throw new Exception("There is no contact user. Please add dri about this department , project in downtime system");
                     }
                     List<string> mailcc = new List<string>();
-                    SendMail.MailSend("RCCA Verify Notice", $"<b>Please Notice there is a new rcca need you verify in DTAS</br>Please visit <a href='http://cnwuxg0te01:8050/Home/Task_ReviewRCCA'>DTAS</a> for detail information", mailto, mailcc);
+                    SendMail.MailSend("RCCA Verify Notice", $"<b>Please Notice there is a new rcca need you verify in DTAS</br>Visit <a href='http://cnwuxg0te01:8050/Home/Task_ReviewRCCA'>DTAS</a> for detail information", mailto, mailcc);
                     return callback;
                 } catch (Exception ex) {
                     throw ex;
