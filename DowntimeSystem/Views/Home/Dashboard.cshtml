@@ -145,6 +145,7 @@
         $("#timeZone option[value='5']").attr("selected", true);
         $("#timeZone").selectpicker('refresh');
         $("#timeZone").trigger("onchange");
+        updateChart();
         interval = setInterval(function () {
             updateChart();
         }, 300000);
