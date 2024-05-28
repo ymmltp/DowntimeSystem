@@ -1,74 +1,75 @@
 ﻿@{
     ViewBag.Title = "Create Downtime List";
 }
-<div class="container-fluid">
-    <div class="panel-default" id="searchbox">
-        <div class="panel-heading"><i class="fa fa-table "></i> @ViewBag.Title </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-3">
-                    <label class="form-label"> Department:</label>
-                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-max-options="1" data-live-search="true" onchange="getErrorCode($('#ErrorCode-select'),$('#department-select').val(),$('#VbNumber-select').val())"></select>
-                </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Project:</label>
-                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" data-max-options="1" data-live-search="true" onchange="getMachine($('#station-select').val(),$('#line-select').val(),$('#project-select').val(),$('#machine-select')),getStation1($('#station-select'),$('#project-select').val(),$('#line-select').val()),getLine1($('#line-select'),$('#project-select').val())"> </select>
-                </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Line:</label>
-                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" data-max-options="1" data-live-search="true" onchange=" getMachine($('#station-select').val(),$('#line-select').val(),$('#project-select').val(),$('#machine-select')),getStation1($('#station-select'),$('#project-select').val(),$('#line-select').val())"></select>
-                </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> Station:</label>
-                    <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" data-max-options="1" data-live-search="true" onchange="getMachine($('#station-select').val(),$('#line-select').val(),$('#project-select').val(),$('#machine-select'))"></select>
-                </div>
+<div class="container-fluid" style="width:50vw">
+    <div class="row">
+    <div class="col-lg-12" id="createIncident">
+        <h4 style="text-align:center">@ViewData["Title"]</h4>
+        <form class="panel-body" id="myForm">
 
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label"> EQID:</label>
-                    <select id="eqid-select" class="form-control selectpicker" title="Select EQID" data-size="6" data-max-options="1" data-live-search="true" onchange="getErrorCode($('#ErrorCode-select'),$('#department-select').val(),$('#VbNumber-select').val())"></select>
-                </div>
-                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
-                    <label class="form-label" for="responser"> Creater ID: </label>
-                    <input type='text' class="form-control" id='responser' placeholder="--请输入工号 (WY0000) --" />
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                <label class="form-label warning-text">部门 Department:</label>
+                <select id="department-select" class="form-control selectpicker noNull" noNull="部门 Department" title="Select Department" data-size="6" data-max-options="1" data-live-search="true" onchange="getErrorCode($('#issue-select'),$('#department-select').val(),$('#machine-select').find(':selected').data('vbnumber'))"></select>
+            </div>
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                <label class="form-label warning-text">项目 Project:</label>
+                <select id="project-select" class="form-control selectpicker noNull" noNull="项目 Project" title="Select Project" data-size="6" data-max-options="1" data-live-search="true" onchange="getMachine($('#station-select').val(),$('#line-select').val(),$('#project-select').val(),$('#machine-select')),getStation1($('#station-select'),$('#project-select').val(),$('#line-select').val()),getLine1($('#line-select'),$('#project-select').val())"> </select>
+            </div>
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                <label class="form-label warning-text">线 Line:</label>
+                <select id="line-select" class="form-control selectpicker noNull" noNull="线 Line" title="Select Line" data-size="6" data-max-options="1" data-live-search="true" onchange=" getMachine($('#station-select').val(),$('#line-select').val(),$('#project-select').val(),$('#machine-select')),getStation1($('#station-select'),$('#project-select').val(),$('#line-select').val())"></select>
+            </div>
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                <label class="form-label warning-text">站位 Station:</label>
+                <select id="station-select" class="form-control selectpicker noNull" noNull="站位 Station" title="Select Station" data-size="6" data-max-options="1" data-live-search="true" onchange="getMachine($('#station-select').val(),$('#line-select').val(),$('#project-select').val(),$('#machine-select'))"></select>
+            </div>
+
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                <label class="form-label warning-text">机器 Machine:</label>
+                <select id="machine-select" class="form-control selectpicker noNull" noNull="机器 Machine" title="Select Machine" data-size="6" data-max-options="1" data-live-search="true" onchange="getErrorCode($('#issue-select'),$('#department-select').val(),$('#machine-select').find(':selected').data('vbnumber'))"></select>
+            </div>
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6 ">
+                <label class="form-label warning-text" for="creater">创建人 Creater: </label>
+                <input type='text' class="form-control noNull" noNull="创建人 Creater" data-remark="创建人" id='creater' placeholder="--请输入创建人姓名/工号 --" />
+            </div>
+
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                <label class="form-label warning-text">问题分类 Issue category:</label>
+                <select id="issue-select" class="form-control selectpicker noNull" noNull="问题分类 Issue category" title="Select Issue" data-size="6" data-max-options="1" data-live-search="true" onchange="$('#issuedescription').val($('#issue-select').find(':selected').data('issue'))"></select>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                <label class="form-label" for="issuedescription">问题描述 Issue Description: </label>
+                <input type='text' class="form-control" id='issuedescription' placeholder="---请输入问题描述---" />
+            </div>
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
+                <label for="startdate" class="form-label warning-text">开始时间 Start Time:</label>
+                <div class='input-group date form_datetime'>
+                    <input type='text' class="form-control need create-input noNull" noNull="开始时间 Start Time" data-remark=" Downtime 发生时间" id='startdate' />
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-                    <label class="form-label">Issue:</label>
-                    <select id="Issue" class="form-control selectpicker" title="Select Issue" data-size="6" data-max-options="1" data-live-search="true"></select>
-                </div>
-                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
-                    <label class="form-label" for="Issue Description"> Issue Description: </label>
-                    <input type='text' class="form-control" id='Issue Description' placeholder="非必填" />
-                </div>
-                <div class="col-lg-2 col-xs-3 col-sm-3 col-md-3">
-                    <label for="startdate" class="form-label"> Date Time:</label>
-                    <div class='input-group date form_datetime'>
-                        <input type='text' class="form-control" id='datetime' />
-                        <span class="input-group-addon">
-                            <span class="fa fa-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
-                    <label class="form-label" for="cost"> How Much: </label>
-                    <input type='text' class="form-control" id='cost' placeholder="" />
-                </div>
-                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
-                    <label class="form-label" for="Times"> How Often: </label>
-                    <input type='text' class="form-control" id='Times' placeholder="" />
-                </div>
-                <div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
-                    <button id="Submitbtn" class="btn btn-primary mybtn" type="button" onclick="SparepartChange_Table()">Submit</button>
-                </div>
-                <div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
-                    <button id="Addbtn" class="btn btn-success mybtn" type="button">Save</button>
-                </div>
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6 ">
+                <label class="form-label" for="howmuch">不良次数 How Much: </label>
+                <input type='text' class="form-control" id='howmuch' placeholder="---请输入导致了多少不良---" />
             </div>
-        </div>
-        <table id="table" class="table table-hover table-striped"></table>
+            <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6 ">
+                <label class="form-label" for="howoften">频次 How Often: </label>
+                <input type='text' class="form-control" id='howoften' placeholder="---请输入发生频次---" />
+            </div>
+            <div class="col-lg-12 row" style="margin-top: 10px;">
+                <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-success" onclick="CreateIncidence()">Submit</button></div>
+                <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="reset" form="myForm" class="btn btn-primary">Reset</button></div>
+            </div>
+            @*<div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
+            <button id="addbtn" class="btn btn-success mybtn" type="button">Add</button>
+        </div>*@
+
+        </form>
     </div>
-
+</div>
+</div>
 
 
 
@@ -77,11 +78,10 @@
 
     <script src="~/lib/bootstrap/dist/js/select2.full.min.js" type="text/javascript"></script>
     <script src="~/js/customer.js"></script>
-    <script src="~/js/cookie.js"></script>
-    <script src="~/lib/echarts/dist/js/echarts.js"></script>
+   
+    
     <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap-table-export.js"></script>
-    <script src="~/lib/bootstrap/dist/js/tableExport.js"></script>
+    
     <script src="~/lib/bootstrap/dist/js/FileSaver.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/xlsx.core.min.js"></script>
     <script>
@@ -91,95 +91,36 @@
                 $("#id").val(id);
                 GetDowntimeList();
             }
-            iniDatetimepicker();
+            iniDatetimepicker_withTime();
             getDepartment1($("#department-select"));
            
             getLine1($('#line-select'));
             getProject1($('#project-select'));
            
             getStation1($('#station-select'));
-            getErrorCode($('#ErrorCode-select'));
-           
+            getErrorCode($('#issue-select'));
+            getMachine($('#machine-select'));
+            getErrorDescription($("#issuedescription"));
+
         });
 
-
-
-
-
         function CreateIncidence() {
-            var items = $(".need");
-            for (var i = 0; i < items.length; i++) {
-                if (!$(items[i]).val()) {
-                    showWarning("请填写" + $(items[i]).data("remark"));
-                    return;
-                }
-            }
-            if (!/^[Ww]/.test($("##cr-creator").val())) {
-                showWarning("请输入正确的工号，以‘W’开头");
-                $("#cr-creator").focus();
-                return;
-            }
-            $.ajax({
-                url: '/EC/CreateDowmtimeIncident',
-                method: 'POST',
-                data: {
-                    comefrom: "Downtime System",
-                    alarmtype: "Downtime Incident Created",
-                    project: $("#cr-project").val(),
-                    line: $("#cr-line").val(),
-                    station: $("#cr-station").val(),
-                    occurtime: $("#cr-occtime").val(),
-                    calcdowntime: "true",
-                    department: $("#cr-department").val(),
-                    issue: $("#cr-issue").val(),
-                    issueremark: $("#cr-issueremark").val(),
-                    creator: $("#cr-creator").val(),
-                    machine: $("#cr-machine").val(),
-                    action: "",
-                },
-                success: function (data) {
-                    $("#CreateIncidenceModal").modal('hide');
-                    showInfo("Downtime信息已创建，请尽快维修!");
-                },
-                fail: function (err, status, xhr) {
-                    showWarning(err.responseText);
-                },
-                error: function (err) {
-                    showWarning(err.responseText);
-                },
-                complete: function (res) {
-                    $('#department-select').val($("#cr-department").val());
-                    $('#project-select').val($("#cr-project").val())
-                    $('#line-select').val($("#cr-line").val())
-                    $('#station-select').val($("#cr-station").val())
-                    $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
-                }
-            })
-        }
-
-
-       
-
-
-
-        function SubmitConfirm() {
-            if (checkFormNoNull("#RCCAConfirmModal")) {
-                let item = {
-                    downtimeid: Number($("#RCCAConfirmModal").attr("data-downtimeid")),
-                    status: Number($(":radio[name=btn-confirm]:checked").val()),
-                    rootcause: $("#confirm-rootcause").hasClass("elehide") ? null : $("#confirm-rootcause").val(),
-                    correctaction: $("#confirm-action").hasClass("elehide") ? null : $("#confirm-action").val(),
-                }
-                postDatatoAPI("http://cnwuxg0te01:9000/api/DowntimeRCCAConfirm/Add", item)  ////http://localhost:19292
+            if (checkFormNoNull("#createIncident")) {
+                let urlstring = "comfrom=Downtime System&department=" + $("#department-select").val() + "&machine=" + $("#machine-select").val()
+                    + "&ErrorCode=" + $("#issue-select").val() + "&ErrorDescription=" + $("#issuedescription").val() + "&Server=" + $("#machine-select").find(":selected").data("server")
+                    + "&isDowntime=" + Boolean($("#issue-select").find(":selected").data("isdowntime"))
+                postDatatoAPI("http://cnwuxm1tes01/eCalling/InsertData2?" + urlstring)
                     .then(res => {
-                        showSuccess("OK");
-                        $("#RCCAConfirmModal").modal("hide");
+                        showSuccess("创建成功");
+                        
+                        //清空输入的内容
                     })
                     .catch(err => {
                         showError(err);
                     })
             }
         }
+       
     </script>
 
 

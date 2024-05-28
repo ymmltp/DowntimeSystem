@@ -8,24 +8,24 @@
             <div class="row">
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2" style="display:none">
                     <label class="form-label"> System:</label>
-                    <select id="system-select" class="form-control selectpicker" title="Select System" data-size="6" multiple  data-none-selected-text="All" data-actions-box="true">
+                    <select id="system-select" class="form-control selectpicker" title="Select System" data-size="6" multiple data-none-selected-text="All" data-actions-box="true">
                     </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Department:</label>
-                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-live-search="true"  data-none-selected-text="All" data-actions-box="true"></select>
+                    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-live-search="true" data-none-selected-text="All" data-actions-box="true"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Project:</label>
-                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" multiple  data-live-search="true"  data-none-selected-text="All" data-actions-box="true" onchange="getLine($('#line-select'),$('#project-select').val()); getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val())"> </select>
+                    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" data-max-options="1" data-live-search="true" onchange="getLine($('#line-select'),$('#project-select').val()); getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val())"> </select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Line:</label>
-                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple  data-none-selected-text="All" data-actions-box="true"  data-live-search="true" onchange=" getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val());"></select>
+                    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" multiple data-none-selected-text="All" data-actions-box="true" data-live-search="true" onchange=" getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(),$('#line-select').val());"></select>
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Station:</label>
-                    <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple  data-none-selected-text="All" data-actions-box="true"  data-live-search="true"></select>
+                    <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-none-selected-text="All" data-actions-box="true" data-live-search="true"></select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
                     <label class="form-label"> Time Range:</label>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
                     <label class="form-label"> Ticket Status:</label>
-                    <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1"  data-none-selected-text="All" >
+                    <select id="status-select" class="form-control selectpicker" title="Select Status" multiple data-max-options="1" data-none-selected-text="All">
                         <option value="0">New Open</option>
                         <option value="1">On-going</option>
                         <option value="2">Closed</option>
@@ -111,7 +111,7 @@
             <div class="modal-body row">
                 <div class="col-lg-6">
                     <label for="cr-department" class="form-label text-right warning-text">Department:</label>
-                    <select id="cr-department" class="form-control selectpicker create-input" title="Select Department" data-size="6"  data-live-search="true" data-none-selected-text="All" data-actions-box="true"></select>
+                    <select id="cr-department" class="form-control selectpicker create-input" title="Select Department" data-size="6" data-live-search="true" data-none-selected-text="All" data-actions-box="true"></select>
                 </div>
                 <div class="col-lg-6">
                     <label for="cr-line" class="form-label text-right warning-text">Line:</label>
@@ -253,12 +253,12 @@
                     <input type='number' step="1" class="form-control raca" id='ca-labor' value="1" title="1" />
                 </div>
                 <div class="col-lg-3 elehide">
-                        <label class="form-label text-right warning-text">Calculate Downtime:</label>
-                        <div class="radio-group">
-                            <label style="font-weight:600"><input type='radio' name="caldowntime" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
-                        </div>
+                    <label class="form-label text-right warning-text">Calculate Downtime:</label>
+                    <div class="radio-group">
+                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
                     </div>
+                </div>
                 <div class="col-lg-3">
                     <label class="form-label text-right warning-text">Sparepart Change:</label>
                     <div class="radio-group">
@@ -294,6 +294,10 @@
                 @*downtime相关*@
                 <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
                     <legend class="ngMES-border">RC & CA</legend>
+                    <div class="col-lg-12">
+                        <label for="form-label warning-text" class="form-label text-right warning-text">Responsible department:</label>
+                        <select id="rsdepartment-select" class="form-control selectpicker noNull" noNull="Responsible department" title="Select Department" data-size="6" data-max-options="1" data-live-search="true" data-actions-box="true"></select>
+                    </div>
                     <div class="col-lg-6">
                         <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
                         <input type='text' class="form-control raca noNull" id='ca-rootcause' noNull="Root Cause" />
@@ -411,19 +415,19 @@
                     <label id="confirmtitle" class="form-label text-right"></label>
                     <div class="row">
                         <div class="col-lg-12">
-                            <input type='radio'  name="btn-confirm" value="0" id="cbtn0" />
+                            <input type='radio' name="btn-confirm" value="0" id="cbtn0" />
                             <label for="cbtn0" class="form-label">我确认我填写的内容就是停机的根本原因，并非现象描述，并对填写的内容负责</label>
                         </div>
                         <div class="col-lg-12">
-                            <input type='radio'  name="btn-confirm" value="1" id="cbtn1" />
-                            <label for="cbtn1"  class="form-label">我并不清楚根本原因是什么，我需要我的leader协助填写 </label>
+                            <input type='radio' name="btn-confirm" value="1" id="cbtn1" />
+                            <label for="cbtn1" class="form-label">我并不清楚根本原因是什么，我需要我的leader协助填写 </label>
                         </div>
                         <div class="col-lg-12">
                             <input type='radio' name="btn-confirm" value="2" id="cbtn2" />
-                            <label for="cbtn2"  class="form-label">我需要重新更新填写的根本原因和对策 </label>
+                            <label for="cbtn2" class="form-label">我需要重新更新填写的根本原因和对策 </label>
                         </div>
                     </div>
-                </div>    
+                </div>
                 <div class="col-lg-6 elehide reRCCA">
                     <label for="confirm-rootcause" class="form-label text-right warning-text">Root Cause:</label>
                     <textarea class="form-control reRCCA noNull" id='confirm-rootcause' rows="6" noNull="Root Cause"></textarea>
@@ -432,7 +436,7 @@
                     <label for="confirm-action" class="form-label text-right warning-text">Corrective Action:</label>
                     <textarea class="form-control reRCCA noNull" id='confirm-action' rows="6" noNull="Corrective Action"></textarea>
                 </div>
-            </div>          
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="SubmitConfirmbtn" onclick="SubmitConfirm()">Submit</button>
             </div>
@@ -523,7 +527,7 @@
         $("#dtList").bootstrapTable('destroy').bootstrapTable({
             cache: false,
             type: 'GET',
-            url: '/EC/GetDowntimeList',
+            url: 'http://cnwuxg0te01:9000/api/Downtime/Query_ByFilter',
             queryParams: {
                 id: $("#id").val(),
                 Department: $("#department-select").val(),
@@ -598,6 +602,12 @@
                 align: 'center',
                 valign: 'middle',
             }, {
+                field: 'responsedep',
+                title: 'Responsible department',
+                align: 'center',
+                valign: 'middle',
+            },
+            {
                 field: 'project',
                 title: 'Project',
                 align: 'center',
@@ -646,6 +656,7 @@
                 title: 'Repair Time',
                 align: 'center',
                 valign: 'middle',
+                visible: false,
                 formatter: function (value, row, index) {
                     if (value)
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
@@ -662,13 +673,14 @@
                 title: 'Finish Time',
                 align: 'center',
                 valign: 'middle',
-                
+                visible: false,
+
                 formatter: function (value, row, index) {
                     if (value)
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     else
                         return value;
-                   
+
                 },
             }, {
                 field: 'calcdowntime',
@@ -708,7 +720,7 @@
                 title: 'RC',
                 align: 'center',
                 valign: 'middle',
-                visible: false,
+                
             }, {
                 field: 'rootcauseremark',
                 title: 'RC Description',
@@ -720,7 +732,7 @@
                 title: 'CA',
                 align: 'center',
                 valign: 'middle',
-                visible: false,
+               
             }, {
                 field: 'actionremark',
                 title: 'CA Description',
@@ -786,9 +798,9 @@
                                 },
 
                                 complete: function (res) {
-                                   
+
                                     $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
-                                    
+
                                 }
                             })
                         }
@@ -890,6 +902,8 @@
         GetAllPN($("#ca-pn"));
         sparepartList = [];
         $("#sparepart_table").bootstrapTable('destroy');
+        getDepartment2($("#rsdepartment-select"));
+
 
 
         $("#CA-title").html("填写 RC 和 CA");
@@ -918,6 +932,7 @@
 
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);
+        $("#rsdepartment-select").val(row['responsedep']);
         $("#ca-action").val(row['action']);
         $("#ca-actionremark").val(row['actionremark']);
         $(".raca").removeAttr('readonly');
@@ -1056,11 +1071,11 @@
                 }
             }
             var tmp = {
-                id: $("#CAModal").data('id'),
-                calcdowntime: $(':radio[name=caldowntime]:checked').val(),
-                labor: $("#ca-labor").val(),
+                id: $("#CAModal").data('id'),              
+                labor: Number($("#ca-labor").val()),
                 rootcause: $("#ca-rootcause").val(),
                 rootcauseremark: $("#ca-rootcauseremark").val(),
+                responsedep: $("#rsdepartment-select").val(),
                 action: $("#ca-action").val(),
                 actionremark: $("#ca-actionremark").val(),
                 station: $("#ca-station").val(),
@@ -1069,7 +1084,7 @@
                 issue: $("#ca-issue").val(),
                 issueremark: $("#ca-issueremark").val(),
             };
-            postData('/EC/RCCA', tmp)
+            postDataWithArray('http://cnwuxg0te01:9000/api/Downtime/Update', tmp)
                 .then(res => {
                     if ($(':radio[name=caldowntime]:checked').val() == 'true') {
                         return getData('/Basic/GetCurrentWeek', { date: (new Date()).format('yyyy-MM-dd') })
@@ -1152,6 +1167,7 @@
 
         $("#ca-rootcause").val(row['rootcause']);
         $("#ca-rootcauseremark").val(row['rootcauseremark']);
+        $("#rsdepartment-select").val(row['responsedep']);
         $("#ca-action").val(row['action']);
         $("#ca-actionremark").val(row['actionremark']);
         $(".raca").attr('readonly', true);
@@ -1201,7 +1217,7 @@
     //创建DowntimeIncidence
     $("#new").on('click', function () {
         getDepartment1($("#cr-department"));
-        
+
         $(".create-input").val("");
         $("#createDT").datetimepicker({
             fontAwesome: 'font-awesome',
@@ -1236,7 +1252,7 @@
             return;
         }
         $.ajax({
-            url: '/EC/CreateDowmtimeIncident',
+            url: 'http://cnwuxg0te01:9000/api/Downtime/Update',
             method: 'POST',
             data: {
                 comefrom: "Downtime System",
@@ -1247,6 +1263,7 @@
                 occurtime: $("#cr-occtime").val(),
                 calcdowntime: "true",
                 department: $("#cr-department").val(),
+                responsedep: $("#rsdepartment-select").val(),
                 issue: $("#cr-issue").val(),
                 issueremark: $("#cr-issueremark").val(),
                 creator: $("#cr-creator").val(),
@@ -1511,28 +1528,28 @@
         $("#RCCAConfirmModal").modal("show");
     }
     $(":radio[name=btn-confirm]").on("click", function () {
-        if  ($(this).val()== "2") {
+        if ($(this).val() == "2") {
             $(".reRCCA").removeClass("elehide");
         } else {
             $(".reRCCA").addClass("elehide");
         }
     })
     function SubmitConfirm() {
-      if(checkFormNoNull("#RCCAConfirmModal")){
-          let item = {
-            downtimeid: Number($("#RCCAConfirmModal").attr("data-downtimeid")),
-            status: Number($(":radio[name=btn-confirm]:checked").val()),
-            rootcause: $("#confirm-rootcause").hasClass("elehide") ? null : $("#confirm-rootcause").val(),
-            correctaction: $("#confirm-action").hasClass("elehide") ? null : $("#confirm-action").val(),
-        }
-          postDatatoAPI("http://cnwuxg0te01:9000/api/DowntimeRCCAConfirm/Add", item)  ////http://localhost:19292
-            .then(res => {
-                showSuccess("OK");
-                $("#RCCAConfirmModal").modal("hide");
-            })
-            .catch(err => {
-                showError(err);
-            })
+        if (checkFormNoNull("#RCCAConfirmModal")) {
+            let item = {
+                downtimeid: Number($("#RCCAConfirmModal").attr("data-downtimeid")),
+                status: Number($(":radio[name=btn-confirm]:checked").val()),
+                rootcause: $("#confirm-rootcause").hasClass("elehide") ? null : $("#confirm-rootcause").val(),
+                correctaction: $("#confirm-action").hasClass("elehide") ? null : $("#confirm-action").val(),
+            }
+            postDatatoAPI("http://cnwuxg0te01:9000/api/DowntimeRCCAConfirm/Add", item)  ////http://localhost:19292
+                .then(res => {
+                    showSuccess("OK");
+                    $("#RCCAConfirmModal").modal("hide");
+                })
+                .catch(err => {
+                    showError(err);
+                })
         }
     }
 </script>

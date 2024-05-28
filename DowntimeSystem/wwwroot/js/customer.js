@@ -236,10 +236,54 @@ function getDepartment(obj) {
         }
     })
 }
+function getDepartment2(obj) {
+
+    $.ajax({
+        url: '/EC/GetDepartment',
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'json',
+        success: function (data) {
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+            }
+            obj.html(option);
+            obj.selectpicker('refresh');
+        },
+        fail: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        }
+    })
+}
+function iniDatetimepicker_withTime() {
+    $(".form_datetime").datetimepicker({
+        fontAwesome: 'font-awesome',
+        format: 'yyyy-mm-dd hh:ii:00',//hh:00:00', //时间显示的格式
+        todayBtn: true, //一键选中今天的日期
+        minDate: '2022/01/01',
+        maxDate: 0,//今天
+        pickerPosition: "bottom-left", //打开选择卡的位置
+        weekStart: 1, //周开始的星期：0-6 星期日-星期六
+        autoclose: true,//选好时间后自动关闭
+        startView: 0,
+        maxView: 4,
+        minView: 0,//显示的最小选项卡：0-4 hour,day,month,year,decade
+        minuteStep: 2,
+        language: 'zh-CN',
+        startDate: new Date("2022-01-01"),
+        endDate: new Date()
+    });
+}
 function getDepartment1(obj) {
 
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetDepartment_FromMatrix',
+        url: 'http://cnwuxg0te01:9000/api/eCallingBasic/GetDepartment',
         method: 'GET',
         dataType: 'json',
         contentType: 'json',
@@ -273,7 +317,7 @@ function getLine(obj, project) {
         })
 }
 function getLine1(obj, project) {
-    getDataWithArray('http://cnwuxg0te01:9000/api/DowntimeBasic/GetLine_FromMatrix', { project: project })
+    getDataWithArray('http://cnwuxg0te01:9000/api/eCallingBasic/GetLine', { project: project })
         .then(data => {
             var option = "";
             for (var i = 0; i < data.length; i++) {
@@ -311,7 +355,7 @@ function getProject(obj,line) {
 }
 function getProject1(obj) {
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetProject_FromMatrix',
+        url: 'http://cnwuxg0te01:9000/api/eCallingBasic/GetProject',
         method: 'GET',
        
         dataType: 'json',
@@ -350,7 +394,7 @@ function getStation(obj, department, project,line) {
         })
 }
 function getStation1(obj, project, line) {
-    getDataWithArray('http://cnwuxg0te01:9000/api/DowntimeBasic/GetStation_FromMatrix',
+    getDataWithArray('http://cnwuxg0te01:9000/api/eCallingBasic/GetStation',
         {
            
             Line: line,
@@ -365,21 +409,34 @@ function getStation1(obj, project, line) {
             obj.selectpicker('refresh');
         })
 }
- function getErrorCode(obj, Department, vbNumber) {
-    getDataWithArray('http://cnwuxg0te01:9000/api/DowntimeBasic/GetErrorCode_FromMatrix',
-        {
 
-            Department: Department,
-            vbNumber: vbNumber,
-        })
-        .then(data => {
-            var option = "";
+function getErrorCode(obj, Department, vbnumber) {
+    var paras = {
+        department: Department,
+        vbnumber: vbnumber,
+    };
+    $.ajax({
+        url: 'http://cnwuxg0te01:9000/api/eCallingBasic/GetErrorCode',
+        method: 'GET',
+        data: paras,
+        dataType: 'json',
+        success: function (data) {
+            let option = '';
             for (var i = 0; i < data.length; i++) {
-                option += '<option value="' + data[i].paras + '">' + data[i].paras + '</option>';
+                option += '<option value="' + data[i].issue + '" data-issue="' + data[i].callDepartment + ',' + data[i].callIssue + '" data-isdowntime="' + data[i].isdowntime + '">' + data[i].issue + '</option>';
             }
             obj.html(option);
             obj.selectpicker('refresh');
-        })
+        },
+        fail: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        },
+        error: function (err) {
+            console.log(err);
+            showWarning(err.statusText);
+        }
+    });
 }
 function getDashboardSystem(obj) {
     $.ajax({
@@ -404,11 +461,11 @@ function getDashboardSystem(obj) {
         }
     })
 }
-function getMachine(Station, Line, Project, obj) {
+function getMachine(machine, Line, Project, obj) {
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetMachine_FromMatrix',
+        url: 'http://cnwuxg0te01:9000/api/eCallingBasic/GetMachine',
         data: {
-            Station: Station,
+            Station: machine,
             Line: Line,
             Project:Project,
         },
@@ -417,7 +474,7 @@ function getMachine(Station, Line, Project, obj) {
         success: function (data) {
             var option = "";
             for (var i = 0; i < data.length; i++) {
-                option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+                option += '<option value="' + data[i].resource + '" data-server="' + data[i].server + '" data-vbnumber="' + data[i].vbnumber + '">' + data[i].resource + '</option>';
             }
             obj.html(option);
             obj.selectpicker('refresh');
