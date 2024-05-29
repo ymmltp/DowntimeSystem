@@ -1,0 +1,282 @@
+﻿@{
+    ViewData["Title"] = "Review RCCA";
+}
+
+
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
+        <div class="panel-body">
+            @await Component.InvokeAsync("_DTIncidentSearchComponent")
+        </div>
+    </div>
+</div>
+
+<table id="incidenttable"></table>
+
+
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-editable.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-editable.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-export.js"></script>
+<script src="~/lib/bootstrap/dist/js/tableExport.js"></script>
+<script src="~/lib/bootstrap/dist/js/FileSaver.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/xlsx.core.min.js"></script>
+
+<script>
+    function GetDowntimeList() {
+        $("#incidenttable").bootstrapTable('destroy').bootstrapTable({
+            cache: false,
+            type: 'GET',
+            url: BasicURL+'/api/Downtime/Query_ByFilter',
+            queryParams: {
+                id: $("#id").val(),
+                Department: $("#department-select").val(),
+                Project: $("#project-select").val(),
+                Line: $("#line-select").val(),
+                Station: $("#station-select").val(),
+                Incidentstatus: $("#status-select").val(),
+                starttime: $("#start").val() ? $("#start").val() + " 00:00:00" : null,
+                endtime: $("#end").val() ? $("#end").val() + " 23:59:59" : null,
+                Respperson: $("#responser").val(),
+            },
+            ajaxOptions: {                      //传参ajax设置
+                traditional: true,              //允许传递数组类型的参数
+            },
+            search: true,                       //开启搜索框
+            visibleSearch: true,
+            showSearchButton: false,
+            showColumns: true,
+            sortable: true,                     //是否启用排序
+            sortName: 'downtime',
+            sortOrder: "desc",
+            dataType: 'json',
+            pagination: true,
+            paginationLoop: false,
+            pageSize: 10,
+            pageList: '[10, 50 ,100 ,200, 500, ALL]',
+            showExport: function (row, index) {
+                var sUserAgent = navigator.userAgent.toLowerCase();
+                var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+                var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+                var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+                var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+                var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+                var bIsAndroid = sUserAgent.match(/android/i) == "android";
+                var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+                var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+                if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            exportDataType: 'basic', //'basic', 'all', 'selected'.
+            exportTypes: ['csv', 'excel', 'xlsx'], //导出类型
+            exportOptions: {
+                fileName: 'Downtime List - ' + formatDate(new Date()), //文件名称设置
+                worksheetName: 'Sheet1', //表格工作区名称
+                tableName: 'Downtime List',
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+            },
+            columns: [{
+                field: 'id',
+                title: 'Ticket No.',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'creator',
+                title: 'Creator',
+                align: 'center',
+                valign: 'middle',
+                visible: false,
+            }, {
+                field: 'department',
+                title: 'Department',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'project',
+                title: 'Project',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'line',
+                title: 'Line',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'station',
+                title: 'Station Name',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'machine',
+                title: 'Machine Name',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'occurtime',
+                title: 'Start Time',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+                },
+            }, {
+                field: 'issue',
+                title: 'Defect Code',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'issueremark',
+                title: 'Issue Description',
+                align: 'center',
+                valign: 'middle',
+                visible: false,
+            }, {
+                field: 'respperson',
+                title: 'Employee ID',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                field: 'finishtime',
+                title: 'Finish Time',
+                align: 'center',
+                valign: 'middle',
+                sortable: true,
+                formatter: function (value, row, index) {
+                    if (value)
+                        return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+                    else
+                        return value;
+                },
+            }, {
+                field: 'downtime',
+                title: 'Downtime(m)',
+                align: 'center',
+                valign: 'middle',
+                sortable: true,
+                formatter: function (value, row, index) {
+                    if (row['calcdowntime']) {
+                        if (row['finishtime'] == null) {
+                            let tmp = new Date(row['occurtime']);
+                            let Downtime = new Date() - tmp;
+                            return (Downtime / 1000 / 60).toFixed(2);
+                        }
+                        else {
+                            return (Math.abs(value / 60)).toFixed(2);
+                        }
+                    }
+                    else {
+                        return 'Null';
+                    }
+                },
+            },{
+                field: 'rootcause',
+                title: 'RC',
+                align: 'center',
+                valign: 'middle',
+                editable: {
+                    title: 'rootcause',
+                    type: 'text',
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
+            }, {
+                field: 'rootcauseremark',
+                title: 'RC Description',
+                align: 'center',
+                valign: 'middle',
+                visible: false,
+            }, {
+                field: 'action',
+                title: 'CA',
+                align: 'center',
+                valign: 'middle',
+                editable: {
+                    title: 'action',
+                    type: 'text',
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
+            }, {
+                field: 'actionremark',
+                title: 'CA Description',
+                align: 'center',
+                valign: 'middle',
+                visible: false,
+                },
+                {
+                    field: 'actionstatus',
+                    title: 'Status',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        switch (value) {
+                            case 0:
+                            case 1:
+                                return ['<label  style="color:blue">Need Close</label>'];
+                                break;
+                            case 2:
+                                return ['<label  style="color:blue">Need RCCA</label>'];
+                                break;
+                            case 3:
+                                return ['<label style="color:blue">Need Verify</label>']
+                                break;
+                            case 4:
+                                return ['<label style="color:green">Verify OK</label>'];
+                                break;
+                            default:
+                                break;
+                        }
+                    },
+                },
+            {
+                field: 'Option',
+                title: '操作',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    switch (row.actionstatus) {
+                        case 3:
+                            return ['<button type="button" class="btn warning text-light"  id="verify">Verify Pass</button>']
+                            break;
+                        default:
+                            break;
+                        }
+                    },
+                events: {
+                        "click #verify": function (e, value, row, index) {
+                            row.actionstatus = 4;
+                            postDatatoAPI(BasicURL + '/api/Downtime/Update', row)
+                                .then(res => {
+                                    showSuccess("Verify OK");
+                                    $("#incidenttable").bootstrapTable("refreshOptions", { url: BasicURL + '/api/Downtime/Query_ByFilter' });
+                                })
+                                .catch(err => {
+                                    showError(err);
+                                })
+                        },
+                    }
+            }, ],
+            onEditableSave: function (field, row, oldValue, $el) {
+                if (row.rootcause != null && row.action != null) {
+                    row.actionstatus = 3;
+                }
+                postDatatoAPI(BasicURL + '/api/Downtime/Update', row)
+                    .then(res => {
+                        showSuccess("Updated");
+                        $("#incidenttable").bootstrapTable("refreshOptions", { url: BasicURL + '/api/Downtime/Query_ByFilter' });
+                    })
+                    .catch(err => {
+                        showError(err);
+                    })
+            },
+        })
+    }
+</script>

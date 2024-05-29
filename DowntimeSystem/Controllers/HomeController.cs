@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
-using DowntimeSystem.Models;
+using DowntimeSystem.Models.Unitity;
 
 namespace DowntimeSystem.Controllers
 {
@@ -19,16 +19,27 @@ namespace DowntimeSystem.Controllers
             _logger = logger;
         }
 
+        #region task
         public IActionResult Query()
         {
             return View();
         }
+        public IActionResult Task_CreateIncident()
+        {
+            return View();
+        }
+
+        [ApproveAuthorize(Roles = 2)]
+        public IActionResult Task_ReviewRCCA()
+        {
+            return View();
+        }
+        #endregion
 
         public IActionResult QEQSparepartChangeHistory()
         {
             return View();
         }
-
 
         public IActionResult IssueSummary()
         {
@@ -36,6 +47,11 @@ namespace DowntimeSystem.Controllers
         }
 
         public IActionResult Contact()
+        {
+            return View();
+        }
+
+        public IActionResult NoAccess()
         {
             return View();
         }
@@ -99,12 +115,12 @@ namespace DowntimeSystem.Controllers
         }
         #endregion
 
-        //Test Page
+        #region Test Page
         public IActionResult testDashboardPage()
         {
             return View();
         }
-
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -122,23 +138,24 @@ namespace DowntimeSystem.Controllers
                 string identityName = HttpContext.User.Identity.Name;
                 int splitIndex = identityName.IndexOf('\\');
                 string ntid = splitIndex > -1 ? identityName.Substring(splitIndex + 1) : identityName;
-                string displayname = ad.GetADDispalyName(ntid);
+                UserInfo ui = ad.GetADUserEntity(ntid);
                 HttpContext.Request.Cookies.TryGetValue("dt-ntid", out string value);
-                if (!string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
-                    HttpContext.Response.Cookies.Delete("dt-displayname");
-                    HttpContext.Response.Cookies.Delete("dt-ntid");             
-                }
-                HttpContext.Response.Cookies.Append("dt-ntid", ntid, new CookieOptions
-                {
-                    Expires = DateTime.Now.AddMinutes(120)
-                });
-                HttpContext.Response.Cookies.Append("dt-displayname", displayname, new CookieOptions
-                {
-                    Expires = DateTime.Now.AddMinutes(120)
-                });
-                //UserInfo ui = ad.GetADUserEntity(ntid);
-                return Json(displayname);
+                    HttpContext.Response.Cookies.Append("dt-ntid", ntid, new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddMinutes(120)
+                    });
+                    HttpContext.Response.Cookies.Append("dt-displayname", ui.DisplayName, new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddMinutes(120)
+                    });
+                    HttpContext.Response.Cookies.Append("dt-email", ui.Email, new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddMinutes(120)
+                    }); 
+                } 
+                return Json(ui.DisplayName);
             }
             catch (Exception err)
             {

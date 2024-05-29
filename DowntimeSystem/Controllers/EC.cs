@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DowntimeSystem.Models;
 using DowntimeSystem.Models.HR;
+using DowntimeSystem.Models.Unitity;
 
 namespace DowntimeSystem.Controllers
 {
@@ -231,12 +232,38 @@ namespace DowntimeSystem.Controllers
                     tmp.Action = item.Action;
                     tmp.Actionremark = item.Actionremark;
                     db.SaveChanges();
+                    if (tmp.Downtime / 60 > 30)
+                    {
+                        CallDRItoVerify(tmp);
+                    }
                     return Json(true);
                 }
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+
+        #region
+        //邮件通知相关level = 2的人员,检查RCCA
+        private bool CallDRItoVerify(IncidentDet item) {
+            bool callback = true;
+            using (ECContext db = new ECContext()) {
+                try
+                {
+                    List<string> mailto = db.EscalationNameLists.Where(e => e.Department.Equals(item.Department) & e.Project.Equals(item.Project) & e.Level == 2).Select(e=>e.Email).ToList();
+                    if (mailto.Count <= 0)
+                    {
+                        throw new Exception("There is no contact user. Please add dri about this department , project in downtime system");
+                    }
+                    List<string> mailcc = new List<string>();
+                    SendMail.MailSend("RCCA Verify Notice", $"<b>Please Notice there is a new rcca need you verify in DTAS</br>Visit <a href='http://cnwuxg0te01:8050/Home/Task_ReviewRCCA'>DTAS</a> for detail information", mailto, mailcc);
+                    return callback;
+                } catch (Exception ex) {
+                    throw ex;
+                }
             }
         }
         #endregion
