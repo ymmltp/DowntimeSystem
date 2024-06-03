@@ -109,7 +109,7 @@
                 let urlstring = "comfrom=Downtime System&department=" + $("#department-select").val() + "&machine=" + $("#machine-select").val()
                     + "&ErrorCode=" + $("#issue-select").val() + "&ErrorDescription=" + $("#issuedescription").val() + "&Server=" + $("#machine-select").find(":selected").data("server")
                     + "&isDowntime=" + Boolean($("#issue-select").find(":selected").data("isdowntime"))
-                postDatatoAPI("http://cnwuxm1tes01/eCalling/InsertData2?" + urlstring)
+                postDatatoAPI("http://cnwuxm1tes05/eCalling/InsertData2?" + urlstring)
                     .then(res => {
                         showSuccess("创建成功");
                         
