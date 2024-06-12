@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Shared\Components\_DTMachineSearchComponent\Default.cshtml" />
+    <Content Remove="Views\Shared\Components\DTMachineSearchComponent\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,8 +46,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Shared\Components\_DTMachineSearchComponent\Default.cshtml" />
-    <None Include="Views\Shared\Components\_DTIncidentSearchComponent\Default.cshtml" />
+    <None Include="Views\Shared\Components\DTMachineSearchComponent\Default.cshtml" />
+    <None Include="Views\Shared\Components\DTIncidentSearchComponent\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

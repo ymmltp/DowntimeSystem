@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DowntimeSystem.ViewComponents
 {
-    public class _DTIncidentSearchComponent : ViewComponent
+    public class DTMachineSearchComponent : ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View();
+            return View("Default");
         }
     }
 }

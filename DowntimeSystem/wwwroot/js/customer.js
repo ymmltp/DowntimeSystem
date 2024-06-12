@@ -712,7 +712,7 @@ function GeteCallingErrocCode(obj, department, vbnumber) {
 }
 //#endregion 
 
-//#region 获取Downtime中的信息
+//#region 获取Downtime Incident中的信息
 function GetDTDepartment(obj) {
     GetSelectOptions_paras(BasicURL + '/api/DowntimeBasic/GetDepartment_FromMatrix', null, obj);
 }

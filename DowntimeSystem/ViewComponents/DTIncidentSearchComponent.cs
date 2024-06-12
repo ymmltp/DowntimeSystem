@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DowntimeSystem.ViewComponents
 {
-    public class _DTMachineSearchComponent : ViewComponent
+    public class DTIncidentSearchComponent : ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
