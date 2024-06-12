@@ -64,6 +64,11 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
+        public IActionResult Page_RCCA()
+        {
+            return View();
+        }
+
 
         #region dashboard
         public IActionResult Dashboard()

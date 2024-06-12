@@ -712,5 +712,59 @@ function GeteCallingErrocCode(obj, department, vbnumber) {
 }
 //#endregion 
 
-
+//#region 获取Downtime中的信息
+function GetDTDepartment(obj) {
+    GetSelectOptions_paras(BasicURL + '/api/DowntimeBasic/GetDepartment_FromMatrix', null, obj);
+}
+function GetDTProject(obj) {
+    GetSelectOptions_paras(BasicURL + '/api/DowntimeBasic/GetProject_FromMatrix', null, obj);
+}
+function GetDTLine(obj, department, project) {
+    let paras = {
+        project: project,
+        department: department,
+    };
+    GetSelectOptions_paras(BasicURL + '/api/DowntimeBasic/GetLine_FromMatrix', paras, obj);
+}
+function GetDTStation(obj, department, project, line) {
+    let paras = {
+        department: department,
+        project: project,
+        line: line,
+    };
+    GetSelectOptions_paras(BasicURL + '/api/DowntimeBasic/GetStation_FromMatrix', paras, obj);
+}
+function GetDTMachine(obj, department, project, line, station, eqid) {
+    let paras = {
+        department: department,
+        project: project,
+        line: line,
+        station: station,
+    };
+    $.ajax({
+        url: BasicURL + '/api/DowntimeBasic/GetMachine_FromMatrix',
+        method: 'GET',
+        data: paras,
+        dataType: 'json',
+        traditional: true,
+        success: function (data) {
+            let option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].resource + '" data-server="' + data[i].server + '" data-vbnumber="' + data[i].vbnumber + '">' + data[i].resource + '</option>';
+            }
+            obj.html(option);
+            if (eqid != null && eqid.length >= 0) {
+                obj.val(eqid);
+            }
+            obj.selectpicker("refresh");
+        },
+        fail: function (err) {
+            showWarning(err.responseText);
+        },
+        error: function (err) {
+            showWarning(err.responseText);
+        }
+    })
+}
+//#endregion
 

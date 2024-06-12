@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Machine RCCA";
+}
+
+@*
+    选择项目，部门，站位，machine，可锁定 ,根据machine 设定webSocket通道
+    显示项目，部门，站位，machine，WI 信息（编号，版本）
+    webSocket 收到消息，根据消息内容，（解析本地的WI文件），显示内容在页面上
+*@
+
+<div class="container-fluid">
+    <div class="row">
+        @await Component.InvokeAsync("_DTMachineSearchComponent")
+        <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="Set()">Set</button></div>
+    </div>
+</div>

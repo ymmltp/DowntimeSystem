@@ -1,0 +1,46 @@
+﻿@*Machine 显示查询条件 *@
+<div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+    <label class="form-label"> Department:</label>
+    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-live-search="true"></select>
+</div>
+<div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+    <label class="form-label"> Project:</label>
+    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" data-live-search="true"> </select>
+</div>
+<div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+    <label class="form-label"> Line:</label>
+    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" data-live-search="true"> </select>
+</div>
+<div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+    <label class="form-label"> Station:</label>
+    <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" data-live-search="true"></select>
+</div>
+<div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+    <label class="form-label"> Machine:</label>
+    <select id="machine-select" class="form-control selectpicker" title="Select Machine" data-size="6" data-live-search="true"></select>
+</div>
+
+
+
+<script src="~/js/customer.js"></script>
+<script>
+    $(document).ready(function () {
+        getDTDepartment($("#department-select"));
+        getDTLine($('#line-select'));
+        getDTProject($('#project-select'));
+        getDTStation($('#station-select'));
+        getDTMachine($('#machine-select'));
+
+        $("#project-select").on("change", function () {
+            getDTLine($('#line-select'), $('#department-select').val(),$('#project-select').val());
+        })
+
+        $("#line-select").on("change", function () {
+            getDTStation($('#station-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val());         
+        })
+
+        $("#station-select").on("change", function () {
+            getDTMachine($('#machine-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val(), $('#station-select').val());
+        })
+    })
+</script>
