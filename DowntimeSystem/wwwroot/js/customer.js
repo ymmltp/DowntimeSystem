@@ -308,31 +308,31 @@ function getMachine(machine, Line, Project, obj) {
 
 
 
-function getDepartment1(obj) {
+//function getDepartment1(obj) {
 
-    $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetDepartment_FromMatrix',
-        method: 'GET',
-        dataType: 'json',
-        contentType: 'json',
-        success: function (data) {
-            var option = "";
-            for (var i = 0; i < data.length; i++) {
-                option += '<option value="' + data[i].paras + '">' + data[i].paras + '</option>';
-            }
-            obj.html(option);
-            obj.selectpicker('refresh');
-        },
-        fail: function (err) {
-            console.log(err);
-            showWarning(err.statusText);
-        },
-        error: function (err) {
-            console.log(err);
-            showWarning(err.statusText);
-        }
-    })
-}
+//    $.ajax({
+//        url: 'http://cnwuxg0te01:9000/api/DowntimeBasic/GetDepartment_FromMatrix',
+//        method: 'GET',
+//        dataType: 'json',
+//        contentType: 'json',
+//        success: function (data) {
+//            var option = "";
+//            for (var i = 0; i < data.length; i++) {
+//                option += '<option value="' + data[i].paras + '">' + data[i].paras + '</option>';
+//            }
+//            obj.html(option);
+//            obj.selectpicker('refresh');
+//        },
+//        fail: function (err) {
+//            console.log(err);
+//            showWarning(err.statusText);
+//        },
+//        error: function (err) {
+//            console.log(err);
+//            showWarning(err.statusText);
+//        }
+//    })
+//}
 
 
 
