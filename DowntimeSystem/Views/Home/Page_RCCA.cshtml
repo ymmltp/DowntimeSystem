@@ -3,14 +3,289 @@
 }
 
 @*
-    选择项目，部门，站位，machine，可锁定 ,根据machine 设定webSocket通道
+    根据项目，部门，线体 ，站位，检索出machine，根据 machine 设定 webSocket通道
     显示项目，部门，站位，machine，WI 信息（编号，版本）
     webSocket 收到消息，根据消息内容，（解析本地的WI文件），显示内容在页面上
 *@
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" id="searchBar">
         @await Component.InvokeAsync("DTMachineSearchComponent")
         <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="Set()">Set</button></div>
     </div>
+    <div class="row">   
+        <div class="col-6">
+            <div class="card">
+                <form class="card-body" id="myForm">
+                    <input id="socketstatus" hidden />
+                    <h6 class="card-title">机台信息 <i class="fa  fa-toggle-off pull-right green-font" style="font-size:20px" id="switch"></i></h6>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">项目</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-project">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">部门</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-department">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">线体</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-line">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">站位</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-station">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">设备名</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-machine">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body" id="incident">
+                    <h6 class="card-title" id="incident-title">最新Downtime事件 <span class="pull-right" id="incident-id"></span></h6>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">开始时间</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-starttime">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">结束时间</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-endtime">
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">问题</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-issue">
+                            </div>
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">问题描述</span>
+                                    </div>
+                                    <textarea type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-description" rows="1"></textarea>
+                                </div>
+                            </div>                   
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <strong> <span id="wi"></span> - <span id="version"></span></strong>
+            <div class="row">
+                <div class="col">
+                    <table id="table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="~/js/webSocket.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script>
+    var socket = new WebSocketHandler();
+    $(document).ready(function () {
+        $("#socketstatus").on('change', function () {
+            SwitchChange(Boolean($(this).val()));
+        });
+        InitialRCCATable();
+    })
+    //加载配置信息
+    function Set() {
+        if (checkFormNoNull("#searchBar")) {
+            GetMachineInfo();
+            GetWIInfo();   //加载WI信息
+        } 
+    }
+    function GetMachineInfo() {
+        $("#info-department").val($("#department-select").val());
+        $("#info-project").val($("#project-select").val());
+        $("#info-line").val($("#line-select").val());
+        $("#info-station").val($("#station-select").val());
+        $("#info-machine").val($("#machine-select").val());
+        socket.initializeSocket($("#machine-select").val(), onMessageEvent);//创建WebSocket 通道
+    }
+    function GetWIInfo() {
+        getData(BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo', {
+            Department: $("#department-select").val(),
+            Project: $("#project-select").val(),
+            Station: $("#station-select").val(),
+        })
+            .then(res => {
+                if (res[0] == undefined) {
+                    $("#wi").html('NULL');
+                    $("#version").html('NULL');
+                } else {
+                    $("#wi").html(res[0].formno);
+                    $("#version").html(res[0].version);
+                }
+            })
+    }
+
+    //接受到Downtime信息，触发的动作
+    function onMessageEvent(data) {
+        ShowDTinfo(data);
+        if ($("#wi").html() != "NULL") {
+            if (data.incidentstatus == 0) {
+                ShowRCCA(data);
+            } else if (data.incidentstatus == 2) {
+                ShowRCCA([]);
+            }
+        }
+    }
+    function ShowDTinfo(data) {
+        $("#incident-title").addClass("white-font");
+        if (data.incidentstatus == 0) {
+            $("#incident").removeClass("color-green");
+            $("#incident").addClass("color-red");
+        }
+        else if (data.incidentstatus == 2) {
+            $("#incident").removeClass("color-red");
+            $("#incident").addClass("color-green");
+        } else {
+            $("#incident").removeClass("color-red");
+            $("#incident").removeClass("color-green");
+            $("#incident-title").removeClass("white-font");
+        }
+        $("#incident-id").html(data.id);
+        $("#incident-starttime").val(new Date(data.occurtime).format('yyyy-MM-dd hh:mm:ss'));
+        $("#incident-endtime").val(new Date(data.finishtime).format('yyyy-MM-dd hh:mm:ss'));
+        $("#incident-issue").val(data.issue);
+        $("#incident-description").val(data.issueremark);
+    }
+    function InitialRCCATable() {
+        $("#table").bootstrapTable('destroy').bootstrapTable({
+            data: [],
+            columns: [[{
+                title: '维修指导手册',
+                colspan: 12,
+                align: 'center',
+            }], [ {
+                field: 'errorCode',
+                title: '异常代码',
+                }, {
+                field: 'issue',
+                title: '问题描述',
+                }, {
+                field: 'issuePic',
+                title: '问题图片',
+                formatter: function (value) {
+                    if (value != null) {
+                        return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                    }
+                }
+                },{
+                field: 'checkStep',
+                title: '检查步骤',
+                }, {
+                field: 'checkStepPic',
+                title: '检查步骤图片',
+                    formatter: function (value) {
+                        if (value != null) {
+                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                        }
+                    }
+                }, {
+                    field: 'rootCause',
+                    title: '根本原因',
+                }, {
+                field: 'correctiveAction',
+                title: '纠正措施',
+                }, {
+                    field: 'tool',
+                    title: '工具',
+                }, {
+                field: 'correctiveActionPic',
+                title: '纠正措施图片',
+                    formatter: function (value) {
+                        if (value != null) {
+                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                        }
+                    }
+                }, {
+                field: 'correctiveStep',
+                title: '纠正步骤',
+                }, {
+                field: 'correctiveStepPic',
+                title: '纠正步骤图片',
+                    formatter: function (value) {
+                        if (value != null) {
+                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                        }
+                    }
+                }, {
+                field: 'remark',
+                title: '备注',
+                }]]
+        })
+    }
+    function ShowRCCA(data) {
+        getData(BasicURL + "/api/DowntimeRCCA/GetRCCA",
+            {
+                formNo: $("#wi").html(),
+                issue: data.issue,
+            }).then(res => {
+                $('#table').bootstrapTable('load', res);
+            })
+
+    }
+
+    //修改Socket开关状态
+    function SwitchChange(isopen) {
+        if (isopen) {
+            $("#switch").removeClass("fa-toggle-off");
+            $("#switch").addClass("fa-toggle-on");
+            showInfo("WebSocket 已开启");
+        } else{
+            $("#switch").removeClass("fa-toggle-on");
+            $("#switch").addClass("fa-toggle-off");
+            showInfo("WebSocket 已关闭");
+        }
+    }
+</script>

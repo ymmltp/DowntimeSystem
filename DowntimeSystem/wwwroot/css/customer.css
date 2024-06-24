@@ -4,6 +4,13 @@
 }
 
 /* #region 自定义*/
+.row + .row {
+    margin-top:0.5rem;
+}
+.input-group-text {
+    padding: 0 0.75rem;
+    font-size:inherit;
+}
 /*echart大小自适应屏幕*/
 .chartbox {
     width: 100%;
@@ -411,10 +418,10 @@ table {
     color: black;*/
 }
 
-.card-body {
+/*.card-body {
     height: 200px;
     text-align: center;
-}
+}*/
 
 .withshadow {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);

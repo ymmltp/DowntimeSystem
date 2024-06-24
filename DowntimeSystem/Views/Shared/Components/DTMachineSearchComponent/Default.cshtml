@@ -1,46 +1,45 @@
 ﻿@*Machine 显示查询条件 *@
 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-    <label class="form-label"> Department:</label>
-    <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" data-live-search="true"></select>
+    <label class="form-label warning-text"> Department 部门:</label>
+    <select id="department-select" class="form-control selectpicker noNull" noNull="部门" title="Select Department" data-size="6" data-live-search="true"></select>
 </div>
 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-    <label class="form-label"> Project:</label>
-    <select id="project-select" class="form-control selectpicker" title="Select Project" data-size="6" data-live-search="true"> </select>
+    <label class="form-label  warning-text"> Project 项目:</label>
+    <select id="project-select" class="form-control selectpicker noNull" noNull="项目" title="Select Project" data-size="6" data-live-search="true"> </select>
 </div>
 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-    <label class="form-label"> Line:</label>
-    <select id="line-select" class="form-control selectpicker" title="Select Line" data-size="6" data-live-search="true"> </select>
+    <label class="form-label  warning-text"> Line 线体:</label>
+    <select id="line-select" class="form-control selectpicker noNull" noNull="线体" title="Select Line" data-size="6" data-live-search="true"> </select>
 </div>
 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-    <label class="form-label"> Station:</label>
-    <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" data-live-search="true"></select>
+    <label class="form-label  warning-text"> Station 站位:</label>
+    <select id="station-select" class="form-control selectpicker noNull" noNull="站位" title="Select Station" data-size="6" data-live-search="true"></select>
 </div>
 <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
-    <label class="form-label"> Machine:</label>
-    <select id="machine-select" class="form-control selectpicker" title="Select Machine" data-size="6" data-live-search="true"></select>
+    <label class="form-label  warning-text"> Machine 设备:</label>
+    <select id="machine-select" class="form-control selectpicker noNull" noNull="设备" title="Select Machine" data-size="6" data-live-search="true"></select>
 </div>
-
 
 
 <script src="~/js/customer.js"></script>
 <script>
     $(document).ready(function () {
-        getDTDepartment($("#department-select"));
-        getDTLine($('#line-select'));
-        getDTProject($('#project-select'));
-        getDTStation($('#station-select'));
-        getDTMachine($('#machine-select'));
+        GetDTDepartment($("#department-select"));
+        GetDTLine($('#line-select'));
+        GetDTProject($('#project-select'));
+        GetDTStation($('#station-select'));
+        GetDTMachine($('#machine-select'));
 
         $("#project-select").on("change", function () {
-            getDTLine($('#line-select'), $('#department-select').val(),$('#project-select').val());
+            GetDTLine($('#line-select'), $('#department-select').val(),$('#project-select').val());
         })
 
         $("#line-select").on("change", function () {
-            getDTStation($('#station-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val());         
+            GetDTStation($('#station-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val());
         })
 
         $("#station-select").on("change", function () {
-            getDTMachine($('#machine-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val(), $('#station-select').val());
+            GetDTMachine($('#machine-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val(), $('#station-select').val());
         })
     })
 </script>

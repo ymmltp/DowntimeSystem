@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Shared\Components\DTMachineSearchComponent\Default.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="3.1.26" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.30" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -46,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Shared\Components\DTMachineSearchComponent\Default.cshtml" />
     <None Include="Views\Shared\Components\DTIncidentSearchComponent\Default.cshtml" />
   </ItemGroup>
 

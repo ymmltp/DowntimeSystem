@@ -306,8 +306,6 @@ function getMachine(machine, Line, Project, obj) {
     })
 }
 
-
-
 function getDepartment1(obj) {
 
     $.ajax({
@@ -333,8 +331,6 @@ function getDepartment1(obj) {
         }
     })
 }
-
-
 
 /**
  *合并单元格
@@ -741,30 +737,7 @@ function GetDTMachine(obj, department, project, line, station, eqid) {
         line: line,
         station: station,
     };
-    $.ajax({
-        url: BasicURL + '/api/DowntimeBasic/GetMachine_FromMatrix',
-        method: 'GET',
-        data: paras,
-        dataType: 'json',
-        traditional: true,
-        success: function (data) {
-            let option = '';
-            for (var i = 0; i < data.length; i++) {
-                option += '<option value="' + data[i].resource + '" data-server="' + data[i].server + '" data-vbnumber="' + data[i].vbnumber + '">' + data[i].resource + '</option>';
-            }
-            obj.html(option);
-            if (eqid != null && eqid.length >= 0) {
-                obj.val(eqid);
-            }
-            obj.selectpicker("refresh");
-        },
-        fail: function (err) {
-            showWarning(err.responseText);
-        },
-        error: function (err) {
-            showWarning(err.responseText);
-        }
-    })
+    GetSelectOptions_paras(BasicURL + '/api/DowntimeBasic/GetMachine_FromMatrix', paras, obj);
 }
 //#endregion
 
