@@ -27,23 +27,10 @@
         this.socket = null;
         this.userName = null;
     }
+
     _checkStatus() {
-        //switch (this.socket.readyState) {
-        //    case 0:
-        //        showInfo("连接尚未建立");
-        //        break;
-        //    case 1:
-        //        showInfo("连接已经建立");
-        //        break;
-        //    case 2:
-        //        showInfo("连接正在进行关闭");
-        //        break;
-        //    case 3:
-        //        showInfo("连接已经关闭");
-        //        break;
-        //    default:
-        //        break;
-        //}
+        if (this.socket.readyState == 1) $("#socketstatus").val(true).change();
+        else $("#socketstatus").val(false).change();
         return this.socket.readyState;
     }
 
@@ -51,14 +38,17 @@
         if (this.userName !== "") {
             const message = "username:" + this.userName;
             this.socket.send(message);
-            $("#socketstatus").val(true).change();
         }
     }
 
     _handleMessage(event) {
         const message = event.data;
         if (message.indexOf("error") !== -1) {
+            if (message.indexOf("抱歉该用户已存在") > 0) {
+                showWarning( "机台 "+this.userName+" 已经在线，无法重复注册相同的机台。")
+            }
             console.log(message.substring(message.lastIndexOf(":") + 1));
+            this._closeSocket();
         } else if (message.toUpperCase() !== "SUCCESS") {
             try {
                 const obj = JSON.parse(message);
@@ -67,16 +57,19 @@
                 }
             } catch (e) {
                 console.log(message);
+            } finally {
+                this._checkStatus();
             }
         }
     }
 
     _handleError(event) {
         console.log("WebSocket错误: " + event);
+        this._checkStatus();
     }
 
     _handleClose(event) {
         console.log("用户已断连");
-        $("#socketstatus").val(false).change();
+        this._checkStatus();
     }
 }

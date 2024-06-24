@@ -5,7 +5,7 @@
 @*
     根据项目，部门，线体 ，站位，检索出machine，根据 machine 设定 webSocket通道
     显示项目，部门，站位，machine，WI 信息（编号，版本）
-    webSocket 收到消息，根据消息内容，（解析本地的WI文件），显示内容在页面上
+    webSocket 收到消息，根据消息内容，获取WI解析结果，显示内容在页面上
 *@
 
 <div class="container-fluid">
@@ -18,7 +18,7 @@
             <div class="card">
                 <form class="card-body" id="myForm">
                     <input id="socketstatus" hidden />
-                    <h6 class="card-title">机台信息 <i class="fa  fa-toggle-off pull-right green-font" style="font-size:20px" id="switch"></i></h6>
+                    <h6 class="card-title">机台信息 <i class="fa  fa-toggle-off pull-right" style="font-size:20px" id="switch"></i></h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="input-group">
@@ -62,6 +62,15 @@
                                     <span class="input-group-text">设备名</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-machine">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">WI</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-wi" style="width: auto;">-
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-version">
                             </div>
                         </div>
                     </div>
@@ -116,7 +125,6 @@
     </div>
     <div class="row">
         <div class="col text-center">
-            <strong> <span id="wi"></span> - <span id="version"></span></strong>
             <div class="row">
                 <div class="col">
                     <table id="table"></table>
@@ -159,11 +167,12 @@
         })
             .then(res => {
                 if (res[0] == undefined) {
-                    $("#wi").html('NULL');
-                    $("#version").html('NULL');
+                    $("#info-wi").val("");
+                    $("#info-version").val("")
+                    showWarning($("#department-select").val() + " " + $("#project-select").val() + " " + $("#station-select").val()+" 没有对应的WI文件，请联系管理员配置相关信息")
                 } else {
-                    $("#wi").html(res[0].formno);
-                    $("#version").html(res[0].version);
+                    $("#info-wi").val(res[0].formno);
+                    $("#info-version").val(res[0].version)
                 }
             })
     }
@@ -171,7 +180,7 @@
     //接受到Downtime信息，触发的动作
     function onMessageEvent(data) {
         ShowDTinfo(data);
-        if ($("#wi").html() != "NULL") {
+        if ($("#info-wi").val() != "") {
             if (data.incidentstatus == 0) {
                 ShowRCCA(data);
             } else if (data.incidentstatus == 2) {
@@ -268,7 +277,7 @@
     function ShowRCCA(data) {
         getData(BasicURL + "/api/DowntimeRCCA/GetRCCA",
             {
-                formNo: $("#wi").html(),
+                formNo: $("#info-wi").val(),
                 issue: data.issue,
             }).then(res => {
                 $('#table').bootstrapTable('load', res);
@@ -281,11 +290,13 @@
         if (isopen) {
             $("#switch").removeClass("fa-toggle-off");
             $("#switch").addClass("fa-toggle-on");
-            showInfo("WebSocket 已开启");
+            $("#switch").addClass("green-font");
+            console.log("WebSocket 已开启");
         } else{
             $("#switch").removeClass("fa-toggle-on");
             $("#switch").addClass("fa-toggle-off");
-            showInfo("WebSocket 已关闭");
+            $("#switch").removeClass("green-font");
+            console.log("WebSocket 已关闭");
         }
     }
 </script>

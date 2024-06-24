@@ -403,7 +403,7 @@ function checkFormNoNull(parentid) {
 //#region 配合alert.css,显示弹出信息
 function showWarning(text) {
     $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-danger').show().delay(1500).fadeOut();
+    $('.alert').html(text).addClass('alert-warning').show().delay(3000).fadeOut();
 }
 function showInfo(text) {
     $('.alert').attr('class', 'alert');
@@ -419,7 +419,7 @@ function showSuccess(text) {
 }
 function showError(text) {
     $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-danger').show().delay(1500).fadeOut();
+    $('.alert').html(text).addClass('alert-danger').show().delay(3000).fadeOut();
 }
 //#endregion
 
