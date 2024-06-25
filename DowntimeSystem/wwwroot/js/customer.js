@@ -306,7 +306,7 @@ function getMachine(machine, Line, Project, obj) {
     })
 }
 function getLastIncdent(Machine, obj) {
-    getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: Machine })
+    return getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: Machine })
         .then(data => {
             const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
 
@@ -320,8 +320,9 @@ function getLastIncdent(Machine, obj) {
             data.pieces = Number( $("#howmuch").val()); // 可能会引发异常的代码  //
             console.log(data);
             return postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Update", data);
-            
+           
         })
+    
         .catch(err => {
             showWarning(err);
         })
