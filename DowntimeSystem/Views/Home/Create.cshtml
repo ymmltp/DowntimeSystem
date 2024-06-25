@@ -29,8 +29,8 @@
                 <select id="machine-select" class="form-control selectpicker noNull" noNull="机器 Machine" title="Select Machine" data-size="6" data-max-options="1" data-live-search="true" onchange="getErrorCode($('#issue-select'),$('#department-select').val(),$('#machine-select').find(':selected').data('vbnumber'))"></select>
             </div>
             <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6 ">
-                <label class="form-label warning-text" for="creater">创建人 Creater: </label>
-                <input type='text' class="form-control noNull" noNull="创建人 Creater" data-remark="创建人" id='creater' placeholder="--请输入创建人姓名/工号 --" />
+                <label class="form-label warning-text" for="creator">创建人 Creator: </label>
+                <input type='text' class="form-control noNull" noNull="创建人 Creator" data-remark="创建人" id='creator' placeholder="--请输入创建人姓名/工号 --" />
             </div>
 
             <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
@@ -117,6 +117,8 @@
                 postDatatoAPI("http://cnwuxm1tes05/eCalling/InsertData2?" + urlstring)
                     .then(res => {
                         console.log(res);
+                        getLastIncdent($('#machine-select'));
+                     
                         document.getElementById("myForm").submit();
                     })
                     .catch(err => {
