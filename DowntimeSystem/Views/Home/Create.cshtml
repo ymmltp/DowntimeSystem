@@ -59,8 +59,8 @@
                 <input type='text' class="form-control" id='howoften' placeholder="---请输入发生频次---" />
             </div>
             <div class="col-lg-12 row" style="margin-top: 10px;">
-                <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-success" onclick="CreateIncidence()">Submit</button></div>
-                <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="reset" form="myForm" class="btn btn-primary">Reset</button></div>
+                <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-success" onclick="submitForm()">Submit</button></div>
+                @*<div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="reset" form="myForm" class="btn btn-primary">Reset</button></div>*@
             </div>
             @*<div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
             <button id="addbtn" class="btn btn-success mybtn" type="button">Add</button>
@@ -92,28 +92,32 @@
                 GetDowntimeList();
             }
             iniDatetimepicker_withTime();
-            getDepartment1($("#department-select"));
+            GeteCallingDepartment($("#department-select"));
            
-            getLine1($('#line-select'));
-            getProject1($('#project-select'));
+            GeteCallingLine($('#line-select'));
+            GeteCallingProject($('#project-select'));
            
-            getStation1($('#station-select'));
-            getErrorCode($('#issue-select'));
-            getMachine($('#machine-select'));
-            getErrorDescription($("#issuedescription"));
+            GeteCallingStation($('#station-select'));
+            GeteCallingErrocCode($('#issue-select'));
+            GeteCallingMachine($('#machine-select'));
+          
 
         });
 
-        function CreateIncidence() {
+        function submitForm() {
+            // 提交表单
+
+
+            // 显示成功消息
+            showSuccess("提交成功");
             if (checkFormNoNull("#createIncident")) {
                 let urlstring = "comfrom=Downtime System&department=" + $("#department-select").val() + "&machine=" + $("#machine-select").val()
                     + "&ErrorCode=" + $("#issue-select").val() + "&ErrorDescription=" + $("#issuedescription").val() + "&Server=" + $("#machine-select").find(":selected").data("server")
                     + "&isDowntime=" + Boolean($("#issue-select").find(":selected").data("isdowntime"))
-                postDatatoAPI("http://cnwuxm1tes01/eCalling/InsertData2?" + urlstring)
+                postDatatoAPI("http://cnwuxm1tes05/eCalling/InsertData2?" + urlstring)
                     .then(res => {
-                        showSuccess("创建成功");
-                        
-                        //清空输入的内容
+                        console.log(res);
+                        document.getElementById("myForm").submit();
                     })
                     .catch(err => {
                         showError(err);

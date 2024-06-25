@@ -671,7 +671,7 @@
                 title: 'Finish Time',
                 align: 'center',
                 valign: 'middle',
-                visible: false,
+                
 
                 formatter: function (value, row, index) {
                     if (value)
@@ -924,7 +924,7 @@
         $(':radio[name=sparepartchange][value=false]').prop('checked', 'true');
         $(':radio[name=sparepartchange]').removeAttr('disabled', 'disabled');
         showSparepartControls("false");
-        $("#ca-qty").val(0);
+        $("#ca-qty").val(0); 
         $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
