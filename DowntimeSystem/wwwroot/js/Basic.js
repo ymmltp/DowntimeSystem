@@ -147,6 +147,18 @@ function formatDateTime(date) {
     second = second < 10 ? ('0' + second) : second;
     return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
 }
+function formatDateToString(date) {
+    const pad = (n) => (n < 10 ? '0' + n : n);
+
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1); // 月份从0开始，所以要加1
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
 function formatDate(date) {
     var y = date.getFullYear();
     var m = date.getMonth() + 1;

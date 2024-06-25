@@ -306,12 +306,27 @@ function getMachine(machine, Line, Project, obj) {
     })
 }
 function getLastIncdent(Machine, obj) {
-    getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: Machine })
+    return getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: Machine })
         .then(data => {
             const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
 
             const startDate = new Date(startDateValue); // 创建 Date 对象
             const isoString = startDate.toISOString(); // 转换为 ISO 8601 格式的字符串
+
+            data.occurtime = isoString; // 赋值给 data.occurtime
+           /* data.occurtime = $("#startdate").val();*/
+            data.creator = $("#creator").val();
+            data.frequency = Number($("#howoften").val());
+            data.pieces = Number( $("#howmuch").val()); // 可能会引发异常的代码  //
+            console.log(data);
+            return postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Update", data);
+           
+        })
+    
+        .catch(err => {
+            showWarning(err);
+        })
+}
 
             data.occurtime = isoString; // 赋值给 data.occurtime
            /* data.occurtime = $("#startdate").val();*/
