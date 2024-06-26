@@ -142,7 +142,6 @@
         $("#socketstatus").on('change', function () {
             SwitchChange(Boolean($(this).val()));
         });
-        InitialRCCATable();
     })
     //加载配置信息
     function Set() {
@@ -172,7 +171,8 @@
                     showWarning($("#department-select").val() + " " + $("#project-select").val() + " " + $("#station-select").val()+" 没有对应的WI文件，请联系管理员配置相关信息")
                 } else {
                     $("#info-wi").val(res[0].formno);
-                    $("#info-version").val(res[0].version)
+                    $("#info-version").val(res[0].version);
+                    InitialRCCATable();
                 }
             })
     }
@@ -184,7 +184,7 @@
             if (data.incidentstatus == 0) {
                 ShowRCCA(data);
             } else if (data.incidentstatus == 2) {
-                ShowRCCA([]);
+                InitialRCCATable();
             }
         }
     }
@@ -210,7 +210,13 @@
     }
     function InitialRCCATable() {
         $("#table").bootstrapTable('destroy').bootstrapTable({
-            data: [],
+            url: BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByStation",
+            cache: false,
+            type: 'GET',
+            queryParams: {
+                formNo: $("#info-wi").val(),
+                station: $("#info-station").val()
+            },
             columns: [[{
                 title: '维修指导手册',
                 colspan: 12,
@@ -275,9 +281,10 @@
         })
     }
     function ShowRCCA(data) {
-        getData(BasicURL + "/api/DowntimeRCCA/GetRCCA",
+        getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
             {
                 formNo: $("#info-wi").val(),
+                station: $("#info-station").val(),
                 issue: data.issue,
             }).then(res => {
                 $('#table').bootstrapTable('load', res);
