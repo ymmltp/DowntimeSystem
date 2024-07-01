@@ -59,8 +59,8 @@
                 <input type='text' class="form-control" id='howoften' placeholder="---请输入发生频次---" />
             </div>
             <div class="col-lg-12 row" style="margin-top: 10px;">
-                <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-success" onclick="submitForm()">Submit</button></div>
-                @*<div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="reset" form="myForm" class="btn btn-primary">Reset</button></div>*@
+                <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-success" onclick="submitForm1()">Submit（Use ecalling）</button></div>
+                <div class="col-lg-6 col-md-6 col-xl-6 col-sm-6" style="display: flex; justify-content: center; "><button type="button" class="btn btn-primary" onclick="submitForm2()">Submit（Not used ecalling）</button></div>
             </div>
             @*<div class="col-lg-1 col-xs-2 col-sm-1 col-md-1">
             <button id="addbtn" class="btn btn-success mybtn" type="button">Add</button>
@@ -104,7 +104,7 @@
 
         });
 
-        function submitForm() {
+        function submitForm1() {
             // 提交表单
 
 
@@ -141,6 +141,43 @@
                     });
             }
         }
+        function submitForm2() {
+            if (checkFormNoNull("#createIncident")) {
+                const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
+                const startDate = new Date(startDateValue); // 创建 Date 对象
+
+
+                occurtime = formatDateToString(startDate);
+                postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Add",{
+                    comefrom: 'Downtime System',
+                    department: $("#department-select").val(),
+                    machine: $("#machine-select").val(),
+                    alarmtype:'manually alarm',
+                    creator: $("#creator").val(),
+                    frequency: Number($("#howoften").val()),
+                    pieces: Number($("#howmuch").val()),
+                    occurtime: formatDateToString(startDate),
+                    issue: $("#issue-select").val(),
+                    issueremark: $("#issuedescription").val(),
+                    line: $("#line-select").val(),
+                    project: $("#project-select").val(),
+                    station: $("#station-select").val(),
+                })                  
+                    .then(res => {
+                        showSuccess("提交成功");
+                        document.getElementById("myForm").submit();
+                    })
+                    .catch(err => {
+                        showError(err);
+                    });
+            }
+        }
+
+
+
+
+
+        
        
     </script>
 
