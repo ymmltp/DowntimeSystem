@@ -106,74 +106,89 @@
 
         function submitForm1() {
             // 提交表单
+            getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
+                .then(row => {
+                    if (row['incidentstatus'] >= 2) {
+
+                        // 显示成功消息
+                        if (checkFormNoNull("#createIncident")) {
+                            let urlstring = "comfrom=Downtime System&department=" + $("#department-select").val() + "&machine=" + $("#machine-select").val()
+                                + "&ErrorCode=" + $("#issue-select").val() + "&ErrorDescription=" + $("#issuedescription").val() + "&Server=" + $("#machine-select").find(":selected").data("server")
+                                + "&isDowntime=" + Boolean($("#issue-select").find(":selected").data("isdowntime"))
+                            postDatatoAPI("http://cnwuxm1tes05/eCalling/InsertData2?" + urlstring)
+                                .then(res => {
+                                    console.log(res);
+                                    return getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
+
+                                    // 将结果传递给下一个 .then() 方法
+                                })
+                                .then(data => {
+                                    const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
+                                    const startDate = new Date(startDateValue); // 创建 Date 对象
 
 
-            // 显示成功消息
-            if (checkFormNoNull("#createIncident")) {
-                let urlstring = "comfrom=Downtime System&department=" + $("#department-select").val() + "&machine=" + $("#machine-select").val()
-                    + "&ErrorCode=" + $("#issue-select").val() + "&ErrorDescription=" + $("#issuedescription").val() + "&Server=" + $("#machine-select").find(":selected").data("server")
-                    + "&isDowntime=" + Boolean($("#issue-select").find(":selected").data("isdowntime"))
-                postDatatoAPI("http://cnwuxm1tes05/eCalling/InsertData2?" + urlstring)
-                    .then(res => {
-                        console.log(res);
-                        return getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
+                                    data.occurtime = formatDateToString(startDate); // 赋值给 data.occurtime
+                                    data.creator = $("#creator").val();
+                                    data.frequency = Number($("#howoften").val());
+                                    data.pieces = Number($("#howmuch").val()); // 可能会引发异常的代码  //
+                                    console.log(data);
+                                    return postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Update", data);
+                                })
+                                .then(res => {
+                                    showSuccess("提交成功");
+                                    document.getElementById("myForm").submit();
+                                })
+                                .catch(err => {
+                                    showError(err);
+                                });
+                        }
+                    }
+                    else {
+                        showWarning("同机器有Downtime未关闭 !");
+                    }
 
-                        // 将结果传递给下一个 .then() 方法
-                    })
-                    .then(data => {
-                        const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
-                        const startDate = new Date(startDateValue); // 创建 Date 对象
-                        
-
-                        data.occurtime = formatDateToString(startDate); // 赋值给 data.occurtime
-                        data.creator = $("#creator").val();
-                        data.frequency = Number($("#howoften").val());
-                        data.pieces = Number($("#howmuch").val()); // 可能会引发异常的代码  //
-                        console.log(data);
-                        return postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Update", data);
-                    })
-                    .then(res => {
-                        showSuccess("提交成功");
-                        document.getElementById("myForm").submit();
-                    })
-                    .catch(err => {
-                        showError(err);
-                    });
-            }
-        }
+                })
+                }
         function submitForm2() {
-            if (checkFormNoNull("#createIncident")) {
-                const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
-                const startDate = new Date(startDateValue); // 创建 Date 对象
+            getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
+                .then(row => {
+                    if (row['incidentstatus'] >= 2) {
+
+                        if (checkFormNoNull("#createIncident")) {
+                            const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
+                            const startDate = new Date(startDateValue); // 创建 Date 对象
 
 
-                occurtime = formatDateToString(startDate);
-                postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Add",{
-                    comefrom: 'Downtime System',
-                    department: $("#department-select").val(),
-                    machine: $("#machine-select").val(),
-                    alarmtype:'manually alarm',
-                    creator: $("#creator").val(),
-                    frequency: Number($("#howoften").val()),
-                    pieces: Number($("#howmuch").val()),
-                    occurtime: formatDateToString(startDate),
-                    issue: $("#issue-select").val(),
-                    issueremark: $("#issuedescription").val(),
-                    line: $("#line-select").val(),
-                    project: $("#project-select").val(),
-                    station: $("#station-select").val(),
-                })                  
-                    .then(res => {
-                        showSuccess("提交成功");
-                        document.getElementById("myForm").submit();
-                    })
-                    .catch(err => {
-                        showError(err);
-                    });
-            }
-        }
-
-
+                            occurtime = formatDateToString(startDate);
+                            postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Add", {
+                                comefrom: 'Downtime System',
+                                department: $("#department-select").val(),
+                                machine: $("#machine-select").val(),
+                                alarmtype: 'manually alarm',
+                                creator: $("#creator").val(),
+                                frequency: Number($("#howoften").val()),
+                                pieces: Number($("#howmuch").val()),
+                                occurtime: formatDateToString(startDate),
+                                issue: $("#issue-select").val(),
+                                issueremark: $("#issuedescription").val(),
+                                line: $("#line-select").val(),
+                                project: $("#project-select").val(),
+                                station: $("#station-select").val(),
+                            })
+                                .then(res => {
+                                    showSuccess("提交成功");
+                                    document.getElementById("myForm").submit();
+                                })
+                                .catch(err => {
+                                    showError(err);
+                                });
+                        }
+                    }
+                    else {
+                        showWarning("同机器有Downtime未关闭 !");
+                    }
+                })
+}
 
 
 
