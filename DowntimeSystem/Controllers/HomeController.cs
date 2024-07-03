@@ -24,6 +24,10 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
+        public IActionResult Query_test()
+        {
+            return View();
+        }
         public IActionResult Task_CreateIncident()
         {
             return View();

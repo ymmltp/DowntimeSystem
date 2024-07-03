@@ -175,6 +175,9 @@
                     InitialRCCATable();
                 }
             })
+            .catch(err => {
+                showError(err);
+            })
     }
 
     //接受到Downtime信息，触发的动作
@@ -219,7 +222,7 @@
             },
             columns: [[{
                 title: '维修指导手册',
-                colspan: 12,
+                colspan: 16,
                 align: 'center',
             }], [ {
                 field: 'errorCode',
@@ -228,13 +231,22 @@
                 field: 'issue',
                 title: '问题描述',
                 }, {
+                    field: 'totalqty',
+                    title: 'Accumulative QTY',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'totalPercent',
+                    title: 'Percentage%',
+                    align: 'center',
+                    valign: 'middle',
+                },  {
                 field: 'issuePic',
                 title: '问题图片',
                 formatter: function (value) {
                     if (value != null) {
                         return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                    }
-                }
+                    }}
                 },{
                 field: 'checkStep',
                 title: '检查步骤',
@@ -275,9 +287,24 @@
                         }
                     }
                 }, {
+                    field: 'qty',
+                    title: 'Sub QTY',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'subPercent',
+                    title: 'Sub Percentage%',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
                 field: 'remark',
                 title: '备注',
-                }]]
+                    }]],
+            onLoadSuccess: function (data) {
+                var data = $('#table').bootstrapTable('getData', true);
+                //合并单元格
+                mergeCells(data, "issue", 1, $('#table'));
+            }
         })
     }
     function ShowRCCA(data) {
@@ -288,8 +315,7 @@
                 issue: data.issue,
             }).then(res => {
                 $('#table').bootstrapTable('load', res);
-            })
-
+            });
     }
 
     //修改Socket开关状态

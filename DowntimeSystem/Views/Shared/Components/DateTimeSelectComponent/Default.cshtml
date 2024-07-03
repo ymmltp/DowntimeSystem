@@ -1,0 +1,84 @@
+﻿<div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
+    <label class="form-label"> Time Range:</label>
+    <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1" onchange="updateTime()">
+        <option value="5">Today</option>
+        <option value="1">Current Week</option>
+        <option value="4">Last Week</option>
+        <option value="2">Current Month</option>
+        <option value="3">Last Month</option>
+        <option value="0">Customize</option>
+    </select>
+</div>
+<div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 timesamp" hidden>
+    <label class="form-label" for="start"> Start Date:</label>
+    <div class='input-group date form_datetime'>
+        <input type='text' class="form-control" id='start' />
+        <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+        </span>
+    </div>
+</div>
+<div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 timesamp" hidden>
+    <label class="form-label" for="end"> Finish Date: </label>
+    <div class='input-group date form_datetime'>
+        <input type='text' class="form-control" id='end' />
+        <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+        </span>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        iniDatetimepicker();
+        $("#timeZone option[value='5']").attr("selected", true);
+        $("#timeZone").selectpicker('refresh');
+        $("#timeZone").trigger("onchange");
+    })
+    function updateTime() {
+        var today = new Date()
+        $(".timesamp").attr("hidden",true);
+        switch ($("#timeZone").val()) {
+            case "0": //Customer
+                $(".timesamp").removeAttr("hidden");
+                showSuccess("自定义时间范围");
+                break;
+            case "1": //Current Week
+                var dayOfWeek = today.getDay();
+                if (dayOfWeek == 0) dayOfWeek = 7;
+                var lastDay = new Date(today.getTime() - (dayOfWeek - 1) * 86400000); //本周的第一天
+                $("#start").val(lastDay.format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
+                showSuccess("显示本周数据");
+                break;
+            case "4": //Last Week
+                var dayOfWeek = today.getDay();
+                if (dayOfWeek == 0) dayOfWeek = 7;
+                var endDay = new Date(today.getTime() - (dayOfWeek) * 86400000); //上周最后一天
+                var startDay = new Date(today.getTime() - (dayOfWeek + 6) * 86400000); //上周第一天status-select
+                $("#start").val(startDay.format("yyyy-MM-dd"));
+                $("#end").val(endDay.format("yyyy-MM-dd"));
+                showSuccess("显示上周数据");
+                break;
+            case "2": //Current Month
+                $("#start").val(new Date(today.getFullYear() + "-" + (today.getMonth() + 1).toString() + "-01").format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
+                showSuccess("显示本月数据");
+                break;
+            case "3": //Last Month
+                $("#start").val(new Date(today.getFullYear() + "-" + (today.getMonth()).toString() + "-01").format("yyyy-MM-dd"));
+                var EndOfMonth = new Date();
+                EndOfMonth.setDate(0);   //上个月的最后一天
+                $("#end").val(EndOfMonth.format("yyyy-MM-dd"));
+                showSuccess("显示上月数据");
+                break;
+            case "5": //Current Day
+                $("#start").val(today.format("yyyy-MM-dd"));
+                $("#end").val(today.format("yyyy-MM-dd"));
+                showSuccess("显示当天数据");
+                break;
+            default:
+                break;
+        }
+    }
+</script>
