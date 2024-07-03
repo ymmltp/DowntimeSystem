@@ -226,7 +226,10 @@
         })
             .then(res => {
                 if (res[0] == undefined) {
-                    return new Promise.reject("没有关联的WI");
+                    setTimeout(() => {
+                        $("#CAModal").modal('hide');
+                    }, 3000); 
+                    return Promise.reject("没有关联的WI，请先关联该站位的RCCA WI再填写");
                 } else {
                     if (row.comefrom == "Downtime System") {
                         return getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
