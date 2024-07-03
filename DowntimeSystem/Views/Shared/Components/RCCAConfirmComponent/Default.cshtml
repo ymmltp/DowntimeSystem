@@ -1,0 +1,76 @@
+﻿<div class="modal fade" id="RCCAConfirmModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-downtimeid="1">
+    <div class="modal-dialog" role="document" style="width: 50%;min-width:150px">
+        <div class="modal-content" @*style="background-color: #62a58a; color: white"*@>
+            <div class="modal-header" style="background-color: #3e9472; color: white">
+                <h5 class="modal-title" id="RCA-title" style="text-wrap:normal">再次确认RCCA</h5>
+            </div>
+            <div class="modal-body row">
+                <div class="col-lg-12">
+                    <label id="confirmtitle" class="form-label text-right"></label>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type='radio' name="btn-confirm" value="0" id="cbtn0" />
+                            <label for="cbtn0" class="form-label">我确认我填写的内容就是停机的根本原因，并非现象描述，并对填写的内容负责</label>
+                        </div>
+                        <div class="col-lg-12">
+                            <input type='radio' name="btn-confirm" value="1" id="cbtn1" />
+                            <label for="cbtn1" class="form-label">我并不清楚根本原因是什么，我需要我的leader协助填写 </label>
+                        </div>
+                        <div class="col-lg-12">
+                            <input type='radio' name="btn-confirm" value="2" id="cbtn2" />
+                            <label for="cbtn2" class="form-label">我需要重新更新填写的根本原因和对策 </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 elehide reRCCA">
+                    <label for="confirm-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                    <textarea class="form-control reRCCA noNull" id='confirm-rootcause' rows="6" noNull="Root Cause"></textarea>
+                </div>
+                <div class="col-lg-6 elehide reRCCA">
+                    <label for="confirm-action" class="form-label text-right warning-text">Corrective Action:</label>
+                    <textarea class="form-control reRCCA noNull" id='confirm-action' rows="6" noNull="Corrective Action"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SubmitConfirmbtn" onclick="SubmitConfirm()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //why
+    function ShowRCCAConfirmModal() {
+        $(':radio[name=btn-confirm]').prop('checked', false);
+        $("#cbtn2").prop('checked', true).trigger('click');;
+        $("#confirm-rootcause").val("");
+        $("#confirm-action").val("");
+        $("#RCCAConfirmModal").modal("show");
+    }
+    $(":radio[name=btn-confirm]").on("click", function () {
+        if ($(this).val() == "2") {
+            $(".reRCCA").removeClass("elehide");
+        } else {
+            $(".reRCCA").addClass("elehide");
+        }
+    })
+    function SubmitConfirm() {
+        if (checkFormNoNull("#RCCAConfirmModal")) {
+            let item = {
+                downtimeid: Number($("#RCCAConfirmModal").attr("data-downtimeid")),
+                status: Number($(":radio[name=btn-confirm]:checked").val()),
+                rootcause: $("#confirm-rootcause").hasClass("elehide") ? null : $("#confirm-rootcause").val(),
+                correctaction: $("#confirm-action").hasClass("elehide") ? null : $("#confirm-action").val(),
+            }
+            postDatatoAPI(BasicURL+"/api/DowntimeRCCAConfirm/Add", item) 
+                .then(res => {
+                    showSuccess("OK");
+                    $("#RCCAConfirmModal").modal("hide");
+                })
+                .catch(err => {
+                    showError(err);
+                })
+        }
+    }
+
+</script>

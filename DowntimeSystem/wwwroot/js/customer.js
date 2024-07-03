@@ -308,9 +308,6 @@ function getMachine(machine, Line, Project, obj) {
 
 
 
-
-
-
 /**
  *合并单元格
  * @param data 原始数据（在服务端完成排序）

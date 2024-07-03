@@ -1,0 +1,534 @@
+﻿<div class="modal fade" id="CAModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 50%;min-width:150px">
+        <div class="modal-content" @*style="background-color: #62a58a; color: white"*@>
+            <div class="modal-header" style="background-color: #3e9472; color: white">
+                <h5 class="modal-title" id="CA-title" style="text-wrap:normal">填写 RootCause 和 CA </h5>
+            </div>
+            <div class="modal-body row">
+                <div class="col-lg-2">
+                    <label for="ca-department" class="form-label text-right">Department:</label>
+                    <input type='text' class="form-control" readonly id='ca-department' />
+                </div>
+                <div class="col-lg-2">
+                    <label for="ca-project" class="form-label text-right">Project:</label>
+                    <input type='text' class="form-control" readonly id='ca-project' />
+                </div>
+                <div class="col-lg-2">
+                    <label for="ca-line" class="form-label text-right">Line:</label>
+                    <input type='text' class="form-control" readonly id='ca-line' />
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-station" class="form-label text-right warning-text">Station:</label>
+                    <input type='text' class="form-control raca noNull" id='ca-station' noNull="Station" />
+                </div>
+                <div class="col-lg-3 rccaviewhide">
+                    <label for="ca-machine" class="form-label text-right warning-text">Equipment ID:</label>
+                    <select class="form-control raca noNull" id='ca-machine' data-size="6" title="--Select EQID--" noNull="Equipment" onchange="GetEQIDLink_PN($('#ca-pn'), $('#ca-machine').val())"></select>
+                </div>
+                <div class="col-lg-3 rccaview">
+                    <label for="ca-machine" class="form-label text-right warning-text">Equipment ID:</label>
+                    <input id="view-machine" class="form-control" readonly />
+                </div>
+                <div class="col-lg-12">
+                    <label for="ca-issue" class="form-label text-right warning-text">Defect Code:</label>
+                    <input type='text' class="form-control raca noNull" id='ca-issue' noNull="Defect Code" />
+                </div>
+                <div class="col-lg-12">
+                    <label for="ca-issueremark" class="form-label text-right">Issue Description:</label>
+                    <textarea type='text' class="form-control raca" id='ca-issueremark'></textarea>
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-employee" class="form-label text-right warning-text">Employee ID:</label>
+                    <input type='text' class="form-control raca noNull" id='ca-employee' noNull="Employee ID" />
+                </div>
+                <div class="col-lg-3">
+                    <label for="ca-labor" class="form-label text-right">Labor:</label>
+                    <input type='number' step="1" class="form-control raca" id='ca-labor' value="1" title="1" />
+                </div>
+                <div class="col-lg-3 elehide">
+                    <label class="form-label text-right warning-text">Calculate Downtime:</label>
+                    <div class="radio-group">
+                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label style="font-weight:600"><input type='radio' name="caldowntime" value="false" /> NO</label>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="form-label text-right warning-text">Sparepart Change:</label>
+                    <div class="radio-group">
+                        <label style="font-weight:600"><input type='radio' name="sparepartchange" value="true" /> YES</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label style="font-weight:600"><input type='radio' name="sparepartchange" value="false" checked /> NO</label>
+                    </div>
+                </div>
+                @*downtime相关*@
+                <fieldset class="step-slide ngMES-border row downtime-item" style="position: relative; margin: 10px 10px; ">
+                    <legend class="ngMES-border">Downtime 时间</legend>
+
+                    <div class="col-lg-6  ">
+                        <label for="ca-starttime" class="form-label text-right warning-text">Start Time:</label>
+                        <input type='text' class="form-control" id='ca-starttime' readonly />
+                    </div>
+                    <div class="col-lg-12  " style="display:none">
+                        <label for="ca-downtime" class="form-label text-right warning-text">Dowmtime [HH:mm:ss]:</label>
+                        <input type='text' class="form-control" id='ca-downtime' readonly />
+                    </div>
+                    <div class="col-lg-6 ">
+                        <label for="ca-responsetime" class="form-label text-right">DownTime [HH:mm:ss]:</label>
+                        <input type='text' class="form-control" id='ca-responsetime' readonly />
+                    </div>
+                    <div class="col-lg-6  ">
+                        <label for="ca-finishtime" class="form-label text-right warning-text">End Time:</label>
+                        <input type='text' class="form-control" id='ca-finishtime' readonly />
+                    </div>
+                    @*<div class="col-lg-6  ">
+                <label for="ca-tmdur" class="form-label text-right">Repair Time [HH:mm:ss]:</label>
+                <input type='text' class="form-control" id='ca-tmdur' readonly />
+            </div>*@
+                </fieldset>
+                @*downtime相关*@
+                <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
+                    <legend class="ngMES-border">RC & CA</legend>
+                    <div class="col-lg-12">
+                        <label for="form-label warning-text" class="form-label text-right warning-text">Responsible department:</label>
+                        <select id="rsdepartment-select" class="form-control selectpicker noNull rccaviewhide" noNull="Responsible department" title="Select Department" data-size="6" data-max-options="1" data-live-search="true" data-actions-box="true"></select>
+                        <input id="view-resdepart" class="rccaview form-control" readonly />
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                        <select class="form-control selectpicker raca noNull rccaviewhide" id='ca-rootcause' noNull="Root Cause" title="Select Rootcause" data-size="6" data-live-search="true"></select>
+                        <textarea id="view-rcca" class="rccaview form-control " readonly></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="ca-action" class="form-label text-right warning-text">Corrective Action:</label>
+                        <textarea type='text' class="form-control noNull" id='ca-action' noNull="Action" readonly></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="ca-rootcauseremark" class="form-label text-right">RC Remark:</label>
+                        <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="ca-actionremark" class="form-label text-right">CA Remark:</label>
+                        <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
+                    </div>
+                </fieldset>
+                @*Sparepart相关*@
+                <fieldset class="step-slide ngMES-border sparepart-item elehide" style="position: relative; margin: 10px 10px; ">
+                    <legend class="ngMES-border">备件更换记录</legend>
+                    <div class="row">
+                        <div class="col-lg-3 ">
+                            <label for="ca-category" class="form-label text-right">Category:</label>
+                            <select class="form-control selectpicker raca" id='ca-category' data-size="6" title="--Select Category--" onchange="GetSPSubCategory($('#ca-subcategory'), $('#ca-category').val());GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
+                        </div>
+                        <div class="col-lg-3 ">
+                            <label for="ca-subcategory" class="form-label text-right">Sub Category:</label>
+                            <select class="form-control selectpicker raca" id='ca-subcategory' data-size="6" title="--Select Sub Category--" onchange="GetAllPN($('#ca-pn'), $('#ca-category').val(),$('#ca-subcategory').val())"></select>
+                        </div>
+                        <div class="col-lg-3 ">
+                            <label for="ca-pn" class="form-label text-right warning-text">P_N:</label>
+                            <select class="form-control selectpicker raca" id='ca-pn' data-size="6" title="--Select PN--" data-live-search="true">
+                                <optgroup label="PN Linked with EQID"></optgroup>
+                                <optgroup label="Other PN"></optgroup>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="ca-qty" class="form-label text-right warning-text">QTY:</label>
+                            <input type='number' step="1" class="form-control raca" id='ca-qty' />
+                        </div>
+                        <div class="col-lg-1 ">
+                            <button class="btn btn-success" style="margin-top:27px" data-toggle="tooltip" title="添加记录" id="btn_addsparepart"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <table id="sparepart_table" class="table table table-striped table-hover" style="width:100%"></table>
+                </fieldset>
+                <fieldset class="step-slide ngMES-border sparepart-item-view elehide" style="position: relative; margin: 10px 10px; ">
+                    <legend class="ngMES-border">备件更换记录</legend>
+                    <table id="sparepart_view_table" class="table table table-striped table-hover" style="width:100%"></table>
+                </fieldset>
+                @*Sparepart相关*@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="addCA">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //RCCA
+    function ShowRCCAEdit(row) {
+        //获取EQID 配置Select2
+        getData('/PMMS/getEQID')
+            .then(data => {
+                let option = '<option value=""></option>';
+                if (data.indexOf(row['machine']) < 0) {
+                    option += '<option value="' + row['machine'] + '">' + row['machine'] + '</option>';
+                }
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i] + '">' + data[i] + '</option>';
+                }
+                $("#ca-machine").html(option);
+                $("#ca-machine").select2({
+                    tags: false,
+                    maximumInputLength: 40,
+                    minimumInputLength: 2,
+                    minimumResultsForSearch: 10,
+                    placeholder: "请输入设备ID"
+                });
+                getRCCA(row);
+            })
+            .catch(err => {
+                showWarning(err.statusText);
+            })
+
+        $(".sparepart-item-view").addClass("elehide");  //view ;里的元素隐藏
+        //获取Sparepart 信息
+        GetSPCategory($("#ca-category"));
+        GetSPSubCategory($("#ca-subcategory"));
+        GetAllPN($("#ca-pn"));
+        sparepartList = [];
+        $("#sparepart_table").bootstrapTable('destroy');
+        getDepartment2($("#rsdepartment-select"));
+
+        $("#CA-title").html("填写 RC 和 CA");
+        $("#ca-department").val(row['department']);
+        $("#ca-project").val(row['project']);
+        $("#ca-line").val(row['line']);
+        $("#ca-station").val(row['station']);
+        $("#ca-issue").val(row['issue']);
+        $("#ca-issueremark").val(row['issueremark']);
+        $("#ca-employee").val(row['respperson']);
+        $("#ca-labor").val(row['labor']);
+        $(':radio[name=caldowntime][value=' + row['calcdowntime'] + ']').prop('checked', 'true');
+        $(':radio[name=caldowntime]').removeAttr('disabled', 'disabled');
+        showDowntimeControls(row['calcdowntime'].toString());
+        $(':radio[name=sparepartchange][value=false]').prop('checked', 'true');
+        $(':radio[name=sparepartchange]').removeAttr('disabled', 'disabled');
+        showSparepartControls("false");
+        $("#ca-qty").val(0);
+        $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
+        $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
+        $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
+        $("#ca-responsetime").val((parseInt((new Date(row['finishtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
+        $(".raca").removeAttr('readonly');
+        $(".rccaview").attr('hidden', true);
+        $(".rccaviewhide").removeAttr('hidden');
+        $("#addCA").removeClass("elehide");
+        $("#CAModal").data("id", row['id']);
+        $("#CAModal").modal('show');
+    }
+    // 获取RCCA
+    let RCCAList = [];
+    function getRCCA(row) {
+        getData(BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo', {
+            Department: row.department,
+            Project: row.project,
+            Station: row.station,
+        })
+            .then(res => {
+                if (res[0] == undefined) {
+                    return new Promise.reject("没有关联的WI");
+                } else {
+                    if (row.comefrom == "Downtime System") {
+                        return getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
+                            {
+                                formNo: res[0].formno,
+                                station: row.station,
+                            })
+                    }
+                    else {
+                        return getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
+                            {
+                                formNo: res[0].formno,
+                                station: row.station,
+                                issue: row.issue,
+                            })
+                    }
+                }
+            })
+            .then(res => {
+                //初始化select
+                RCCAList = res;
+                let obj = $("#ca-rootcause");
+                let option = '';
+                for (var i = 0; i < res.length; i++) {
+                    option += '<option value="' + res[i].rootCause + '" data-correctiveaction="' + res[i].correctiveAction + '" data-indexNo = "' + i + '">' + res[i].rootCause + '</option>';
+                }
+                obj.html(option);
+                obj.selectpicker("refresh");
+            })
+            .catch(err => {
+                showError(err);
+            })
+    }
+    //downtime相关控件是否显示
+    $(':radio[name=caldowntime]').on('change', function (e) {
+        showDowntimeControls(e.target.defaultValue);
+    })
+    function showDowntimeControls(flag) {
+        if (flag == "false") {
+            console.log("NO");
+            $(".downtime-item").addClass("elehide");
+        } else {
+            console.log("YES");
+            $(".downtime-item").removeClass("elehide");
+        }
+    }
+    //sparepart相关控件是否显示
+    $(':radio[name=sparepartchange]').on('change', function (e) {
+        showSparepartControls(e.target.defaultValue);
+    })
+    function showSparepartControls(flag) {
+        if (flag == "false") {
+            console.log("NO");
+            $(".sparepart-item").addClass("elehide");
+        } else {
+            console.log("YES");
+            $(".sparepart-item").removeClass("elehide");
+        }
+    }
+    //将备件跟换记录加到表格里，方便检查。
+    var sparepartList = [];
+    $("#btn_addsparepart").on('click', function () {
+        if ($("#ca-qty").val() <= 0 || $("#ca-qty").val() == "") {
+            showWarning("使用的数量不能为0");
+        } else if ($("#ca-pn").val() == "") {
+            showWarning("PN不能为空");
+        }
+        else {
+            sparepartList.push({
+                "pn": $("#ca-pn").val(),
+                "desc": $("#ca-pn option:selected").text().split('/')[3],
+                "qty": $("#ca-qty").val()
+            })
+            $("#sparepart_table").bootstrapTable('destroy').bootstrapTable({
+                data: sparepartList,
+                dataType: 'json',
+                width: '100%',
+                columns: [{
+                    field: 'pn',
+                    title: 'PN',
+                }, {
+                    field: 'desc',
+                    title: 'Description',
+                }, {
+                    field: 'qty',
+                    title: 'QTY',
+                }, {
+                    field: 'operation',
+                    title: '操作',
+                    formatter: function (value, row, index) {
+                        return ['<button type="button" class="btn bad text-light" id="delete"><i class="fa fa-trash"></i></button>']
+                    },
+                    events: {
+                        "click #delete": function (e, value, row, index) {
+                            if (confirm("确定删除这个 Sparepart 更换记录")) {
+                                sparepartList.splice(index, 1);
+                                $("#sparepart_table").bootstrapTable("refreshOptions", { data: sparepartList });
+                            }
+                        }
+                    }
+                }]
+            });
+        }
+    })
+    //选择EQID后，显示该EQID的PM信息
+    $("#ca-machine").on('change', function () {
+        // 在选择完成后触发的方法
+        console.log('选项已更改');
+        $("#ca-machine").val()
+        getData("/PMMS/GetEQPM_Info", { eqid: $("#ca-machine").val() })
+            .then(res => {
+                if (res.length > 0) {
+                    showInfo_long(res[0]["eqid"] + "<br>上次点检时间: " + res[0]["lastConfirmDate"].replace("T", " ") + "<br>下次点检时间：" + res[0]["nextConfirmDate"].replace("T", " "));
+                }
+            })
+    });
+    $("#ca-employee").on('change', function () {
+        if (!/^[Ww]/.test($(this).val())) {
+            showWarning("请输入正确的工号，以‘W’开头");
+            $("#ca-employee").focus();
+        }
+    })
+    $("#ca-rootcause").on('change', function () {
+        $("#ca-action").val($("#ca-rootcause").find(":selected").data("correctiveaction"));
+    })
+    $("#addCA").on('click', function () {
+        if (checkFormNoNull("#CAModal")) {
+            //判断 EmployeeID 不能是Auto
+            if ($("#ca-employee").val().toUpperCase() == "AUTO") {
+                showWarning("请修改Employee ID (不可填Auto)");
+                $("#ca-employee").focus();
+                return;
+            } else if (!/^[Ww]/.test($("#ca-employee").val())) {
+                showWarning("请输入正确的工号，以‘W’开头");
+                $("#ca-employee").focus();
+                return;
+            }
+            //判断 sparepart 是否需要填写 且已经填写
+            if ($("input[name='sparepartchange']:checked").val() == 'true') {
+                if (sparepartList.length <= 0) {
+                    showWarning("请填写备件更换记录再提交");
+                    return;
+                } else {
+                    //提交备件更换记录
+                    sparepartList.map(i => {
+                        var tmp = {
+                            cfrom: "Downtime",
+                            linkid: Number($("#CAModal").data('id')),
+                            eqid: $("#ca-machine").val(),
+                            pn: i.pn,
+                            dri: $("#ca-employee").val(),
+                            qty: Number(i.qty),
+                            remark: $("#ca-rootcause").val(),
+                        };
+                        $.ajax({
+                            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqSparepartChangeHistory',
+                            method: 'POST',
+                            contentType: "application/json",
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+                            },
+                            data: JSON.stringify(tmp),
+                            success: function (data) {
+                                console.log("上传 Sparepart 更换记录成功")
+                            },
+                            error: function (err) {
+                                showError(err.responseText);
+                            }
+                        })
+                    });
+                }
+            }
+            var tmp = {
+                id: $("#CAModal").data('id'),
+                labor: Number($("#ca-labor").val()),
+                rootcause: $("#ca-rootcause").val(),
+                rootcauseremark: $("#ca-rootcauseremark").val(),
+                responsedep: $("#rsdepartment-select").val(),
+                actionstatus: 3,
+                action: $("#ca-action").val(),
+                actionremark: $("#ca-actionremark").val(),
+                station: $("#ca-station").val(),
+                respperson: $("#ca-employee").val().toUpperCase(),
+                machine: $("#ca-machine").val(),
+                issue: $("#ca-issue").val(),
+                issueremark: $("#ca-issueremark").val(),
+            };
+            postDataWithArray(BasicURL+'/api/Downtime/Update', tmp)
+                .then(res => {
+                    if ($(':radio[name=caldowntime]:checked').val() == 'true') {
+                        return getData('/Basic/GetCurrentWeek', { date: (new Date()).format('yyyy-MM-dd') })
+                    }
+                })
+                .then(res => {
+                    let tmpweek = res;
+                    let currentWeek = new Date().getFullYear().toString() + ((Array(2).join(0) + tmpweek).slice(-2)).toString();//获取本周的数据
+                    var issueSummary = {
+                        department: $("#ca-department").val(),
+                        project: $("#ca-project").val(),
+                        line: $("#ca-line").val(),
+                        station: $("#ca-station").val(),
+                        issue: $("#ca-issue").val(),
+                        rootcause: $("#ca-rootcause").val(),
+                        qty: 1,
+                        action: "",
+                        week: currentWeek,
+                    }
+                    return postData('/IssueSummary/CloseDowntime_ModifyIssueSummary', issueSummary)
+                })
+                .then(res => {
+                    $("#CAModal").modal('hide');
+                    showSuccess("完成!");
+                    $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
+                    ShowRCCAConfirmModal()
+                    $("#RCA-title").html("为什么" + $("#ca-rootcause").val());
+                })
+                .catch(err => {
+                    showWarning(err);
+                    $("#dtList").bootstrapTable("refreshOptions", { url: '/EC/GetDowntimeList' });
+                })
+        }
+    })
+
+    //View
+    function ViewDowntimeInfo(row) {
+        $(".sparepart-item").addClass("elehide");
+        ViewSparepartList(row);
+        let option = '<option value="' + row['machine'] + '">' + row['machine'] + '</option>';
+        $("#ca-machine").html(option);
+        $("#ca-machine").select2({
+            readonly: true,
+            disable: true,
+        });
+
+        $("#CA-title").html("查看 Downtime 信息");
+        $("#ca-department").val(row['department']);
+        $("#ca-project").val(row['project']);
+        $("#ca-line").val(row['line']);
+        $("#view-machine").val(row['machine']);   //显示machine
+        $("#ca-station").val(row['station']);
+        $("#ca-issue").val(row['issue']);
+        $("#ca-issueremark").val(row['issueremark']);
+        $("#ca-employee").val(row['respperson']);
+        $("#ca-labor").val(row['labor']);
+        $(':radio[name=caldowntime][value=' + row['calcdowntime'] + ']').prop('checked', 'true');
+        $(':radio[name=caldowntime]').attr('disabled', 'disabled');
+        showDowntimeControls(row['calcdowntime'].toString());
+        $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
+        $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
+        $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
+
+        $("#ca-responsetime").val((parseInt((new Date(row['repairtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
+        $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间
+
+        $("#view-rcca").val(row['rootcause']);  //rootcause
+        $("#ca-rootcauseremark").val(row['rootcauseremark']);
+        $("#view-resdepart").val(row['responsedep']);  //response department
+        $("#ca-action").val(row['action']);
+        $("#ca-actionremark").val(row['actionremark']);
+        $(".raca").attr('readonly', true);
+        $(".raca").attr('disable', "disable");
+        $(".rccaviewhide").attr('hidden', true);
+        $(".rccaview").removeAttr('hidden');
+        $("#addCA").addClass("elehide");
+        $("#CAModal").data("id", row['id']);
+        $("#CAModal").modal('show');
+    }
+    //展示Sparepart记录；不管有没有都要显示
+    function ViewSparepartList(row) {
+        getData(BasicURL+'/api/EqSparepartChange/Query_EqSparepartChangeHistory',
+            {
+                cfrom: "Downtime",
+                linkid: row['id'],
+            })
+            .then(res => {
+                $("#sparepart_view_table").bootstrapTable('destroy').bootstrapTable({
+                    data: res,
+                    dataType: 'json',
+                    width: '100%',
+                    columns: [{
+                        field: 'pn',
+                        title: 'PN',
+                    }, {
+                        field: 'desc',
+                        title: 'Description',
+                    }, {
+                        field: 'qty',
+                        title: 'QTY',
+                    }]
+                });
+                if (res.length > 0) {
+                    $(':radio[name=sparepartchange][value=true]').prop('checked', 'true');
+                    $(".sparepart-item-view").removeClass("elehide");
+                } else {
+                    $(':radio[name=sparepartchange][value=false]').prop('checked', 'true');
+                    $(".sparepart-item-view").addClass("elehide");
+                }
+                $(':radio[name=sparepartchange]').attr('disabled', 'disabled');
+            })
+            .catch(err => {
+                showWarning(err);
+            })
+    }
+
+</script>
