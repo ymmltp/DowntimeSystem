@@ -1,0 +1,36 @@
+﻿@*RCCA WI 查询条件 *@
+<div class="row">
+    <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+        <label class="form-label"> Department 部门:</label>
+        <select id="department-select" class="form-control selectpicker" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true" data-none-selected-text="All" ></select>
+    </div>
+    <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+        <label class="form-label"> Project 项目:</label>
+        <select id="project-select"  class="form-control selectpicker" title="Select Project" data-size="6" multiple data-max-options="1" data-live-search="true" data-none-selected-text="All" > </select>
+    </div>
+    <div class="col-lg-2 col-xs-3 col-sm-3 col-md-2">
+        <label class="form-label"> Station 站位:</label>
+        <select id="station-select" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-none-selected-text="All"  data-live-search="true"></select>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 ">
+        <label class="form-label" for="id"> WI No. 文件编号: </label>
+        <input type='text' class="form-control" id='wi' />
+    </div>
+    <div class="col-lg-1  col-xs-1 col-sm-1 col-md-1" style="padding-top:27px"><button type="button" class="btn btn-primary" id="search" onclick="GetTable()">Search</button></div>
+</div>
+
+<script>
+    $(function () {
+        getDepartment($("#department-select"));
+        getProject($('#project-select'));
+        getStation($('#station-select'));
+
+        $("#project-select").on("change", function () {
+            getStation($('#station-select'), $('#department-select').val(), $('#project-select').val());
+        })
+
+        $("#department-select").on("change", function () {
+            getStation($('#station-select'), $('#department-select').val(), $('#project-select').val());
+        })
+    })
+</script>

@@ -308,7 +308,7 @@
         $("#rseqidtable").bootstrapTable('destroy').bootstrapTable({
             cache: false,
             type: 'GET',
-            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqResourceList',
+            url: BasicURL+'/api/EqSparepartChange/Query_EqResourceList',
             queryParams: {
                 Resource: $("#resource-select").val() ? $("#resource-select").val()[0] : null,
                 EQID: $("#eqid-select").val() ? $("#eqid-select").val()[0] : null,
@@ -343,10 +343,10 @@
                 },
                 events: {
                     "click #delete": function (e, value, row, index) {
-                        deleteData("http://cnwuxg0te01:9000/api/EqSparepartChange/Delete_EqResourceList?Resource=" + row['resource'] + "&EQID=" + row['eqid'])
+                        deleteData(BasicURL+"/api/EqSparepartChange/Delete_EqResourceList?Resource=" + row['resource'] + "&EQID=" + row['eqid'])
                             .then(res => {
                                 showSuccess("删除成功");
-                                $("#rseqidtable").bootstrapTable("refreshOptions", { url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqResourceList' });
+                                $("#rseqidtable").bootstrapTable("refreshOptions", { url: BasicURL+ '/api/EqSparepartChange/Query_EqResourceList' });
                             }).catch(err => {
                                 showError(err);
                             })
@@ -376,7 +376,7 @@
         $(cur_table).bootstrapTable({
             cache: false,
             type: 'GET',
-            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqPNList',
+            url: BasicURL+ '/api/EqSparepartChange/Query_EqPNList',
             queryParams: {
                 //Resource: row.resource,
                 EQID: parentRow.eqid,
@@ -431,7 +431,7 @@
                 },
                 events: {
                     "click #delete": function (e, value, row, index) {
-                        deleteData("http://cnwuxg0te01:9000/api/EqSparepartChange/Delete_EqPNList?EQID=" + row['eqid'] + "&PN=" + row['pn'])
+                        deleteData(BasicURL+"/api/EqSparepartChange/Delete_EqPNList?EQID=" + row['eqid'] + "&PN=" + row['pn'])
                             .then(res => {
                                 showSuccess("删除成功");
                                 GetEQ_PNTable(parentindex, parentRow, $detail);
@@ -521,7 +521,7 @@
                     category: $("#category-select2").val()[0],
                     subCategory: $("#subcategory-select2").val()[0]
                 },
-                url: 'http://cnwuxg0te01:9000/api/SparepartStorage/GetSparepartStorage_ByFilter',
+                url: BasicURL+'/api/SparepartStorage/GetSparepartStorage_ByFilter',
                 showColumns: true,
                 dataType: 'json',
                 pagination: true,  //设置为 true 会在表格底部显示分页条。
@@ -616,12 +616,12 @@
             });
             SubmitEQID_PN_Link(list);
             $("#CreatePNModal").modal('hide');
-            $("#rseqidtable").bootstrapTable("refreshOptions", { url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqResourceList' });
+            $("#rseqidtable").bootstrapTable("refreshOptions", { url: BasicURL+'/api/EqSparepartChange/Query_EqResourceList' });
         }
     }
     //提交eqid 和 PN 关系
-    function SubmitEQID_PN_Link(list) { 
-            postDataWithArray("http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqPNLists", list)
+    function SubmitEQID_PN_Link(list) {
+        postDataWithArray(BasicURL+"/api/EqSparepartChange/Add_EqPNLists", list)
                 .then(res => {
                     showSuccess("添加成功");
                     //关闭模态框
@@ -637,7 +637,7 @@
         $("#eqidpntable").bootstrapTable("destroy").bootstrapTable({
             cache: false,
             type: 'GET',
-            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqPNList',
+            url: BasicURL+'/api/EqSparepartChange/Query_EqPNList',
             queryParams: {
                 Department: $("#department-select01") ? $("#department-select01").val()[0] : null,
                 Project: $("#project-select01")? $("#project-select01").val()[0]:null,
@@ -699,11 +699,11 @@
                 },
                 events: {
                     "click #delete": function (e, value, row, index) {
-                        deleteData("http://cnwuxg0te01:9000/api/EqSparepartChange/Delete_EqPNList?EQID=" + row['eqid'] + "&PN=" + row['pn'])
+                        deleteData(BasicURL+"/api/EqSparepartChange/Delete_EqPNList?EQID=" + row['eqid'] + "&PN=" + row['pn'])
                             .then(res => {
                                 showSuccess("删除成功");
                                 //GetEQ_PNTable1();
-                                $("#eqidpntable").bootstrapTable("refreshOptions", { url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqPNList' });
+                                $("#eqidpntable").bootstrapTable("refreshOptions", { url: BasicURL+'/api/EqSparepartChange/Query_EqPNList' });
                             }).catch(err => {
                                 showError(err);
                             })
@@ -722,7 +722,7 @@
                     tmp[field] = row[field];
                 }
                 $.ajax({
-                    url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Update_EqPNList',
+                    url: BasicURL+ '/api/EqSparepartChange/Update_EqPNList',
                     method: 'POST',
                     contentType: "application/json",
                     beforeSend: function (xhr) {
@@ -806,7 +806,7 @@
             });
             SubmitEQID_PN_Link(list);
             $("#NewModal1").modal("hide");
-            $("#eqidpntable").bootstrapTable("refreshOptions", { url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqPNList' });
+            $("#eqidpntable").bootstrapTable("refreshOptions", { url: BasicURL+'/api/EqSparepartChange/Query_EqPNList' });
         }
     })
 </script>

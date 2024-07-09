@@ -3,6 +3,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace DowntimeSystem.Models.Unitity
 {
@@ -38,14 +39,17 @@ namespace DowntimeSystem.Models.Unitity
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync("http://cnwuxg0te01:9000/api/DowntimeContact/Query_Access?Email=" + user + "&Level=" + aplevel);
+                    HttpResponseMessage response = await client.GetAsync("http://cnwuxg0te01:9000/api/DowntimeContact/Query_UserInfo?Email=" + user  );
                     response.EnsureSuccessStatusCode(); // 确保响应状态码为成功状态
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    if (responseBody == "[]") 
-                    { 
+                    if (responseBody == "[]")
+                    {
                         return false;
                     }
-                    return true;
+                    else {
+                        Employee i = JsonConvert.DeserializeObject<Employee>(responseBody);
+                        return i.Level >= aplevel;
+                    }
                 }
                 catch (HttpRequestException e)
                 {
@@ -53,5 +57,17 @@ namespace DowntimeSystem.Models.Unitity
                 }
             }
         }
+    }
+
+    public class Employee
+    {
+        public string Department { get; set; }
+        public string Project { get; set; }
+        public string JobTitle { get; set; }
+        public int Level { get; set; }
+        public string ChineseName { get; set; }
+        public string EnglishName { get; set; }
+        public string Email { get; set; }
+        public string ContactType { get; set; }
     }
 }

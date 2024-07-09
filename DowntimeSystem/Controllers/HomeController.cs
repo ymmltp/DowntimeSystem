@@ -19,37 +19,6 @@ namespace DowntimeSystem.Controllers
             _logger = logger;
         }
 
-        #region task
-        public IActionResult Query()
-        {
-            return View();
-        }
-        public IActionResult Query_test()
-        {
-            return View();
-        }
-        public IActionResult Task_CreateIncident()
-        {
-            return View();
-        }
-
-        [ApproveAuthorize(Roles = 2)]
-        public IActionResult Task_ReviewRCCA()
-        {
-            return View();
-        }
-        #endregion
-
-        public IActionResult QEQSparepartChangeHistory()
-        {
-            return View();
-        }
-
-        public IActionResult IssueSummary()
-        {
-            return View();
-        }
-
         public IActionResult Contact()
         {
             return View();
@@ -60,7 +29,12 @@ namespace DowntimeSystem.Controllers
             return View();
         }
 
-        public IActionResult Manage_Resource_EQID_PN()
+        #region task
+        public IActionResult Query()
+        {
+            return View();
+        }
+        public IActionResult Query_test()
         {
             return View();
         }
@@ -68,11 +42,39 @@ namespace DowntimeSystem.Controllers
         {
             return View();
         }
-        public IActionResult Page_RCCA()
+        [ApproveAuthorize(Roles = 2) ]
+        public IActionResult Task_ReviewRCCA()
         {
             return View();
         }
 
+        public IActionResult IssueSummary()
+        {
+            return View();
+        }
+        #endregion
+
+        #region query
+        public IActionResult QEQSparepartChangeHistory()
+        {
+            return View();
+        }
+        public IActionResult Page_RCCA()
+        {
+            return View();
+        }
+        #endregion
+
+        #region Management
+        public IActionResult Manage_Resource_EQID_PN()
+        {
+            return View();
+        }
+        public IActionResult Manage_RCCAWI()
+        {
+            return View();
+        }
+        #endregion
 
         #region dashboard
         public IActionResult Dashboard()
@@ -126,6 +128,10 @@ namespace DowntimeSystem.Controllers
 
         #region Test Page
         public IActionResult testDashboardPage()
+        {
+            return View();
+        }
+        public IActionResult Task_CreateIncident()
         {
             return View();
         }

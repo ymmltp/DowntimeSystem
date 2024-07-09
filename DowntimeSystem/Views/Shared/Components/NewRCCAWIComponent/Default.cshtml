@@ -1,0 +1,79 @@
+﻿@*新建WI Station关联关系 *@
+<div class="modal fade" id="NewModel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 50%;min-width:150px;margin-top:80px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLongTitle">新增WI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="form-label  warning-text"> Department 部门:</label>
+                        <select id="new-department-select" class="form-control selectpicker noNull" noNull="部门" title="Select Department" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label  warning-text"> Project 项目:</label>
+                        <select id="new-project-select" class="form-control selectpicker noNull" noNull="项目" title="Select Project" data-size="6" data-live-search="true"> </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label  warning-text"> Station 站位:</label>
+                        <select id="new-station-select" class="form-control selectpicker noNull" noNull="站位" title="Select Station" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label  warning-text" for="id"> WI No. 文件编号: </label>
+                        <input type='text' class="form-control noNull" noNull="文件编号" id='new-wi' />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="Submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        initialModal();
+        $("#new-project-select").on("change", function () {
+            getStation($('#new-station-select'), $('#new-department-select').val(), $('#new-project-select').val());
+        })
+
+        $("#new-department-select").on("change", function () {
+            getStation($('#new-station-select'), $('#new-department-select').val(), $('#new-project-select').val());
+        })
+
+        $("#Submit").on('click', function () {
+            if (checkFormNoNull("#NewModel")) {
+                let tmp = {
+                    department: $("#new-department-select").val(),
+                    project: $("#new-project-select").val(),
+                    station: $("#new-station-select").val(),
+                    formno: $("#new-wi").val(),
+                    editor : getCookie('dt-ntid'),
+                    edate : formatDateToString(new Date()),
+                }
+                postDatatoAPI(BasicURL + '/api/DowntimeRCCA/Add', tmp)
+                    .then(res => {
+                        showSuccess("更新成功");
+                        $("#table").bootstrapTable("refreshOptions", { url: BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo' });
+                        $("#NewModel").modal('hide');
+                    })
+                    .catch(err => {
+                        showError(err);
+                    })
+            }
+        })
+    })
+
+
+    function initialModal() {
+        getDepartment($("#new-department-select"));
+        getProject($('#new-project-select'));
+        getStation($('#new-station-select'));
+        $('#new-wi').val('');
+    }
+</script>
