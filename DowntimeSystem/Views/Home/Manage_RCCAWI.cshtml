@@ -1,0 +1,156 @@
+﻿@{
+    ViewData["Title"] = "Manage RCCA WI";
+}
+
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
+        <div class="panel-body">
+            @await Component.InvokeAsync("RCCAWISelectComponent")
+        </div>
+    </div>
+</div>
+
+<div id="toolbar" class="toolbar" style="display:none">
+    <button id="New" class="btn btn-success " type="button"> 新增 </button>
+</div>
+<table id="table"></table>
+
+@await Component.InvokeAsync("NewRCCAWIComponent")
+
+<script src="~/js/customer.js"></script>
+<script src="~/js/cookie.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-editable.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-editable.js"></script>
+<script>
+    $(function () {
+        $("#New").on('click', function () {
+            initialModal();
+            $("#NewModel").modal('show');
+        })
+    })
+
+    function GetTable() {
+        $("#toolbar").removeAttr("style");
+        $("#table").bootstrapTable('destroy').bootstrapTable({
+            toolbar: "#toolbar",
+            url: BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo',
+            height: Math.round($('#silder-right-body').height() - $("#searchbox").height(), 0) - 20,
+            queryParams: {
+                department: $("#department-select").val()[0],
+                project: $("#project-select").val()[0],
+                station: $("#station-select").val()[0],
+                WI: $("#wi").val(),
+            },
+            dataType: 'json',
+            cache: false,
+            type: 'GET',
+            width: '100%',
+            search: true,                       //开启搜索框
+            visibleSearch: true,
+            showColumns: true,
+            sortable: true,
+            showSearchButton: false,
+            showExport: function (row, index) {
+                var sUserAgent = navigator.userAgent.toLowerCase();
+                var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+                var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+                var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+                var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+                var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+                var bIsAndroid = sUserAgent.match(/android/i) == "android";
+                var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+                var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+                if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            exportDataType: 'basic', //'basic', 'all', 'selected'.
+            exportTypes: ['csv', 'excel', 'xlsx'], //导出类型
+            exportOptions: {
+                fileName: 'WI List - ' + formatDate(new Date()), //文件名称设置
+                worksheetName: 'Sheet1', //表格工作区名称
+                tableName: 'Sheet1',
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+            },
+            columns: [{
+                field: 'index',
+                title: 'No.',
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            }, {
+                field: 'department',
+                title: '部门',
+                sortable: true,
+            }, {
+                field: 'project',
+                title: '项目',
+                sortable: true,
+            }, {
+                field: 'station',
+                title: '站位',
+                sortable: true,
+            }, {
+                field: 'formno',
+                title: 'WI 编号',
+                sortable: true,
+                editable: {
+                    title: 'WI No',
+                    type: 'text',
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
+            }, {
+                field: 'version',
+                title: '版本',
+                sortable: true,
+                visible: false,
+            }, {
+                field: 'editor',
+                title: '编辑人',
+                sortable: true,
+            }, {
+                field: 'edate',
+                title: '编辑时间',
+                sortable: true,
+                formatter: function (value, row, index) {
+                    if (value)
+                        return new Date(value).format('yyyy-MM-dd');
+                    else
+                        return value;
+                },
+            }, {
+                field: 'autocheckdate',
+                title: '上次自动检查时间',
+                sortable: true,
+                formatter: function (value, row, index) {
+                    if (value)
+                        return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+                    else
+                        return value;
+                },
+                visible: false,
+            }],
+            onEditableSave: function (field, row, oldValue, $el) {
+                let tmp = row;
+                tmp.editor = getCookie('dt-ntid');
+                tmp.edate = formatDateToString(new Date())
+                postDatatoAPI(BasicURL + '/api/DowntimeRCCA/Update', tmp)
+                    .then(res => {
+                        showSuccess("更新成功");
+                        $("#table").bootstrapTable("refreshOptions", { url: BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo' });
+                    })
+                    .catch(err => {
+                        showError(err);
+                    })
+            },
+        })
+    }
+
+</script>
