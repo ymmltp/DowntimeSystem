@@ -18,7 +18,7 @@
     </div>
     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
         <label class="form-label"> Time Range:</label>
-        <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1">
+        <select id="timeZone" class="form-control selectpicker" title="Select Time Zone" data-size="6" data-max-options="1" onchange="updateTime()">
             <option value="5">Today</option>
             <option value="1">Current Week</option>
             <option value="4">Last Week</option>
@@ -66,16 +66,13 @@
 
 <script src="~/js/customer.js"></script>
 <script>
-    $(document).ready(function () {
+    $(function () {
         iniDatetimepicker();
         getDepartment($("#department-select"));
         getLine($('#line-select'));
         getProject($('#project-select'));
         getStation($('#station-select'));
         getDashboardSystem($("#system-select"));
-        $("#timeZone option[value='5']").attr("selected", true);
-        $("#timeZone").selectpicker('refresh');
-        $("#timeZone").trigger("onchange");
 
         $("#project-select").on("change", function () {
             getLine($('#line-select'), $('#project-select').val());
@@ -86,8 +83,12 @@
             getStation($('#station-select'), $('#department-select').val(), $('#project-select').val(), $('#line-select').val());
         })
 
-        $("#timeZone").on("change", function () {
-            updateTime();
-        })
+        //$("#timeZone").on("change", function () {
+        //    updateTime();
+        //})
+
+        $("#timeZone option[value='5']").attr("selected", true);
+        $("#timeZone").selectpicker('refresh');
+        $("#timeZone").trigger("onchange");
     })
 </script>
