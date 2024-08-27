@@ -471,7 +471,7 @@
         $("#dtList").bootstrapTable('destroy').bootstrapTable({
             cache: false,
             type: 'GET',
-            url: 'http://cnwuxg0te01:9000/api/Downtime/Query_ByFilter',
+            url: BasicURL+'/api/Downtime/Query_ByFilter',
             queryParams: {
                 id: $("#id").val(),
                 Department: $("#department-select").val(),
@@ -1000,7 +1000,7 @@
                             remark: $("#ca-rootcause").val(),
                         };
                         $.ajax({
-                            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqSparepartChangeHistory',
+                            url: BasicURL+'/api/EqSparepartChange/Add_EqSparepartChangeHistory',
                             method: 'POST',
                             contentType: "application/json",
                             beforeSend: function (xhr) {
@@ -1032,7 +1032,7 @@
                 issue: $("#ca-issue").val(),
                 issueremark: $("#ca-issueremark").val(),
             };
-            postDataWithArray('http://cnwuxg0te01:9000/api/Downtime/Update', tmp)
+            postDataWithArray(BasicURL +'/api/Downtime/Update', tmp)
                 .then(res => {
                     if ($(':radio[name=caldowntime]:checked').val() == 'true') {
                         return getData('/Basic/GetCurrentWeek', { date: (new Date()).format('yyyy-MM-dd') })
@@ -1127,7 +1127,7 @@
     }
     //展示Sparepart记录；不管有没有都要显示
     function ViewSparepartList(row) {
-        getData('http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqSparepartChangeHistory',
+        getData(BasicURL +'/api/EqSparepartChange/Query_EqSparepartChangeHistory',
             {
                 cfrom: "Downtime",
                 linkid: row['id'],
@@ -1200,7 +1200,7 @@
             return;
         }
         $.ajax({
-            url: 'http://cnwuxg0te01:9000/api/Downtime/Update',
+            url: BasicURL +'/api/Downtime/Update',
             method: 'POST',
             data: {
                 comefrom: "Downtime System",
@@ -1460,7 +1460,7 @@
                 rootcause: $("#confirm-rootcause").hasClass("elehide") ? null : $("#confirm-rootcause").val(),
                 correctaction: $("#confirm-action").hasClass("elehide") ? null : $("#confirm-action").val(),
             }
-            postDatatoAPI("http://cnwuxg0te01:9000/api/DowntimeRCCAConfirm/Add", item)  ////http://localhost:19292
+            postDatatoAPI(BasicURL +"/api/DowntimeRCCAConfirm/Add", item)  
                 .then(res => {
                     showSuccess("OK");
                     $("#RCCAConfirmModal").modal("hide");

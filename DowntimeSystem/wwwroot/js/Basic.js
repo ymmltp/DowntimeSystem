@@ -1,4 +1,4 @@
-﻿const BasicURL = "http://cnwuxg0te01:9000";  //  "http://localhost:19292"; //
+﻿const BasicURL ="https://cnwuxg0te01:9100"// "http://cnwuxg0te01:9000";  //  "http://localhost:19292"; //
 
 
 //#region datetimepicker 初始化设定

@@ -82,7 +82,7 @@ $(
             //上传数据
             if (checkFormNoNull("#rseqidContent")) {
                 var data = $("#tmptable").bootstrapTable('getData');
-                postDataWithArray("http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqResourceLists", data)
+                postDataWithArray(BasicURL+"/api/EqSparepartChange/Add_EqResourceLists", data)
                     .then(res => {
                         showSuccess("添加成功");
                         //关闭模态框

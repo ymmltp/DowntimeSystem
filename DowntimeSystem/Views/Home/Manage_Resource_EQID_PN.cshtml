@@ -453,7 +453,7 @@
                     tmp[field] = row[field];
                 }
                 $.ajax({
-                    url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Update_EqPNList',
+                    url: BasicURL+'/api/EqSparepartChange/Update_EqPNList',
                     method: 'POST',
                     contentType: "application/json",
                     beforeSend: function (xhr) {

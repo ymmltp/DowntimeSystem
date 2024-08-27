@@ -106,7 +106,7 @@
 
         function submitForm1() {
             // 提交表单
-            getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
+            getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
                 .then(row => {
                     if (row['incidentstatus'] >= 2) {
 
@@ -118,7 +118,7 @@
                             postDatatoAPI("http://cnwuxm1tes05/eCalling/InsertData2?" + urlstring)
                                 .then(res => {
                                     console.log(res);
-                                    return getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
+                                    return getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
 
                                     // 将结果传递给下一个 .then() 方法
                                 })
@@ -132,7 +132,7 @@
                                     data.frequency = Number($("#howoften").val());
                                     data.pieces = Number($("#howmuch").val()); // 可能会引发异常的代码  //
                                     console.log(data);
-                                    return postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Update", data);
+                                    return postDataWithArray(BasicURL+"/api/Downtime/Update", data);
                                 })
                                 .then(res => {
                                     showSuccess("提交成功");
@@ -150,7 +150,7 @@
                 })
                 }
         function submitForm2() {
-            getData("http://cnwuxg0te01:9000/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
+            getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
                 .then(row => {
                     if (row['incidentstatus'] >= 2) {
 
@@ -160,7 +160,7 @@
 
 
                             occurtime = formatDateToString(startDate);
-                            postDataWithArray("http://cnwuxg0te01:9000/api/Downtime/Add", {
+                            postDataWithArray(BasicURL+"/api/Downtime/Add", {
                                 comefrom: 'Downtime System',
                                 department: $("#department-select").val(),
                                 machine: $("#machine-select").val(),

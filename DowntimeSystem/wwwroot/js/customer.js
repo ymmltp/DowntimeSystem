@@ -99,7 +99,7 @@ function iniDatetimepicker_withTime() {
 function getDepartment1(obj) {
 
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/eCallingBasic/GetDepartment',
+        url: BasicURL+ '/api/eCallingBasic/GetDepartment',
         method: 'GET',
         dataType: 'json',
         contentType: 'json',
@@ -133,7 +133,7 @@ function getLine(obj, project) {
         })
 }
 function getLine1(obj, project) {
-    getDataWithArray('http://cnwuxg0te01:9000/api/eCallingBasic/GetLine', { project: project })
+    getDataWithArray(BasicURL+ '/api/eCallingBasic/GetLine', { project: project })
         .then(data => {
             var option = "";
             for (var i = 0; i < data.length; i++) {
@@ -171,7 +171,7 @@ function getProject(obj,line) {
 }
 function getProject1(obj) {
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/eCallingBasic/GetProject',
+        url: BasicURL+ '/api/eCallingBasic/GetProject',
         method: 'GET',
        
         dataType: 'json',
@@ -210,7 +210,7 @@ function getStation(obj, department, project,line) {
         })
 }
 function getStation1(obj, project, line) {
-    getDataWithArray('http://cnwuxg0te01:9000/api/eCallingBasic/GetStation',
+    getDataWithArray(BasicURL+ '/api/eCallingBasic/GetStation',
         {
            
             Line: line,
@@ -232,7 +232,7 @@ function getErrorCode(obj, Department, vbnumber) {
         vbnumber: vbnumber,
     };
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/eCallingBasic/GetErrorCode',
+        url: BasicURL+ '/api/eCallingBasic/GetErrorCode',
         method: 'GET',
         data: paras,
         dataType: 'json',
@@ -279,7 +279,7 @@ function getDashboardSystem(obj) {
 }
 function getMachine(machine, Line, Project, obj) {
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/eCallingBasic/GetMachine',
+        url: BasicURL+ '/api/eCallingBasic/GetMachine',
         data: {
             Station: machine,
             Line: Line,
@@ -381,7 +381,7 @@ function GetIFRoute(obj, fac = _FAC) {
         url: "/api/Route/GetRoutes?Factory=" + fac,
     };
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/iFactory/iFactoryGetMethod',
+        url: BasicURL+ '/api/iFactory/iFactoryGetMethod',
         method: 'GET',
         data: paras,
         dataType: 'json',
@@ -408,7 +408,7 @@ function GetIFRouteStep(obj, route, fac = _FAC) {
         url: "/api/Route/GetRouteSteps?Factory=" + fac + "&RouteName=" + route.val()[0],
     };
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/iFactory/iFactoryGetMethod',
+        url: BasicURL+ '/api/iFactory/iFactoryGetMethod',
         method: 'GET',
         data: paras,
         dataType: 'json',
@@ -434,11 +434,11 @@ function GetIFRouteStep(obj, route, fac = _FAC) {
 
 //#region  获取PMMS中的信息
 function GetPMMSDepartment(obj) {
-    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Department', null, obj);
+    GetSelectOptions(BasicURL+ '/api/PMMS/Get_Department', null, obj);
 
 }
 function GetPMMSProject(obj) {
-    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Project', null, obj);
+    GetSelectOptions(BasicURL+ '/api/PMMS/Get_Project', null, obj);
 
 }
 function GetPMMSLine(obj, department, project) {
@@ -446,7 +446,7 @@ function GetPMMSLine(obj, department, project) {
         department: department ? department.val() : null,
         project: project ? project.val() : null,
     };
-    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Line', paras, obj);
+    GetSelectOptions(BasicURL+ '/api/PMMS/Get_Line', paras, obj);
 }
 function GetPMMSEQType(obj, department, project, line) {
     var paras = {
@@ -454,7 +454,7 @@ function GetPMMSEQType(obj, department, project, line) {
         project: project ? project.val() : null,
         line: line ? line.val() : null,
     };
-    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_Category', paras, obj);
+    GetSelectOptions(BasicURL+ '/api/PMMS/Get_Category', paras, obj);
 }
 function GetEQID(obj, department, project, line, type, eqid) {
     var paras = {
@@ -463,29 +463,29 @@ function GetEQID(obj, department, project, line, type, eqid) {
         line: line ? line.val() : null,
         type: type ? type.val() : null,
     };
-    GetSelectOptions('http://cnwuxg0te01:9000/api/PMMS/Get_EQID', paras, obj);
+    GetSelectOptions(BasicURL+ '/api/PMMS/Get_EQID', paras, obj);
 }
 //#endregion
 
 //#region  获取Sparepart中的信息
 function GetSPDepartment(obj) {
-    GetSelectOptions('http://cnwuxg0te01:9000/api/Basic/GetDepartmentWithOutAll', null, obj);
+    GetSelectOptions(BasicURL+ '/api/Basic/GetDepartmentWithOutAll', null, obj);
 }
 function GetSPProject(obj) {
-    GetSelectOptions('http://cnwuxg0te01:9000/api/Basic/GetProjectWithOutAll', null, obj);
+    GetSelectOptions(BasicURL+ '/api/Basic/GetProjectWithOutAll', null, obj);
 }
 function GetSPCategory(obj) {
-    GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartBasic/GetCategory', null, obj);
+    GetSelectOptions(BasicURL+ '/api/SparepartBasic/GetCategory', null, obj);
 }
 function GetSPSubCategory(obj, category) {
     var paras = {
         category: category ? category : null,
     }
     if (category) {
-        GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartBasic/GetSubCategory_ByCategory', paras, obj);
+        GetSelectOptions(BasicURL+ '/api/SparepartBasic/GetSubCategory_ByCategory', paras, obj);
     }
     else {
-        GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartBasic/GetSubCategory', null, obj);
+        GetSelectOptions(BasicURL+ '/api/SparepartBasic/GetSubCategory', null, obj);
     }
 
 
@@ -495,14 +495,14 @@ function GetPN(obj, category, subcategory) {
         category: category ? category.val() : null,
         subcategory: subcategory ? subcategory.val() : null,
     };
-    GetSelectOptions('http://cnwuxg0te01:9000/api/SparepartDescription/GetPN_byCategory', paras, obj);
+    GetSelectOptions(BasicURL+ '/api/SparepartDescription/GetPN_byCategory', paras, obj);
 }
 //#endregion
 
 //#region 获取PN AlarmType
 function GetPNAlarmType(obj) {
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_AlarmType',
+        url: BasicURL+ '/api/EqSparepartChange/Query_AlarmType',
         method: 'GET',
         dataType: 'json',
         traditional: true,
@@ -524,7 +524,7 @@ function GetPNAlarmType(obj) {
 }
 function GetSparepart_HistoryCfrom(obj) {
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_History_Cfrom',
+        url: BasicURL+ '/api/EqSparepartChange/Query_History_Cfrom',
         method: 'GET',
         dataType: 'json',
         traditional: true,
@@ -546,7 +546,7 @@ function GetSparepart_HistoryCfrom(obj) {
 }
 function GetEQIDLink_PN(obj,eqid) {
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/SparepartDescription/GetSparepartDescription_ByEQ_PN_LinkInfo',
+        url: BasicURL+ '/api/SparepartDescription/GetSparepartDescription_ByEQ_PN_LinkInfo',
         method: 'GET',
         dataType: 'json',
         data: {
@@ -575,7 +575,7 @@ function GetEQIDLink_PN(obj,eqid) {
 }
 function GetAllPN(obj, category, subcategory) {
     $.ajax({
-        url: 'http://cnwuxg0te01:9000/api/SparepartDescription/GetSparepartDescription_byCategory',
+        url: BasicURL+ '/api/SparepartDescription/GetSparepartDescription_byCategory',
         method: 'GET',
         dataType: 'json',
         traditional: true,
