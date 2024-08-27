@@ -77,6 +77,10 @@
 <script src="~/lib/bootstrap/dist/js/tableExport.js"></script>
 <script src="~/lib/bootstrap/dist/js/FileSaver.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/xlsx.core.min.js"></script>
+<script src="~/lib/reqrcode.js"></script>
+<script src="~/lib/jsQR.js"></script>
+<script src="~/js/QRCodeScan.js"></script>
+
 <script>
     $(document).ready(function () {
         let id = GetParms("ticket");
@@ -96,7 +100,7 @@
         $("#dtList").bootstrapTable('destroy').bootstrapTable({
             cache: false,
             type: 'GET',
-            url: BasicURL+ '/api/Downtime/Query_ByFilter',
+            url: BasicURL + '/api/Downtime/Query_ByFilter',
             queryParams: {
                 id: $("#id").val(),
                 Department: $("#department-select").val(),
@@ -316,7 +320,8 @@
                     if (row['incidentstatus'] == 0) {
                         return ['<button type="button" class="btn warning text-light" id="close">Close</button>']
                     }
-                    else if (row['downtime'] <= 15 * 60) {
+                    //else if (row['downtime'] <= 15 * 60) {
+                    else if (row['downtime'] <= 1 * 60) {
                         return ['<button type="button" class="btn gray" id="unedit">RC/CA</button>']
                     }
                     else if (row['incidentstatus'] == 2 && row['actionstatus'] == 2) {
@@ -337,7 +342,7 @@
                                     id: row['id'],
                                 },
                                 success: function (data) {
-                                    showSuccess('维修结束，辛苦了!');   
+                                    showSuccess('维修结束，辛苦了!');
                                 },
                                 fail: function (err, status, xhr) {
                                     showWarning(err.responseText);

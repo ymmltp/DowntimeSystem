@@ -76,12 +76,12 @@
                 @*Sparepart相关*@
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="ca-department" class="form-label text-right ">Department:</label>
-                        <select class="form-control selectpicker" id='ca-department' data-size="6" title="--Select Department--" data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
+                        <label for="ca-department" class="form-label text-right warning-text">Department:</label>
+                        <select class="form-control selectpicker noNull" noNull="部门" id='ca-department' data-size="6" title="--Select Department--" data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
                     </div>
                     <div class="col-lg-3">
-                        <label for="ca-project" class="form-label text-right">Project:</label>
-                        <select class="form-control selectpicker" id='ca-project' data-size="6" title="--Select Project--" data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
+                        <label for="ca-project" class="form-label text-right warning-text">Project:</label>
+                        <select class="form-control selectpicker noNull" noNull="项目" id='ca-project' data-size="6" title="--Select Project--" data-live-search="true" multiple data-max-options="1" onchange="GetEQID($('#ca-machine'),$('#ca-department'), $('#ca-project'))"></select>
                     </div>
                     <div class="col-lg-3 ">
                         <label for="ca-category" class="form-label text-right">Category:</label>
@@ -93,11 +93,11 @@
                     </div>
                     <div class="col-lg-3">
                         <label for="ca-machine" class="form-label text-right warning-text">Equipment ID:</label>
-                        <select class="form-control noNull selectpicker" id='ca-machine' data-size="6" data-live-search="true" multiple data-max-options="1" title="--Select EQID--" noNull="Equipment" onchange="GetEQIDLink_PN($('#ca-pn'), $('#ca-machine').val()[0])"></select>
+                        <select class="form-control noNull selectpicker" id='ca-machine' data-size="6" data-live-search="true" title="--Select EQID--" noNull="Equipment" onchange="GetEQIDLink_PN($('#ca-pn'), $('#ca-machine').val()[0])"></select>
                     </div>
                     <div class="col-lg-3 ">
-                        <label for="ca-pn" class="form-label text-right warning-text">P_N:</label>
-                        <select class="form-control selectpicker noNull" id='ca-pn' data-size="6" title="--Select PN--" data-live-search="true" noNull="PN" multiple data-max-options="1">
+                        <label for="ca-pn" class="form-label text-right warning-text">P_N: <i class="fa fa-camera blue-font" id="ScanQRCode"></i></label>
+                        <select class="form-control selectpicker noNull" id='ca-pn' data-size="6" title="--Select PN--" data-live-search="true" noNull="PN">
                             <optgroup label="PN Linked with EQID"></optgroup>
                             <optgroup label="Other PN"></optgroup>
                         </select>
@@ -114,6 +114,12 @@
                         <label for="ca-remark" class="form-label text-right">Remark:</label>
                         <textarea type='text' class="form-control" id='ca-remark'></textarea>
                     </div>
+                    <div id="qrdmo" class="sparepart-item elehide col-10">
+                        <input type="file" name="file" id="file" multiple="multiple" style="display:none;">
+                        <video id="video"></video>
+                        <canvas id="canvas" hidden></canvas>
+                    </div>
+                    <div class="col-lg-12"><table id="snlist"></table></div>               
                 </div>
                 @*Sparepart相关*@
             </div>
@@ -133,6 +139,9 @@
 <script src="~/lib/bootstrap/dist/js/tableExport.js"></script>
 <script src="~/lib/bootstrap/dist/js/FileSaver.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/xlsx.core.min.js"></script>
+<script src="~/lib/reqrcode.js"></script>
+<script src="~/lib/jsQR.js"></script>
+<script src="~/js/QRCodeScan.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -143,10 +152,16 @@
         GetPMMSEQType($("#type-select"));
         GetEQID($("#eqid-select"));
         iniDatetimepicker();
+
+        var video = document.querySelector('video');
+        var startbtn = $("#ScanQRCode");
+        var fileInput = $("#file");
+        var canvas = document.getElementById('canvas');
+        scan = new QRCodeScan(video, startbtn, fileInput, canvas, GenerateSNList);
     });
     function SparepartChange_Table() {
         $("#table").bootstrapTable('destroy').bootstrapTable({
-            url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Query_EqSparepartChangeHistory',
+            url: BasicURL + '/api/EqSparepartChange/Query_EqSparepartChangeHistory',
             height: Math.round($('#silder-right-body').height() - $("#searchbox").height(), 0) - 20,
             queryParams: {
                 cfrom: $("#systemsele").val()[0],
@@ -166,6 +181,7 @@
             search: true,                       //开启搜索框
             visibleSearch: true,
             showSearchButton: false,
+            detailView: true,
             //pagination: true,
             //paginationLoop: false,
             //pageSize: 10,
@@ -230,8 +246,27 @@
             }, {
                 field: 'remark',
                 title: 'Remark',
-            }]
+            }],
+            onExpandRow: function (index, row, $detail) {
+                ShowSN(index, row, $detail);
+            },
         })
+    }
+    function ShowSN(index, row, $detail) {
+        let cur_table = $detail.html('<table class="tablewhite"></table>').find('table');
+        let historyid = row.id;
+        var url = "/api/EqSparepartChange/Query_SNList?linkid=" + historyid;
+        $(cur_table).bootstrapTable({
+            url: BasicURL+url,
+            dataType: 'json',
+            cache: false,
+            type: 'GET',
+            width: '100%',
+            columns: [{
+                field: 'sn',
+                title: 'SN',
+            }],
+        });
     }
     $("#Addbtn").on('click', function () {
         GetPMMSDepartment($("#ca-department"));
@@ -242,11 +277,13 @@
         GetAllPN($("#ca-pn"));
         $("#CreateModal").modal("show");
     })
+
+    var listSN = [];
     $("#btn_submit").on('click', function () {
         //提交备件更换记录
         if (checkFormNoNull("#CreateModal")) {
             $.ajax({
-                url: 'http://cnwuxg0te01:9000/api/EqSparepartChange/Add_EqSparepartChangeHistory',
+                url: BasicURL + '/api/EqSparepartChange/Add_EqSparepartChangeHistory',
                 method: 'POST',
                 contentType: "application/json",
                 beforeSend: function (xhr) {
@@ -255,10 +292,13 @@
                 data: JSON.stringify({
                     cfrom: "Other",
                     linkid: 0,
-                    eqid: $("#ca-machine").val()[0],
-                    pn: $("#ca-pn").val()[0],
+                    eqid: $("#ca-machine").val(),
+                    pn: $("#ca-pn").val(),
                     dri: $("#ca-employee").val(),
                     qty: Number($("#ca-qty").val()),
+                    project: $("#ca-project").val()[0],
+                    department: $("#ca-department").val()[0],
+                    snlist: listSN,
                     remark: $("#ca-remark").val(),
                 }),
                 success: function (data) {
@@ -273,6 +313,36 @@
         }
     })
 
+
+    //扫码更新snlist
+    function GenerateSNList(sn) {
+        //检查PN是否一致
+        var pn = sn.split('.')[0]
+        if (pn != $("#ca-pn").val()) {
+            showWarning("Sparepart SN和 PN不一致,请扫码正确的备件");
+            return;
+        }
+        let i = { "sn": sn }
+        listSN.push(i);
+        refreshSparepart_Table(listSN);
+    }
+    function refreshSparepart_Table(tableData) {
+        $("#snlist").bootstrapTable('destroy').bootstrapTable({
+            data: tableData,
+            dataType: 'json',
+            width: '100%',
+            columns: [{
+                field: 'index',
+                title: 'No.',
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            },{
+                field: 'sn',
+                title: 'SN',
+            }],
+        });
+    }
 </script>
 
 
