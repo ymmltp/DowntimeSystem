@@ -5,3 +5,101 @@
 <h2>Sorry ,you do not have access to this page.</h2>
 <h5>Please contact with your administrator.</h5>
 
+<script src="~/lib/paho-mqtt.min.js"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // MQTT Broker的WebSocket地址
+        const host = "cnwuxg0te01";
+        const port = 8084;
+        const path = "";  // 如果有特定的 path，填写在这里
+
+        // 创建客户端实例
+        const client = new Paho.MQTT.Client(host, Number(port), path, "clientId");
+
+        // 设置连接选项
+        const options = {
+            useSSL: true,  // 使用 WebSocket Secure
+            userName: "",  // 如果有用户名，请填写
+            password: "",  // 如果有密码，请填写
+            onSuccess: onConnect,
+            onFailure: onFailure
+        };
+
+        // 连接到 MQTT Broker
+        client.connect(options);
+
+        // 连接成功时的回调函数
+        function onConnect() {
+            console.log("Connected to MQTT broker");
+
+            // 订阅主题
+            const topic = "machine/11/updates";
+            client.subscribe(topic);
+            console.log(`Subscribed to topic: ${topic}`);
+        }
+
+        // 连接失败时的回调函数
+        function onFailure(error) {
+            console.error("Connection failed:", error);
+        }
+
+        // 收到消息时的回调函数
+        client.onMessageArrived = function (message) {
+            console.log(`Received message: ${message.payloadString} on topic: ${message.destinationName}`);
+        };
+
+        // 处理连接断开事件
+        client.onConnectionLost = function (responseObject) {
+            if (responseObject.errorCode !== 0) {
+                console.error("Connection lost:", responseObject.errorMessage);
+            }
+        };
+    });
+
+
+    //// MQTT Broker的WebSocket地址 (通常以ws://或wss://开头)
+    //const options = {
+    //    protocol: 'wss',            // 使用 WebSocket Secure
+    //    host: 'cnwuxg0te01',        // 替换为你的配置中的 Host
+    //    port: 8084,                 // 替换为你的配置中的 Port
+    //    rejectUnauthorized: false   // 如果你不想验证证书
+    //};
+
+    //// 生成连接URL
+    //const connectUrl = `${options.protocol}://${options.host}:${options.port}${options.path}`;
+
+    //// 创建客户端实例
+    //const client = mqtt.connect("wss://cnwuxg0te01:8084");//connectUrl, options);
+
+    //// 当连接到Broker时
+    //client.on('connect', () => {
+    //    console.log("Connected to MQTT broker");
+
+    //    // 订阅主题
+    //    const topic = "machine/11/updates";
+    //    client.subscribe(topic, (err) => {
+    //        if (!err) {
+    //            console.log(`Subscribed to topic: ${topic}`);
+    //        } else {
+    //            console.error("Subscription error:", err);
+    //        }
+    //    });
+    //});
+
+    //// 当收到消息时
+    //client.on('message', (topic, message) => {
+    //    console.log(`Received message: ${message.toString()} on topic: ${topic}`);
+    //    // 在这里处理接收到的消息，例如显示在网页上
+    //});
+
+    //// 当连接断开时
+    //client.on('close', () => {
+    //    console.log("Disconnected from MQTT broker");
+    //});
+
+    //client.on('error', (error) => {
+    //    console.log(error);
+    //});
+</script>
