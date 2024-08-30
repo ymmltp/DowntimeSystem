@@ -136,6 +136,8 @@
 <script src="~/lib/paho-mqtt.min.js"></script>
 <script src="~/js/mqtt.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-filter-control.min.js"></script>
+
 <script>
     var socket = new MQTTWebSocketHandler();
     var tabledata = null;
@@ -219,6 +221,7 @@
                     data:res,
                     cache: false,
                     type: 'GET',
+                    filterControl: true, 
                     columns: [[{
                         title: '维修指导手册',
                         colspan: 16,
@@ -226,9 +229,11 @@
                     }], [{
                         field: 'errorCode',
                         title: '异常代码',
+                        filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'issue',
                         title: '问题描述',
+                        filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'totalqty',
                         title: 'Accumulative QTY',
