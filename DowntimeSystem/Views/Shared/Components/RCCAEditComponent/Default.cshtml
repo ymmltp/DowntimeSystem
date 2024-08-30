@@ -84,31 +84,34 @@
                     </div>
                 </fieldset>
                 @*downtime相关*@
-                <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
-                    <legend class="ngMES-border">RC & CA</legend>
-                    <div class="col-lg-12">
-                        <label for="form-label warning-text" class="form-label text-right warning-text">Responsible department:</label>
-                        <select id="rsdepartment-select" class="form-control selectpicker noNull rccaviewhide" noNull="Responsible department" title="Select Department" data-size="6" data-max-options="1" data-live-search="true" data-actions-box="true"></select>
-                        <input id="view-resdepart" class="rccaview form-control" readonly />
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
-                        <select class="form-control selectpicker raca noNull rccaviewhide" id='ca-rootcause' noNull="Root Cause" title="Select Rootcause" data-size="6" data-live-search="true"></select>
-                        <textarea id="view-rcca" class="rccaview form-control " readonly></textarea>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="ca-action" class="form-label text-right warning-text">Corrective Action:</label>
-                        <textarea type='text' class="form-control noNull" id='ca-action' noNull="Action" readonly></textarea>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="ca-rootcauseremark" class="form-label text-right">RC Remark:</label>
-                        <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="ca-actionremark" class="form-label text-right">CA Remark:</label>
-                        <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
-                    </div>
-                </fieldset>
+            <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
+                <legend class="ngMES-border">RC & CA</legend>
+                <div class="col-lg-12">
+                    <label for="form-label warning-text" class="form-label text-right warning-text">Responsible department:</label>
+                    <select id="rsdepartment-select" class="form-control selectpicker noNull rccaviewhide" noNull="Responsible department" title="Select Department" data-size="6" data-max-options="1" data-live-search="true" data-actions-box="true"></select>
+                    <input id="view-resdepart" class="rccaview form-control" readonly />
+                </div>
+                <div class="col-lg-6 rccaviewhide">
+                    <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                    <select class="form-control raca noNull rccaviewhide" id='ca-rootcause' noNull="Root Cause" title="Select Rootcause" data-size="6" data-live-search="true"></select>
+                </div>
+                <div class="col-lg-6 rccaview">
+                    <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                    <textarea id="view-rcca" class="rccaview form-control " readonly></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-action" class="form-label text-right warning-text">Corrective Action:</label>
+                    <textarea type='text' class="form-control noNull raca" id='ca-action' noNull="Action"></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-rootcauseremark" class="form-label text-right">RC Remark:</label>
+                    <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-actionremark" class="form-label text-right">CA Remark:</label>
+                    <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
+                </div>
+            </fieldset>
                 @*Sparepart相关*@
                 <fieldset class="step-slide ngMES-border sparepart-item elehide" style="position: relative; margin: 10px 10px; ">
                     <legend class="ngMES-border">备件更换记录</legend>
@@ -265,13 +268,15 @@
             .then(res => {
                 //初始化select
                 RCCAList = res;
-                let obj = $("#ca-rootcause");
-                let option = '';
+                let option = '<option value=""></option>';
                 for (var i = 0; i < res.length; i++) {
                     option += '<option value="' + res[i].rootCause + '" data-correctiveaction="' + res[i].correctiveAction + '" data-indexNo = "' + i + '">' + res[i].rootCause + '</option>';
                 }
-                obj.html(option);
-                obj.selectpicker("refresh");
+                $("#ca-rootcause").html(option);
+                $("#ca-rootcause").select2({
+                    tags: true,
+                    placeholder: "请输入rootCause"
+                });
             })
             .catch(err => {
                 showError(err);
