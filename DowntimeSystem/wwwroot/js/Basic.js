@@ -412,28 +412,6 @@ function checkFormNoNull(parentid) {
 }
 //#endregion
 
-//#region 配合alert.css,显示弹出信息
-function showWarning(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-warning').show().delay(3000).fadeOut();
-}
-function showInfo(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-info').show().delay(1500).fadeOut();
-}
-function showInfo_long(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-info').show().delay(8000).fadeOut();
-}
-function showSuccess(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-success').show().delay(1500).fadeOut();
-}
-function showError(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-danger').show().delay(3000).fadeOut();
-}
-//#endregion
 
 //#region 获取对应的select的option
 
@@ -485,10 +463,14 @@ function GetSelectOptions_paras(url, paras, obj, value = null) {
             obj.selectpicker("refresh");
         },
         fail: function (err) {
-            showWarning(err.responseText);
+            showError(err.responseText);
         },
         error: function (err) {
-            showWarning(err.responseText);
+            if (err.responseText == undefined) {
+                showError("请进行Api安全认证");
+            } else {
+                showError(err.responseText);
+            }
         }
     })
 }
@@ -560,7 +542,6 @@ function toBigImg() {
     });
 }
 //#endregion
-
 
 
 var getObjectURL = function (file) {

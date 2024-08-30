@@ -133,11 +133,12 @@
         </div>
     </div>
 </div>
-
-<script src="~/js/webSocket.js"></script>
+<script src="~/lib/paho-mqtt.min.js"></script>
+<script src="~/js/mqtt.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 <script>
-    var socket = new WebSocketHandler();
+    var socket = new MQTTWebSocketHandler();
+    var tabledata = null;
     $(document).ready(function () {
         $("#socketstatus").on('change', function () {
             SwitchChange(Boolean($(this).val()));
@@ -156,7 +157,7 @@
         $("#info-line").val($("#line-select").val());
         $("#info-station").val($("#station-select").val());
         $("#info-machine").val($("#machine-select").val());
-        socket.initializeSocket($("#machine-select").val(), onMessageEvent);//创建WebSocket 通道
+        socket.initializeSocket($("#machine-select").val(), $("#socketstatus") ,onMessageEvent);//创建WebSocket 通道
     }
     function GetWIInfo() {
         getData(BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo', {
@@ -184,11 +185,7 @@
     function onMessageEvent(data) {
         ShowDTinfo(data);
         if ($("#info-wi").val() != "") {
-            if (data.incidentstatus == 0) {
-                ShowRCCA(data);
-            } else if (data.incidentstatus == 2) {
-                InitialRCCATable();
-            }
+            ShowRCCA(data);
         }
     }
     function ShowDTinfo(data) {
@@ -212,110 +209,112 @@
         $("#incident-description").val(data.issueremark);
     }
     function InitialRCCATable() {
-        $("#table").bootstrapTable('destroy').bootstrapTable({
-            url: BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByStation",
-            cache: false,
-            type: 'GET',
-            queryParams: {
-                formNo: $("#info-wi").val(),
-                station: $("#info-station").val()
-            },
-            columns: [[{
-                title: '维修指导手册',
-                colspan: 16,
-                align: 'center',
-            }], [ {
-                field: 'errorCode',
-                title: '异常代码',
-                }, {
-                field: 'issue',
-                title: '问题描述',
-                }, {
-                    field: 'totalqty',
-                    title: 'Accumulative QTY',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    field: 'totalPercent',
-                    title: 'Percentage%',
-                    align: 'center',
-                    valign: 'middle',
-                },  {
-                field: 'issuePic',
-                title: '问题图片',
-                formatter: function (value) {
-                    if (value != null) {
-                        return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                    }}
-                },{
-                field: 'checkStep',
-                title: '检查步骤',
-                }, {
-                field: 'checkStepPic',
-                title: '检查步骤图片',
-                    formatter: function (value) {
-                        if (value != null) {
-                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                        }
-                    }
-                }, {
-                    field: 'rootCause',
-                    title: '根本原因',
-                }, {
-                field: 'correctiveAction',
-                title: '纠正措施',
-                }, {
-                    field: 'tool',
-                    title: '工具',
-                }, {
-                field: 'correctiveActionPic',
-                title: '纠正措施图片',
-                    formatter: function (value) {
-                        if (value != null) {
-                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                        }
-                    }
-                }, {
-                field: 'correctiveStep',
-                title: '纠正步骤',
-                }, {
-                field: 'correctiveStepPic',
-                title: '纠正步骤图片',
-                    formatter: function (value) {
-                        if (value != null) {
-                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                        }
-                    }
-                }, {
-                    field: 'qty',
-                    title: 'Sub QTY',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    field: 'subPercent',
-                    title: 'Sub Percentage%',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                field: 'remark',
-                title: '备注',
-                    }]],
-            onLoadSuccess: function (data) {
-                var data = $('#table').bootstrapTable('getData', true);
-                //合并单元格
-                mergeCells(data, "issue", 1, $('#table'));
-            }
+        getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByStation", {
+            formNo: $("#info-wi").val(),
+            station: $("#info-station").val()
         })
+            .then(res => {
+                tabledata = res;
+                $("#table").bootstrapTable('destroy').bootstrapTable({
+                    data:res,
+                    cache: false,
+                    type: 'GET',
+                    columns: [[{
+                        title: '维修指导手册',
+                        colspan: 16,
+                        align: 'center',
+                    }], [{
+                        field: 'errorCode',
+                        title: '异常代码',
+                    }, {
+                        field: 'issue',
+                        title: '问题描述',
+                    }, {
+                        field: 'totalqty',
+                        title: 'Accumulative QTY',
+                        align: 'center',
+                        valign: 'middle',
+                    }, {
+                        field: 'totalPercent',
+                        title: 'Percentage%',
+                        align: 'center',
+                        valign: 'middle',
+                    }, {
+                        field: 'issuePic',
+                        title: '问题图片',
+                        formatter: function (value) {
+                            if (value != null) {
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                            }
+                        }
+                    }, {
+                        field: 'checkStep',
+                        title: '检查步骤',
+                    }, {
+                        field: 'checkStepPic',
+                        title: '检查步骤图片',
+                        formatter: function (value) {
+                            if (value != null) {
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                            }
+                        }
+                    }, {
+                        field: 'rootCause',
+                        title: '根本原因',
+                    }, {
+                        field: 'correctiveAction',
+                        title: '纠正措施',
+                    }, {
+                        field: 'tool',
+                        title: '工具',
+                    }, {
+                        field: 'correctiveActionPic',
+                        title: '纠正措施图片',
+                        formatter: function (value) {
+                            if (value != null) {
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                            }
+                        }
+                    }, {
+                        field: 'correctiveStep',
+                        title: '纠正步骤',
+                    }, {
+                        field: 'correctiveStepPic',
+                        title: '纠正步骤图片',
+                        formatter: function (value) {
+                            if (value != null) {
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                            }
+                        }
+                    }, {
+                        field: 'qty',
+                        title: 'Sub QTY',
+                        align: 'center',
+                        valign: 'middle',
+                    }, {
+                        field: 'subPercent',
+                        title: 'Sub Percentage%',
+                        align: 'center',
+                        valign: 'middle',
+                    }, {
+                        field: 'remark',
+                        title: '备注',
+                    }]],
+                    onLoadSuccess: function (data) {
+                        var data = $('#table').bootstrapTable('getData', true);
+                        //合并单元格
+                        mergeCells(data, "issue", 1, $('#table'));
+                    }
+                })
+            })
     }
     function ShowRCCA(data) {
-        getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
-            {
-                formNo: $("#info-wi").val(),
-                station: $("#info-station").val(),
-                issue: data.issue,
-            }).then(res => {
-                $('#table').bootstrapTable('load', res);
-            });
+        if (data.incidentstatus == 0) {
+            var tmp = tabledata.filter(j => j.issue == data.issue);
+            $('#table').bootstrapTable('load', tmp);
+        } else if (data.incidentstatus == 2) {
+            $('#table').bootstrapTable('load', tabledata);
+        }         
     }
 
     //修改Socket开关状态

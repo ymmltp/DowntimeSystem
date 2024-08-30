@@ -3,9 +3,11 @@
         this.userName = null;
         this.onmessageEvent = null;
         this.socket = null;
+        this.ShowStatus = $("#socketstatus") ;
     }
 
-    initializeSocket(userName, onmessageEvent) {
+    //用户名，状态显示按钮，收到消息时触发的动作
+    initializeSocket(userName,showStat, onmessageEvent) {
         if (this.socket!=null && this.socket.readyState == 1) {
             this._closeSocket();
         }
@@ -13,9 +15,10 @@
             showWarning("请先输入UserName");
             return;
         }
-        this.socket = new WebSocket("ws://10.136.16.135:1234");
         this.userName = userName;
+        this.ShowStatus = showStat;
         this.onmessageEvent = onmessageEvent;
+        this.socket = new WebSocket("ws://10.136.16.135:1234");
         this.socket.onopen = (event) => this._handleOpen(event);
         this.socket.onmessage = (event) => this._handleMessage(event);
         this.socket.onerror = (event) => this._handleError(event);
@@ -29,8 +32,8 @@
     }
 
     _checkStatus() {
-        if (this.socket.readyState == 1) $("#socketstatus").val(true).change();
-        else $("#socketstatus").val(false).change();
+        if (this.socket.readyState == 1) this.ShowStatus.val(true).change();
+        else this.ShowStatus.val(false).change();
         return this.socket.readyState;
     }
 
