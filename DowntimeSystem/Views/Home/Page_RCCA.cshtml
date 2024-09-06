@@ -127,6 +127,7 @@
         <div class="col text-center">
             <div class="row">
                 <div class="col">
+                    @await Component.InvokeAsync("ProgressComponent")                
                     <table id="table"></table>
                 </div>
             </div>
@@ -151,6 +152,8 @@
         if (checkFormNoNull("#searchBar")) {
             GetMachineInfo();
             GetWIInfo();   //加载WI信息
+            progress.show();
+            progress.settime(40);
         } 
     }
     function GetMachineInfo() {
@@ -159,7 +162,7 @@
         $("#info-line").val($("#line-select").val());
         $("#info-station").val($("#station-select").val());
         $("#info-machine").val($("#machine-select").val());
-        socket.initializeSocket($("#machine-select").val(), $("#socketstatus") ,onMessageEvent);//创建WebSocket 通道
+        socket.initializeSocket($("#machine-select").val(), $("#socketstatus"), onMessageEvent);//创建WebSocket 通道
     }
     function GetWIInfo() {
         getData(BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo', {
@@ -216,6 +219,7 @@
             station: $("#info-station").val()
         })
             .then(res => {
+                progress.hide();
                 tabledata = res;
                 $("#table").bootstrapTable('destroy').bootstrapTable({
                     data:res,
@@ -311,6 +315,10 @@
                         mergeCells(data, "issue", 1, $('#table'));
                     }
                 })
+            })
+            .catch(err => {
+                showError(err);
+                progress.hide();
             })
     }
     function ShowRCCA(data) {

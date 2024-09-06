@@ -1,0 +1,38 @@
+﻿@*显示当前进度 *@
+<div class="progress" id="progress" hidden>
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  id="progressbar"></div>
+</div>
+
+<script>
+    const progress = {
+         changelength(width) {
+            $("#progressbar").css("width", width + "%").text(width + "%");
+        },
+
+         settime(time) {
+             let i = 0;
+             const updateProgress = () => {
+                 if (i < time) {
+                     i = i + 1;
+                     let step = i / time;
+                     $("#progressbar").css("width", parseInt(99 * step) + "%").text(parseInt(99 * step) + "%");
+
+                     // 在 100 毫秒后再次调用 updateProgress 以更新进度
+                     setTimeout(updateProgress, 1000);
+                 }
+             };
+
+             // 启动进度更新
+             updateProgress();
+        },
+
+         show() {
+                $('#progress').removeAttr('hidden');
+        },
+
+         hide() {
+                $('#progress').attr('hidden', true);
+        },
+    }
+    
+</script>
