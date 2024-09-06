@@ -536,6 +536,17 @@ function toBigImg() {
     $(".opacityBottom").show();
     $("html,body").addClass("none-scroll");//下层不可滑动
     $(".bigImg").addClass("bigImg");//添加图片样式
+
+    let currentScale = 1; // 初始化缩放比例
+
+    // 在遮罩层上监听鼠标滚轮事件
+    $(".opacityBottom").on('wheel', function (event) {
+        event.preventDefault(); // 阻止默认的滚动行为
+        let delta = event.originalEvent.deltaY > 0 ? -0.1 : 0.1; // 向下滚轮缩小，向上滚轮放大
+        currentScale = Math.max(0.1, currentScale + delta); // 限制最小缩放比例为0.1
+        $(".bigImg").css("transform", "scale(" + currentScale + ")"); // 应用缩放
+    });
+
     $(".opacityBottom").click(function () {//点击关闭
         $("html,body").removeClass("none-scroll");
         $(".opacityBottom").remove();
