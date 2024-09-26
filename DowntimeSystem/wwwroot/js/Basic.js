@@ -566,3 +566,12 @@ var getObjectURL = function (file) {
     }
     return url;
 }
+
+
+function btnDisable(obj) {
+    obj.prop("disabled", true)
+}
+
+function btnEnable(obj) {
+    obj.prop("disabled", false)
+}

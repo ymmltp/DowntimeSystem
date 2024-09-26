@@ -4,35 +4,42 @@
 </div>
 
 <script>
-    const progress = {
+    class Progress  {
+        constructor(time) {
+            this.progressBarElement = $("#progressbar");
+            this.progressElement = $('#progress');
+            this.i = 0;
+            this.intervalid = 0;
+            this.time = time;
+        }
+
          changelength(width) {
-            $("#progressbar").css("width", width + "%").text(width + "%");
-        },
+             this.progressBarElement .css("width", width + "%").text(width + "%");
+        }
 
-         settime(time) {
-             let i = 0;
-             const updateProgress = () => {
-                 if (i < time) {
-                     i = i + 1;
-                     let step = i / time;
-                     $("#progressbar").css("width", parseInt(99 * step) + "%").text(parseInt(99 * step) + "%");
+        settime(time) {
+            this.time = time;
+        }
 
-                     // 在 100 毫秒后再次调用 updateProgress 以更新进度
-                     setTimeout(updateProgress, 1000);
-                 }
-             };
+        updateProgress() {
+            if (this.i < this.time) {
+                this.i = this.i + 1;
+                let step = this.i / this.time;
+                this.progressBarElement.css("width", parseInt(99 * step) + "%").text(parseInt(99 * step) + "%");
+            }
+        }
 
-             // 启动进度更新
-             updateProgress();
-        },
-
-         show() {
-                $('#progress').removeAttr('hidden');
-        },
+        show() {
+            this.progressElement.removeAttr('hidden');
+            this.i = 0;
+            this.intervalid = setInterval(() => this.updateProgress(), 1000);
+        }
 
          hide() {
-                $('#progress').attr('hidden', true);
-        },
+             this.progressElement.attr('hidden', true);
+             clearInterval(this.intervalid);
+             this.changelength(0);
+        }
     }
     
 </script>

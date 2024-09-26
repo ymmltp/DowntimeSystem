@@ -142,6 +142,7 @@
 <script>
     var socket = new MQTTWebSocketHandler();
     var tabledata = null;
+    var progress = new Progress(40);
     $(document).ready(function () {
         $("#socketstatus").on('change', function () {
             SwitchChange(Boolean($(this).val()));
@@ -150,10 +151,9 @@
     //加载配置信息
     function Set() {
         if (checkFormNoNull("#searchBar")) {
+            StartLoading();
             GetMachineInfo();
-            GetWIInfo();   //加载WI信息
-            progress.show();
-            progress.settime(40);
+            GetWIInfo();   //加载WI信息     
         } 
     }
     function GetMachineInfo() {
@@ -219,7 +219,7 @@
             station: $("#info-station").val()
         })
             .then(res => {
-                progress.hide();
+                EndLoading();
                 tabledata = res;
                 $("#table").bootstrapTable('destroy').bootstrapTable({
                     data:res,
@@ -318,7 +318,7 @@
             })
             .catch(err => {
                 showError(err);
-                progress.hide();
+                EndLoading();
             })
     }
     function ShowRCCA(data) {
@@ -328,6 +328,15 @@
         } else if (data.incidentstatus == 2) {
             $('#table').bootstrapTable('load', tabledata);
         }         
+    }
+    function StartLoading() {
+        progress.show();
+        btnDisable($('#search'));
+    }
+
+    function EndLoading() {
+        progress.hide();
+        btnEnable($('#search'));
     }
 
     //修改Socket开关状态
