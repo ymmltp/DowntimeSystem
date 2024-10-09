@@ -236,57 +236,43 @@
     // 获取RCCA
     let RCCAList = [];
     function getRCCA(row) {
-        getData(BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo', {
+        getData(BasicURL + '/api/DowntimeRCCA/GetRCCAContent', {
             Department: row.department,
             Project: row.project,
             Station: row.station,
+            issue: row.comefrom == "Downtime System"? null: row.issue,
         })
-            .then(res => {
-                if (res[0] == undefined) {
-                    showWarning("没有关联的WI，请配置该站位的RCCA WI");
-                    return [];
-                } else {
-                    if (row.comefrom == "Downtime System") {
-                        return getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
-                            {
-                                formNo: res[0].formno,
-                                station: row.station,
-                            })
-                    }
-                    else {
-                        return getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
-                            {
-                                formNo: res[0].formno,
-                                station: row.station,
-                                issue: row.issue,
-                            })
-                    }
-                }
-            })
             .then(res => {
                 //初始化select
                 RCCAList = res;
-                let option = '<option value=""></option>';
-                for (var i = 0; i < res.length; i++) {
-                    option += '<option value="' + res[i].rootCause + '" data-correctiveaction="' + res[i].correctiveAction + '" data-indexNo = "' + i + '">' + res[i].rootCause + '</option>';
-                }
-                $("#ca-rootcause").html(option);
-                if (res.length == 0) {
-                    $("#ca-rootcause").select2({
-                        tags: true,
-                        placeholder: "请输入rootCause"
-                    });
-                } else {
-                    $("#ca-rootcause").select2({
-                        tags: false,
-                        placeholder: "请输入rootCause"
-                    });
-                }
+                RootcauseSeelct2(res);
             })
             .catch(err => {
-                showError(err);
+                showError("未找到相关的Rootcause，请检查该站位的RCCA WI配置");
+                RootcauseSeelct2([]);
+                //showError(err);
             })
     }
+    function RootcauseSeelct2(res){
+        let option = '<option value=""></option>';
+        for (var i = 0; i < res.length; i++) {
+            option += '<option value="' + res[i].rootCause + '" data-correctiveaction="' + res[i].correctiveAction + '" data-indexNo = "' + i + '">' + res[i].rootCause + '</option>';
+        }
+        $("#ca-rootcause").html(option);
+        if (res.length == 0) {
+            $("#ca-rootcause").select2({
+                tags: true,
+                placeholder: "请输入rootCause"
+            });
+        } else {
+            $("#ca-rootcause").select2({
+                tags: false,
+                placeholder: "请输入rootCause"
+            });
+        }
+    }
+
+
     //downtime相关控件是否显示
     $(':radio[name=caldowntime]').on('change', function (e) {
         showDowntimeControls(e.target.defaultValue);
