@@ -35,7 +35,8 @@ namespace DowntimeSystem.Models
                 optionsBuilder.UseNpgsql("Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123");
             }
         }
-        private string[] contains = { "eCalling", "FPY", "Downtime System" }; //"Sparepart", 
+        private string[] contains = { "eCalling","Downtime System" }; //"Sparepart", 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "English_United States.1252");
@@ -137,8 +138,7 @@ namespace DowntimeSystem.Models
             modelBuilder.Entity<IncidentDet>(entity =>
             {
                 entity.ToTable("incident_det");
-                entity.HasQueryFilter(e => e.Calcdowntime.Equals(true)); //只获取downtime事件
-                entity.HasQueryFilter(e => Array.AsReadOnly(contains).Contains(e.Comefrom));  //只获取需要的系统传来的数据
+                entity.HasQueryFilter(e => e.Calcdowntime == true &&  Array.AsReadOnly(contains).Contains(e.Comefrom));  //只获取需要的系统传来的数据
 
                 entity.HasIndex(e => new { e.Comefrom, e.Occurtime }, "comefrom");
 

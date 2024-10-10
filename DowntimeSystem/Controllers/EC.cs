@@ -19,7 +19,7 @@ namespace DowntimeSystem.Controllers
             try {
                 using (ECContext db = new ECContext())
                 {
-                    var where = db.IncidentDets.Where(e => e.Calcdowntime == true); 
+                    var where = db.IncidentDets.Where(e => true); 
                     if (tmp.Project!=null && tmp.Project.Length>0) where = where.Where(e => tmp.Project.Contains(e.Project));
                     if (tmp.Department != null && tmp.Department.Length > 0) where = where.Where(e => tmp.Department.Contains(e.Department));
                     if (tmp.Line != null && tmp.Line.Length > 0) where = where.Where(e => tmp.Line.Contains(e.Line));
@@ -46,7 +46,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                   var items = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                   var items = db.IncidentDets.Where(e => true); 
                     return Json(items.Select(e => e.Department).Distinct().ToList());
                 }
             }
@@ -62,7 +62,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    var items = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                    var items = db.IncidentDets.Where(e => true);
                     if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line));
@@ -81,7 +81,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    var where = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                    var where = db.IncidentDets.Where(e =>  true);
                     if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e =>  e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
@@ -102,7 +102,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    var where = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                    var where = db.IncidentDets.Where(e => true);
                     if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
@@ -124,7 +124,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    var where = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                    var where = db.IncidentDets.Where(e =>  true);
                     if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
