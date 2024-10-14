@@ -143,6 +143,7 @@
     var socket = new MQTTWebSocketHandler();
     var tabledata = null;
     var progress = new Progress(40);
+    var currentdata;
     $(document).ready(function () {
         $("#socketstatus").on('change', function () {
             SwitchChange(Boolean($(this).val()));
@@ -153,8 +154,8 @@
         if (checkFormNoNull("#searchBar")) {
             StartLoading();
             GetMachineInfo();
-            GetWIInfo($("#department-select").val(), $("#project-select").val(), $("#station-select").val());   //加载WI信息
             GetLastDowntimeInfo($("#machine-select").val());
+            GetWIInfo($("#department-select").val(), $("#project-select").val(), $("#station-select").val());   //加载WI信息
         } 
     }
     function GetMachineInfo() {
@@ -195,7 +196,7 @@
                     showWarning("未查询到 " + machine +" 相关的Downtime记录")
                 } else {
                     ShowDTinfo(res);
-                    ShowRCCA(res);
+                    currentdata = res;
                 }
             })
             .catch(err => {
@@ -332,6 +333,7 @@
                         mergeCells(data, "issue", 1, $('#table'));
                     }
                 })
+                ShowRCCA(currentdata);             
             })
             .catch(err => {
                 showError(err);
