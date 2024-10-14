@@ -195,6 +195,7 @@
                     showWarning("未查询到 " + machine +" 相关的Downtime记录")
                 } else {
                     ShowDTinfo(res);
+                    ShowRCCA(res);
                 }
             })
             .catch(err => {
