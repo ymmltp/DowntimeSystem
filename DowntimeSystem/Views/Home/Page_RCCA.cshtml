@@ -153,7 +153,8 @@
         if (checkFormNoNull("#searchBar")) {
             StartLoading();
             GetMachineInfo();
-            GetWIInfo();   //加载WI信息     
+            GetWIInfo($("#department-select").val(), $("#project-select").val(), $("#station-select").val());   //加载WI信息
+            GetLastDowntimeInfo($("#machine-select").val());
         } 
     }
     function GetMachineInfo() {
@@ -164,21 +165,36 @@
         $("#info-machine").val($("#machine-select").val());
         socket.initializeSocket($("#machine-select").val(), $("#socketstatus"), onMessageEvent);//创建WebSocket 通道
     }
-    function GetWIInfo() {
+    function GetWIInfo(department,project,station) {
         getData(BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo', {
-            Department: $("#department-select").val(),
-            Project: $("#project-select").val(),
-            Station: $("#station-select").val(),
+            Department: department,
+            Project: project,
+            Station: station ,
         })
             .then(res => {
                 if (res[0] == undefined) {
                     $("#info-wi").val("");
                     $("#info-version").val("")
-                    showWarning($("#department-select").val() + " " + $("#project-select").val() + " " + $("#station-select").val()+" 没有对应的WI文件，请联系管理员配置相关信息")
+                    showWarning(department + " " + project+ " " + station+" 没有对应的WI文件，请联系管理员配置相关信息")
                 } else {
                     $("#info-wi").val(res[0].formno);
                     $("#info-version").val(res[0].version);
                     InitialRCCATable();
+                }
+            })
+            .catch(err => {
+                showError(err);
+            })
+    }
+    function GetLastDowntimeInfo(machine) {
+        getData(BasicURL + '/api/Downtime/Query_LastIncdentByFilter', {
+            Machine: machine
+        })
+            .then(res => {
+                if (res==null) {
+                    showWarning("未查询到 " + machine +" 相关的Downtime记录")
+                } else {
+                    ShowDTinfo(res);
                 }
             })
             .catch(err => {
