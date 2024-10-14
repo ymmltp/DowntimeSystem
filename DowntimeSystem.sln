@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Weekly FACA Alarm", "Weekly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DowntimeIncidentMonitor_MQTT", "DowntimeIncidentMonitor_MQTT\DowntimeIncidentMonitor_MQTT.csproj", "{6B490061-D795-47FC-8813-74935770F27C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundService", "BackgroundService", "{69040823-3054-4FC8-9AF4-4EEA14301BB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6B490061-D795-47FC-8813-74935770F27C} = {69040823-3054-4FC8-9AF4-4EEA14301BB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0ABFC948-0C23-4197-8D78-BDCF16920B09}
