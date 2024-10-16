@@ -254,29 +254,29 @@
                     columns:  [{
                         field: 'errorCode',
                         width:1,
-                        title: 'Error Code </br> 异常代码',
+                        title: 'Error Code</br>异常代码',
                         filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'issue',
                         width: 2,
-                        title: 'Issue </br> 问题描述',
+                        title: 'Issue</br>问题描述',
                         filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'totalqty',
                         width: 1,
-                        title: 'Accumulative QTY </br> 累计数量',
+                        title: 'Accumulative QTY</br>累计数量',
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'totalPercent',
                         width: 1,
-                        title: 'Percentage% </br>  累计占比',
+                        title: 'Percentage%</br> 累计占比',
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'issuePic',
                         width: 2,
-                        title: 'Issue PIC </br> 问题图片',
+                        title: 'Issue Photo </br> 问题图片',
                         formatter: function (value) {
                             if (value != null) {
                                 return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
@@ -290,7 +290,7 @@
                     }, {
                         field: 'checkStepPic',
                         width: 2,
-                        title: 'Check Step PIC </br> 检查步骤图片',
+                        title: 'Step Photo </br> 检查步骤图片',
                         formatter: function (value) {
                             if (value != null) {
                                 return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
@@ -311,7 +311,7 @@
                     }, {
                         field: 'correctiveActionPic',
                         width: 2,
-                        title: 'CA PIC </br> 纠正措施图片',
+                        title: 'CA Photo </br> 纠正措施图片',
                         formatter: function (value) {
                             if (value != null) {
                                 return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
@@ -325,7 +325,7 @@
                     }, {
                         field: 'correctiveStepPic',
                         width: 2,
-                        title: 'Corrective Step PIC </br> 纠正步骤图片',
+                        title: 'Corrective Step Photo </br> 纠正步骤图片',
                         formatter: function (value) {
                             if (value != null) {
                                 return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
@@ -333,13 +333,13 @@
                         }
                     }, {
                         field: 'qty',
-                        title: 'Sub QTY',
+                        title: 'Sub QTY</br>子项数量',
                         width: 1,
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'subPercent',
-                        title: 'Sub Percentage%',
+                        title: 'Sub Percentage%</br>子项百分比',
                         width: 1,
                         align: 'center',
                         valign: 'middle',
@@ -355,6 +355,7 @@
                             $this.attr('title', $this.text());
                         });
                         $('#table thead th').css('text-align', 'center');
+                        $('#table thead th').css('vertical-align', 'top');
                     }
                 });
                 ShowRCCA(currentdata);
