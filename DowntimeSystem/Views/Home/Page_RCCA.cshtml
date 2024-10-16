@@ -127,8 +127,14 @@
         <div class="col text-center">
             <div class="row">
                 <div class="col">
-                    @await Component.InvokeAsync("ProgressComponent")                
-                    <table id="table"></table>
+                    @await Component.InvokeAsync("ProgressComponent")         
+                    <div style="width:100%">
+                        <label style="width:100%;text-align:center">
+                            WI 维修指导手册
+                        </label>
+                        <table id="table" style="table-layout: fixed;width:100%"></table>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -245,90 +251,111 @@
                     cache: false,
                     type: 'GET',
                     filterControl: true,
-                    columns: [[{
-                        title: 'WI 维修指导手册',
-                        colspan: 16,
-                        align: 'center',
-                    }], [{
+                    columns:  [{
                         field: 'errorCode',
-                        title: 'Error Code 异常代码',
+                        width:1,
+                        title: 'Error Code </br> 异常代码',
+                        titleFormatter: function (value, row, index) {
+                            return `<span title="${value}">${value}</span>`;
+                        },
                         filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'issue',
-                        title: 'Issue 问题描述',
+                        width: 2,
+                        title: 'Issue </br> 问题描述',
                         filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'totalqty',
-                        title: 'Accumulative QTY 累计数量',
+                        width: 1,
+                        title: 'Accumulative QTY </br> 累计数量',
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'totalPercent',
-                        title: 'Percentage%  累计占比',
+                        width: 1,
+                        title: 'Percentage% </br>  累计占比',
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'issuePic',
-                        title: 'Issue PIC 问题图片',
+                        width: 2,
+                        title: 'Issue PIC </br> 问题图片',
                         formatter: function (value) {
                             if (value != null) {
-                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
                             }
                         }
                     }, {
                         field: 'checkStep',
-                        title: 'Check Step 检查步骤',
+                        width: 4,
+                        title: 'Check Step </br> 检查步骤',
                     }, {
                         field: 'checkStepPic',
-                        title: 'Check Step PIC 检查步骤图片',
+                        width: 2,
+                        title: 'Check Step PIC </br> 检查步骤图片',
                         formatter: function (value) {
                             if (value != null) {
-                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
                             }
                         }
                     }, {
                         field: 'rootCause',
-                        title: 'RootCause 根本原因',
+                        width: 2,
+                        title: 'RootCause </br> 根本原因',
                     }, {
                         field: 'correctiveAction',
-                        title: 'CA 纠正措施',
+                        width: 2,
+                        title: 'CA </br> 纠正措施',
                     }, {
                         field: 'tool',
-                        title: 'Tools 工具',
+                        width: 1,
+                        title: 'Tools </br> 工具',
                     }, {
                         field: 'correctiveActionPic',
-                        title: 'Corrective Action PIC 纠正措施图片',
+                        width: 2,
+                        title: 'CA PIC </br> 纠正措施图片',
                         formatter: function (value) {
                             if (value != null) {
-                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
                             }
                         }
                     }, {
                         field: 'correctiveStep',
-                        title: 'Corrective Step 纠正步骤',
+                        width: 4,
+                        title: 'Corrective Step </br> 纠正步骤',
                     }, {
                         field: 'correctiveStepPic',
-                        title: 'Corrective Step PIC 纠正步骤图片',
+                        width: 2,
+                        title: 'Corrective Step PIC </br> 纠正步骤图片',
                         formatter: function (value) {
                             if (value != null) {
-                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
                             }
                         }
                     }, {
                         field: 'qty',
                         title: 'Sub QTY',
+                        width: 1,
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'subPercent',
                         title: 'Sub Percentage%',
+                        width: 1,
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'remark',
-                        title: '备注',
-                    }]],
-              
+                        width: 1,
+                        title: 'Remark </br> 备注',
+                    }],
+                    onPostHeader: function () {
+                        // 遍历每一个表头，设置title属性为单元格文字
+                        $('#table thead th').each(function () {
+                            var $this = $(this);
+                            $this.attr('title', $this.text());
+                        });
+                    }
                 });
                 ShowRCCA(currentdata);
             })
