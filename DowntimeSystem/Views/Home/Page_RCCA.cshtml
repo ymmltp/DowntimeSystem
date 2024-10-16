@@ -18,12 +18,12 @@
             <div class="card">
                 <form class="card-body" id="myForm">
                     <input id="socketstatus" hidden />
-                    <h6 class="card-title">机台信息 <i class="fa  fa-toggle-off pull-right" style="font-size:20px" id="switch"></i></h6>
+                    <h6 class="card-title">Machine Info 机台信息<i class="fa  fa-toggle-off pull-right" style="font-size:20px" id="switch"></i></h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">项目</span>
+                                    <span class="input-group-text">Proejct 项目</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-project">
                             </div>
@@ -31,7 +31,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">部门</span>
+                                    <span class="input-group-text">Department 部门</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-department">
                             </div>
@@ -41,7 +41,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">线体</span>
+                                    <span class="input-group-text">Line 线体</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-line">
                             </div>
@@ -49,7 +49,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">站位</span>
+                                    <span class="input-group-text">Station 站位</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-station">
                             </div>
@@ -59,7 +59,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">设备名</span>
+                                    <span class="input-group-text">Machine 设备名</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-machine">
                             </div>
@@ -80,12 +80,12 @@
         <div class="col-6">
             <div class="card">
                 <div class="card-body" id="incident">
-                    <h6 class="card-title" id="incident-title">最新Downtime事件 <span class="pull-right" id="incident-id"></span></h6>
+                    <h6 class="card-title" id="incident-title"> Last Downtime Incident 最新停线事件 <span class="pull-right" id="incident-id"></span></h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">开始时间</span>
+                                    <span class="input-group-text">StartTime 开始时间</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-starttime">
                             </div>
@@ -93,7 +93,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">结束时间</span>
+                                    <span class="input-group-text">EndTime 结束时间</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-endtime">
                             </div>
@@ -103,7 +103,7 @@
                         <div class="col">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">问题</span>
+                                    <span class="input-group-text">Issue 问题</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-issue">
                             </div>
@@ -113,7 +113,7 @@
                             <div class="col">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">问题描述</span>
+                                        <span class="input-group-text">Issue Description 问题描述</span>
                                     </div>
                                     <textarea type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-description" rows="1"></textarea>
                                 </div>
@@ -144,6 +144,7 @@
     var tabledata = null;
     var progress = new Progress(40);
     var currentdata;
+    var isUpdating = false;
     $(document).ready(function () {
         $("#socketstatus").on('change', function () {
             SwitchChange(Boolean($(this).val()));
@@ -232,43 +233,43 @@
         $("#incident-description").val(data.issueremark);
     }
     function InitialRCCATable() {
+        isUpdating = false;
         getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByStation", {
             formNo: $("#info-wi").val(),
             station: $("#info-station").val()
         })
             .then(res => {
-                EndLoading();
                 tabledata = res;
                 $("#table").bootstrapTable('destroy').bootstrapTable({
-                    data:res,
+                    data: res,
                     cache: false,
                     type: 'GET',
-                    filterControl: true, 
+                    filterControl: true,
                     columns: [[{
-                        title: '维修指导手册',
+                        title: 'WI 维修指导手册',
                         colspan: 16,
                         align: 'center',
                     }], [{
                         field: 'errorCode',
-                        title: '异常代码',
+                        title: 'Error Code 异常代码',
                         filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'issue',
-                        title: '问题描述',
+                        title: 'Issue 问题描述',
                         filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'totalqty',
-                        title: 'Accumulative QTY',
+                        title: 'Accumulative QTY 累计数量',
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'totalPercent',
-                        title: 'Percentage%',
+                        title: 'Percentage%  累计占比',
                         align: 'center',
                         valign: 'middle',
                     }, {
                         field: 'issuePic',
-                        title: '问题图片',
+                        title: 'Issue PIC 问题图片',
                         formatter: function (value) {
                             if (value != null) {
                                 return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
@@ -276,10 +277,10 @@
                         }
                     }, {
                         field: 'checkStep',
-                        title: '检查步骤',
+                        title: 'Check Step 检查步骤',
                     }, {
                         field: 'checkStepPic',
-                        title: '检查步骤图片',
+                        title: 'Check Step PIC 检查步骤图片',
                         formatter: function (value) {
                             if (value != null) {
                                 return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
@@ -287,16 +288,16 @@
                         }
                     }, {
                         field: 'rootCause',
-                        title: '根本原因',
+                        title: 'RootCause 根本原因',
                     }, {
                         field: 'correctiveAction',
-                        title: '纠正措施',
+                        title: 'CA 纠正措施',
                     }, {
                         field: 'tool',
-                        title: '工具',
+                        title: 'Tools 工具',
                     }, {
                         field: 'correctiveActionPic',
-                        title: '纠正措施图片',
+                        title: 'Corrective Action PIC 纠正措施图片',
                         formatter: function (value) {
                             if (value != null) {
                                 return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
@@ -304,10 +305,10 @@
                         }
                     }, {
                         field: 'correctiveStep',
-                        title: '纠正步骤',
+                        title: 'Corrective Step 纠正步骤',
                     }, {
                         field: 'correctiveStepPic',
-                        title: '纠正步骤图片',
+                        title: 'Corrective Step PIC 纠正步骤图片',
                         formatter: function (value) {
                             if (value != null) {
                                 return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
@@ -327,13 +328,9 @@
                         field: 'remark',
                         title: '备注',
                     }]],
-                    onLoadSuccess: function (data) {
-                        var data = $('#table').bootstrapTable('getData', true);
-                        //合并单元格
-                        mergeCells(data, "issue", 1, $('#table'));
-                    }
-                })
-                ShowRCCA(currentdata);             
+              
+                });
+                ShowRCCA(currentdata);
             })
             .catch(err => {
                 showError(err);
@@ -346,7 +343,13 @@
             $('#table').bootstrapTable('load', tmp);
         } else if (data.incidentstatus == 2) {
             $('#table').bootstrapTable('load', tabledata);
-        }         
+        }
+        setTimeout(function () {
+            var data = $('#table').bootstrapTable('getData', true);
+            //合并单元格
+            mergeCells(data, "issue", 1, $('#table'));
+        },500)
+        EndLoading();
     }
     function StartLoading() {
         progress.show();

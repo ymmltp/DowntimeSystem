@@ -322,6 +322,7 @@ function mergeCells(data, fieldName, colspan, target) {
     var startindexMap = {};
     var sumQTY = 0;
     for (var i = 0; i < data.length; i++) {
+        data[i]['id'] = i;
         sumQTY += data[i]['qty'];
         for (var prop in data[i]) {
             if (prop == fieldName) {
@@ -338,7 +339,6 @@ function mergeCells(data, fieldName, colspan, target) {
             } 
         }
     }
-
     //更新Analysis Table的数据
     for (var prop in startindexMap) {
         $(target).bootstrapTable('updateCell', {
@@ -359,7 +359,6 @@ function mergeCells(data, fieldName, colspan, target) {
             value: parseInt(data[i]['qty'] / sumQTY * 100) + "%"
         });
     }
-
 
     //合并单元格
     var index = 0;

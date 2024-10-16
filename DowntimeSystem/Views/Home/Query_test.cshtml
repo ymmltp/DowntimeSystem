@@ -440,21 +440,6 @@
                 var data = $('#asList').bootstrapTable('getData', true);
                 //合并单元格
                 mergeCells(data, "issue", 1, $('#asList'));
-
-                //增加ecahrts
-                var ecahrtsData = []
-                var legen = []
-                var piedata = [];
-                for (var prop in data) {
-                    legen.push(data[prop]['rootcause']);
-                    ecahrtsData.push(data[prop]['qty']);
-                    piedata.push({
-                        value: data[prop]['qty'],
-                        name: data[prop]['rootcause'],
-                    });
-                }
-                FrequencyChart(ecahrtsData, legen);
-                PercentChart(piedata);
             }
         });
     }
