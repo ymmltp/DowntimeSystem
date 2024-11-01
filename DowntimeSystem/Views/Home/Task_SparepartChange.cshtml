@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "Sparepart Change";
+}
+
+
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
+        <div class="panel-body" id="panelbody">
+            <div class="row" style="width: 60%; text-align: center; margin-left: auto; margin-right: auto;">
+                <div class="row col-12">
+                    <div class="col-2"> <label for="eqid" class="form-label warning-text">EQID: <i class="fa fa-camera blue-font" id="EQIDScan"></i></label></div>
+                    <div class="col-10">
+                        <input id="eqid" type="text" class="form-control noNull" noNull="EQID" placeholder="---EQID---" readonly />
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-2"> <label for="project" class="form-label">项目: </label></div>
+                    <div class="col-10">
+                        <input id="project" type="text" class="form-control" placeholder="---项目---" readonly />
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-2"> <label for="department" class="form-label">部门: </label></div>
+                    <div class="col-10">
+                        <input id="department" type="text" class="form-control " placeholder="---部门---" readonly />
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-2"><label for="creator" class="form-label warning-text">EmployeeID:</label></div>
+                    <div class="col-10">
+                        <input id="creator" type="text" class="form-control noNull" noNull="记录人" placeholder="---记录人---" />
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-2"><label for="creator" class="form-label warning-text">备件更换清单: <i class="fa fa-camera blue-font" id="SNScan"></i></label></div>
+                    <div class="col-10">
+                        <div id="qrdmo" class="sparepart-item col-12">
+                            <input type="file" name="file" id="file" multiple="multiple" style="display:none;">
+                            <input type="file" name="file" id="file1" multiple="multiple" style="display:none;">
+                            <video id="video" style="width:50%"></video>
+                            <canvas id="canvas" hidden></canvas>
+                        </div>
+                        <table id="sparepart_table" class="noNull" noNull ="备件清单"></table>
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-12">
+                        <button id="submit" class="btn btn-success mybtn" type="button"><i class="fa fa-upload"></i> 提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/js/Task_SparepartChange.js"></script>
+<script src="~/lib/reqrcode.js"></script>
+<script src="~/lib/jsQR.js"></script>
+<script src="~/js/QRCodeScan.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        var video = document.querySelector('video');
+        var EQIDscanbtn = $("#EQIDScan");
+        var eqidfileInput = $("#file");
+        var SNscanbtn = $("#SNScan");
+        var snfileInput = $("#file1");
+        var canvas = document.getElementById('canvas');
+        var EQscan = new QRCodeScan(video, EQIDscanbtn, eqidfileInput, canvas, GenerateEQID);
+        var SNscan = new QRCodeScan(video, SNscanbtn, snfileInput, canvas, GenerateSparepartList);
+
+        $("#submit").on("click", function () {
+            if(checkFormNoNull_withObj($("#panelbody"))){
+                sparepartList.map(i => {
+                    var tmp = {
+                        cfrom: "Other",
+                        linkid: 0,
+                        eqid: $("#eqid").val(),
+                        pn: i.pn,
+                        dri: $("#creator").val(),
+                        qty: Number(i.qty),
+                        department: $("#department").val(),
+                        project: $("#project").val(),
+                        snlist: i.list,
+                    };
+                    postDataWithArray(BasicURL + "/api/EqSparepartChange/Add_EqSparepartChangeHistory", tmp)
+                        .then(res => {
+                            showSuccess("上传成功");
+                            $("#sparepart_table").bootstrapTable('destroy');
+                            $("#eqid").val("");
+                            $("#project").val("");
+                            $("#department").val("");
+                        })
+                        .catch(err => {
+                            showError(err);
+                        })
+                });
+            }
+        })
+
+    })
+
+</script>

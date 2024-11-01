@@ -1,7 +1,4 @@
-﻿@{ 
-    ViewData["Version"] = "V1.0.1";
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -137,13 +134,17 @@
                         </ul>
                     </li>
                     <li class="sub-menu">
+                        <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>查询</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="QEQSparepartChangeHistory" title="Sparepart Change"><i class="fa fa-table "></i>备件更换记录查询</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
                         <a href="javascript:void(0);"><i class="fa fa-tasks"></i><span>任务</span><i class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query" title="Update Downtime"><i class="fa fa-tasks"></i>Update Downtime</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Task_ReviewRCCA" title="Create Downtime"><i class="fa fa-handshake-o"></i>Review RCCA</a></li>
-                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="IssueSummary" title="Action Step Maintains"><i class="fa fa-handshake-o"></i>Action Step Maintains</a></li>
-                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="QEQSparepartChangeHistory" title="Sparepart Change"><i class="fa fa-table "></i>Sparepart Change</a></li>
-                            @*<li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Task_CreateIncident" title="Create Downtime"><i class="fa fa-cogs"></i>Create Downtime Incident</a></li>*@
+                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Task_IssueSummary" title="Action Step Maintains"><i class="fa fa-handshake-o"></i>Action Step Maintains</a></li>       
                         </ul>
                     </li>
                     <li class="sub-menu">
@@ -160,10 +161,11 @@
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Query_test" title="Update Downtime Test"><i class="fa fa-cogs"></i>更新RCCA</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Page_RCCA" title="Page RCCA"><i class="fa fa-search"></i>RCCA机台展示页面</a></li>
                             <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Manage_RCCAWI" title="RCCA WI"><i class="fa fa-cogs"></i>管理RCCA WI</a></li>
+                            <li> <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Task_SparepartChange" title="Sparepart Change"><i class="fa fa-cogs"></i>备件更换</a></li>
                         </ul>
                     </li>
 
-                
+
                 </ul>
             </div>
         </div>

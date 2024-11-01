@@ -219,6 +219,7 @@ function postData(url, para) {
         $.ajax({
             url: url,
             type: "POST",
+            contentType:"application/json",
             data: para,
             success(data, status, xhr) {
                 resolve({ data: data, status: status, xhr: xhr });
@@ -405,6 +406,62 @@ function checkFormNoNull(parentid) {
                 showWarning($(this).attr('noNull') + "不能为空!");
                 flag = false;
                 return false;
+            }
+        }
+    });
+    return flag;
+}
+
+//检查特定元素内的内容不为空
+function checkFormNoNull_withObj(obj) {
+    var flag = true;
+    obj.find(".noNull ").not('.elehide').each(function () {
+        if ($(this).prop('tagName').toUpperCase() == 'TABLE') {
+            if ($(this).attr("id") != undefined) {
+                let data = $(this).bootstrapTable('getData');
+                if (data.length <= 0 || (data.length == 1 && !Array.isArray(data))) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+            }
+        }
+        else if ($(this).prop('tagName').toUpperCase() != 'DIV') {
+            var name = $(this).attr("name");
+            if ($(this).attr("type") == "radio") {
+                if ($('input[name="' + name + '"]:checked').length < 1) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+            }
+            else if ($(this).attr("type") == "checkbox") {
+                if ($('input[name="' + name + '"]:checked').length < 1) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+            }
+            else if ($(this).attr("type") == "number") {
+                if ($(this).val().length == 0) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+                else if ($(this).attr("noRule") != undefined) {
+                    if (!eval(`${$(this).val()}${$(this).attr("noRule")}`)) {
+                        showWarning($(this).attr('noNull') + "必须" + $(this).attr("noRule"));
+                        flag = false;
+                        return false;
+                    }
+                }
+            }
+            else if ($(this).val().length == 0) {
+                if ($(this)[0].attributes.length > 1) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
             }
         }
     });
