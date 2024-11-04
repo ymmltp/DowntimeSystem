@@ -259,7 +259,7 @@
                     }, {
                         field: 'issue',
                         width: 2,
-                        title: 'Issue</br>问题描述',
+                        title: 'Issue</br>问题',
                         filterControl: 'select' // 使用下拉菜单进行筛选
                     }, {
                         field: 'totalqty',
@@ -337,12 +337,14 @@
                         width: 1,
                         align: 'center',
                         valign: 'middle',
+                        visible: false,
                     }, {
                         field: 'subPercent',
                         title: 'Sub Percentage%</br>子项百分比',
                         width: 1,
                         align: 'center',
                         valign: 'middle',
+                        visible:false,
                     }, {
                         field: 'remark',
                         width: 1,
@@ -375,7 +377,7 @@
         setTimeout(function () {
             var data = $('#table').bootstrapTable('getData', true);
             //合并单元格
-            mergeCells(data, "issue", 1, $('#table'));
+            ShowDowntimeIssueCount(data, "issue", 1, $('#table'));
         },500)
         EndLoading();
     }
