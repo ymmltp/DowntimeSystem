@@ -97,48 +97,51 @@ namespace DowntimeIncidentMonitor_MQTT
 
         private static async Task ListenToPostgreSqlAsync(NpgsqlConnection connection, CancellationToken cancellationToken)
         {
-            using (var command = new NpgsqlCommand("LISTEN table_insert;", connection))
+            while (!cancellationToken.IsCancellationRequested)
             {
-                await command.ExecuteNonQueryAsync();
-            }
+                using (var command = new NpgsqlCommand("LISTEN table_insert;", connection))
+                {
+                    await command.ExecuteNonQueryAsync();
+                }
 
-            using (var command = new NpgsqlCommand("LISTEN table_update;", connection))
-            {
-                await command.ExecuteNonQueryAsync();
-            }
+                using (var command = new NpgsqlCommand("LISTEN table_update;", connection))
+                {
+                    await command.ExecuteNonQueryAsync();
+                }
 
-            connection.Notification += async (o, e) =>
-            {
-                if (e.Condition == "table_insert")
+                connection.Notification += async (o, e) =>
                 {
-                    await SendMessageToMQTTServer(e.AdditionalInformation);
+                    if (e.Condition == "table_insert")
+                    {
+                        await SendMessageToMQTTServer(e.AdditionalInformation);
+                    }
+                    else if (e.Condition == "table_update")
+                    {
+                        await SendMessageToMQTTServer(e.AdditionalInformation);
+                    }
+                };
+                try
+                {
+                    while (!cancellationToken.IsCancellationRequested)
+                    {
+                        await Task.Delay(1000, cancellationToken);
+                        connection.Wait();
+                    }
                 }
-                else if (e.Condition == "table_update")
+                catch (OperationCanceledException)
                 {
-                    await SendMessageToMQTTServer(e.AdditionalInformation);
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
                 }
-            };
-            try
-            {
-                while (!cancellationToken.IsCancellationRequested)
+                finally
                 {
-                    await Task.Delay(1000, cancellationToken);
-                    connection.Wait();
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                if (connection.State == System.Data.ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-            finally
-            {
-                // Ensure the connection is closed when the task is canceled
-                if (connection.State == System.Data.ConnectionState.Open)
-                {
-                    connection.Close();
+                    // Ensure the connection is closed when the task is canceled
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
                 }
             }
         }

@@ -146,16 +146,26 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap-table-filter-control.min.js"></script>
 
 <script>
-    var socket = new MQTTWebSocketHandler();
+    var socket;
     var tabledata = null;
     var progress = new Progress(40);
     var currentdata;
     var isUpdating = false;
+
+    //Socket闭包，防止重复创建;
+    function initSocket() {
+        if (!socket) {
+            socket = new MQTTWebSocketHandler();
+        }
+    }
+
     $(document).ready(function () {
+        initSocket();
         $("#socketstatus").on('change', function () {
             SwitchChange($(this).val()=="true");
         });
     })
+
     //加载配置信息
     function Set() {
         if (checkFormNoNull("#searchBar")) {
@@ -234,7 +244,7 @@
         }
         $("#incident-id").html(data.id);
         $("#incident-starttime").val(new Date(data.occurtime).format('yyyy-MM-dd hh:mm:ss'));
-        $("#incident-endtime").val(new Date(data.finishtime).format('yyyy-MM-dd hh:mm:ss'));
+        $("#incident-endtime").val(data.finishtime == null ?"":new Date(data.finishtime).format('yyyy-MM-dd hh:mm:ss'));
         $("#incident-issue").val(data.issue);
         $("#incident-description").val(data.issueremark);
     }
