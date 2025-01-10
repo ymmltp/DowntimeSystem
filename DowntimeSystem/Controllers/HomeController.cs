@@ -13,7 +13,7 @@ namespace DowntimeSystem.Controllers
         private readonly ILogger<HomeController> _logger;
         private ADHelper ad = new ADHelper();
         private static string domain = "corp.jabil.org";
-        private static string version = "V1.0.1";
+        private static string version = "V2.0.0";
 
         public HomeController(ILogger<HomeController> logger)
         {
