@@ -63,7 +63,6 @@
     </div>
 </div>
 
-
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
 <script src="~/lib/echarts/dist/js/echarts.js"></script>
 <script src="~/js/customer.js"></script>
@@ -71,6 +70,7 @@
 <script>
     var interval;
     $(document).ready(function () {
+        SearchBoxIni();
         getProject($("#project-select"));
         getDepartment($("#department-select"));
         getDashboardSystem($("#system-select"));

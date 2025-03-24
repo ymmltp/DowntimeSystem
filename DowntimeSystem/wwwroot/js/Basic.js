@@ -43,18 +43,20 @@ function iniDatetimepicker_withTime() {
 //#endregion
 
 //#region 可隐藏的搜索栏
-$("#searchBox").on('click', function () {
-    if ($("#searchBoxMenu").hasClass("elehide")) {
-        $("#searchBoxMenu").removeClass("elehide");
-        $("#searchBox").removeClass("fa-cog");
-        $("#searchBox").addClass("fa-minus-square");
-    }
-    else {
-        $("#searchBoxMenu").addClass("elehide");
-        $("#searchBox").removeClass("fa-minus-square");
-        $("#searchBox").addClass("fa-cog");
-    }
-})
+function SearchBoxIni() {
+    $("#searchBox").on('click', function () {
+        if ($("#searchBoxMenu").hasClass("elehide")) {
+            $("#searchBoxMenu").removeClass("elehide");
+            $("#searchBox").removeClass("fa-cog");
+            $("#searchBox").addClass("fa-minus-square");
+        }
+        else {
+            $("#searchBoxMenu").addClass("elehide");
+            $("#searchBox").removeClass("fa-minus-square");
+            $("#searchBox").addClass("fa-cog");
+        }
+    })
+}
 //#endregion
 
 //#region 自定义时间范围
