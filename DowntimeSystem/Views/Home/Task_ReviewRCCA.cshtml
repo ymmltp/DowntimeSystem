@@ -139,6 +139,14 @@
                 title: 'Employee ID',
                 align: 'center',
                 valign: 'middle',
+                editable: {
+                    title: 'respperson',
+                    type: 'text',
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
             }, {
                 field: 'finishtime',
                 title: 'Finish Time',

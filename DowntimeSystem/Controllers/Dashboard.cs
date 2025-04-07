@@ -1032,7 +1032,7 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Incidentstatus == 2 & e.Respperson != "Auto" & e.Calcdowntime == true & Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay));
+                    var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Incidentstatus == 2 & e.Respperson != "Auto" & e.Respperson !=null & e.Calcdowntime == true & Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay));
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
                     if (!string.IsNullOrEmpty(item.Comefrom)) where = where.Where(e => e.Comefrom.Equals(item.Comefrom));
@@ -1043,12 +1043,12 @@ namespace DowntimeSystem.Controllers
                         count = g.Count(),
                         item = g.Key,
                     }).OrderByDescending(e => e.count).ToList();
-                    var result = items.Join(_epdb.EmpViewForTes, dt => dt.item, ep => ep.Empid, (dt, ep) => new
+                    var result = items.GroupJoin(_epdb.EmpViewForTes, dt => dt.item, ep => ep.Empid, (dt, ep) => new
                     {
                         value = dt.value,
                         totalValue = dt.totalValue,
                         count = dt.count,
-                        item = ep.ChineseName,
+                        item = ep.DefaultIfEmpty().Select(ep => ep?.ChineseName ?? dt.item).FirstOrDefault()
                     }).ToList();
                     return Json(result);
                 }
@@ -1261,8 +1261,6 @@ namespace DowntimeSystem.Controllers
             }
         }
         #endregion
-
-
 
         #region Downtime (时间，频率) Distribution by Station & Time
         public IActionResult GetDTDistribution_byStation_Time(IncidentDet item, string[] departmentlist, string[] projectlist, string[] stationlist, string currentDay, string lastDay, string filterType)
