@@ -151,7 +151,7 @@ namespace DowntimeSystem.Models
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Action)
-                    .HasMaxLength(64)
+                    .HasMaxLength(200)
                     .HasColumnName("action");
 
                 entity.Property(e => e.Actionremark)
@@ -204,7 +204,7 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Issue)
                     .IsRequired()
-                    .HasMaxLength(64)
+                    .HasMaxLength(200)
                     .HasColumnName("issue");
 
                 entity.Property(e => e.Issueremark)
