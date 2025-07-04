@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DowntimeIncidentMonitor_MQT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundService", "BackgroundService", "{69040823-3054-4FC8-9AF4-4EEA14301BB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsTrueDowntimeCheck", "IsTrueDowntimeCheck\IsTrueDowntimeCheck.csproj", "{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{6B490061-D795-47FC-8813-74935770F27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B490061-D795-47FC-8813-74935770F27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B490061-D795-47FC-8813-74935770F27C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
