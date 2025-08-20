@@ -39,7 +39,7 @@ namespace Escalation_Mail
 
             mailMessage.Subject = "Downtime Escalation Alarm";//主题      
 
-            mailMessage.Body += "<B>Hi all，</B><br/>";
+            mailMessage.Body += "<B>Hi all,</B><br/>";
             mailMessage.Body += "This is an automated message from Downtime System. Please do not reply to this message.<br/>";
             mailMessage.Body += $"This message remind you that <span style='color:red'><B> {count} </B></span> downtime ticket in below table has happened for more than <span style='color:red'><B>{mins}</B></span> minutes.<br/>";
             mailMessage.Body += "We need your help to close those downtime ticket before next warning.<br/><br/>";

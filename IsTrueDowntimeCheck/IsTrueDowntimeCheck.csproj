@@ -2,26 +2,26 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Npgsql" Version="7.0.10" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="Npgsql" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="lib.CommonTools">
-      <HintPath>..\..\Library-Solution\CommonTools\bin\Debug\netcoreapp3.1\lib.CommonTools.dll</HintPath>
+      <HintPath>.\lib.CommonTools.dll</HintPath>
     </Reference>
     <Reference Include="lib.Logger">
-      <HintPath>..\..\Library-Solution\lib.Logger\bin\Debug\netcoreapp3.1\lib.Logger.dll</HintPath>
+      <HintPath>.\lib.Logger.dll</HintPath>
     </Reference>
     <Reference Include="lib.PostgreSqlHelper">
-      <HintPath>..\..\Library-Solution\lib.PostgreSqlHelper\bin\Debug\netcoreapp3.1\lib.PostgreSqlHelper.dll</HintPath>
+      <HintPath>.\lib.PostgreSqlHelper.dll</HintPath>
     </Reference>
     <Reference Include="lib.SqlServerHelper">
-      <HintPath>..\..\Library-Solution\lib.SqlServerHelper\bin\Debug\netcoreapp3.1\lib.SqlServerHelper.dll</HintPath>
+      <HintPath>.\lib.SqlServerHelper.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -14,8 +14,8 @@ namespace IsTrueDowntimeCheck
     //如何没有设备点检记录，或者是无生产不点检，则Downtime无效，添加备注信息，（无点检，不统计Downtime)
     class Program
     {
-        private static string pmmsConnection_String = "data source=cnwuxm0lsql01;initial catalog=PMMS;persist security info=True;user id=pmms_readonly;password=Jabil123;MultipleActiveResultSets=True;App=EntityFramework";
-        private static string epmConnection_String = "data source=cnwuxg0te01;initial catalog=epmsheet;persist security info=True;user id=sa;password=Jabil12345;MultipleActiveResultSets=True;App=EntityFramework";
+        private static string pmmsConnection_String = "data source=cnwuxm0lsql01;initial catalog=PMMS;persist security info=True;user id=pmms_readonly;password=Jabil123;MultipleActiveResultSets=True;App=EntityFramework;TrustServerCertificate=true";
+        private static string epmConnection_String = "data source=cnwuxg0te01;initial catalog=epmsheet;persist security info=True;user id=sa;password=Jabil12345;MultipleActiveResultSets=True;App=EntityFramework;TrustServerCertificate=true";
         private static string downtimeConnection_String = "Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123";
         private static string startTime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") + " 7:15:00";
         private static string endTime = DateTime.Now.ToString("yyyy-MM-dd") + " 7:15:00";
