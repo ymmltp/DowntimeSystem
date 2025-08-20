@@ -54,7 +54,7 @@ namespace Escalation_Mail
                             List<string> cc = new List<string>();
 
                             //debug
-                            //to.Add("Adele_Lu@jabil.com");
+                            to.Add("Adele_Lu@jabil.com");
                             //to.Add("Justin_Zhu@jabil.com");
                             //to.Add("Neil_Gao@jabil.com");
 
