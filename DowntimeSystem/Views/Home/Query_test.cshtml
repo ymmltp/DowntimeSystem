@@ -325,7 +325,7 @@
                     }
                     else if (row['incidentstatus'] == 2 && row['actionstatus'] == 2) {
                         return ['<button type="button" class="btn primary text-light" id="edit">RC/CA</button>']
-                    } else if (row['incidentstatus'] == 2 && row['actionstatus'] == 3) {
+                    } else if (row['incidentstatus'] == 2 && (row['actionstatus'] == 3 || row['actionstatus'] == 4)) {
                         return ['<button type="button" class="btn good text-light" id="view">View</button>']
                     } else {
                         return ['<button type="button" class="btn default text-light" id="error">Default</button>']
