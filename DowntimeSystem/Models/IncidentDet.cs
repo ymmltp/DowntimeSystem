@@ -8,15 +8,12 @@ namespace DowntimeSystem.Models
     public partial class IncidentDet
     {
         public int Id { get; set; }
-        public DateTime Ctime { get; set; }
         public string Comefrom { get; set; }
         public string Alarmtype { get; set; }
         public string Project { get; set; }
         public string Line { get; set; }
         public string Station { get; set; }
         public short? Urgentlevel { get; set; }
-        public DateTime Occurtime { get; set; }
-        public DateTime? Finishtime { get; set; }
         public bool? Calcdowntime { get; set; }
         public int? Downtime { get; set; }
         public double? Labor { get; set; }
@@ -31,9 +28,54 @@ namespace DowntimeSystem.Models
         public string Action { get; set; }
         public string Actionremark { get; set; }
         public string Creator { get; set; }
-        public DateTime? Repairtime { get; set; }
         public string Machine { get; set; }
         public double? Pieces { get; set; }
         public double? Frequency { get; set; }
+
+
+        private DateTime _Ctime;
+
+        public DateTime Ctime
+        {
+            get => _Ctime;
+            set => _Ctime = value.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
+                : value.ToUniversalTime();
+        }
+
+
+        private DateTime _Occurtime;
+
+        public DateTime Occurtime
+        {
+            get => _Occurtime;
+            set => _Occurtime = value.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
+                : value.ToUniversalTime();
+        }
+
+        private DateTime? _Finishtime;
+
+        public DateTime? Finishtime
+        {
+            get => _Finishtime;
+            set => _Finishtime = value.HasValue
+                ? (value.Value.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
+                    : value.Value.ToUniversalTime())
+                : null;
+        }
+        
+        private DateTime? _Repairtime;
+ 
+        public DateTime? Repairtime
+        {
+            get => _Repairtime;
+            set => _Repairtime = value.HasValue
+                ? (value.Value.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
+                    : value.Value.ToUniversalTime())
+                : null;
+        }
     }
 }

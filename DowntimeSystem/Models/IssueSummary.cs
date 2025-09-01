@@ -18,9 +18,18 @@ namespace DowntimeSystem.Models
         public int? Totaldowntime { get; set; }
         public string Action { get; set; }
         public string Editor { get; set; }
-        public DateTime Lastupdatedate { get; set; }
         public string Correctiveaction { get; set; }
         public string Preventiveaction { get; set; }
         public string Week { get; set; }
+
+        private DateTime _Lastupdatedate;
+
+        public DateTime Lastupdatedate
+        {
+            get => _Lastupdatedate;
+            set => _Lastupdatedate = value.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
+                : value.ToUniversalTime();
+        }
     }
 }
