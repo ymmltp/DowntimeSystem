@@ -174,7 +174,7 @@
     //RCCA
     function ShowRCCAEdit(row) {
         //获取EQID 配置Select2
-        getData('/PMMS/getEQID')
+        getData(BasicURL+ '/api/PMMS/Get_EQID')
             .then(data => {
                 let option = '<option value=""></option>';
                 if (data.indexOf(row['machine']) < 0) {
