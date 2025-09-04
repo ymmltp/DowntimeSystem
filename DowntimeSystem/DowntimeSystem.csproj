@@ -53,4 +53,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="lib.Logger">
+      <HintPath>.\lib.Logger.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
