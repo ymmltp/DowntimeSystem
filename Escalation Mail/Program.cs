@@ -40,9 +40,9 @@ namespace Escalation_Mail
                         for(int index = 0;index<tmp1.Count;index++)
                         {
                             //获取该等级下的 Downtime 事件
-                            var where = dt.Where(e => e.Occurtime.AddMinutes(tmp1[index].Timespan) <= DateTime.Now );
+                            var where = dt.Where(e => e.Occurtime.AddMinutes(tmp1[index].Timespan) <= DateTimeOffset.Now  );
                             if (index != (tmp1.Count - 1)) { 
-                                where = where.Where(e => e.Occurtime.AddMinutes(tmp1[index + 1].Timespan) > DateTime.Now);
+                                where = where.Where(e => e.Occurtime.AddMinutes(tmp1[index + 1].Timespan) > DateTimeOffset.Now );
                             }
                             var downtimeInfo = where.ToList();
                             if (downtimeInfo == null || downtimeInfo.Count <= 0) continue;
@@ -54,9 +54,7 @@ namespace Escalation_Mail
                             List<string> cc = new List<string>();
 
                             //debug
-                            to.Add("Adele_Lu@jabil.com");
-                            //to.Add("Justin_Zhu@jabil.com");
-                            //to.Add("Neil_Gao@jabil.com");
+                            to.Add("Adele_Lu@jabil.com");                 
 
 
                             foreach (var mail in econtact)
@@ -94,7 +92,7 @@ namespace Escalation_Mail
                 {
                     if (property.Name.ToUpper() == "ID")
                     {
-                        table += $@"<td><a href='http://cnwuxg0te01:8050/Home/Query/?ticket={property.GetValue(item, null)}'>{property.GetValue(item, null)}</a></td>";
+                        table += $@"<td><a href='https://cnwuxg0te01:9098/Home/Query/?ticket={property.GetValue(item, null)}'>{property.GetValue(item, null)}</a></td>";
                     }
                     else {
                         table += $@"<td>{property.GetValue(item, null)}</td>";

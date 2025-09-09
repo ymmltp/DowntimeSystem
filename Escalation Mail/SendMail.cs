@@ -43,7 +43,7 @@ namespace Escalation_Mail
             mailMessage.Body += "This is an automated message from Downtime System. Please do not reply to this message.<br/>";
             mailMessage.Body += $"This message remind you that <span style='color:red'><B> {count} </B></span> downtime ticket in below table has happened for more than <span style='color:red'><B>{mins}</B></span> minutes.<br/>";
             mailMessage.Body += "We need your help to close those downtime ticket before next warning.<br/><br/>";
-            mailMessage.Body += "You can access Downtime System by following URL, <B>click here ->>></B> http://cnwuxg0te01:8050/ <br/><br/>";
+            mailMessage.Body += "You can access Downtime System by following URL, <B>click here ->>></B> https://cnwuxg0te01:9098/ <br/><br/>";
             mailMessage.Body += "<span style='color:#002b49'>==========================================================================================</span><br/><br/>";
             mailMessage.Body += "<B>Current Ecalatation Level:</B><br/>";
             mailMessage.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + $"PIC{level}.png"));

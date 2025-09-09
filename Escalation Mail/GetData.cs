@@ -22,7 +22,8 @@ namespace Escalation_Mail
         }
 
         public List<myTableBody> GetInfo(string department,string project) {
-            var where  = db.IncidentDets.Where(e => e.Calcdowntime == true & e.Incidentstatus==0 & e.Occurtime>= Convert.ToDateTime("2023-03-27") );
+            DateTimeOffset compareTime = DateTimeOffset.UtcNow.AddDays(-30);
+            var where  = db.IncidentDets.Where(e => e.Calcdowntime == true & e.Incidentstatus==0 & e.Occurtime>= compareTime);
             where = !string.IsNullOrEmpty(department) ? where.Where(e => e.Department.Equals(department)):where;
             where = !string.IsNullOrEmpty(project) ? where.Where(e => e.Project.Equals(project)):where;
             List<myTableBody> items = where.Select(e => new myTableBody
@@ -34,7 +35,7 @@ namespace Escalation_Mail
                 Line = e.Line,
                 Station = e.Station,
                 Occurtime = e.Occurtime,
-                Downtime =(int)(DateTime.Now-e.Occurtime).TotalMinutes,
+                Downtime =(int)(DateTimeOffset.UtcNow-e.Occurtime).TotalMinutes,
                 Issue = e.Issue,
                 Issueremark = e.Issueremark,
                 Creator = e.Creator,
