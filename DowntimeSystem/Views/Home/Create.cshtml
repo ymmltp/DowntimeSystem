@@ -170,7 +170,7 @@
                             const startDate = new Date(startDateValue); // 创建 Date 对象
 
                             occurtime = formatDateToString(startDate);
-                            postDataWithArray(BasicURL+"/api/Downtime/Add", {
+                            postDataWithArray("/EC/CreateDowmtimeIncident", {
                                 comefrom: 'Downtime System',
                                 department: $("#department-select").val(),
                                 machine: $("#machine-select").val(),

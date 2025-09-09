@@ -50,7 +50,7 @@ namespace DowntimeSystem.Models
         {
             get => _Occurtime;
             set => _Occurtime = value.Kind == DateTimeKind.Unspecified
-                ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
+                ? DateTime.SpecifyKind(value, DateTimeKind.Utc).AddHours(-8)
                 : value.ToUniversalTime();
         }
 

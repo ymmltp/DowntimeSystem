@@ -146,7 +146,7 @@ namespace DowntimeSystem.Controllers
 
         #region 编辑EC表单
         [HttpPost]
-        public IActionResult CreateDowmtimeIncident(IncidentDet item)
+        public IActionResult CreateDowmtimeIncident([FromBody]IncidentDet item)
         {
             if (string.IsNullOrEmpty(item.Issue))
             {
@@ -212,7 +212,7 @@ namespace DowntimeSystem.Controllers
             }
         }
         [HttpPost]
-        public IActionResult RCCA(IncidentDet item)
+        public IActionResult RCCA([FromBody]IncidentDet item)
         {
             try
             {
