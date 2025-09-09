@@ -1,12 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Manage RCCA WI";
+    ViewData["Title"] = "Manage Escalate Name List";
 }
 
 <div class="container-fluid">
     <div class="panel-default">
         <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
         <div class="panel-body">
-            @await Component.InvokeAsync("RCCAWISelectComponent")
+            @await Component.InvokeAsync("DepartmentProjectSearchComponent")
         </div>
     </div>
 </div>
@@ -16,7 +16,7 @@
 </div>
 <table id="table"></table>
 
-@await Component.InvokeAsync("NewRCCAWIComponent")
+@await Component.InvokeAsync("NewEscalateNameListComponent")
 
 <script src="~/js/customer.js"></script>
 <script src="~/js/cookie.js"></script>
@@ -35,13 +35,11 @@
         $("#toolbar").removeAttr("style");
         $("#table").bootstrapTable('destroy').bootstrapTable({
             toolbar: "#toolbar",
-            url: BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo',
+            url: '/EscalateNameList/Get',
             height: Math.round($('#silder-right-body').height() - $("#searchbox").height(), 0) - 20,
             queryParams: {
                 department: $("#department-select").val()[0],
-                project: $("#project-select").val()[0],
-                station: $("#station-select").val()[0],
-                WI: $("#wi").val(),
+                project: $("#project-select").val()[0]
             },
             dataType: 'json',
             cache: false,
@@ -95,15 +93,11 @@
                 title: '项目',
                 sortable: true,
             }, {
-                field: 'station',
-                title: '站位',
-                sortable: true,
-            }, {
-                field: 'formno',
-                title: 'WI 编号',
+                field: 'jobtitle',
+                title: '职位',
                 sortable: true,
                 editable: {
-                    title: 'WI No',
+                    title: 'jobtitle',
                     type: 'text',
                     mode: 'inline',
                     validate: function (value) {
@@ -111,44 +105,67 @@
                     }
                 }
             }, {
-                field: 'version',
-                title: '版本',
+                field: 'level',
+                title: '预警等级',
                 sortable: true,
-                visible: true,
+                editable: {
+                    title: 'level',
+                    type: 'select',
+                    mode: 'inline',
+                    separator: ",",
+                    source: ['1','2','3','4'],
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
             }, {
-                field: 'editor',
-                title: '编辑人',
+                field: 'chinesename',
+                title: '中文名称',
                 sortable: true,
-            }, {
-                field: 'edate',
-                title: '编辑时间',
-                sortable: true,
-                formatter: function (value, row, index) {
-                    if (value)
-                        return new Date(value).format('yyyy-MM-dd');
-                    else
-                        return value;
-                },
-            }, {
-                field: 'autocheckdate',
-                title: '上次自动检查时间',
-                sortable: true,
-                formatter: function (value, row, index) {
-                    if (value)
-                        return new Date(value).format('yyyy-MM-dd hh:mm:ss');
-                    else
-                        return value;
-                },
                 visible: false,
+            }, {
+                field: 'englishname',
+                title: '英文名称',
+                sortable: true,
+            }, {
+                field: 'email',
+                title: '邮箱',
+                sortable: true,
+            }, {
+                field: 'contacttype',
+                title: '联系类型',
+                sortable: true,
+            },{
+                field: 'option',
+                title: '操作',
+                formatter: function (value, row, index) {
+                    return '<button class="btn btn-danger btn-sm">删除</button>';
+                },
+                events: {
+                    'click .btn-danger': function (e, value, row, index) {
+                        if (confirm(`确定删除 ${row.department}_${row.project}_${row.englishname} 吗？`)) {
+                            postDatatoAPI('/EscalateNameList/Delete',row)
+                                .then(res => {
+                                    showSuccess("删除成功");
+                                    $("#table").bootstrapTable("refreshOptions", { url: '/EscalateNameList/Get' });
+                                })
+                                .catch(err => {
+                                    showError(err);
+                                })
+                        }
+                    }
+                }
             }],
             onEditableSave: function (field, row, oldValue, $el) {
                 let tmp = row;
-                tmp.editor = getCookie('dt-ntid');
-                tmp.edate = formatDateToString(new Date())
-                postDatatoAPI(BasicURL + '/api/DowntimeRCCA/Update', tmp)
+                if (field == 'level') {
+                    tmp[field] = Number(tmp[field]);
+                }
+                postDatatoAPI('/EscalateNameList/Update', tmp)
                     .then(res => {
                         showSuccess("更新成功");
-                        $("#table").bootstrapTable("refreshOptions", { url: BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo' });
+                        $("#table").bootstrapTable("refreshOptions", { url: '/EscalateNameList/Get' });
                     })
                     .catch(err => {
                         showError(err);

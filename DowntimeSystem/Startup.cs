@@ -22,14 +22,20 @@ namespace DowntimeSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+            // services.AddAuthentication(IISDefaults.AuthenticationScheme);
 
-            services.AddAuthorization(options =>
-            {
-                options.FallbackPolicy = options.DefaultPolicy;
-            });
+            // services.AddAuthorization(options =>
+            // {
+            //     options.FallbackPolicy = options.DefaultPolicy;
+            // });
 
             services.AddControllersWithViews();
+            
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,4 @@
-﻿
-//获取周
+﻿//获取周
 function getWeekList(obj) {
     var currentYear = new Date().getFullYear();
     $.ajax({
@@ -417,8 +416,6 @@ function ShowDowntimeIssueCount(data, fieldName, colspan, target) {
         index += count;
     }
 }
-
-const _FAC= "WUX-FATP"
 //#region  获取iFactory中的信息
 function GetIFRoute(obj, fac = _FAC) {
     var paras = {

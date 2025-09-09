@@ -251,8 +251,7 @@ namespace DowntimeSystem.Controllers
         private bool CallDRItoVerify(IncidentDet item) {
             bool callback = true;
             using (ECContext db = new ECContext()) {
-                try
-                {
+                
                     List<string> mailto = db.EscalationNameLists.Where(e => e.Department.Equals(item.Department) & e.Project.Equals(item.Project) & e.Level == 2).Select(e=>e.Email).ToList();
                     if (mailto.Count <= 0)
                     {
@@ -261,9 +260,6 @@ namespace DowntimeSystem.Controllers
                     List<string> mailcc = new List<string>();
                     SendMail.MailSend("RCCA Verify Notice", $"<b>Please Notice there is a new rcca need you verify in DTAS</br>Visit <a href='http://cnwuxg0te01:8050/Home/Task_ReviewRCCA'>DTAS</a> for detail information", mailto, mailcc);
                     return callback;
-                } catch (Exception ex) {
-                    throw ex;
-                }
             }
         }
         #endregion

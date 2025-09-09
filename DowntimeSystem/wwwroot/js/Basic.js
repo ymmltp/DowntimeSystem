@@ -1,5 +1,5 @@
 ﻿const BasicURL ="https://cnwuxg0te01:9100"// "http://cnwuxg0te01:9000";  //  "http://localhost:19292"; //
-
+const _FAC= "WUX-FATP"
 
 //#region datetimepicker 初始化设定
 function iniDatetimepicker() {
@@ -633,4 +633,16 @@ function btnDisable(obj) {
 
 function btnEnable(obj) {
     obj.prop("disabled", false)
+}
+
+function user_entity(obj, displayName, e_mail) {
+    var ntid = obj.val();
+    getData("/User/GetUserEntity?ntid=" + ntid)
+        .then(data => {
+            displayName.val(data.displayName);
+            e_mail.val(data.email);
+        })
+        .catch(err => {
+            showError(err);
+        })
 }

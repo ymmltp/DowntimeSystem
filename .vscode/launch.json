@@ -10,12 +10,12 @@
             "request": "launch",
             "preLaunchTask": "build",
             // 如果已更改目标框架，请确保更新程序路径。
-            "program": "${workspaceFolder}/TestConsole/bin/Debug/net8.0/TestConsole.dll",
+            "program": "${workspaceFolder}/Escalation Mail/bin/Debug/net8.0/Escalation Mail.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/TestConsole",
+            "cwd": "${workspaceFolder}/Escalation Mail",
             // 有关“控制台”字段的详细信息，请参阅 https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
-            "stopAtEntry": false
+            "stopAtEntry": false,
         },
         {
             "name": ".NET Core Attach",

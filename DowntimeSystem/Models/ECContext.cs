@@ -98,11 +98,13 @@ namespace DowntimeSystem.Models
                 entity.Property(e => e.Chinesename)
                     .IsRequired()
                     .HasMaxLength(32)
-                    .HasColumnName("chinesename");
+                    .HasColumnName("chinesename")
+                    .HasDefaultValueSql("Auto");
 
                 entity.Property(e => e.Contacttype)
                     .HasMaxLength(64)
-                    .HasColumnName("contacttype");
+                    .HasColumnName("contacttype")
+                    .HasDefaultValueSql("TO");
 
                 entity.Property(e => e.Englishname)
                     .HasMaxLength(32)
