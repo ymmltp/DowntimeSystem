@@ -13,7 +13,7 @@ namespace DowntimeSystem.Controllers
         private readonly ILogger<HomeController> _logger;
         private ADHelper ad = new ADHelper();
         private static string domain = "corp.jabil.org";
-        private static string version = "V2.0.0";
+        private static string version = "V2.0.1";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -180,61 +180,61 @@ namespace DowntimeSystem.Controllers
         [HttpGet]
         public ActionResult GetUserName()
         {
-            try
-            {
-                HttpContext.Request.Cookies.TryGetValue("dt-ntid", out string value);
-                if (string.IsNullOrEmpty(value))
-                {
-                    HttpContext.Response.Cookies.Append("dt-ntid", "1382919", new CookieOptions
-                    {
-                        Expires = DateTime.Now.AddMinutes(120)
-                    });
-                    HttpContext.Response.Cookies.Append("dt-displayname", "Adele Lu", new CookieOptions
-                    {
-                        Expires = DateTime.Now.AddMinutes(120)
-                    });
-                    HttpContext.Response.Cookies.Append("dt-email", "Adele_Lu@jabil.com", new CookieOptions
-                    {
-                        Expires = DateTime.Now.AddMinutes(120)
-                    });
-                }
-                return Json("Adele Lu");
-            }
-            catch (Exception err)
-            {
-                return new BadRequestResult();
-            }
-
-
             // try
             // {
-            //     ad.Domain = domain;
-            //     string identityName = HttpContext.User.Identity.Name;
-            //     int splitIndex = identityName.IndexOf('\\');
-            //     string ntid = splitIndex > -1 ? identityName.Substring(splitIndex + 1) : identityName;
-            //     UserInfo ui = ad.GetADUserEntity(ntid);
             //     HttpContext.Request.Cookies.TryGetValue("dt-ntid", out string value);
             //     if (string.IsNullOrEmpty(value))
             //     {
-            //         HttpContext.Response.Cookies.Append("dt-ntid", ntid, new CookieOptions
+            //         HttpContext.Response.Cookies.Append("dt-ntid", "1382919", new CookieOptions
             //         {
             //             Expires = DateTime.Now.AddMinutes(120)
             //         });
-            //         HttpContext.Response.Cookies.Append("dt-displayname", ui.DisplayName, new CookieOptions
+            //         HttpContext.Response.Cookies.Append("dt-displayname", "Adele Lu", new CookieOptions
             //         {
             //             Expires = DateTime.Now.AddMinutes(120)
             //         });
-            //         HttpContext.Response.Cookies.Append("dt-email", ui.Email, new CookieOptions
+            //         HttpContext.Response.Cookies.Append("dt-email", "Adele_Lu@jabil.com", new CookieOptions
             //         {
             //             Expires = DateTime.Now.AddMinutes(120)
             //         });
             //     }
-            //     return Json(ui.DisplayName);
+            //     return Json("Adele Lu");
             // }
             // catch (Exception err)
             // {
             //     return new BadRequestResult();
             // }
+
+
+            try
+            {
+                ad.Domain = domain;
+                string identityName = HttpContext.User.Identity.Name;
+                int splitIndex = identityName.IndexOf('\\');
+                string ntid = splitIndex > -1 ? identityName.Substring(splitIndex + 1) : identityName;
+                UserInfo ui = ad.GetADUserEntity(ntid);
+                HttpContext.Request.Cookies.TryGetValue("dt-ntid", out string value);
+                if (string.IsNullOrEmpty(value))
+                {
+                    HttpContext.Response.Cookies.Append("dt-ntid", ntid, new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddMinutes(120)
+                    });
+                    HttpContext.Response.Cookies.Append("dt-displayname", ui.DisplayName, new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddMinutes(120)
+                    });
+                    HttpContext.Response.Cookies.Append("dt-email", ui.Email, new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddMinutes(120)
+                    });
+                }
+                return Json(ui.DisplayName);
+            }
+            catch (Exception err)
+            {
+                return new BadRequestResult();
+            }
         }
     }
 }
