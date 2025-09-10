@@ -5,8 +5,7 @@ using DowntimeSystem.Models;
 using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
-
-
+using System.Text;
 
 namespace Escalation_Mail_Manually_Downtime
 {
@@ -16,42 +15,32 @@ namespace Escalation_Mail_Manually_Downtime
         //level1-level2 gap 内的的发送给技术员 （<=level1）
         //level2-level3 gap的发送给工程师+技术员（<=level2）
         //level3 gap以外的的发送给工程师+技术员+manager  (<=level3)
+        //发送给当前项目所有部门人员
 
         static void Main(string[] args)
-        {         
-            foreach (var mailblock in setting.Block)
+        {
+            GetData gd = new GetData();
+            List<myTableBody> dt = gd.GetInfo();
+            //遍历各项目，部门的信息
+            foreach (var i in dt)
             {
-                GetData gd = new GetData();
-                List<EscalationRule> contact = gd.GetRule(mailblock.Department, mailblock.Project);
-                var tmp = contact.OrderBy(e => e.Timespan).GroupBy(e => new { e.Department, e.Project }).ToList();
-                //遍历各项目，部门的信息
-                foreach (var i in tmp)
+                List<EscalationRule> contact = gd.GetRule(i.Department, i.Project);
+                var tmp = contact.OrderBy(e => e.Timespan).ToList();
+                //获取未关闭的 Downtime 数据
+                //获取不同等级邮件的发送规则                
+                for (int index = tmp.Count - 1; index >= 0; index--)
                 {
-                    //获取未关闭的 Downtime 数据
-                    List<myTableBody> dt = gd.GetInfo(i.Key.Department, i.Key.Project);
-                    //获取不同等级邮件的发送规则
-                    var tmp1 = i.ToList();
-                    for (int index = 0; index < tmp1.Count; index++)
+                    if (i.Occurtime.AddMinutes(tmp[index].Timespan) > DateTimeOffset.Now) continue;
+                    else
                     {
-                        //获取该等级下的 Downtime 事件
-                        var where = dt.Where(e => e.Occurtime.AddMinutes(tmp1[index].Timespan) <= DateTimeOffset.Now);
-                        if (index != (tmp1.Count - 1))
-                        {
-                            where = where.Where(e => e.Occurtime.AddMinutes(tmp1[index + 1].Timespan) > DateTimeOffset.Now);
-                        }
-                        var downtimeInfo = where.ToList();
-                        if (downtimeInfo == null || downtimeInfo.Count <= 0) continue;
                         //获取该等级下的联系人
-                        List<EscalationNameList> econtact = gd.GetContact(i.Key.Project, tmp1[index].Level);
+                        List<EscalationNameList> econtact = gd.GetContact(i.Project, tmp[index].Level);
                         if (econtact == null) continue;
                         //生成联系人信息
                         List<string> to = new List<string>();
                         List<string> cc = new List<string>();
-
                         //debug
                         to.Add("Adele_Lu@jabil.com");
-
-
                         foreach (var mail in econtact)
                         {
                             if (mail.Contacttype.ToUpper() == "TO")
@@ -59,61 +48,37 @@ namespace Escalation_Mail_Manually_Downtime
                             if (mail.Contacttype.ToUpper() == "CC")
                                 cc.Add(mail.Email);
                         }
-
                         //根据内容生成邮件body
-                        string content = CreateForm(downtimeInfo);
-                        SendMail.MailSend(content, to, cc, tmp1[index].Timespan, downtimeInfo.Count, tmp1[index].Level);
+                        string content = CreateForm(i);
+                        SendMail.MailSend(content, to, cc, tmp[index].Timespan, 1, tmp[index].Level);
+                        break;
                     }
+
                 }
-                
             }
         }
 
         //生成邮件body
-        private static string CreateForm(List<myTableBody> obj) {
-            var paras = obj[0].GetType().GetProperties();
-            string table = @"<table  style='border-collapse:collapse;font-size:13px;  '  border=1 bordercolor=DCDCDC><tr  align=center  bgcolor=#F5F5F5><B>";
-            foreach (var i in paras) {
-                if (i.Name.ToUpper() == "DOWNTIME") 
-                    table += $@"<td>Downtime(mins)</td>"; 
-                else
-                    table += $@"<td>{i.Name}</td>";
-            }
-            table += @" </B></tr>";
-            foreach (var item in obj) {
-                table += "<tr  align=center >";
-                var paramaters = item.GetType().GetProperties();
-                foreach (var property in paramaters)
-                {
-                    if (property.Name.ToUpper() == "ID")
-                    {
-                        table += $@"<td><a href='https://cnwuxg0te01:9098/Home/Query/?ticket={property.GetValue(item, null)}'>{property.GetValue(item, null)}</a></td>";
-                    }
-                    else {
-                        table += $@"<td>{property.GetValue(item, null)}</td>";
-                    }
-                }
-                table += "</tr>";
-            }
-            table += @"</table>";
-            return table;
+        private static string CreateForm(myTableBody row)
+        {
+            StringBuilder html = new StringBuilder();
+            html.Append("<table border='1' style='border-collapse:collapse; width:60%; font-family:Arial;'>");
+            html.Append("<caption style='font-weight:bold; font-size:18px; padding:5px;'>Down time</caption>");
+            html.AppendFormat("<tr><td><strong>Workcell</strong></td><td style='text-align:center;'>{0}</td></tr>", row.Project);
+            html.AppendFormat("<tr><td><strong>Line</strong></td><td style='text-align:center;'>{0}</td></tr>", row.Line);
+            html.AppendFormat("<tr><td><strong>Date</strong></td><td style='text-align:center;'>{0}</td></tr>", Convert.ToDateTime(row.Occurtime).ToString("yyyy-MM-dd"));
+            html.AppendFormat("<tr><td><strong>Station</strong></td><td style='text-align:center;'>{0}</td></tr>", row.Station);
+            html.AppendFormat("<tr><td><strong>Start time</strong></td><td style='text-align:center;'>{0}</td></tr>",  Convert.ToDateTime(row.Occurtime).ToString("HH:mm"));
+            html.AppendFormat("<tr><td><strong>End time</strong></td><td style='text-align:center;'>{0}</td></tr>","Now");
+            html.AppendFormat("<tr><td style='background-color:yellow;'><strong>Issue description:</strong></td><td style='text-align:center;'>{0}</td></tr>",row.Issueremark);
+            html.AppendFormat("<tr><td><strong>Downtime Dep.</strong></td><td style='text-align:center;'>{0}</td></tr>",row.Department);
+            html.AppendFormat("<tr><td><strong>Downtime PIC</strong></td><td style='text-align:center;'>{0}</td></tr>",row.Department);
+            html.AppendFormat("<tr style='background-color:red; color:white;'><td><strong>Status:</strong></td><td style='text-align:center;'>{0}</td></tr>", "Open");
+            html.Append("</table>");
+            return html.ToString();
         }
 
-        // Read JSON File 
-        private static bool ReadJson()
-        {
-            try
-            {
-                var bizConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, jsonfile);
-                string json = File.ReadAllText(bizConfigPath);
-                setting = JsonConvert.DeserializeObject<CSetting>(json);
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
-        }
+
     }
 
     public class CSetting

@@ -21,11 +21,9 @@ namespace Escalation_Mail_Manually_Downtime
             return item;
         }
 
-        public List<myTableBody> GetInfo(string department,string project) {
+        public List<myTableBody> GetInfo() {
             DateTimeOffset compareTime = DateTimeOffset.UtcNow.AddDays(-30);
             var where = db.IncidentDets.Where(e => e.Calcdowntime == true & e.Incidentstatus == 0 & e.Occurtime >= compareTime & e.Comefrom == "Downtime System");
-            where = !string.IsNullOrEmpty(department) ? where.Where(e => e.Department.Equals(department)):where;
-            where = !string.IsNullOrEmpty(project) ? where.Where(e => e.Project.Equals(project)):where;
             List<myTableBody> items = where.Select(e => new myTableBody
             {
                 Id = e.Id,

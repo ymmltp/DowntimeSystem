@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Escalation Mail")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+128206826170f094f0d2b472a502fab72d14e170")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9e1a34bdcf9ee56ac8a8f6d5a9c1267c2bfe3876")]
 [assembly: System.Reflection.AssemblyProductAttribute("Escalation Mail")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Escalation Mail")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

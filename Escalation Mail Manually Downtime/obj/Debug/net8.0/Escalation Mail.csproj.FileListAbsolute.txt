@@ -96,14 +96,11 @@ C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downt
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalation Mail.AssemblyInfo.cs
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalation Mail.csproj.CoreCompileInputs.cache
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalation Mail.sourcelink.json
-C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalation Mail.dll
-C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\refint\Escalation Mail.dll
-C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalation Mail.pdb
+C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\DowntimeSystem.deps.json
+C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\DowntimeSystem.runtimeconfig.json
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\appsettings.json
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\DowntimeSystem.staticwebassets.runtime.json
-C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\DowntimeSystem.deps.json
-C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\DowntimeSystem.runtimeconfig.json
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\DowntimeSystem.exe
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\Escalation Mail.exe
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\Escalation Mail.deps.json
@@ -180,5 +177,8 @@ C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downt
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\DowntimeSystem.pdb
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\bin\Debug\net8.0\lib.Logger.pdb
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalati.B8950185.Up2Date
+C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalation Mail.dll
+C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\refint\Escalation Mail.dll
+C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalation Mail.pdb
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\Escalation Mail.genruntimeconfig.cache
 C:\Users\1382919\source\VSC\CSharp\DowntimeSystem\Escalation Mail Manually Downtime\obj\Debug\net8.0\ref\Escalation Mail.dll
