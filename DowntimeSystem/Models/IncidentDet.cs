@@ -39,7 +39,7 @@ namespace DowntimeSystem.Models
         {
             get => _Ctime;
             set => _Ctime = value.Kind == DateTimeKind.Unspecified
-                ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
+                ? DateTime.SpecifyKind(value, DateTimeKind.Utc).AddHours(-8)
                 : value.ToUniversalTime();
         }
 
@@ -62,7 +62,7 @@ namespace DowntimeSystem.Models
             set => _Finishtime = value.HasValue
                 ? (value.Value.Kind == DateTimeKind.Unspecified
                     ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
-                    : value.Value.ToUniversalTime())
+                    : value.Value.ToUniversalTime()).AddHours(-8)
                 : null;
         }
         
@@ -74,7 +74,7 @@ namespace DowntimeSystem.Models
             set => _Repairtime = value.HasValue
                 ? (value.Value.Kind == DateTimeKind.Unspecified
                     ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
-                    : value.Value.ToUniversalTime())
+                    : value.Value.ToUniversalTime()).AddHours(-8)
                 : null;
         }
     }

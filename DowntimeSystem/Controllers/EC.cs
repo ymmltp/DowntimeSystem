@@ -168,6 +168,32 @@ namespace DowntimeSystem.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        public IActionResult UpdateDowmtimeIncident([FromBody]IncidentDet item)
+        {
+            if (string.IsNullOrEmpty(item.Issue))
+            {
+                return BadRequest("Please input you issue...");
+            }
+            else {
+                try
+                {
+                    using (ECContext db = new ECContext())
+                    {
+                        db.IncidentDets.Update(item);
+                        db.SaveChanges();
+                        return Json(true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+
+
         [HttpPost]
         public IActionResult StartRepaire(int id, string name)
         {

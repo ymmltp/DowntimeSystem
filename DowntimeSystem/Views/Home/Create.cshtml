@@ -109,7 +109,6 @@
             getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
                 .then(row => {
                     if (row===null || row['incidentstatus'] >= 2) {
-
                         // 显示成功消息
                         if (checkFormNoNull("#createIncident")) {
                             let urlstring = "comfrom=Downtime System&department=" + $("#department-select").val() + "&machine=" + $("#machine-select").val()
@@ -125,13 +124,16 @@
                                         })
  
                                 .then(res => {
-                                    console.log(res);
-                                    return getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
-
-                                    // 将结果传递给下一个 .then() 方法
+                                    if(JSON.parse(res.data).isPASS)
+                                    {
+                                        return getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() });
+                                    }
+                                    else{
+                                        return Promise.reject(`eCalling 呼叫失败：${JSON.parse(res.data).error}`);
+                                    }                                    
                                 })
                                 .then(data => {                                  
-                                    if(data===null)
+                                    if(data===null || data['incidentstatus'] >= 2)
                                     {
                                         return Promise.reject("更新数据失败，数据为空");
                                     } else {
@@ -142,7 +144,7 @@
                                         data.frequency = Number($("#howoften").val());
                                         data.pieces = Number($("#howmuch").val()); // 可能会引发异常的代码  //
                                         console.log(data);
-                                        return postDataWithArray(BasicURL+"/api/Downtime/Update", data);
+                                        return postDataWithArray("/EC/UpdateDowmtimeIncident", data);
                                     }                                  
                                 })
                                 .then(res => {
