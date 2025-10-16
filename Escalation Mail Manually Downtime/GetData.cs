@@ -23,7 +23,7 @@ namespace Escalation_Mail_Manually_Downtime
 
         public List<myTableBody> GetInfo() {
             DateTimeOffset compareTime = DateTimeOffset.UtcNow.AddDays(-30);
-            var where = db.IncidentDets.Where(e => e.Calcdowntime == true & e.Incidentstatus == 0 & e.Occurtime >= compareTime & e.Comefrom == "Downtime System");
+            var where = db.IncidentDets.Where(e => e.Calcdowntime == true & e.Incidentstatus == 0 & e.Occurtime >= compareTime & e.Creator!="Auto");
             List<myTableBody> items = where.Select(e => new myTableBody
             {
                 Id = e.Id,
