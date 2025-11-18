@@ -41,11 +41,17 @@ namespace Escalation_Mail_Manually_Downtime
 
             mailMessage.Body += "<B>Hi all,</B><br/>";
             mailMessage.Body += "This is an automated message from Downtime System. Please do not reply to this message.<br/>";
+            mailMessage.Body += "这是一条来自Downtime系统的自动信息，请勿回复.<br/><br/>";
             mailMessage.Body += $"This message remind you that <span style='color:red'><B> {count} </B></span> downtime ticket in below table has happened for more than <span style='color:red'><B>{mins}</B></span> minutes.<br/>";
-            mailMessage.Body += "We need your help to close those downtime ticket before next warning.<br/><br/>";
-            mailMessage.Body += "You can access Downtime System by following URL, <B>click here ->>></B> https://cnwuxg0te01:9098/ <br/><br/>";
+            mailMessage.Body += $"本信息旨在提醒，有 <span style='color:red'><B> {count} </B></span> 条 Downtime 已经超过 <span style='color:red'><B>{mins}</B></span> 分钟.<br/><br/>";
+            mailMessage.Body += "We need your help to close those downtime ticket before next warning.<br/>";
+            mailMessage.Body += "请尽快关闭上述Downtime事件<br/><br/>";
+            mailMessage.Body += "You can access Downtime System by following URL, <B>click here ->>></B> https://cnwuxg0te01:9098/ <br/>";
+            mailMessage.Body += "你可以从如下链接访问Downtime系统, <B>请点击 ->>></B> https://cnwuxg0te01:9098/ <br/><br/>";
             mailMessage.Body += "<span style='color:#002b49'>==========================================================================================</span><br/><br/>";
             mailMessage.Body += "<B>Current Ecalatation Level:</B><br/>";
+            mailMessage.Body += "<B>当前报警等级:</B><br/>";
+
             mailMessage.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + $"PIC{level}.png"));
             mailMessage.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + $"Jabil.png"));
             mailMessage.Attachments[0].ContentType.Name = "image/png";
