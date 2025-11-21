@@ -19,16 +19,18 @@ namespace DowntimeSystem.Models
         public string Correctiveaction { get; set; }
         public string Preventiveaction { get; set; }
 
-        private DateTime? _Lastupdatedate;
+        public DateTime? Lastupdatedate { get; set; }
 
-        public DateTime? Lastupdatedate
-        {
-            get => _Lastupdatedate;
-            set => _Lastupdatedate = value.HasValue
-                ? (value.Value.Kind == DateTimeKind.Unspecified
-                    ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
-                    : value.Value.ToUniversalTime())
-                : null;
-        }
+        // private DateTime? _Lastupdatedate;
+
+        // public DateTime? Lastupdatedate
+        // {
+        //     get => _Lastupdatedate;
+        //     set => _Lastupdatedate = value.HasValue
+        //         ? (value.Value.Kind == DateTimeKind.Unspecified
+        //             ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
+        //             : value.Value.ToUniversalTime())
+        //         : null;
+        // }
     }
 }

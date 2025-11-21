@@ -22,14 +22,16 @@ namespace DowntimeSystem.Models
         public string Preventiveaction { get; set; }
         public string Week { get; set; }
 
-        private DateTime _Lastupdatedate;
+        public DateTime? Lastupdatedate { get; set; }
 
-        public DateTime Lastupdatedate
-        {
-            get => _Lastupdatedate;
-            set => _Lastupdatedate = value.Kind == DateTimeKind.Unspecified
-                ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
-                : value.ToUniversalTime();
-        }
+        // private DateTime _Lastupdatedate;
+
+        // public DateTime Lastupdatedate
+        // {
+        //     get => _Lastupdatedate;
+        //     set => _Lastupdatedate = value.Kind == DateTimeKind.Unspecified
+        //         ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
+        //         : value.ToUniversalTime();
+        // }
     }
 }

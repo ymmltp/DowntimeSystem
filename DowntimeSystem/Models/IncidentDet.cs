@@ -32,50 +32,54 @@ namespace DowntimeSystem.Models
         public double? Pieces { get; set; }
         public double? Frequency { get; set; }
 
+        public DateTime Ctime { get; set; }
+        public DateTime Occurtime { get; set; }
+        public DateTime? Finishtime { get; set; }
+        public DateTime? Repairtime { get; set; }
 
-        private DateTime _Ctime;
+        // private DateTime _Ctime;
 
-        public DateTime Ctime
-        {
-            get => _Ctime;
-            set => _Ctime = value.Kind == DateTimeKind.Unspecified
-                ? DateTime.SpecifyKind(value, DateTimeKind.Utc).AddHours(-8)
-                : value.ToUniversalTime();
-        }
+        // public DateTime Ctime
+        // {
+        //     get => _Ctime;
+        //     set => _Ctime = value.Kind == DateTimeKind.Unspecified
+        //         ? DateTime.SpecifyKind(value, DateTimeKind.Utc).AddHours(-8)
+        //         : value.ToUniversalTime();
+        // }
 
 
-        private DateTime _Occurtime;
+        // private DateTime _Occurtime;
 
-        public DateTime Occurtime
-        {
-            get => _Occurtime;
-            set => _Occurtime = value.Kind == DateTimeKind.Unspecified
-                ? DateTime.SpecifyKind(value, DateTimeKind.Utc).AddHours(-8)
-                : value.ToUniversalTime();
-        }
+        // public DateTime Occurtime
+        // {
+        //     get => _Occurtime;
+        //     set => _Occurtime = value.Kind == DateTimeKind.Unspecified
+        //         ? DateTime.SpecifyKind(value, DateTimeKind.Utc).AddHours(-8)
+        //         : value.ToUniversalTime();
+        // }
 
-        private DateTime? _Finishtime;
+        // private DateTime? _Finishtime;
 
-        public DateTime? Finishtime
-        {
-            get => _Finishtime;
-            set => _Finishtime = value.HasValue
-                ? (value.Value.Kind == DateTimeKind.Unspecified
-                    ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
-                    : value.Value.ToUniversalTime()).AddHours(-8)
-                : null;
-        }
+        // public DateTime? Finishtime
+        // {
+        //     get => _Finishtime;
+        //     set => _Finishtime = value.HasValue
+        //         ? (value.Value.Kind == DateTimeKind.Unspecified
+        //             ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
+        //             : value.Value.ToUniversalTime()).AddHours(-8)
+        //         : null;
+        // }
         
-        private DateTime? _Repairtime;
+        // private DateTime? _Repairtime;
  
-        public DateTime? Repairtime
-        {
-            get => _Repairtime;
-            set => _Repairtime = value.HasValue
-                ? (value.Value.Kind == DateTimeKind.Unspecified
-                    ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
-                    : value.Value.ToUniversalTime()).AddHours(-8)
-                : null;
-        }
+        // public DateTime? Repairtime
+        // {
+        //     get => _Repairtime;
+        //     set => _Repairtime = value.HasValue
+        //         ? (value.Value.Kind == DateTimeKind.Unspecified
+        //             ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
+        //             : value.Value.ToUniversalTime()).AddHours(-8)
+        //         : null;
+        // }
     }
 }

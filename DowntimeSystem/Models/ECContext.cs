@@ -186,6 +186,7 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Ctime)
                     .HasColumnName("ctime")
+                    .HasColumnType("timestamp")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.Department)
@@ -196,7 +197,9 @@ namespace DowntimeSystem.Models
                     .HasColumnName("downtime")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Finishtime).HasColumnName("finishtime");
+                entity.Property(e => e.Finishtime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("finishtime");
 
                 entity.Property(e => e.Frequency).HasColumnName("frequency");
 
@@ -226,7 +229,9 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(64)
                     .HasColumnName("machine");
 
-                entity.Property(e => e.Occurtime).HasColumnName("occurtime");
+                entity.Property(e => e.Occurtime)
+                .HasColumnType("timestamp")
+                .HasColumnName("occurtime");
 
                 entity.Property(e => e.Pieces).HasColumnName("pieces");
 
@@ -237,6 +242,7 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Repairtime)
                     .HasColumnName("repairtime")
+                     .HasColumnType("timestamp")
                     .HasComment("Repair datetime");
 
                 entity.Property(e => e.Respperson)
@@ -291,7 +297,9 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(32)
                     .HasColumnName("creator");
 
-                entity.Property(e => e.Ctime).HasColumnName("ctime");
+                entity.Property(e => e.Ctime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("ctime");
 
                 entity.Property(e => e.Department)
                     .HasMaxLength(32)
@@ -299,7 +307,9 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Downtime).HasColumnName("downtime");
 
-                entity.Property(e => e.Finishtime).HasColumnName("finishtime");
+                entity.Property(e => e.Finishtime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("finishtime");
 
                 entity.Property(e => e.Frequency).HasColumnName("frequency");
 
@@ -325,7 +335,9 @@ namespace DowntimeSystem.Models
                     .HasColumnType("character varying")
                     .HasColumnName("machine");
 
-                entity.Property(e => e.Occurtime).HasColumnName("occurtime");
+                entity.Property(e => e.Occurtime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("occurtime");
 
                 entity.Property(e => e.Pieces).HasColumnName("pieces");
 
@@ -333,7 +345,9 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(32)
                     .HasColumnName("project");
 
-                entity.Property(e => e.Repairtime).HasColumnName("repairtime");
+                entity.Property(e => e.Repairtime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("repairtime");
 
                 entity.Property(e => e.Respperson)
                     .HasMaxLength(32)
@@ -387,6 +401,7 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Lastupdatedate)
                     .HasColumnName("lastupdatedate")
+                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.Line)
@@ -448,7 +463,9 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(64)
                     .HasColumnName("issue");
 
-                entity.Property(e => e.Lastupdatedate).HasColumnName("lastupdatedate");
+                entity.Property(e => e.Lastupdatedate)                   
+                    .HasColumnType("timestamp")              
+                    .HasColumnName("lastupdatedate");
 
                 entity.Property(e => e.Line)
                     .HasMaxLength(32)
