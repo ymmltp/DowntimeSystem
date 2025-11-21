@@ -40,8 +40,8 @@ namespace DowntimeSystem.Controllers
         {
             using (ECContext db = new ECContext()) {
                 try {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length>0)  tmp = tmp.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) tmp = tmp.Where(e => departmentlist.Contains(e.Department));
@@ -66,8 +66,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & lastDayUtc< e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length > 0)tmp = tmp.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) tmp = tmp.Where(e => departmentlist.Contains(e.Department));
@@ -92,8 +92,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) &  lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc& e.Calcdowntime == true);
                     if (projectlist.Length > 0) tmp = tmp.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) tmp = tmp.Where(e => departmentlist.Contains(e.Department));
@@ -120,8 +120,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length > 0)  tmp = tmp.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) tmp = tmp.Where(e => departmentlist.Contains(e.Department));
@@ -153,8 +153,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
@@ -180,8 +180,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var where  = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
@@ -204,8 +204,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                   DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                   DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length > 0) tmp = tmp.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) tmp = tmp.Where(e => departmentlist.Contains(e.Department));
@@ -232,8 +232,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var tmp = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length > 0) tmp = tmp.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) tmp = tmp.Where(e => departmentlist.Contains(e.Department));
@@ -263,8 +263,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var where = db.IncidentDets.Where(e=> contains.Contains(e.Comefrom)& lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
@@ -292,8 +292,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var where = db.IncidentDets.Where(e=> contains.Contains(e.Comefrom) & lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc & e.Calcdowntime == true);
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
@@ -338,8 +338,8 @@ namespace DowntimeSystem.Controllers
                 {
                     try
                     {
-                        DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                        DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                        DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                        DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                         var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Incidentstatus == 2 & e.Respperson != "Auto" & e.Calcdowntime == true & Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay)) ;
                         if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                         if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
@@ -377,8 +377,8 @@ namespace DowntimeSystem.Controllers
                 {
                     try
                     {
-                        DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                        DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                        DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                        DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                         var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Incidentstatus == 2 & e.Respperson != "Auto" & e.Calcdowntime == true & Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay));
                         if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                         if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
@@ -426,8 +426,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Incidentstatus == 2 & e.Respperson != "Auto" & e.Calcdowntime == true & Convert.ToDateTime(lastDay) < e.Occurtime & e.Occurtime < Convert.ToDateTime(currentDay));
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
@@ -1057,8 +1057,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Incidentstatus == 2 & e.Respperson != "Auto" & e.Respperson !=null & e.Calcdowntime == true & lastDayUtc < e.Occurtime & e.Occurtime < currentDayUtc);
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
@@ -1270,8 +1270,8 @@ namespace DowntimeSystem.Controllers
             {
                 try
                 {
-                    DateTime lastDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(lastDay), DateTimeKind.Utc);
-                    DateTime currentDayUtc = DateTime.SpecifyKind(Convert.ToDateTime(currentDay), DateTimeKind.Utc);
+                    DateTime lastDayUtc = Convert.ToDateTime(lastDay);
+                    DateTime currentDayUtc = Convert.ToDateTime(currentDay);
                     var where = db.IncidentDets.Where(e => contains.Contains(e.Comefrom) & e.Calcdowntime == true);
                     if (projectlist.Length > 0) where = where.Where(e => projectlist.Contains(e.Project));
                     if (departmentlist.Length > 0) where = where.Where(e => departmentlist.Contains(e.Department));
