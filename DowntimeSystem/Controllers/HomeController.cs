@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using DowntimeSystem.Models.Unitity;
+using DowntimeSystem.Utils;
 
 namespace DowntimeSystem.Controllers
 {
@@ -89,6 +90,12 @@ namespace DowntimeSystem.Controllers
             return View();
         }
         public IActionResult Manage_RCCAWI()
+        {
+            ViewData["Version"] = version;
+            return View();
+        }
+        [UserAuthorize(Roles = "Admin")]
+        public IActionResult Manage_User()
         {
             ViewData["Version"] = version;
             return View();
@@ -180,32 +187,6 @@ namespace DowntimeSystem.Controllers
         [HttpGet]
         public ActionResult GetUserName()
         {
-            // try
-            // {
-            //     HttpContext.Request.Cookies.TryGetValue("dt-ntid", out string value);
-            //     if (string.IsNullOrEmpty(value))
-            //     {
-            //         HttpContext.Response.Cookies.Append("dt-ntid", "1382919", new CookieOptions
-            //         {
-            //             Expires = DateTime.Now.AddMinutes(120)
-            //         });
-            //         HttpContext.Response.Cookies.Append("dt-displayname", "Adele Lu", new CookieOptions
-            //         {
-            //             Expires = DateTime.Now.AddMinutes(120)
-            //         });
-            //         HttpContext.Response.Cookies.Append("dt-email", "Adele_Lu@jabil.com", new CookieOptions
-            //         {
-            //             Expires = DateTime.Now.AddMinutes(120)
-            //         });
-            //     }
-            //     return Json("Adele Lu");
-            // }
-            // catch (Exception err)
-            // {
-            //     return new BadRequestResult();
-            // }
-
-
             try
             {
                 ad.Domain = domain;

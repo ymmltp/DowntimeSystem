@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace DowntimeSystem.Models.Unitity
+namespace DowntimeSystem.Utils
 {
     /// <summary> 
     /// 权限验证 

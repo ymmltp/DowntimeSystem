@@ -1,4 +1,5 @@
 ﻿using System;
+using DowntimeSystem.Models.Unitity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -26,6 +27,8 @@ namespace DowntimeSystem.Models
         public virtual DbSet<IssueSummaryAll> IssueSummaryAlls { get; set; }
         public virtual DbSet<TmpTable> TmpTables { get; set; }
         public virtual DbSet<WeeklyAlarmNameList> WeeklyAlarmNameLists { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -531,6 +534,38 @@ namespace DowntimeSystem.Models
                     .HasColumnName("email");
 
                 entity.Property(e => e.Level).HasColumnName("level");
+            });
+
+             modelBuilder.Entity<Users>(entity =>
+            {
+                entity.HasKey(e => new { e.NTID })
+                    .HasName("users_unique");
+
+                entity.ToTable("users");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id");
+                entity.Property(e => e.Project)
+                    .HasMaxLength(32)
+                    .HasColumnName("project");
+
+                entity.Property(e => e.Department)
+                    .HasMaxLength(32)
+                    .HasColumnName("department");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(64)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(64)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.NTID)
+                    .HasMaxLength(32)
+                    .HasColumnName("ntid");
+                entity.Property(e => e.Role)
+                    .HasMaxLength(32)
+                    .HasColumnName("role");
             });
 
             OnModelCreatingPartial(modelBuilder);
