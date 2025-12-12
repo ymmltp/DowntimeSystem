@@ -11,7 +11,7 @@
 </div>
 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 timesamp" hidden>
     <label class="form-label" for="start"> Start Date:</label>
-    <div class='input-group date form_datetime'>
+    <div class='input-group date form_datetime dateonly'>
         <input type='text' class="form-control" id='start' />
         <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
@@ -20,7 +20,7 @@
 </div>
 <div class="col-lg-2 col-md-2 col-xs-3 col-sm-3 timesamp" hidden>
     <label class="form-label" for="end"> Finish Date: </label>
-    <div class='input-group date form_datetime'>
+    <div class='input-group date form_datetime dateonly'>
         <input type='text' class="form-control" id='end' />
         <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
@@ -30,7 +30,7 @@
 
 <script>
     $(document).ready(function () {
-        iniDatetimepicker();
+        iniDatetimepickerObj($(".dateonly"));
         $("#timeZone option[value='5']").attr("selected", true);
         $("#timeZone").selectpicker('refresh');
         $("#timeZone").trigger("onchange");

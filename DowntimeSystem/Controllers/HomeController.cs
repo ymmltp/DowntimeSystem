@@ -14,7 +14,7 @@ namespace DowntimeSystem.Controllers
         private readonly ILogger<HomeController> _logger;
         private ADHelper ad = new ADHelper();
         private static string domain = "corp.jabil.org";
-        private static string version = "V2.0.1";
+        private static string version = "V2.0.2";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -39,16 +39,13 @@ namespace DowntimeSystem.Controllers
             ViewData["Version"] = version;
             return View();
         }
-        public IActionResult Query_test()
-        {
-            ViewData["Version"] = version;
-            return View();
-        }
+
         public IActionResult Create()
         {
             ViewData["Version"] = version;
             return View();
         }
+
         [ApproveAuthorize(Roles = 2) ]
         public IActionResult Task_ReviewRCCA()
         {
@@ -76,14 +73,10 @@ namespace DowntimeSystem.Controllers
             ViewData["Version"] = version;
             return View();
         }
-        public IActionResult Page_RCCA()
-        {
-            ViewData["Version"] = version;
-            return View();
-        }
         #endregion
 
         #region Management
+
         public IActionResult Manage_Resource_EQID_PN()
         {
             ViewData["Version"] = version;
@@ -94,22 +87,36 @@ namespace DowntimeSystem.Controllers
             ViewData["Version"] = version;
             return View();
         }
+
+        public IActionResult Manage_EscalateNameList()
+        {
+            ViewData["Version"] = version;
+            return View();
+        }
+
         [UserAuthorize(Roles = "Admin")]
         public IActionResult Manage_User()
         {
             ViewData["Version"] = version;
             return View();
         }
-        
-        public IActionResult Manage_EscalateNameList()
+
+        [UserAuthorize(Roles = "Admin")]
+        public IActionResult Manage_DowntimeIncident()
         {
             ViewData["Version"] = version;
             return View();
         }
+        
         #endregion
 
         #region dashboard
         public IActionResult Dashboard()
+        {
+            ViewData["Version"] = version;
+            return View();
+        }
+        public IActionResult Page_RCCA()
         {
             ViewData["Version"] = version;
             return View();

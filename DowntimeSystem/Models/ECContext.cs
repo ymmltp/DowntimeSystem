@@ -267,7 +267,11 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Urgentlevel)
                     .HasColumnName("urgentlevel")
-                    .HasDefaultValueSql("0");
+                    .HasDefaultValueSql("0"); 
+
+                entity.Property(e => e.Editor)
+                    .HasMaxLength(32)
+                    .HasColumnName("editor");
             });
 
             modelBuilder.Entity<IncidentDetWithEqid>(entity =>

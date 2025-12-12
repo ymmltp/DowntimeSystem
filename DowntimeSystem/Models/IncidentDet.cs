@@ -36,5 +36,6 @@ namespace DowntimeSystem.Models
         public DateTime Occurtime { get; set; }
         public DateTime? Finishtime { get; set; }
         public DateTime? Repairtime { get; set; }
+        public string Editor { get; set; }
     }
 }
