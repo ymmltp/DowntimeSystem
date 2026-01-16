@@ -35,10 +35,10 @@ namespace DowntimeSystem.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseNpgsql("Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123");
+                optionsBuilder.UseNpgsql("Host=cnwuxg0te01;Database=EC;Username=postgres;Password=Jabil12345");
             }
         }
-        private string[] contains = { "eCalling","Downtime System" }; //"Sparepart", 
+        //private string[] contains = { "eCalling","Downtime System" }; //"Sparepart", 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -143,7 +143,7 @@ namespace DowntimeSystem.Models
             modelBuilder.Entity<IncidentDet>(entity =>
             {
                 entity.ToTable("incident_det");
-                entity.HasQueryFilter(e => e.Calcdowntime == true &&  Array.AsReadOnly(contains).Contains(e.Comefrom));  //只获取需要的系统传来的数据
+                //entity.HasQueryFilter(e => e.Calcdowntime == true &&  Array.AsReadOnly(contains).Contains(e.Comefrom));  //只获取需要的系统传来的数据
 
                 entity.HasIndex(e => new { e.Comefrom, e.Occurtime }, "comefrom");
 
