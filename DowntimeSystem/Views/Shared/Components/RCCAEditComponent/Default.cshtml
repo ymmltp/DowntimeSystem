@@ -468,7 +468,7 @@
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
 
-        $("#ca-responsetime").val((parseInt((new Date(row['repairtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
+        $("#ca-responsetime").val((parseInt((new Date(row['finishtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
         $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间
 
         $("#view-rcca").val(row['rootcause']);  //rootcause
