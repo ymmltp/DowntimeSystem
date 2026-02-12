@@ -140,6 +140,26 @@
                         return value;
                 },
                 visible: false,
+            },{
+                field: 'option',
+                title: '操作',
+                formatter: function (value, row, index) {
+                    return '<button class="btn btn-danger btn-sm">删除</button>';
+                },
+                events: {  
+                    'click .btn-danger': function (e, value, row, index) {
+                        if (confirm(`确定删除 ${row.station}_${row.formno} 吗？`)) {
+                            deleteDatatoAPI( BasicURL + '/api/DowntimeRCCA/Delete?id='+ row.id)
+                                .then(res => {
+                                    showSuccess("删除成功");
+                                    $("#table").bootstrapTable("refreshOptions", { url: BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo' });
+                                })
+                                .catch(err => {
+                                    showError(err);
+                                })
+                        }
+                    }
+                }
             }],
             onEditableSave: function (field, row, oldValue, $el) {
                 let tmp = row;
