@@ -353,7 +353,7 @@
         // destroy selectpicker so it can be re-initialized after modal shown
         if ($('#cl-errorcode').data('selectpicker')) $('#cl-errorcode').selectpicker('destroy');
         if ($('#act-rootcause').data('selectpicker')) $('#act-rootcause').selectpicker('destroy');
-        $('#close-title').text('Close Downtime - ' + (row.downtimeID || row.id));
+        $('#close-title').text('Close Downtime');
         $('#CloseModal').data('dtid', row.id.toString());
         $('#CloseModal').data('station', row.stationName);
         $('#CloseModal').modal('show');
