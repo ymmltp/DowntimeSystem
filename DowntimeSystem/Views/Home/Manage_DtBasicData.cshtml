@@ -37,10 +37,6 @@
                     <label class="form-label">Name:</label>
                     <input type="text" class="form-control noNull" id="input-name" noNull="Name" />
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Description:</label>
-                    <input type="text" class="form-control noNull" id="input-desc" noNull="Description" />
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -78,7 +74,7 @@
         $('#btnSubmit').on('click', function () {
             if (!checkFormNoNull('#modalBody')) return;
             var cfg = tabConfig[currentTab];
-            postDatatoAPI(apiBase + cfg.add, { name: $('#input-name').val(), description: $('#input-desc').val() })
+            postDatatoAPI(apiBase + cfg.add, { name: $('#input-name').val(), description: $('#input-name').val() })
                 .then(function () {
                     showSuccess("添加成功");
                     $('#BasicDataModal').modal('hide');
@@ -127,11 +123,6 @@
                 sortable: true,
                 editable: { type: 'text', mode: 'inline', validate: function (v) { if (!$.trim(v)) return 'Cannot be empty.'; } }
             }, {
-                field: 'description',
-                title: 'Description',
-                sortable: true,
-                editable: { type: 'text', mode: 'inline' }
-            }, {
                 field: 'ctime',
                 title: 'Create Time',
                 sortable: true,
@@ -156,7 +147,7 @@
                 }
             }],
             onEditableSave: function (field, row) {
-                var data = { id: row.id, name: row.name, description: row.description };
+                var data = { name: row.name, description: row.name };
                 $.ajax({
                     url: apiBase + cfg.update,
                     type: 'PUT',
