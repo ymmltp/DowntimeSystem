@@ -1,0 +1,456 @@
+@{
+    ViewData["Title"] = "SCC Close Downtime";
+}
+
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><i class="fa fa-pencil"></i> @ViewData["Title"]</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-2">
+                    <label class="form-label">Plant:</label>
+                    <input type="text" class="form-control" id="txt-plant" value="Wuxi" />
+                </div>
+                <div class="col-lg-2">
+                    <label class="form-label">Station:</label>
+                    <select id="sel-station" class="form-control selectpicker" title="Select Station" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                </div>
+                <div class="col-lg-2">
+                    <label class="form-label">Issue Category:</label>
+                    <select id="sel-issuecategory" class="form-control selectpicker" title="Select Issue Category" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                </div>
+                <div class="col-lg-2">
+                    <label class="form-label">From:</label>
+                    <input type="text" class="form-control form_datetime" id="txt-from" />
+                </div>
+                <div class="col-lg-2">
+                    <label class="form-label">To:</label>
+                    <input type="text" class="form-control form_datetime" id="txt-to" />
+                </div>
+                <div class="col-lg-1" style="padding-top:27px">
+                    <button type="button" class="btn btn-primary" onclick="QueryList()">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table id="dt-table" class="table table-striped table-hover"></table>
+</div>
+
+<!-- Close Modal -->
+<div class="modal fade" id="CloseModal" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width:60%;min-width:400px">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #3e9472; color: white">
+                <h5 class="modal-title" id="close-title">Close Downtime</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body" id="closeForm">
+                <!-- Info (readonly) -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label class="form-label">Station:</label>
+                        <input type="text" class="form-control" id="cl-station" readonly />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Issue Category:</label>
+                        <input type="text" class="form-control" id="cl-issuecategory" readonly />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Issue Description:</label>
+                        <input type="text" class="form-control" id="cl-issuedesc" readonly />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Start Time:</label>
+                        <input type="text" class="form-control" id="cl-starttime" readonly />
+                    </div>
+                </div>
+                <!-- Close fields -->
+                <fieldset class="step-slide ngMES-border row" style="position:relative;margin:10px 0">
+                    <legend class="ngMES-border">Close Info</legend>
+                    <div class="col-lg-4">
+                        <label class="form-label">End Time: <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form_datetime_close noNull" id="cl-endtime" noNull="End Time" readonly />
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">People Impact Qty:</label>
+                        <input type="number" class="form-control" id="cl-people" min="0" value="1" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Error Code: <span class="text-danger">*</span></label>
+                        <select id="cl-errorcode" class="form-control selectpicker noNull" noNull="Error Code" title="Select Error Code" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">Error Description:</label>
+                        <textarea class="form-control" id="cl-errordesc" rows="2"></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">Possible Root Cause:</label>
+                        <textarea class="form-control" id="cl-possiblerootcause" rows="2"></textarea>
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label">Preventive Action:</label>
+                        <textarea class="form-control" id="cl-preventiveaction" rows="2"></textarea>
+                    </div>
+                </fieldset>
+                <!-- Actions -->
+                <fieldset class="step-slide ngMES-border" style="position:relative;margin:10px 0">
+                    <legend class="ngMES-border">RC & CA Actions</legend>
+                    <div class="row" id="action-input">
+                        <div class="col-lg-6">
+                            <label class="form-label">Root Cause: <span class="text-danger">*</span></label>
+                            <select id="act-rootcause" class="form-control selectpicker" title="Select Root Cause" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="form-label">PIC:</label>
+                            <input type="text" class="form-control" id="act-pic" />
+                        </div>
+                        <div class="col-lg-1" style="padding-top:27px">
+                            <button class="btn btn-success" id="btn-addaction"><i class="fa fa-plus"></i></button>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">Root Cause Detail:</label>
+                            <textarea class="form-control" id="act-rcdetail" rows="2"></textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">Corrective Action: <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="act-ca" rows="2"></textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">Prevention Action:</label>
+                            <textarea class="form-control" id="act-pa" rows="2"></textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">Remark:</label>
+                            <textarea class="form-control" id="act-remark" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <table id="action-table" class="table table-striped table-hover" style="margin-top:10px"></table>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnClose">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/customer.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-editable.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-editable.js"></script>
+<script>
+    var hApi = BasicURL + '/api/DowntimeHierarchy/';
+    var otApi = BasicURL + '/OtherTrigger/';
+    var actionList = [];
+
+    $(function () {
+        iniDatetimepicker();
+        loadSelect($('#sel-station'), hApi + 'GetStations');
+
+        // station change -> load issue category
+        $('#sel-station').on('changed.bs.select', function () {
+            var station = $(this).val() ? $(this).val()[0] : null;
+            loadIssueCategories(station);
+        });
+
+        // Modal shown -> init datetime picker & load smartsheet data
+        $('#CloseModal').on('shown.bs.modal', function () {
+            iniDatetimepickerObj_withTime($('.form_datetime_close'));
+            var station = $('#CloseModal').data('station');
+            loadErrorCodes(station);
+            loadRootCauses(station);
+        });
+
+        // Add action row
+        $('#btn-addaction').on('click', function () {
+            if (!$('#act-rootcause').val() || !$('#act-rootcause').val()[0]) { showWarning("Root Cause不能为空!"); return; }
+            if (!$.trim($('#act-ca').val())) { showWarning("Corrective Action不能为空!"); return; }
+            actionList.push({
+                RootCause: $('#act-rootcause').val()[0],
+                RootCauseDetail: $('#act-rcdetail').val(),
+                CorrectiveAction: $('#act-ca').val(),
+                PreventionAction: $('#act-pa').val(),
+                PIC: $('#act-pic').val(),
+                Remark: $('#act-remark').val()
+            });
+            refreshActionTable();
+            $('#act-rcdetail, #act-ca, #act-pa, #act-pic, #act-remark').val('');
+            $('#act-rootcause').val('').selectpicker('refresh');
+        });
+
+        // Error Code change -> auto fill Error Description, Possible Root Cause, Preventive Action
+        $(document).on('changed.bs.select', '#cl-errorcode', function () {
+            var code = $(this).val() ? $(this).val()[0] : null;
+            var match = errorCodeData.find(function (d) { return d['Error code'] === code; });
+            if (match) {
+                $('#cl-errordesc').val(match['Potential Cause(s) / Issue (Real Happen)'] || '');
+                $('#cl-possiblerootcause').val(match['Potential Cause(s) / Issue (Real Happen)'] || '');
+                $('#cl-preventiveaction').val(match['Prevention Actions'] || '');
+            } else {
+                $('#cl-errordesc, #cl-possiblerootcause, #cl-preventiveaction').val('');
+            }
+        });
+
+        // Root Cause change -> auto fill Root Cause Detail
+        $(document).on('changed.bs.select', '#act-rootcause', function () {
+            var rc = $(this).val() ? $(this).val()[0] : null;
+            var match = rootCauseData.find(function (d) { return (d['Root Cause (CN)'] || d['Root Cause (EN)']) === rc; });
+            if (match) {
+                $('#act-rcdetail').val(match['Root Cause (EN)'] || '');
+            } else {
+                $('#act-rcdetail').val('');
+            }
+        });
+
+        // Submit close
+        $('#btnClose').on('click', function () {
+            if (!checkFormNoNull('#closeForm')) return;
+            if (actionList.length === 0) { showWarning("请至少添加一条 RC & CA Action"); return; }
+            var data = {
+                id: $('#CloseModal').data('dtid'),
+                endtime: $('#cl-endtime').val().replace(' ', 'T'),
+                peopleImpactQty: $('#cl-people').val(),
+                issueCategory: $('#cl-issuecategory').val(),
+                issueDescription: $('#cl-issuedesc').val(),
+                errorCode: getSelVal('#cl-errorcode'),
+                errorDescription: $('#cl-errordesc').val(),
+                possibleRootCause: $('#cl-possiblerootcause').val(),
+                preventiveAction: $('#cl-preventiveaction').val(),
+                plantName: "Wuxi",
+                Actions: actionList
+            };
+            btnDisable($('#btnClose'));
+            $.ajax({
+                url: otApi + 'CloseOtherTrigger',
+                type: 'PUT',
+                contentType: 'application/json',
+                beforeSend: function (xhr) { xhr.setRequestHeader('Access-Control-Allow-Origin', '*'); },
+                data: JSON.stringify(data),
+                success: function () {
+                    showSuccess("关闭成功");
+                    $('#CloseModal').modal('hide');
+                    $('#dt-table').bootstrapTable('refresh');
+                },
+                error: function (err) { showError(err.responseText); },
+                complete: function () { btnEnable($('#btnClose')); }
+            });
+        });
+    });
+
+    function getSelVal(sel) {
+        var v = $(sel).val();
+        return v ? v[0] : '';
+    }
+
+    function loadSelect(obj, url, params) {
+        $.ajax({
+            url: url, type: 'GET', data: params || null, dataType: 'json',
+            success: function (data) {
+                var option = '';
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i].name || data[i];
+                    option += '<option value="' + val + '">' + val + '</option>';
+                }
+                obj.html(option).selectpicker('refresh');
+            }
+        });
+    }
+
+    function QueryList() {
+        var station = $('#sel-station').val() ? $('#sel-station').val()[0] : null;
+        var issueCategory = $('#sel-issuecategory').val() ? $('#sel-issuecategory').val()[0] : null;
+        $('#dt-table').bootstrapTable('destroy').bootstrapTable({
+            url: otApi + 'GetOtherTriggerPaged',
+            queryParams: {
+                PlantName: $('#txt-plant').val() || null,
+                StationName: station,
+                IssueCategory: issueCategory,
+                OpenTimeFrom: $('#txt-from').val() ? $('#txt-from').val() + ' 00:00:00' : null,
+                OpenTimeTo: $('#txt-to').val() ? $('#txt-to').val() + ' 23:59:59' : null
+            },
+            cache: false,
+            type: 'GET',
+            dataType: 'json',
+            responseHandler: function (res) { return res.data || res; },
+            search: true,
+            pagination: true,
+            paginationLoop: false,
+            pageSize: 10,
+            pageList: '[10, 50, 100, ALL]',
+            columns: [{
+                field: 'index', title: 'No.',
+                formatter: function (v, r, i) { return i + 1; }
+            }, {
+                field: 'downtimeID', title: 'Downtime Duration', sortable: true,
+                formatter: function (v, row) {
+                    var start = new Date(row.startTime);
+                    var end = row.status === 'Open' ? new Date() : (row.endTime ? new Date(row.endTime) : new Date());
+                    var diff = Math.max(0, Math.floor((end - start) / 1000));
+                    var h = Math.floor(diff / 3600);
+                    var m = Math.floor((diff % 3600) / 60);
+                    var s = diff % 60;
+                    var text = ('00'+h).slice(-2) + ':' + ('00'+m).slice(-2) + ':' + ('00'+s).slice(-2);
+                    if (row.status === 'Open') return '<span class="text-danger">' + text + '</span>';
+                    return '<span class="text-success">' + text + '</span>';
+                }
+            }, {
+                field: 'department', title: 'Department', sortable: true
+            }, {
+                field: 'productionLine', title: 'Line', sortable: true
+            }, {
+                field: 'stationName', title: 'Station', sortable: true
+            }, {
+                field: 'machineNumber', title: 'Machine', sortable: true
+            }, {
+                field: 'issueCategory', title: 'Issue Category', sortable: true
+            }, {
+                field: 'issueDescription', title: 'Issue Description', sortable: true
+            }, {
+                field: 'startTime', title: 'Start Time', sortable: true,
+                formatter: function (v) { return v ? v.replace('T', ' ').substring(0, 19) : ''; }
+            }, {
+                field: 'endTime', title: 'End Time', sortable: true,
+                formatter: function (v) { return v ? v.replace('T', ' ').substring(0, 19) : ''; }
+            }, {
+                field: 'systemName', title: 'System', sortable: true
+            }, {
+                field: 'kpiName', title: 'KPI', sortable: true
+            }, {
+                field: 'status', title: 'Status', sortable: true,
+                formatter: function (v) {
+                    if (v === 'Open') return '<span class="badge" style="background-color:#dc3545;color:#fff">Open</span>';
+                    return '<span class="badge" style="background-color:#28a745;color:#fff">Closed</span>';
+                }
+            }, {
+                field: 'operation', title: 'Operation',
+                formatter: function (v, row) {
+                    if (row.status === 'Open')
+                        return '<button type="button" class="btn btn-sm btn-primary btn-close-dt">Close</button>';
+                    return '';
+                },
+                events: {
+                    'click .btn-close-dt': function (e, value, row) {
+                        openCloseModal(row);
+                    }
+                }
+            }]
+        });
+    }
+
+    function openCloseModal(row) {
+        actionList = [];
+        $('#action-table').bootstrapTable('destroy');
+        $('#cl-station').val(row.stationName);
+        $('#cl-issuecategory').val(row.issueCategory);
+        $('#cl-issuedesc').val(row.issueDescription);
+        $('#cl-starttime').val(row.startTime ? row.startTime.replace('T', ' ').substring(0, 19) : '');
+        $('#cl-endtime').val(formatDateToString(new Date()).replace('T', ' '));
+        $('#cl-people').val(row.peopleImpactQty || 1);
+        $('#cl-errordesc, #cl-possiblerootcause, #cl-preventiveaction').val('');
+        $('#cl-errorcode').html('');
+        $('#act-rootcause').html('');
+        // destroy selectpicker so it can be re-initialized after modal shown
+        if ($('#cl-errorcode').data('selectpicker')) $('#cl-errorcode').selectpicker('destroy');
+        if ($('#act-rootcause').data('selectpicker')) $('#act-rootcause').selectpicker('destroy');
+        $('#close-title').text('Close Downtime - ' + (row.downtimeID || row.id));
+        $('#CloseModal').data('dtid', row.id.toString());
+        $('#CloseModal').data('station', row.stationName);
+        $('#CloseModal').modal('show');
+    }
+
+    function loadIssueCategories(station) {
+        $.ajax({
+            url: hApi + 'GetIssues', type: 'GET', data: { station: station }, dataType: 'json',
+            success: function (data) {
+                var option = '', seen = {};
+                for (var i = 0; i < data.length; i++) {
+                    var cat = data[i].issuecategory;
+                    if (cat && !seen[cat]) { seen[cat] = true; option += '<option value="' + cat + '">' + cat + '</option>'; }
+                }
+                $('#sel-issuecategory').html(option).selectpicker('refresh');
+            }
+        });
+    }
+
+    var errorCodeData = [];
+    var rootCauseData = [];
+
+    function loadErrorCodes(station) {
+        $.ajax({
+            url: hApi + 'GetErrorCodes', type: 'GET', data: { station: station }, dataType: 'json',
+            success: function (data) {
+                errorCodeData = data;
+                var option = '';
+                for (var i = 0; i < data.length; i++) {
+                    var code = data[i]['Error code'];
+                    if (code) option += '<option value="' + code + '">' + code + '</option>';
+                }
+                $('#cl-errorcode').html(option);
+                if ($('#cl-errorcode').data('selectpicker')) $('#cl-errorcode').selectpicker('refresh');
+                else $('#cl-errorcode').selectpicker();
+            },
+            error: function () {
+                errorCodeData = [];
+                $('#cl-errorcode').html('');
+                if ($('#cl-errorcode').data('selectpicker')) $('#cl-errorcode').selectpicker('refresh');
+                else $('#cl-errorcode').selectpicker();
+            }
+        });
+    }
+
+    function loadRootCauses(station) {
+        $.ajax({
+            url: hApi + 'GetRootCauses', type: 'GET', data: { station: station }, dataType: 'json',
+            success: function (data) {
+                rootCauseData = data;
+                var option = '', seen = {};
+                for (var i = 0; i < data.length; i++) {
+                    var rc = data[i]['Root Cause (CN)'] || data[i]['Root Cause (EN)'];
+                    if (rc && !seen[rc]) {
+                        seen[rc] = true;
+                        var en = data[i]['Root Cause (EN)'] || '';
+                        option += '<option value="' + rc + '" data-en="' + en + '">' + rc + (en ? ' / ' + en : '') + '</option>';
+                    }
+                }
+                $('#act-rootcause').html(option);
+                if ($('#act-rootcause').data('selectpicker')) $('#act-rootcause').selectpicker('refresh');
+                else $('#act-rootcause').selectpicker();
+            },
+            error: function () {
+                rootCauseData = [];
+                $('#act-rootcause').html('');
+                if ($('#act-rootcause').data('selectpicker')) $('#act-rootcause').selectpicker('refresh');
+                else $('#act-rootcause').selectpicker();
+            }
+        });
+    }
+
+    function refreshActionTable() {
+        $('#action-table').bootstrapTable('destroy').bootstrapTable({
+            data: actionList,
+            columns: [{
+                field: 'RootCause', title: 'Root Cause'
+            }, {
+                field: 'RootCauseDetail', title: 'RC Detail'
+            }, {
+                field: 'CorrectiveAction', title: 'Corrective Action'
+            }, {
+                field: 'PreventionAction', title: 'Prevention Action'
+            }, {
+                field: 'PIC', title: 'PIC'
+            }, {
+                field: 'Remark', title: 'Remark'
+            }, {
+                field: 'op', title: '操作',
+                formatter: function () { return '<a href="#" class="text-danger btn-del">Delete</a>'; },
+                events: {
+                    'click .btn-del': function (e, v, row, index) {
+                        actionList.splice(index, 1);
+                        refreshActionTable();
+                    }
+                }
+            }]
+        });
+    }
+</script>

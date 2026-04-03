@@ -1,0 +1,272 @@
+@{
+    ViewData["Title"] = "SCC Downtime Create";
+}
+
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><i class="fa fa-pencil"></i> @ViewData["Title"]</div>
+        <div class="panel-body">
+            <div id="sccForm">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label class="form-label">Building: <span class="text-danger">*</span></label>
+                        <select id="sel-building" class="form-control selectpicker noNull" noNull="Building" title="Select Building" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Production Area:</label>
+                        <select id="sel-area" class="form-control selectpicker" title="Select Production Area" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Department: <span class="text-danger">*</span></label>
+                        <select id="sel-department" class="form-control selectpicker noNull" noNull="Department" title="Select Department" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Workcell: <span class="text-danger">*</span></label>
+                        <select id="sel-workcell" class="form-control selectpicker noNull" noNull="Workcell" title="Select Workcell" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-lg-3">
+                        <label class="form-label">Production Line: <span class="text-danger">*</span></label>
+                        <select id="sel-line" class="form-control selectpicker noNull" noNull="Production Line" title="Select Line" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Station: <span class="text-danger">*</span></label>
+                        <select id="sel-station" class="form-control selectpicker noNull" noNull="Station" title="Select Station" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Machine Name: <span class="text-danger">*</span></label>
+                        <select id="sel-machine" class="form-control selectpicker noNull" noNull="Machine Name" title="Select Machine" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Machine Number:</label>
+                        <select id="sel-machinenumber" class="form-control selectpicker" title="Select Machine Number" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-lg-3">
+                        <label class="form-label">Issue Category: <span class="text-danger">*</span></label>
+                        <select id="sel-issuecategory" class="form-control selectpicker noNull" noNull="Issue Category" title="Select Issue Category" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Issue Description:</label>
+                        <select id="sel-issuedesc" class="form-control selectpicker" title="Select or Input" data-size="6" multiple data-max-options="1" data-live-search="true"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Start Time: <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form_datetime noNull" id="txt-starttime" noNull="Start Time" readonly />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Is Continue Product: <span class="text-danger">*</span></label>
+                        <select id="sel-iscontinue" class="form-control selectpicker noNull" noNull="Is Continue Product" data-size="6">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-lg-3">
+                        <label class="form-label">Model:</label>
+                        <input type="text" class="form-control" id="txt-model" />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">People Impact Qty:</label>
+                        <input type="number" class="form-control" id="txt-people" min="0" value="1" />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Sector:</label>
+                        <input type="text" class="form-control" id="txt-sector" />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">KPI Name:</label>
+                        <input type="text" class="form-control" id="txt-kpi" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:20px">
+                    <div class="col-lg-12 text-right">
+                        <button type="button" class="btn btn-success" id="btnSubmit" style="min-width:120px">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/customer.js"></script>
+<script>
+    var hApi = BasicURL + '/api/DowntimeHierarchy/';
+    var dtApi = BasicURL + '/api/Downtime/';
+
+    $(function () {
+        iniDatetimepicker_withTime();
+        $('#txt-starttime').val(formatDateToString(new Date()).replace('T', ' '));
+
+        // init dropdowns
+        loadSelect($('#sel-building'), hApi + 'GetBuildings');
+        loadSelect($('#sel-area'), hApi + 'GetProductionAreas');
+        loadSelect($('#sel-department'), hApi + 'GetDepartments');
+        loadSelect($('#sel-workcell'), hApi + 'GetWorkcells');
+        loadSelect($('#sel-line'), hApi + 'GetLines');
+        loadSelect($('#sel-station'), hApi + 'GetStations');
+
+        // station change -> load machine & issue
+        $('#sel-station').on('changed.bs.select', function () {
+            var station = $(this).val() ? $(this).val()[0] : null;
+            loadMachines(station);
+            loadIssues(station);
+        });
+
+        // machine name change -> auto fill machine number
+        $('#sel-machine').on('changed.bs.select', function () {
+            var machineName = $(this).val() ? $(this).val()[0] : null;
+            if (machineName && machineData) {
+                var match = machineData.find(function (m) { return m.machinename === machineName; });
+                if (match && match.machinenumber) {
+                    $('#sel-machinenumber').val(match.machinenumber).selectpicker('refresh');
+                } else {
+                    $('#sel-machinenumber').val('').selectpicker('refresh');
+                }
+            }
+        });
+
+        // issue category change -> auto fill issue description
+        $('#sel-issuecategory').on('changed.bs.select', function () {
+            var cat = $(this).val() ? $(this).val()[0] : null;
+            if (cat && issueData) {
+                var descOption = '';
+                var seen = {};
+                for (var i = 0; i < issueData.length; i++) {
+                    if (issueData[i].issuecategory === cat && issueData[i].issuecategory2 && !seen[issueData[i].issuecategory2]) {
+                        seen[issueData[i].issuecategory2] = true;
+                        descOption += '<option value="' + issueData[i].issuecategory2 + '">' + issueData[i].issuecategory2 + '</option>';
+                    }
+                }
+                $('#sel-issuedesc').html(descOption).selectpicker('refresh');
+                // auto select if only one
+                if (Object.keys(seen).length === 1) {
+                    $('#sel-issuedesc').val(Object.keys(seen)[0]).selectpicker('refresh');
+                }
+            }
+        });
+
+        $('#sel-iscontinue').selectpicker('refresh');
+
+        // submit
+        $('#btnSubmit').on('click', function () {
+            if (!checkFormNoNull('#sccForm')) return;
+            var now = formatDateToString(new Date());
+            var data = {
+                region: "North Asia",
+                plant: "Wuxi",
+                building: getSelVal('#sel-building'),
+                productionArea: getSelVal('#sel-area'),
+                sourceSystem: "Downtime System",
+                department: getSelVal('#sel-department'),
+                workcell: getSelVal('#sel-workcell'),
+                productionLine: getSelVal('#sel-line'),
+                station: getSelVal('#sel-station'),
+                machineName: getSelVal('#sel-machine'),
+                creator: getCookie('dt-displayname') || '',
+                issueCategory: getSelVal('#sel-issuecategory'),
+                issueDescription: getSelVal('#sel-issuedesc'),
+                startTime: $('#txt-starttime').val().replace(' ', 'T'),
+                machineNumber: getSelVal('#sel-machinenumber'),
+                model: $('#txt-model').val(),
+                peopleImpactQty: parseInt($('#txt-people').val()) || 1,
+                pic: getCookie('dt-ntid') || '',
+                sector: $('#txt-sector').val(),
+                iscontinueproduct: $('#sel-iscontinue').val() === 'true',
+                createTime: now,
+                kpiName: $('#txt-kpi').val(),
+                status: "Open"
+            };
+
+            btnDisable($('#btnSubmit'));
+            postDatatoAPI(dtApi + 'SCCAdd', data)
+                .then(function () {
+                    showSuccess("创建成功");
+                    resetForm();
+                })
+                .catch(function (err) { showError(err); })
+                .finally(function () { btnEnable($('#btnSubmit')); });
+        });
+    });
+
+    function getSelVal(sel) {
+        var v = $(sel).val();
+        return v ? v[0] : '';
+    }
+
+    function loadSelect(obj, url, params, nameField) {
+        nameField = nameField || 'name';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: params || null,
+            dataType: 'json',
+            success: function (data) {
+                var option = '';
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i][nameField] || data[i];
+                    option += '<option value="' + val + '">' + val + '</option>';
+                }
+                obj.html(option).selectpicker('refresh');
+            }
+        });
+    }
+
+    var machineData = [];
+    var issueData = [];
+
+    function loadMachines(station) {
+        $.ajax({
+            url: hApi + 'GetMachines',
+            type: 'GET',
+            data: { station: station },
+            dataType: 'json',
+            success: function (data) {
+                machineData = data;
+                var nameOption = '', numOption = '';
+                var nameSeen = {}, numSeen = {};
+                for (var i = 0; i < data.length; i++) {
+                    var n = data[i].machinename;
+                    if (n && !nameSeen[n]) { nameSeen[n] = true; nameOption += '<option value="' + n + '">' + n + '</option>'; }
+                    var num = data[i].machinenumber;
+                    if (num && !numSeen[num]) { numSeen[num] = true; numOption += '<option value="' + num + '">' + num + '</option>'; }
+                }
+                $('#sel-machine').html(nameOption).selectpicker('refresh');
+                $('#sel-machinenumber').html(numOption).selectpicker('refresh');
+            }
+        });
+    }
+
+    function loadIssues(station) {
+        $.ajax({
+            url: hApi + 'GetIssues',
+            type: 'GET',
+            data: { station: station },
+            dataType: 'json',
+            success: function (data) {
+                issueData = data;
+                var catOption = '';
+                var catSeen = {};
+                for (var i = 0; i < data.length; i++) {
+                    var cat = data[i].issuecategory;
+                    if (cat && !catSeen[cat]) { catSeen[cat] = true; catOption += '<option value="' + cat + '">' + cat + '</option>'; }
+                }
+                $('#sel-issuecategory').html(catOption).selectpicker('refresh');
+                $('#sel-issuedesc').html('').selectpicker('refresh');
+            }
+        });
+    }
+
+    function resetForm() {
+        $('#sccForm select.selectpicker').each(function () {
+            $(this).val('').selectpicker('refresh');
+        });
+        $('#txt-model, #txt-sector, #txt-kpi').val('');
+        $('#txt-people').val('1');
+        $('#txt-starttime').val(formatDateToString(new Date()).replace('T', ' '));
+        $('#sel-iscontinue').val('true').selectpicker('refresh');
+    }
+</script>

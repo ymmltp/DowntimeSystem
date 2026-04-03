@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IsTrueDowntimeCheck")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38861fb52ad6d4ce68ad5c20b9b3278957547144")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd0b934f02d4cb0c479b9afd0faaa5d33e064230")]
 [assembly: System.Reflection.AssemblyProductAttribute("IsTrueDowntimeCheck")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IsTrueDowntimeCheck")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

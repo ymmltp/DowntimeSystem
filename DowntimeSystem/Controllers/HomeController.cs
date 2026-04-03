@@ -107,6 +107,36 @@ namespace DowntimeSystem.Controllers
             ViewData["Version"] = version;
             return View();
         }
+
+        public IActionResult Manage_DtBasicData()
+        {
+            ViewData["Version"] = version;
+            return View();
+        }
+
+        public IActionResult Manage_DtIssue()
+        {
+            ViewData["Version"] = version;
+            return View();
+        }
+
+        public IActionResult Manage_DtMachine()
+        {
+            ViewData["Version"] = version;
+            return View();
+        }
+
+        public IActionResult Task_SCCDowntimeCreate()
+        {
+            ViewData["Version"] = version;
+            return View();
+        }
+
+        public IActionResult Task_SCCCloseDowntime()
+        {
+            ViewData["Version"] = version;
+            return View();
+        }
         
         #endregion
 
