@@ -51,6 +51,10 @@
             visibleSearch: true,
             showColumns: true,
             sortable: true,
+            pagination: true,
+            paginationLoop: false,
+            pageSize: 10,
+            pageList: '[10, 50 ,100 ,200, 500, ALL]',
             showSearchButton: false,
             showExport: function (row, index) {
                 var sUserAgent = navigator.userAgent.toLowerCase();
@@ -110,7 +114,7 @@
                 field: 'version',
                 title: '版本',
                 sortable: true,
-                visible: false,
+                visible: true,
             }, {
                 field: 'editor',
                 title: '编辑人',
@@ -136,6 +140,26 @@
                         return value;
                 },
                 visible: false,
+            },{
+                field: 'option',
+                title: '操作',
+                formatter: function (value, row, index) {
+                    return '<button class="btn btn-danger btn-sm">删除</button>';
+                },
+                events: {  
+                    'click .btn-danger': function (e, value, row, index) {
+                        if (confirm(`确定删除 ${row.station}_${row.formno} 吗？`)) {
+                            deleteDatatoAPI( BasicURL + '/api/DowntimeRCCA/Delete?id='+ row.id)
+                                .then(res => {
+                                    showSuccess("删除成功");
+                                    $("#table").bootstrapTable("refreshOptions", { url: BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo' });
+                                })
+                                .catch(err => {
+                                    showError(err);
+                                })
+                        }
+                    }
+                }
             }],
             onEditableSave: function (field, row, oldValue, $el) {
                 let tmp = row;

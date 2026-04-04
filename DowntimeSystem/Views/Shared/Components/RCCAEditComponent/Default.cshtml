@@ -84,31 +84,34 @@
                     </div>
                 </fieldset>
                 @*downtime相关*@
-                <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
-                    <legend class="ngMES-border">RC & CA</legend>
-                    <div class="col-lg-12">
-                        <label for="form-label warning-text" class="form-label text-right warning-text">Responsible department:</label>
-                        <select id="rsdepartment-select" class="form-control selectpicker noNull rccaviewhide" noNull="Responsible department" title="Select Department" data-size="6" data-max-options="1" data-live-search="true" data-actions-box="true"></select>
-                        <input id="view-resdepart" class="rccaview form-control" readonly />
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
-                        <select class="form-control selectpicker raca noNull rccaviewhide" id='ca-rootcause' noNull="Root Cause" title="Select Rootcause" data-size="6" data-live-search="true"></select>
-                        <textarea id="view-rcca" class="rccaview form-control " readonly></textarea>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="ca-action" class="form-label text-right warning-text">Corrective Action:</label>
-                        <textarea type='text' class="form-control noNull" id='ca-action' noNull="Action" readonly></textarea>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="ca-rootcauseremark" class="form-label text-right">RC Remark:</label>
-                        <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="ca-actionremark" class="form-label text-right">CA Remark:</label>
-                        <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
-                    </div>
-                </fieldset>
+            <fieldset class="step-slide ngMES-border row" style="position: relative; margin: 10px 10px; ">
+                <legend class="ngMES-border">RC & CA</legend>
+                <div class="col-lg-12">
+                    <label for="form-label warning-text" class="form-label text-right warning-text">Responsible department:</label>
+                    <select id="rsdepartment-select" class="form-control selectpicker noNull rccaviewhide" noNull="Responsible department" title="Select Department" data-size="6" data-max-options="1" data-live-search="true" data-actions-box="true"></select>
+                    <input id="view-resdepart" class="rccaview form-control" readonly />
+                </div>
+                <div class="col-lg-6 rccaviewhide">
+                    <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                    <select class="form-control raca noNull rccaviewhide" id='ca-rootcause' noNull="Root Cause" title="Select Rootcause" data-size="6" data-live-search="true"></select>
+                </div>
+                <div class="col-lg-6 rccaview">
+                    <label for="ca-rootcause" class="form-label text-right warning-text">Root Cause:</label>
+                    <textarea id="view-rcca" class="rccaview form-control " readonly></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-action" class="form-label text-right warning-text">Corrective Action:</label>
+                    <textarea type='text' class="form-control noNull raca" id='ca-action' noNull="Action"></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-rootcauseremark" class="form-label text-right">RC Remark:</label>
+                    <textarea type='text' class="form-control raca" id='ca-rootcauseremark'></textarea>
+                </div>
+                <div class="col-lg-6">
+                    <label for="ca-actionremark" class="form-label text-right">CA Remark:</label>
+                    <textarea type='text' class="form-control raca" id='ca-actionremark'></textarea>
+                </div>
+            </fieldset>
                 @*Sparepart相关*@
                 <fieldset class="step-slide ngMES-border sparepart-item elehide" style="position: relative; margin: 10px 10px; ">
                     <legend class="ngMES-border">备件更换记录</legend>
@@ -171,7 +174,7 @@
     //RCCA
     function ShowRCCAEdit(row) {
         //获取EQID 配置Select2
-        getData('/PMMS/getEQID')
+        getData(BasicURL+ '/api/PMMS/Get_EQID')
             .then(data => {
                 let option = '<option value=""></option>';
                 if (data.indexOf(row['machine']) < 0) {
@@ -233,50 +236,43 @@
     // 获取RCCA
     let RCCAList = [];
     function getRCCA(row) {
-        getData(BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo', {
+        getData(BasicURL + '/api/DowntimeRCCA/GetRCCAContent', {
             Department: row.department,
             Project: row.project,
             Station: row.station,
+            issue: row.comefrom == "Downtime System"? null: row.issue,
         })
-            .then(res => {
-                if (res[0] == undefined) {
-                    setTimeout(() => {
-                        $("#CAModal").modal('hide');
-                    }, 3000); 
-                    return Promise.reject("没有关联的WI，请先关联该站位的RCCA WI再填写");
-                } else {
-                    if (row.comefrom == "Downtime System") {
-                        return getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
-                            {
-                                formNo: res[0].formno,
-                                station: row.station,
-                            })
-                    }
-                    else {
-                        return getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
-                            {
-                                formNo: res[0].formno,
-                                station: row.station,
-                                issue: row.issue,
-                            })
-                    }
-                }
-            })
             .then(res => {
                 //初始化select
                 RCCAList = res;
-                let obj = $("#ca-rootcause");
-                let option = '';
-                for (var i = 0; i < res.length; i++) {
-                    option += '<option value="' + res[i].rootCause + '" data-correctiveaction="' + res[i].correctiveAction + '" data-indexNo = "' + i + '">' + res[i].rootCause + '</option>';
-                }
-                obj.html(option);
-                obj.selectpicker("refresh");
+                RootcauseSeelct2(res);
             })
             .catch(err => {
-                showError(err);
+                showError("未找到相关的Rootcause，请检查该站位的RCCA WI配置");
+                RootcauseSeelct2([]);
+                //showError(err);
             })
     }
+    function RootcauseSeelct2(res){
+        let option = '<option value=""></option>';
+        for (var i = 0; i < res.length; i++) {
+            option += '<option value="' + res[i].rootCause + '" data-correctiveaction="' + res[i].correctiveAction + '" data-indexNo = "' + i + '">' + res[i].rootCause + '</option>';
+        }
+        $("#ca-rootcause").html(option);
+        if (res.length == 0) {
+            $("#ca-rootcause").select2({
+                tags: true,
+                placeholder: "请输入rootCause"
+            });
+        } else {
+            $("#ca-rootcause").select2({
+                tags: false,
+                placeholder: "请输入rootCause"
+            });
+        }
+    }
+
+
     //downtime相关控件是否显示
     $(':radio[name=caldowntime]').on('change', function (e) {
         showDowntimeControls(e.target.defaultValue);
@@ -472,7 +468,7 @@
         $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
         $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
 
-        $("#ca-responsetime").val((parseInt((new Date(row['repairtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
+        $("#ca-responsetime").val((parseInt((new Date(row['finishtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
         $("#ca-tmdur").val((parseInt((new Date(row['finishtime']) - new Date(row['repairtime'])) / 1000)).Timeformat("hh:mm:ss"));  //维修时间
 
         $("#view-rcca").val(row['rootcause']);  //rootcause

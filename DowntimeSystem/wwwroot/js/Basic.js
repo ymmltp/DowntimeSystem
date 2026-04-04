@@ -1,9 +1,28 @@
-﻿const BasicURL ="https://cnwuxg0te01:9100"// "http://cnwuxg0te01:9000";  //  "http://localhost:19292"; //
-
+﻿const BasicURL ="https://cnwuxg0te01.corp.jabil.org:9101"// "http://cnwuxg0te01:9000";  //  "http://localhost:19292"; //
+const _FAC= "WUX-FATP"
 
 //#region datetimepicker 初始化设定
 function iniDatetimepicker() {
     $(".form_datetime").datetimepicker({
+        fontAwesome: 'font-awesome',
+        format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
+        todayBtn: true, //一键选中今天的日期
+        minDate: '2022/01/01',
+        maxDate: 0,//今天
+        pickerPosition: "bottom-left", //打开选择卡的位置
+        weekStart: 1, //周开始的星期：0-6 星期日-星期六
+        autoclose: true,//选好时间后自动关闭
+        startView: 2,
+        maxView: 4,
+        minView: 2,//显示的最小选项卡：0-4 hour,day,month,year,decade
+        //minuteStep: 5,
+        language: 'zh-CN',
+        startDate: new Date("2022-01-01"),
+        endDate: new Date()
+    });
+}
+function iniDatetimepickerObj($obj) {
+   $obj.datetimepicker({
         fontAwesome: 'font-awesome',
         format: 'yyyy-mm-dd',//hh:00:00', //时间显示的格式
         todayBtn: true, //一键选中今天的日期
@@ -40,21 +59,42 @@ function iniDatetimepicker_withTime() {
         endDate: new Date()
     });
 }
+function iniDatetimepickerObj_withTime($obj) {
+    $obj.datetimepicker({
+        fontAwesome: 'font-awesome',
+        format: 'yyyy-mm-dd hh:ii:00',//hh:00:00', //时间显示的格式
+        todayBtn: true, //一键选中今天的日期
+        minDate: '2022/01/01',
+        maxDate: 0,//今天
+        pickerPosition: "bottom-left", //打开选择卡的位置
+        weekStart: 1, //周开始的星期：0-6 星期日-星期六
+        autoclose: true,//选好时间后自动关闭
+        startView: 0,
+        maxView: 4,
+        minView: 0,//显示的最小选项卡：0-4 hour,day,month,year,decade
+        minuteStep: 2,
+        language: 'zh-CN',
+        startDate: new Date("2022-01-01"),
+        endDate: new Date()
+    });
+}
 //#endregion
 
 //#region 可隐藏的搜索栏
-$("#searchBox").on('click', function () {
-    if ($("#searchBoxMenu").hasClass("elehide")) {
-        $("#searchBoxMenu").removeClass("elehide");
-        $("#searchBox").removeClass("fa-cog");
-        $("#searchBox").addClass("fa-minus-square");
-    }
-    else {
-        $("#searchBoxMenu").addClass("elehide");
-        $("#searchBox").removeClass("fa-minus-square");
-        $("#searchBox").addClass("fa-cog");
-    }
-})
+function SearchBoxIni() {
+    $("#searchBox").on('click', function () {
+        if ($("#searchBoxMenu").hasClass("elehide")) {
+            $("#searchBoxMenu").removeClass("elehide");
+            $("#searchBox").removeClass("fa-cog");
+            $("#searchBox").addClass("fa-minus-square");
+        }
+        else {
+            $("#searchBoxMenu").addClass("elehide");
+            $("#searchBox").removeClass("fa-minus-square");
+            $("#searchBox").addClass("fa-cog");
+        }
+    })
+}
 //#endregion
 
 //#region 自定义时间范围
@@ -219,6 +259,7 @@ function postData(url, para) {
         $.ajax({
             url: url,
             type: "POST",
+            contentType:"application/json",
             data: para,
             success(data, status, xhr) {
                 resolve({ data: data, status: status, xhr: xhr });
@@ -410,30 +451,64 @@ function checkFormNoNull(parentid) {
     });
     return flag;
 }
+
+//检查特定元素内的内容不为空
+function checkFormNoNull_withObj(obj) {
+    var flag = true;
+    obj.find(".noNull ").not('.elehide').each(function () {
+        if ($(this).prop('tagName').toUpperCase() == 'TABLE') {
+            if ($(this).attr("id") != undefined) {
+                let data = $(this).bootstrapTable('getData');
+                if (data.length <= 0 || (data.length == 1 && !Array.isArray(data))) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+            }
+        }
+        else if ($(this).prop('tagName').toUpperCase() != 'DIV') {
+            var name = $(this).attr("name");
+            if ($(this).attr("type") == "radio") {
+                if ($('input[name="' + name + '"]:checked').length < 1) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+            }
+            else if ($(this).attr("type") == "checkbox") {
+                if ($('input[name="' + name + '"]:checked').length < 1) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+            }
+            else if ($(this).attr("type") == "number") {
+                if ($(this).val().length == 0) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+                else if ($(this).attr("noRule") != undefined) {
+                    if (!eval(`${$(this).val()}${$(this).attr("noRule")}`)) {
+                        showWarning($(this).attr('noNull') + "必须" + $(this).attr("noRule"));
+                        flag = false;
+                        return false;
+                    }
+                }
+            }
+            else if ($(this).val().length == 0) {
+                if ($(this)[0].attributes.length > 1) {
+                    showWarning($(this).attr('noNull') + "不能为空!");
+                    flag = false;
+                    return false;
+                }
+            }
+        }
+    });
+    return flag;
+}
 //#endregion
 
-//#region 配合alert.css,显示弹出信息
-function showWarning(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-warning').show().delay(3000).fadeOut();
-}
-function showInfo(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-info').show().delay(1500).fadeOut();
-}
-function showInfo_long(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-info').show().delay(8000).fadeOut();
-}
-function showSuccess(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-success').show().delay(1500).fadeOut();
-}
-function showError(text) {
-    $('.alert').attr('class', 'alert');
-    $('.alert').html(text).addClass('alert-danger').show().delay(3000).fadeOut();
-}
-//#endregion
 
 //#region 获取对应的select的option
 
@@ -485,10 +560,14 @@ function GetSelectOptions_paras(url, paras, obj, value = null) {
             obj.selectpicker("refresh");
         },
         fail: function (err) {
-            showWarning(err.responseText);
+            showError(err.responseText);
         },
         error: function (err) {
-            showWarning(err.responseText);
+            if (err.responseText == undefined) {
+                showError("请进行Api安全认证");
+            } else {
+                showError(err.responseText);
+            }
         }
     })
 }
@@ -554,13 +633,23 @@ function toBigImg() {
     $(".opacityBottom").show();
     $("html,body").addClass("none-scroll");//下层不可滑动
     $(".bigImg").addClass("bigImg");//添加图片样式
+
+    let currentScale = 1; // 初始化缩放比例
+
+    // 在遮罩层上监听鼠标滚轮事件
+    $(".opacityBottom").on('wheel', function (event) {
+        event.preventDefault(); // 阻止默认的滚动行为
+        let delta = event.originalEvent.deltaY > 0 ? -0.1 : 0.1; // 向下滚轮缩小，向上滚轮放大
+        currentScale = Math.max(0.1, currentScale + delta); // 限制最小缩放比例为0.1
+        $(".bigImg").css("transform", "scale(" + currentScale + ")"); // 应用缩放
+    });
+
     $(".opacityBottom").click(function () {//点击关闭
         $("html,body").removeClass("none-scroll");
         $(".opacityBottom").remove();
     });
 }
 //#endregion
-
 
 
 var getObjectURL = function (file) {
@@ -573,4 +662,25 @@ var getObjectURL = function (file) {
         url = window.webkitURL.createObjectURL(file);
     }
     return url;
+}
+
+
+function btnDisable(obj) {
+    obj.prop("disabled", true)
+}
+
+function btnEnable(obj) {
+    obj.prop("disabled", false)
+}
+
+function user_entity(obj, displayName, e_mail) {
+    var ntid = obj.val();
+    getData("/User/GetUserEntity?ntid=" + ntid)
+        .then(data => {
+            displayName.val(data.displayName);
+            e_mail.val(data.email);
+        })
+        .catch(err => {
+            showError(err);
+        })
 }

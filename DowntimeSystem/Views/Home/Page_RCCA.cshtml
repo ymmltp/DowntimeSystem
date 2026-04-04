@@ -18,12 +18,12 @@
             <div class="card">
                 <form class="card-body" id="myForm">
                     <input id="socketstatus" hidden />
-                    <h6 class="card-title">机台信息 <i class="fa  fa-toggle-off pull-right" style="font-size:20px" id="switch"></i></h6>
+                    <h6 class="card-title">Machine Info 机台信息<i class="fa  fa-toggle-off pull-right" style="font-size:20px" id="switch"></i></h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">项目</span>
+                                    <span class="input-group-text">Proejct 项目</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-project">
                             </div>
@@ -31,7 +31,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">部门</span>
+                                    <span class="input-group-text">Department 部门</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-department">
                             </div>
@@ -41,7 +41,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">线体</span>
+                                    <span class="input-group-text">Line 线体</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-line">
                             </div>
@@ -49,7 +49,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">站位</span>
+                                    <span class="input-group-text">Station 站位</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-station">
                             </div>
@@ -59,7 +59,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">设备名</span>
+                                    <span class="input-group-text">Machine 设备名</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="info-machine">
                             </div>
@@ -80,12 +80,12 @@
         <div class="col-6">
             <div class="card">
                 <div class="card-body" id="incident">
-                    <h6 class="card-title" id="incident-title">最新Downtime事件 <span class="pull-right" id="incident-id"></span></h6>
+                    <h6 class="card-title" id="incident-title"> Last Downtime Incident 最新停线事件 <span class="pull-right" id="incident-id"></span></h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">开始时间</span>
+                                    <span class="input-group-text">StartTime 开始时间</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-starttime">
                             </div>
@@ -93,7 +93,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">结束时间</span>
+                                    <span class="input-group-text">EndTime 结束时间</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-endtime">
                             </div>
@@ -103,7 +103,7 @@
                         <div class="col">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">问题</span>
+                                    <span class="input-group-text">Issue 问题</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-issue">
                             </div>
@@ -113,7 +113,7 @@
                             <div class="col">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">问题描述</span>
+                                        <span class="input-group-text">Issue Description 问题描述</span>
                                     </div>
                                     <textarea type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly id="incident-description" rows="1"></textarea>
                                 </div>
@@ -127,27 +127,52 @@
         <div class="col text-center">
             <div class="row">
                 <div class="col">
-                    <table id="table"></table>
+                    @await Component.InvokeAsync("ProgressComponent")         
+                    <div style="width:100%">
+                        <label style="width:100%;text-align:center">
+                            WI 维修指导手册
+                        </label>
+                        <table id="table" style="table-layout: fixed;width:100%"></table>
+                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script src="~/js/webSocket.js"></script>
+<script src="~/lib/paho-mqtt.min.js"></script>
+<script src="~/js/mqtt.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-filter-control.min.js"></script>
+
 <script>
-    var socket = new WebSocketHandler();
+    var socket;
+    var tabledata = null;
+    var progress = new Progress(40);
+    var currentdata;
+    var isUpdating = false;
+
+    //Socket闭包，防止重复创建;
+    function initSocket() {
+        if (!socket) {
+            socket = new MQTTWebSocketHandler();
+        }
+    }
+
     $(document).ready(function () {
+        initSocket();
         $("#socketstatus").on('change', function () {
-            SwitchChange(Boolean($(this).val()));
+            SwitchChange($(this).val()=="true");
         });
     })
+
     //加载配置信息
     function Set() {
         if (checkFormNoNull("#searchBar")) {
+            StartLoading();
             GetMachineInfo();
-            GetWIInfo();   //加载WI信息
+            GetLastDowntimeInfo($("#machine-select").val());
+            GetWIInfo($("#department-select").val(), $("#project-select").val(), $("#station-select").val());   //加载WI信息
         } 
     }
     function GetMachineInfo() {
@@ -156,23 +181,39 @@
         $("#info-line").val($("#line-select").val());
         $("#info-station").val($("#station-select").val());
         $("#info-machine").val($("#machine-select").val());
-        socket.initializeSocket($("#machine-select").val(), onMessageEvent);//创建WebSocket 通道
+        socket.initializeSocket($("#machine-select").val(), $("#socketstatus"), onMessageEvent);//创建WebSocket 通道
     }
-    function GetWIInfo() {
+    function GetWIInfo(department,project,station) {
         getData(BasicURL + '/api/DowntimeRCCA/GetRCCAFormNo', {
-            Department: $("#department-select").val(),
-            Project: $("#project-select").val(),
-            Station: $("#station-select").val(),
+            Department: department,
+            Project: project,
+            Station: station ,
         })
             .then(res => {
                 if (res[0] == undefined) {
                     $("#info-wi").val("");
                     $("#info-version").val("")
-                    showWarning($("#department-select").val() + " " + $("#project-select").val() + " " + $("#station-select").val()+" 没有对应的WI文件，请联系管理员配置相关信息")
+                    showWarning(department + " " + project+ " " + station+" 没有对应的WI文件，请联系管理员配置相关信息")
                 } else {
                     $("#info-wi").val(res[0].formno);
                     $("#info-version").val(res[0].version);
                     InitialRCCATable();
+                }
+            })
+            .catch(err => {
+                showError(err);
+            })
+    }
+    function GetLastDowntimeInfo(machine) {
+        getData(BasicURL + '/api/Downtime/Query_LastIncdentByFilter', {
+            Machine: machine
+        })
+            .then(res => {
+                if (res==null) {
+                    showWarning("未查询到 " + machine +" 相关的Downtime记录")
+                } else {
+                    ShowDTinfo(res);
+                    currentdata = res;
                 }
             })
             .catch(err => {
@@ -184,11 +225,7 @@
     function onMessageEvent(data) {
         ShowDTinfo(data);
         if ($("#info-wi").val() != "") {
-            if (data.incidentstatus == 0) {
-                ShowRCCA(data);
-            } else if (data.incidentstatus == 2) {
-                InitialRCCATable();
-            }
+            ShowRCCA(data);
         }
     }
     function ShowDTinfo(data) {
@@ -207,115 +244,147 @@
         }
         $("#incident-id").html(data.id);
         $("#incident-starttime").val(new Date(data.occurtime).format('yyyy-MM-dd hh:mm:ss'));
-        $("#incident-endtime").val(new Date(data.finishtime).format('yyyy-MM-dd hh:mm:ss'));
+        $("#incident-endtime").val(data.finishtime == null ?"":new Date(data.finishtime).format('yyyy-MM-dd hh:mm:ss'));
         $("#incident-issue").val(data.issue);
         $("#incident-description").val(data.issueremark);
     }
     function InitialRCCATable() {
-        $("#table").bootstrapTable('destroy').bootstrapTable({
-            url: BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByStation",
-            cache: false,
-            type: 'GET',
-            queryParams: {
-                formNo: $("#info-wi").val(),
-                station: $("#info-station").val()
-            },
-            columns: [[{
-                title: '维修指导手册',
-                colspan: 16,
-                align: 'center',
-            }], [ {
-                field: 'errorCode',
-                title: '异常代码',
-                }, {
-                field: 'issue',
-                title: '问题描述',
-                }, {
-                    field: 'totalqty',
-                    title: 'Accumulative QTY',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    field: 'totalPercent',
-                    title: 'Percentage%',
-                    align: 'center',
-                    valign: 'middle',
-                },  {
-                field: 'issuePic',
-                title: '问题图片',
-                formatter: function (value) {
-                    if (value != null) {
-                        return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                    }}
-                },{
-                field: 'checkStep',
-                title: '检查步骤',
-                }, {
-                field: 'checkStepPic',
-                title: '检查步骤图片',
-                    formatter: function (value) {
-                        if (value != null) {
-                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                        }
-                    }
-                }, {
-                    field: 'rootCause',
-                    title: '根本原因',
-                }, {
-                field: 'correctiveAction',
-                title: '纠正措施',
-                }, {
-                    field: 'tool',
-                    title: '工具',
-                }, {
-                field: 'correctiveActionPic',
-                title: '纠正措施图片',
-                    formatter: function (value) {
-                        if (value != null) {
-                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                        }
-                    }
-                }, {
-                field: 'correctiveStep',
-                title: '纠正步骤',
-                }, {
-                field: 'correctiveStepPic',
-                title: '纠正步骤图片',
-                    formatter: function (value) {
-                        if (value != null) {
-                            return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100px; height: auto;" />`;
-                        }
-                    }
-                }, {
-                    field: 'qty',
-                    title: 'Sub QTY',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    field: 'subPercent',
-                    title: 'Sub Percentage%',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                field: 'remark',
-                title: '备注',
-                    }]],
-            onLoadSuccess: function (data) {
-                var data = $('#table').bootstrapTable('getData', true);
-                //合并单元格
-                mergeCells(data, "issue", 1, $('#table'));
-            }
+        isUpdating = false;
+        getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByStation", {
+            formNo: $("#info-wi").val(),
+            station: $("#info-station").val()
         })
+            .then(res => {
+                tabledata = res;
+                $("#table").bootstrapTable('destroy').bootstrapTable({
+                    data: res,
+                    cache: false,
+                    type: 'GET',
+                    filterControl: true,
+                    columns:  [{
+                        field: 'errorCode',
+                        width:1,
+                        title: 'Error Code</br>异常代码',
+                        filterControl: 'select' // 使用下拉菜单进行筛选
+                    }, {
+                        field: 'issue',
+                        width: 2,
+                        title: 'Issue</br>问题',
+                        filterControl: 'select' // 使用下拉菜单进行筛选
+                    }, {
+                        field: 'totalqty',
+                        width: 1,
+                        title: 'Lastest 3 months CUM</br>最近三个月累计次数',
+                        align: 'center',
+                        valign: 'middle',
+                    }, {
+                        field: 'totalPercent',
+                        width: 1,
+                        title: 'Percentage%</br> 最近三个月累计占比',
+                        align: 'center',
+                        valign: 'middle',
+                    }, {
+                        field: 'issuePic',
+                        width: 2,
+                        title: 'Issue Photo </br> 问题图片',
+                        formatter: function (value) {
+                            if (value != null) {
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
+                            }
+                        }
+                    }, {
+                        field: 'checkStep',
+                        width: 4,
+                        title: 'Check Step </br> 检查步骤',
+                        align: 'left',
+                    }, {
+                        field: 'checkStepPic',
+                        width: 2,
+                        title: 'Step Photo </br> 检查步骤图片',
+                        formatter: function (value) {
+                            if (value != null) {
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
+                            }
+                        }
+                    }, {
+                        field: 'rootCause',
+                        width: 2,
+                        title: 'RootCause </br> 根本原因',
+                    }, {
+                        field: 'correctiveAction',
+                        width: 2,
+                        title: 'CA </br> 纠正措施',
+                    }, {
+                        field: 'tool',
+                        width: 1,
+                        title: 'Tools </br> 工具',
+                    }, {
+                        field: 'correctiveActionPic',
+                        width: 2,
+                        title: 'CA Photo </br> 纠正措施图片',
+                        formatter: function (value) {
+                            if (value != null) {
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
+                            }
+                        }
+                    }, {
+                        field: 'correctiveStep',
+                        width: 4,
+                        title: 'Corrective Step </br> 纠正步骤',
+                        align: 'left',
+                    }, {
+                        field: 'correctiveStepPic',
+                        width: 2,
+                        title: 'Corrective Step Photo </br> 纠正步骤图片',
+                        formatter: function (value) {
+                            if (value != null) {
+                                return `<img src="data:image/png;base64,${value}" alt="Image" style="width: 100%; height: auto;" />`;
+                            }
+                        }
+                    }, {
+                        field: 'remark',
+                        width: 1,
+                        title: 'Remark </br> 备注',
+                    }],
+                    onPostHeader: function () {
+                        // 遍历每一个表头，设置title属性为单元格文字
+                        $('#table thead th').each(function () {
+                            var $this = $(this);
+                            $this.attr('title', $this.text());
+                        });
+                        $('#table thead th').css('text-align', 'center');
+                        $('#table thead th').css('vertical-align', 'top');
+                    }
+                });
+                ShowRCCA(currentdata);
+            })
+            .catch(err => {
+                showError(err);
+                EndLoading();
+            })
     }
     function ShowRCCA(data) {
-        getData(BasicURL + "/api/DowntimeRCCA/AnalysisRCCAByIssue",
-            {
-                formNo: $("#info-wi").val(),
-                station: $("#info-station").val(),
-                issue: data.issue,
-            }).then(res => {
-                $('#table').bootstrapTable('load', res);
-            });
+        if (data.incidentstatus == 0) {
+            var tmp = tabledata.filter(j => j.issue == data.issue);
+            $('#table').bootstrapTable('load', tmp);
+        } else if (data.incidentstatus == 2) {
+            $('#table').bootstrapTable('load', tabledata);
+        }
+        setTimeout(function () {
+            var data = $('#table').bootstrapTable('getData', true);
+            //合并单元格
+            ShowDowntimeIssueCount(data, "issue", 1, $('#table'));
+        },500)
+        EndLoading();
+    }
+    function StartLoading() {
+        progress.show();
+        btnDisable($('#search'));
+    }
+
+    function EndLoading() {
+        progress.hide();
+        btnEnable($('#search'));
     }
 
     //修改Socket开关状态

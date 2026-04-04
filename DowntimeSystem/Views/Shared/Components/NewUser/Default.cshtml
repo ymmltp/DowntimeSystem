@@ -1,0 +1,84 @@
+﻿@*新建User *@
+<div class="modal fade" id="NewModel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 30%;min-width:150px;margin-top:80px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLongTitle">新增User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="form-label  warning-text"> Department 部门:</label>
+                        <select id="new-department" class="form-control selectpicker noNull" noNull="部门" title="Select Department" data-size="6" data-live-search="true"></select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label  warning-text"> Project 项目:</label>
+                        <select id="new-project" class="form-control selectpicker noNull" noNull="项目" title="Select Project" data-size="6" data-live-search="true"> </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label  warning-text"> NTID :</label>
+                        <input type='text' class="form-control noNull" noNull="NTID" id='new-ntid'/></div>
+                    <div class="col-12">
+                        <label class="form-label  warning-text" for="id"> Name 姓名: </label>
+                        <input type='text' class="form-control noNull" noNull="姓名" id='new-name'/>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label  warning-text" for="id"> Email 邮箱: </label>
+                        <input type='text' class="form-control noNull" noNull="邮箱" id='new-email'/>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label  warning-text" for="id"> Role 权限: </label>
+                        <select id="new-role" class="form-control selectpicker noNull" noNull="权限" title="Select Role" data-size="6">
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="Submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        initialModal();
+        $("#new-ntid").on('change', function () {
+            user_entity($(this), $('#new-name'), $('#new-email'));
+        })
+        $("#Submit").on('click', function () {
+            if (checkFormNoNull("#NewModel")) {
+                let tmp = {
+                    Department: $("#new-department").val(),
+                    Project: $("#new-project").val(),
+                    NTID: $("#new-ntid").val(),
+                    Name: $("#new-name").val(),
+                    Email : $("#new-email").val(),
+                    Role : $("#new-role").val(),
+                }
+                postDatatoAPI('/User/Add', tmp)
+                    .then(res => {
+                        showSuccess("添加成功");
+                        $("#table").bootstrapTable("refreshOptions", { url: '/User/Get' });
+                        $("#NewModel").modal('hide');
+                    })
+                    .catch(err => {
+                        showError(err);
+                    })
+            }
+        })
+    })
+
+
+    function initialModal() {
+        getDepartment($("#new-department"));
+        getProject($('#new-project'));
+        $('#new-ntid').val('');
+        $('#new-name').val('');
+        $('#new-email').val('');
+    }
+</script>

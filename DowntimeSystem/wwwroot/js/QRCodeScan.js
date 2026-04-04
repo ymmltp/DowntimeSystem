@@ -122,8 +122,8 @@ class QRCodeScan {
                         inversionAttempts: 'dontInvert',
                     });
                     if (code) {
-                        that.vars.result = code.data;
-                        that._onScanEvent(code.data);
+                        that.vars.result = code.data.trim();
+                        that._onScanEvent(code.data.trim());
                         that._qstop();
                     }
                 }

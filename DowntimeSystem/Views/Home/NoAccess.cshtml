@@ -57,49 +57,4 @@
             }
         };
     });
-
-
-    //// MQTT Broker的WebSocket地址 (通常以ws://或wss://开头)
-    //const options = {
-    //    protocol: 'wss',            // 使用 WebSocket Secure
-    //    host: 'cnwuxg0te01',        // 替换为你的配置中的 Host
-    //    port: 8084,                 // 替换为你的配置中的 Port
-    //    rejectUnauthorized: false   // 如果你不想验证证书
-    //};
-
-    //// 生成连接URL
-    //const connectUrl = `${options.protocol}://${options.host}:${options.port}${options.path}`;
-
-    //// 创建客户端实例
-    //const client = mqtt.connect("wss://cnwuxg0te01:8084");//connectUrl, options);
-
-    //// 当连接到Broker时
-    //client.on('connect', () => {
-    //    console.log("Connected to MQTT broker");
-
-    //    // 订阅主题
-    //    const topic = "machine/11/updates";
-    //    client.subscribe(topic, (err) => {
-    //        if (!err) {
-    //            console.log(`Subscribed to topic: ${topic}`);
-    //        } else {
-    //            console.error("Subscription error:", err);
-    //        }
-    //    });
-    //});
-
-    //// 当收到消息时
-    //client.on('message', (topic, message) => {
-    //    console.log(`Received message: ${message.toString()} on topic: ${topic}`);
-    //    // 在这里处理接收到的消息，例如显示在网页上
-    //});
-
-    //// 当连接断开时
-    //client.on('close', () => {
-    //    console.log("Disconnected from MQTT broker");
-    //});
-
-    //client.on('error', (error) => {
-    //    console.log(error);
-    //});
 </script>

@@ -1,4 +1,5 @@
 ﻿using System;
+using DowntimeSystem.Models.Unitity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -26,16 +27,19 @@ namespace DowntimeSystem.Models
         public virtual DbSet<IssueSummaryAll> IssueSummaryAlls { get; set; }
         public virtual DbSet<TmpTable> TmpTables { get; set; }
         public virtual DbSet<WeeklyAlarmNameList> WeeklyAlarmNameLists { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseNpgsql("Host=cnwuxm1medb01;Database=EC;Username=ECUser;Password=Jabil123");
+                optionsBuilder.UseNpgsql("Host=cnwuxm1tes05;Database=EC;Username=ECUser;Password=Jabil123");
             }
         }
-        private string[] contains = { "eCalling", "FPY", "Downtime System" }; //"Sparepart", 
+        private string[] contains = { "eCalling","Downtime System" }; //"Sparepart", 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "English_United States.1252");
@@ -97,11 +101,13 @@ namespace DowntimeSystem.Models
                 entity.Property(e => e.Chinesename)
                     .IsRequired()
                     .HasMaxLength(32)
-                    .HasColumnName("chinesename");
+                    .HasColumnName("chinesename")
+                    .HasDefaultValueSql("Auto");
 
                 entity.Property(e => e.Contacttype)
                     .HasMaxLength(64)
-                    .HasColumnName("contacttype");
+                    .HasColumnName("contacttype")
+                    .HasDefaultValueSql("TO");
 
                 entity.Property(e => e.Englishname)
                     .HasMaxLength(32)
@@ -137,8 +143,7 @@ namespace DowntimeSystem.Models
             modelBuilder.Entity<IncidentDet>(entity =>
             {
                 entity.ToTable("incident_det");
-                entity.HasQueryFilter(e => e.Calcdowntime.Equals(true)); //只获取downtime事件
-                entity.HasQueryFilter(e => Array.AsReadOnly(contains).Contains(e.Comefrom));  //只获取需要的系统传来的数据
+                entity.HasQueryFilter(e => e.Calcdowntime == true &&  Array.AsReadOnly(contains).Contains(e.Comefrom));  //只获取需要的系统传来的数据
 
                 entity.HasIndex(e => new { e.Comefrom, e.Occurtime }, "comefrom");
 
@@ -151,7 +156,7 @@ namespace DowntimeSystem.Models
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Action)
-                    .HasMaxLength(64)
+                    .HasMaxLength(200)
                     .HasColumnName("action");
 
                 entity.Property(e => e.Actionremark)
@@ -184,6 +189,7 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Ctime)
                     .HasColumnName("ctime")
+                    .HasColumnType("timestamp")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.Department)
@@ -194,7 +200,9 @@ namespace DowntimeSystem.Models
                     .HasColumnName("downtime")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Finishtime).HasColumnName("finishtime");
+                entity.Property(e => e.Finishtime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("finishtime");
 
                 entity.Property(e => e.Frequency).HasColumnName("frequency");
 
@@ -204,7 +212,7 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Issue)
                     .IsRequired()
-                    .HasMaxLength(64)
+                    .HasMaxLength(200)
                     .HasColumnName("issue");
 
                 entity.Property(e => e.Issueremark)
@@ -224,7 +232,9 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(64)
                     .HasColumnName("machine");
 
-                entity.Property(e => e.Occurtime).HasColumnName("occurtime");
+                entity.Property(e => e.Occurtime)
+                .HasColumnType("timestamp")
+                .HasColumnName("occurtime");
 
                 entity.Property(e => e.Pieces).HasColumnName("pieces");
 
@@ -235,6 +245,7 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Repairtime)
                     .HasColumnName("repairtime")
+                     .HasColumnType("timestamp")
                     .HasComment("Repair datetime");
 
                 entity.Property(e => e.Respperson)
@@ -256,7 +267,11 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Urgentlevel)
                     .HasColumnName("urgentlevel")
-                    .HasDefaultValueSql("0");
+                    .HasDefaultValueSql("0"); 
+
+                entity.Property(e => e.Editor)
+                    .HasMaxLength(32)
+                    .HasColumnName("editor");
             });
 
             modelBuilder.Entity<IncidentDetWithEqid>(entity =>
@@ -289,7 +304,9 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(32)
                     .HasColumnName("creator");
 
-                entity.Property(e => e.Ctime).HasColumnName("ctime");
+                entity.Property(e => e.Ctime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("ctime");
 
                 entity.Property(e => e.Department)
                     .HasMaxLength(32)
@@ -297,7 +314,9 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Downtime).HasColumnName("downtime");
 
-                entity.Property(e => e.Finishtime).HasColumnName("finishtime");
+                entity.Property(e => e.Finishtime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("finishtime");
 
                 entity.Property(e => e.Frequency).HasColumnName("frequency");
 
@@ -323,7 +342,9 @@ namespace DowntimeSystem.Models
                     .HasColumnType("character varying")
                     .HasColumnName("machine");
 
-                entity.Property(e => e.Occurtime).HasColumnName("occurtime");
+                entity.Property(e => e.Occurtime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("occurtime");
 
                 entity.Property(e => e.Pieces).HasColumnName("pieces");
 
@@ -331,7 +352,9 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(32)
                     .HasColumnName("project");
 
-                entity.Property(e => e.Repairtime).HasColumnName("repairtime");
+                entity.Property(e => e.Repairtime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("repairtime");
 
                 entity.Property(e => e.Respperson)
                     .HasMaxLength(32)
@@ -385,6 +408,7 @@ namespace DowntimeSystem.Models
 
                 entity.Property(e => e.Lastupdatedate)
                     .HasColumnName("lastupdatedate")
+                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.Line)
@@ -446,7 +470,9 @@ namespace DowntimeSystem.Models
                     .HasMaxLength(64)
                     .HasColumnName("issue");
 
-                entity.Property(e => e.Lastupdatedate).HasColumnName("lastupdatedate");
+                entity.Property(e => e.Lastupdatedate)                   
+                    .HasColumnType("timestamp")              
+                    .HasColumnName("lastupdatedate");
 
                 entity.Property(e => e.Line)
                     .HasMaxLength(32)
@@ -512,6 +538,38 @@ namespace DowntimeSystem.Models
                     .HasColumnName("email");
 
                 entity.Property(e => e.Level).HasColumnName("level");
+            });
+
+             modelBuilder.Entity<Users>(entity =>
+            {
+                entity.HasKey(e => new { e.NTID })
+                    .HasName("users_unique");
+
+                entity.ToTable("users");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id");
+                entity.Property(e => e.Project)
+                    .HasMaxLength(32)
+                    .HasColumnName("project");
+
+                entity.Property(e => e.Department)
+                    .HasMaxLength(32)
+                    .HasColumnName("department");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(64)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(64)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.NTID)
+                    .HasMaxLength(32)
+                    .HasColumnName("ntid");
+                entity.Property(e => e.Role)
+                    .HasMaxLength(32)
+                    .HasColumnName("role");
             });
 
             OnModelCreatingPartial(modelBuilder);

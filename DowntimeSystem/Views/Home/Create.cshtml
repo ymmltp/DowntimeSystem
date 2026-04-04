@@ -38,7 +38,7 @@
                 <select id="issue-select" class="form-control selectpicker noNull" noNull="问题分类 Issue category" title="Select Issue" data-size="6" data-max-options="1" data-live-search="true" onchange="$('#issuedescription').val($('#issue-select').find(':selected').data('issue'))"></select>
             </div>
             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                <label class="form-label" for="issuedescription">问题描述 Issue Description: </label>
+                <label class="form-label" for="issuedescription">问题描述 Issue Description (Network/MES issue need provide the SR No.): </label>
                 <input type='text' class="form-control" id='issuedescription' placeholder="---请输入问题描述---" />
             </div>
             <div class="col-lg-6  col-md-6 col-xl-6 col-sm-6">
@@ -108,31 +108,44 @@
             // 提交表单
             getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
                 .then(row => {
-                    if (row['incidentstatus'] >= 2) {
-
+                    if (row===null || row['incidentstatus'] >= 2) {
                         // 显示成功消息
                         if (checkFormNoNull("#createIncident")) {
                             let urlstring = "comfrom=Downtime System&department=" + $("#department-select").val() + "&machine=" + $("#machine-select").val()
                                 + "&ErrorCode=" + $("#issue-select").val() + "&ErrorDescription=" + $("#issuedescription").val() + "&Server=" + $("#machine-select").find(":selected").data("server")
-                                + "&isDowntime=" + Boolean($("#issue-select").find(":selected").data("isdowntime"))
-                            postDatatoAPI("http://cnwuxm1tes05/eCalling/InsertData2?" + urlstring)
+                                + "&isDowntime=" + Boolean($("#issue-select").find(":selected").data("isdowntime")); 
+                   
+                            //postDatactoAPI("http://cnwuxm1tes05/eCalling/InsertData2?" + urlstring)
+                                postDataWithArray(
+                                        "/http/PostWithOutBodyAPI",
+                                        {
+                                            basicURL: "http://cnwuxm1tes05",
+                                            url: "/eCalling/InsertData2?"+ urlstring,
+                                        })
+ 
                                 .then(res => {
-                                    console.log(res);
-                                    return getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
-
-                                    // 将结果传递给下一个 .then() 方法
+                                    if(JSON.parse(res.data).isPASS)
+                                    {
+                                        return getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() });
+                                    }
+                                    else{
+                                        return Promise.reject(`eCalling 呼叫失败：${JSON.parse(res.data).error}`);
+                                    }                                    
                                 })
-                                .then(data => {
-                                    const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
-                                    const startDate = new Date(startDateValue); // 创建 Date 对象
-
-
-                                    data.occurtime = formatDateToString(startDate); // 赋值给 data.occurtime
-                                    data.creator = $("#creator").val();
-                                    data.frequency = Number($("#howoften").val());
-                                    data.pieces = Number($("#howmuch").val()); // 可能会引发异常的代码  //
-                                    console.log(data);
-                                    return postDataWithArray(BasicURL+"/api/Downtime/Update", data);
+                                .then(data => {                                  
+                                    if(data===null || data['incidentstatus'] >= 2)
+                                    {
+                                        return Promise.reject("更新数据失败，数据为空");
+                                    } else {
+                                        const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
+                                        const startDate = new Date(startDateValue); // 创建 Date 对象
+                                        data.occurtime = formatDateToString(startDate); // 赋值给 data.occurtime
+                                        data.creator = $("#creator").val();
+                                        data.frequency = Number($("#howoften").val());
+                                        data.pieces = Number($("#howmuch").val()); // 可能会引发异常的代码  //
+                                        console.log(data);
+                                        return postDataWithArray("/EC/UpdateDowmtimeIncident", data);
+                                    }                                  
                                 })
                                 .then(res => {
                                     showSuccess("提交成功");
@@ -152,15 +165,14 @@
         function submitForm2() {
             getData(BasicURL+"/api/Downtime/Query_LastIncdentByFilter", { Machine: $('#machine-select').val() })
                 .then(row => {
-                    if (row['incidentstatus'] >= 2) {
+                    if (row===null || row['incidentstatus'] >= 2) {
 
                         if (checkFormNoNull("#createIncident")) {
                             const startDateValue = $("#startdate").val(); // 获取 #startdate 元素的值
                             const startDate = new Date(startDateValue); // 创建 Date 对象
 
-
                             occurtime = formatDateToString(startDate);
-                            postDataWithArray(BasicURL+"/api/Downtime/Add", {
+                            postDataWithArray("/EC/CreateDowmtimeIncident", {
                                 comefrom: 'Downtime System',
                                 department: $("#department-select").val(),
                                 machine: $("#machine-select").val(),

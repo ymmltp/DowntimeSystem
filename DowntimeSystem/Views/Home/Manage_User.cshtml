@@ -1,0 +1,132 @@
+﻿@{
+    ViewData["Title"] = "Manage User";
+}
+
+<div class="container-fluid">
+    <div class="panel-default">
+        <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
+        <div class="panel-body">
+            @await Component.InvokeAsync("DepartmentProjectSearchComponent")
+        </div>
+    </div>
+</div>
+
+<div id="toolbar" class="toolbar" style="display:none">
+    <button id="New" class="btn btn-success " type="button"> 新增 </button>
+</div>
+<table id="table"></table>
+
+@await Component.InvokeAsync("NewUser")
+
+<script src="~/js/customer.js"></script>
+<script src="~/js/cookie.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-editable.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-table-editable.js"></script>
+<script>
+    $(function () {
+        $("#New").on('click', function () {
+            initialModal();
+            $("#NewModel").modal('show');
+        })
+    })
+
+    function GetTable() {
+        $("#toolbar").removeAttr("style");
+        $("#table").bootstrapTable('destroy').bootstrapTable({
+            toolbar: "#toolbar",
+            url: '/User/Get',
+            height: Math.round($('#silder-right-body').height() - $("#searchbox").height(), 0) - 20,
+            queryParams: {
+                department: $("#department-select").val()[0],
+                project: $("#project-select").val()[0]
+            },
+            dataType: 'json',
+            cache: false,
+            type: 'GET',
+            width: '100%',
+            search: true,                       //开启搜索框
+            visibleSearch: true,
+            showColumns: true,
+            sortable: true,
+            pagination: true,
+            paginationLoop: false,
+            pageSize: 10,
+            pageList: '[10, 50 ,100 ,200, 500, ALL]',
+            showSearchButton: false,
+            columns: [{
+                field: 'index',
+                title: 'No.',
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            }, {
+                field: 'department',
+                title: '部门',
+                sortable: true,
+            }, {
+                field: 'project',
+                title: '项目',
+                sortable: true,
+            }, {
+                field: 'ntid',
+                title: 'NTID',
+                sortable: true,
+            },{
+                field: 'name',
+                title: '姓名',
+                sortable: true,
+            }, {
+                field: 'email',
+                title: '邮箱',
+                sortable: true,
+            },  {
+                field: 'role',
+                title: '权限',
+                sortable: true,
+                editable: {
+                    title: 'level',
+                    type: 'select',
+                    mode: 'inline',
+                    separator: ",",
+                    source: ['Admin','User'],
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
+            }, {
+                field: 'option',
+                title: '操作',
+                formatter: function (value, row, index) {
+                    return '<button class="btn btn-danger btn-sm">删除</button>';
+                },
+                events: {
+                    'click .btn-danger': function (e, value, row, index) {
+                        if (confirm(`确定删除 ${row.ntid}_${row.name} 吗？`)) {
+                            postDatatoAPI('/User/Delete?id='+ row.id)
+                                .then(res => {
+                                    showSuccess("删除成功");
+                                    $("#table").bootstrapTable("refreshOptions", { url: '/User/Get' });
+                                })
+                                .catch(err => {
+                                    showError(err);
+                                })
+                        }
+                    }
+                }
+            }],
+            onEditableSave: function (field, row, oldValue, $el) {
+                postDatatoAPI('/User/Update', row)
+                    .then(res => {
+                        showSuccess("更新成功");
+                        $("#table").bootstrapTable("refreshOptions", { url: '/User/Get' });
+                    })
+                    .catch(err => {
+                        showError(err);
+                    })
+            },
+        })
+    }
+
+</script>

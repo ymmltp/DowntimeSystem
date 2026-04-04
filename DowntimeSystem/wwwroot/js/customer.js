@@ -1,5 +1,4 @@
-﻿
-//获取周
+﻿//获取周
 function getWeekList(obj) {
     var currentYear = new Date().getFullYear();
     $.ajax({
@@ -322,6 +321,7 @@ function mergeCells(data, fieldName, colspan, target) {
     var startindexMap = {};
     var sumQTY = 0;
     for (var i = 0; i < data.length; i++) {
+        data[i]['id'] = i;
         sumQTY += data[i]['qty'];
         for (var prop in data[i]) {
             if (prop == fieldName) {
@@ -338,7 +338,6 @@ function mergeCells(data, fieldName, colspan, target) {
             } 
         }
     }
-
     //更新Analysis Table的数据
     for (var prop in startindexMap) {
         $(target).bootstrapTable('updateCell', {
@@ -360,7 +359,6 @@ function mergeCells(data, fieldName, colspan, target) {
         });
     }
 
-
     //合并单元格
     var index = 0;
     for (var prop in sortMap) {
@@ -372,9 +370,52 @@ function mergeCells(data, fieldName, colspan, target) {
     }
 }
 
-
-
-const _FAC= "WUX-FATP"
+function ShowDowntimeIssueCount(data, fieldName, colspan, target) {
+    //声明一个map计算相同属性值在data对象出现的次数和
+    var sortMap = {};
+    var totalqtyMap = {};
+    var startindexMap = {};
+    var sumQTY = 0;
+    for (var i = 0; i < data.length; i++) {
+        data[i]['id'] = i;
+        for (var prop in data[i]) {
+            if (prop == fieldName) {
+                var key = data[i][prop]
+                if (sortMap.hasOwnProperty(key)) {
+                    sortMap[key] = sortMap[key] * 1 + 1;
+                } else {
+                    sumQTY += data[i]['qty'];
+                    sortMap[key] = 1;
+                    totalqtyMap[key] = data[i]['qty'];
+                    startindexMap[key] = i;
+                }
+                break;
+            }
+        }
+    }
+    //更新Analysis Table的数据
+    for (var prop in startindexMap) {
+        $(target).bootstrapTable('updateCell', {
+            index: startindexMap[prop],
+            field: 'totalqty',
+            value: totalqtyMap[prop]
+        });
+        $(target).bootstrapTable('updateCell', {
+            index: startindexMap[prop],
+            field: 'totalPercent',
+            value: parseInt(totalqtyMap[prop] / sumQTY * 100) + "%"
+        });
+    }
+    //合并单元格
+    var index = 0;
+    for (var prop in sortMap) {
+        var count = sortMap[prop] * 1;
+        $(target).bootstrapTable('mergeCells', { index: index, field: fieldName, colspan: colspan, rowspan: count });
+        $(target).bootstrapTable('mergeCells', { index: index, field: 'totalqty', colspan: colspan, rowspan: count });
+        $(target).bootstrapTable('mergeCells', { index: index, field: 'totalPercent', colspan: colspan, rowspan: count });
+        index += count;
+    }
+}
 //#region  获取iFactory中的信息
 function GetIFRoute(obj, fac = _FAC) {
     var paras = {

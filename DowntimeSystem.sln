@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escalation Mail", "Escalati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Weekly FACA Alarm", "Weekly FACA Alarm\Weekly FACA Alarm.csproj", "{BB291CE1-D940-4D6F-8D40-3F9683724B98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DowntimeIncidentMonitor_MQTT", "DowntimeIncidentMonitor_MQTT\DowntimeIncidentMonitor_MQTT.csproj", "{6B490061-D795-47FC-8813-74935770F27C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsTrueDowntimeCheck", "IsTrueDowntimeCheck\IsTrueDowntimeCheck.csproj", "{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,20 @@ Global
 		{BB291CE1-D940-4D6F-8D40-3F9683724B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB291CE1-D940-4D6F-8D40-3F9683724B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB291CE1-D940-4D6F-8D40-3F9683724B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B490061-D795-47FC-8813-74935770F27C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B490061-D795-47FC-8813-74935770F27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B490061-D795-47FC-8813-74935770F27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B490061-D795-47FC-8813-74935770F27C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D81F782-D4D5-47AC-8C0A-56DC99468A2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6B490061-D795-47FC-8813-74935770F27C} = {69040823-3054-4FC8-9AF4-4EEA14301BB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0ABFC948-0C23-4197-8D78-BDCF16920B09}

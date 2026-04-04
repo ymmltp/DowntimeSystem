@@ -1,0 +1,45 @@
+﻿@*显示当前进度 *@
+<div class="progress" id="progress" hidden>
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  id="progressbar"></div>
+</div>
+
+<script>
+    class Progress  {
+        constructor(time) {
+            this.progressBarElement = $("#progressbar");
+            this.progressElement = $('#progress');
+            this.i = 0;
+            this.intervalid = 0;
+            this.time = time;
+        }
+
+         changelength(width) {
+             this.progressBarElement .css("width", width + "%").text(width + "%");
+        }
+
+        settime(time) {
+            this.time = time;
+        }
+
+        updateProgress() {
+            if (this.i < this.time) {
+                this.i = this.i + 1;
+                let step = this.i / this.time;
+                this.progressBarElement.css("width", parseInt(99 * step) + "%").text(parseInt(99 * step) + "%");
+            }
+        }
+
+        show() {
+            this.progressElement.removeAttr('hidden');
+            this.i = 0;
+            this.intervalid = setInterval(() => this.updateProgress(), 1000);
+        }
+
+         hide() {
+             this.progressElement.attr('hidden', true);
+             clearInterval(this.intervalid);
+             this.changelength(0);
+        }
+    }
+    
+</script>

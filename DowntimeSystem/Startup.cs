@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Server.IISIntegration;
+using System;
+using DowntimeSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -21,8 +24,26 @@ namespace DowntimeSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // 1) 注册 DbContext（Npgsql）
+            services.AddDbContext<ECContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
             services.AddControllersWithViews();
-            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+                
+
+            // 根据环境配置认证
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                services.AddAuthentication("Windows")
+                    .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, WindowsAuthenticationHandler>("Windows", options => { });
+            }
+            else
+            {
+                services.AddAuthentication(IISDefaults.AuthenticationScheme);
+            }
 
             services.AddAuthorization(options =>
             {
@@ -30,6 +51,12 @@ namespace DowntimeSystem
             });
 
             services.AddControllersWithViews();
+            
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

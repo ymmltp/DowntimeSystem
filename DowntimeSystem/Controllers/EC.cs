@@ -19,7 +19,7 @@ namespace DowntimeSystem.Controllers
             try {
                 using (ECContext db = new ECContext())
                 {
-                    var where = db.IncidentDets.Where(e => e.Calcdowntime == true); 
+                    var where = db.IncidentDets.Where(e => true); 
                     if (tmp.Project!=null && tmp.Project.Length>0) where = where.Where(e => tmp.Project.Contains(e.Project));
                     if (tmp.Department != null && tmp.Department.Length > 0) where = where.Where(e => tmp.Department.Contains(e.Department));
                     if (tmp.Line != null && tmp.Line.Length > 0) where = where.Where(e => tmp.Line.Contains(e.Line));
@@ -46,7 +46,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                   var items = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                   var items = db.IncidentDets.Where(e => true); 
                     return Json(items.Select(e => e.Department).Distinct().ToList());
                 }
             }
@@ -62,7 +62,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    var items = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                    var items = db.IncidentDets.Where(e => true);
                     if (!string.IsNullOrEmpty(tmp.Project)) items = items.Where(e => e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) items = items.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) items = items.Where(e => e.Line.Equals(tmp.Line));
@@ -81,7 +81,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    var where = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                    var where = db.IncidentDets.Where(e =>  true);
                     if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e =>  e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
@@ -102,7 +102,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    var where = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                    var where = db.IncidentDets.Where(e => true);
                     if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
@@ -124,7 +124,7 @@ namespace DowntimeSystem.Controllers
             {
                 using (ECContext db = new ECContext())
                 {
-                    var where = db.IncidentDets.Where(e => e.Calcdowntime == true);
+                    var where = db.IncidentDets.Where(e =>  true);
                     if (!string.IsNullOrEmpty(tmp.Project)) where = where.Where(e => e.Project.Equals(tmp.Project));
                     if (!string.IsNullOrEmpty(tmp.Department)) where = where.Where(e => e.Department.Equals(tmp.Department));
                     if (!string.IsNullOrEmpty(tmp.Line)) where = where.Where(e => e.Line.Equals(tmp.Line));
@@ -146,7 +146,7 @@ namespace DowntimeSystem.Controllers
 
         #region 编辑EC表单
         [HttpPost]
-        public IActionResult CreateDowmtimeIncident(IncidentDet item)
+        public IActionResult CreateDowmtimeIncident([FromBody]IncidentDet item)
         {
             if (string.IsNullOrEmpty(item.Issue))
             {
@@ -168,6 +168,32 @@ namespace DowntimeSystem.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        public IActionResult UpdateDowmtimeIncident([FromBody]IncidentDet item)
+        {
+            if (string.IsNullOrEmpty(item.Issue))
+            {
+                return BadRequest("Please input you issue...");
+            }
+            else {
+                try
+                {
+                    using (ECContext db = new ECContext())
+                    {
+                        db.IncidentDets.Update(item);
+                        db.SaveChanges();
+                        return Json(true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+
+
         [HttpPost]
         public IActionResult StartRepaire(int id, string name)
         {
@@ -212,7 +238,7 @@ namespace DowntimeSystem.Controllers
             }
         }
         [HttpPost]
-        public IActionResult RCCA(IncidentDet item)
+        public IActionResult RCCA([FromBody]IncidentDet item)
         {
             try
             {
@@ -251,8 +277,7 @@ namespace DowntimeSystem.Controllers
         private bool CallDRItoVerify(IncidentDet item) {
             bool callback = true;
             using (ECContext db = new ECContext()) {
-                try
-                {
+                
                     List<string> mailto = db.EscalationNameLists.Where(e => e.Department.Equals(item.Department) & e.Project.Equals(item.Project) & e.Level == 2).Select(e=>e.Email).ToList();
                     if (mailto.Count <= 0)
                     {
@@ -261,9 +286,6 @@ namespace DowntimeSystem.Controllers
                     List<string> mailcc = new List<string>();
                     SendMail.MailSend("RCCA Verify Notice", $"<b>Please Notice there is a new rcca need you verify in DTAS</br>Visit <a href='http://cnwuxg0te01:8050/Home/Task_ReviewRCCA'>DTAS</a> for detail information", mailto, mailcc);
                     return callback;
-                } catch (Exception ex) {
-                    throw ex;
-                }
             }
         }
         #endregion

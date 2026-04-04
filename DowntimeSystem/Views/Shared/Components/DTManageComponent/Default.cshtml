@@ -1,0 +1,105 @@
+﻿@*Downtime Edit Model*@
+
+<div class="modal fade" id="CAModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="width: 50%;min-width:150px">
+        <div class="modal-content" @*style="background-color: #62a58a; color: white"*@>
+            <div class="modal-header" style="background-color: #3e9472; color: white">
+                <h5 class="modal-title" id="CA-title" style="text-wrap:normal">更新Downtime信息</h5>
+            </div>
+            <div class="modal-body row">        
+                    <div class="col-lg-6">
+                        <label for="ca-starttime" class="form-label text-right warning-text">开始时间:</label>
+                        <div class='input-group date form_datetime datetime'>
+                            <input type='text' class="form-control noNull" id='ca-starttime'  noNull='开始时间'/>
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6  ">
+                        <label for="ca-finishtime" class="form-label text-right warning-text">结束时间:</label>
+                         <div class='input-group date form_datetime datetime'>
+                            <input type='text' class="form-control noNull" id='ca-finishtime' noNull='结束时间'/>
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 ">
+                        <label for="ca-responsetime" class="form-label text-right">DownTime [HH:mm:ss]:</label>
+                        <input type='text' class="form-control" id='ca-responsetime' readonly />
+                    </div>                   
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="addCA">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/EqSparepartChange.js"></script>
+<script>
+    $(function () {
+        iniDatetimepickerObj_withTime($(".datetime"));
+        $("#ca-finishtime").on("change", function () {
+            var startTime = new Date($("#ca-starttime").val());
+            var finishTime = new Date($("#ca-finishtime").val());
+            if (finishTime < startTime) {
+                showWarning("结束时间不能早于开始时间");
+                return;
+            }
+            var downtime = parseInt((finishTime - startTime) / 1000);
+            $("#ca-responsetime").val(downtime.Timeformat("hh:mm:ss"));
+        })
+         $("#ca-starttime").on("change", function () {
+            var startTime = new Date($("#ca-starttime").val());
+            var finishTime = new Date($("#ca-finishtime").val());
+            if (finishTime < startTime) {
+                showWarning("结束时间不能早于开始时间");
+                return;
+            }
+            var downtime = parseInt((finishTime - startTime) / 1000);
+            $("#ca-responsetime").val(downtime.Timeformat("hh:mm:ss"));
+        })
+    })
+    //RCCA
+    function ShowRCCAEdit(row) {
+        $("#ca-starttime").val(new Date(row['occurtime']).format('yyyy-MM-dd hh:mm:ss'));
+        $("#ca-finishtime").val(new Date(row['finishtime']).format('yyyy-MM-dd hh:mm:ss'));
+        $("#ca-downtime").val(parseInt(row['downtime']).Timeformat("hh:mm:ss"));
+        $("#ca-responsetime").val((parseInt((new Date(row['finishtime']) - new Date(row['occurtime'])) / 1000)).Timeformat("hh:mm:ss")); //人员响应时间
+        $("#CAModal").data("id", row['id']);
+        $("#CAModal").modal('show');
+    }
+
+    $("#addCA").on('click', function () {
+        if (checkFormNoNull("#CAModal")) {
+            let timeStr = $("#ca-responsetime").val();
+            const [hours, minutes, seconds] = timeStr.split(':').map(Number);
+            const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+            var tmp = {
+                id: $("#CAModal").data('id'),
+                occurtime: $("#ca-starttime").val().replace(' ', 'T'),
+                finishtime: $("#ca-finishtime").val().replace(' ', 'T'),
+                downtime: totalSeconds,
+                editor:getCookie("dt-displayname"),
+            };
+            postDataWithArray(BasicURL+'/api/Downtime/Update', tmp)
+                .then(res => {
+                    if ($(':radio[name=caldowntime]:checked').val() == 'true') {
+                        return getData('/Basic/GetCurrentWeek', { date: (new Date()).format('yyyy-MM-dd') })
+                    }
+                })
+                .then(res => {
+                    $("#CAModal").modal('hide');
+                    showSuccess("完成!");
+                    $("#dtList").bootstrapTable("refreshOptions", { url: BasicURL + '/api/Downtime/Query_ByFilter', });
+                })
+                .catch(err => {
+                    showWarning(err);
+                    $("#dtList").bootstrapTable("refreshOptions", { url: BasicURL + '/api/Downtime/Query_ByFilter', });
+                })
+        }
+    })
+
+</script>

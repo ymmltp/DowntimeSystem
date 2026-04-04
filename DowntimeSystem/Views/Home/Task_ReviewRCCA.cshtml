@@ -5,7 +5,7 @@
 
 <div class="container-fluid">
     <div class="panel-default">
-        <div class="panel-heading"><i class="fa fa-cogs "></i> @ViewData["Title"]</div>
+        <div class="panel-heading"><i class="fa fa-handshake-o "></i> @ViewData["Title"]</div>
         <div class="panel-body">
             @await Component.InvokeAsync("DTIncidentSearchComponent")
         </div>
@@ -139,6 +139,14 @@
                 title: 'Employee ID',
                 align: 'center',
                 valign: 'middle',
+                editable: {
+                    title: 'respperson',
+                    type: 'text',
+                    mode: 'inline',
+                    validate: function (value) {
+                        if ($.trim(value) == '') return 'Value can not be empty.';
+                    }
+                }
             }, {
                 field: 'finishtime',
                 title: 'Finish Time',
