@@ -261,23 +261,29 @@
         var station = $('#sel-station').val() ? $('#sel-station').val()[0] : null;
         var issueCategory = $('#sel-issuecategory').val() ? $('#sel-issuecategory').val()[0] : null;
         $('#dt-table').bootstrapTable('destroy').bootstrapTable({
-            url: otApi + 'GetOtherTriggerPaged',
-            queryParams: {
-                PlantName: $('#txt-plant').val() || null,
-                StationName: station,
-                IssueCategory: issueCategory,
-                OpenTimeFrom: $('#txt-from').val() ? $('#txt-from').val() + ' 00:00:00' : null,
-                OpenTimeTo: $('#txt-to').val() ? $('#txt-to').val() + ' 23:59:59' : null
-            },
+            url: otApi + 'GetOtherTriggerPaged2',
+            method: 'GET',
             cache: false,
-            type: 'GET',
             dataType: 'json',
-            responseHandler: function (res) { return res.data || res; },
-            search: true,
+            sidePagination: 'server',
             pagination: true,
             paginationLoop: false,
             pageSize: 10,
-            pageList: '[10, 50, 100, ALL]',
+            pageList: '[10, 50, 100]',
+            queryParams: function (params) {
+                return {
+                    PlantName: $('#txt-plant').val() || null,
+                    StationName: station,
+                    IssueCategory: issueCategory,
+                    OpenTimeFrom: $('#txt-from').val() ? $('#txt-from').val() + ' 00:00:00' : null,
+                    OpenTimeTo: $('#txt-to').val() ? $('#txt-to').val() + ' 23:59:59' : null,
+                    PageNumber: Math.floor(params.offset / params.limit) + 1,
+                    PageSize: params.limit
+                };
+            },
+            responseHandler: function (res) {
+                return { total: res.totalCount || 0, rows: res.data || [] };
+            },
             columns: [{
                 field: 'index', title: 'No.',
                 formatter: function (v, r, i) { return i + 1; }
