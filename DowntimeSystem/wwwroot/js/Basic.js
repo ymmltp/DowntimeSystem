@@ -1,4 +1,4 @@
-﻿const BasicURL ="http://cnwuxg0te01:5000"   // "https://cnwuxg0te01:9100"// "http://cnwuxg0te01:9000";  //  "http://localhost:19292"; // "http://cnwuxg0te01:5000"   //
+﻿const BasicURL ="http://cnwuxg0te01.corp.jabil.org:5004"   // "https://cnwuxg0te01:9100"// "http://cnwuxg0te01:9000";  //  "http://localhost:19292"; // "http://cnwuxg0te01:5000"   //
 const _FAC= "WUX-FATP"
 
 //#region datetimepicker 初始化设定
